@@ -1,10 +1,13 @@
 package Model;
 
 import java.util.Random;
-
+//import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Point;
+import java.io.BufferedWriter;
+//import java.io.FileInputStream;
+import java.io.FileWriter;
 
 public class Jeu implements Cloneable{
     Player[] players;
@@ -60,6 +63,47 @@ public class Jeu implements Cloneable{
             principale.set(0, y, cube);
             y++;
         }
+    }
+
+    public void sauvegarde() throws Exception{
+        String fileName = "FichierSauvegarde.txt";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+        String sauvegarde = "";
+        sauvegarde += nbJoueur + " " + current_player + "\n";
+        for(int i = principale.getSize()-1; i > 0; i--){
+            for (int j = 0; j < i; j++){
+                switch(principale.get(i, j)){
+                    case Cube.Vide:
+                        sauvegarde += "0 ";
+                        break;
+                    case Cube.Noir:
+                        sauvegarde += "1 ";
+                        break;
+                    case Cube.Bleu:
+                        sauvegarde += "2 ";
+                        break;
+                    case Cube.Vert:
+                        sauvegarde += "3 ";
+                        break;
+                    case Cube.Rouge:
+                        sauvegarde += "4 ";
+                        break;
+                    case Cube.Jaune:
+                        sauvegarde += "5 ";
+                        break;
+                    case Cube.Neutre:
+                        sauvegarde += "6 ";
+                        break;
+                    case default:
+                        System.exit(2);
+                }
+            }
+        }
+        sauvegarde +="\n";
+
+
+        writer.write(sauvegarde);
+        writer.close();
     }
 
         /************************************ */
