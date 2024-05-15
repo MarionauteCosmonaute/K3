@@ -50,87 +50,51 @@ public class NiveauGraphique extends JComponent implements Observateur{
         return hauteur_case;
     }
     
-
     public void Dessiner_plateau()
     {
   
     }
 
-
-    // public int tailleCubePyramide(){
-    //     return cons.tailleCubePyramide();
-    // }
-
     public int tailleCube(){
         return cons.tailleCube();
     }
-
 
     public Point[][] pointsPyr(){
         return cons.points_pyr();
     }
 
-    // public int tailleCubePioche(){
-    //     return cons.tailleCubePioche();
-    // }
-
-    public Point[][] pointsPioche(){
-        return cons.points_pioche();
+    public Point[] pointsPioche2(){
+        return cons.pointsPioche2();
     }
 
     public int[] couleurs(){
         return cons.couleurs();
     }
 
+    public int couleur_case(int emplacement, int[] couleurs){
+        return cons.couleur_case(emplacement, couleurs);
+    }
+
     public void modifierLignePioche(Point p){
         cons.modifierLignePioche(p);
-        cons.pioche = cons.pioche = true;
-        System.out.println("ligne piooooche");
+        repaint();
+    }
+
+    public void modifierPioche(int emplacement){
         cons.set_cube_sel(true);
-        // cons.set_cube2_sel(false); ////////////
-        // cons.setClicCentre(true);
-        // cons.pioche = !cons.pioche;
+        cons.modifierPioche(emplacement);
         repaint();
     }
 
     public void setPoint(Point p){
-        cons.setPoint(p);
         cons.set_cube_sel(false);
-        cons.pioche = cons.pioche = false;
-
-        // cons.set_cube1_sel(true);
-        // cons.pioche = !cons.pioche;
+        cons.setDessinVideFalse();
         repaint();
     }
 
     public boolean peut_cliquer_pyramide(){
         return cons.peut_cliquer_pyramide();
     }
-
-    /*
-    public boolean cube1_selectionne(){
-        return cons.cube1_selectionne();
-    }
-
-    public void setCube1(Point p){
-        cons.setCube1(p);
-        cons.set_cube1_sel(false);
-        
-    }
-
-    public void setCube2(Point p){
-        cons.setCube2(p);
-        // cons.set_cube1_sel(false);
-        // cons.set_cube2_sel(true);
-    }
-    */
-
-    // public boolean getClicCentre(){
-    //     return cons.clic_centre;
-    // }
-    // public void setClicCentre(boolean clic){
-    //     cons.setClicCentre(clic);
-    // }
 
     public void paintComponent(Graphics g)
     {

@@ -46,13 +46,15 @@ public class ControleurMediateur implements CollecteurEvenements
 	public void clicSourisPyr(int ligne, int col)
     {
 		jeu.construction(ligne, col, cube);
+		// System.out.println(cube);
         // System.out.println("case : ("+ligne+","+col+")");
 	}
 
 	@Override
-	public void clicSourisPioche(int ligne, int col)
+	public void clicSourisPioche(int couleur)
     {
-		switch(ligne){
+		// System.out.println("coul : " + couleur);
+		switch(couleur){
 			case 0:
 				cube = Cube.Noir;
 				break;

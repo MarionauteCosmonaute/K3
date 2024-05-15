@@ -19,53 +19,39 @@ public class AdaptateurSouris extends MouseAdapter
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		if((e.getX() <= nivGraph.Largeur_Fenetre()*3/4) && e.getY() <= nivGraph.Hauteur_Fenetre()*7/10){
-			
+		if(e.getY() < nivGraph.Hauteur_Fenetre()*7/10){
 			if(!nivGraph.peut_cliquer_pyramide()){
 				return;
 			}
-			System.out.println("pyramide");
 			int taille_cube = nivGraph.tailleCube();
 			Point pts[][] = nivGraph.pointsPyr();
-			int l, c;
-			Point p;
-			for(int i=0; i<6; i++){
-				for(int j=0; j<=i; j++){
-					if(e.getX() >= pts[i][j].getX() && e.getX() <= pts[i][j].getX() + taille_cube){
-						if(e.getY() >= pts[i][j].getY() && e.getY() <= pts[i][j].getY() + taille_cube){
-							l = 5-i;
-							c = i-j;
-							p = new Point(l, c);
-							nivGraph.setPoint(p);
-							controle.clicSourisPyr(l, c);
+			Point p = new Point(-1, -1);
+			for(int x = 0; x<6; x++){
+				for(int y = 0; y<(6-x); y++){
+					if(e.getX() >= pts[x][y].getX() && e.getX() <= pts[x][y].getX() + taille_cube){
+						if(e.getY() >= pts[x][y].getY() && e.getY() <= pts[x][y].getY() + taille_cube){
+						controle.clicSourisPyr(x, y);
+						nivGraph.setPoint(p);
 						}
-						
 					}
 				}
 			}
 		}
-		else if(e.getX() >= nivGraph.Largeur_Fenetre()*7/10){
-			System.out.println("pioche");
+		else if(e.getY() >= nivGraph.Hauteur_Fenetre()*7/10){
 			int taille_cube = nivGraph.tailleCube();
-			Point pts[][] = nivGraph.pointsPioche();
-			int l, c;
+			Point pts[] = nivGraph.pointsPioche2();
 			int couleurs[] = nivGraph.couleurs();
-			Point p;
-
-			// int cube;
+			int couleur;
+			int somme = 0;
 			for(int i=0; i<7; i++){
-				for(int j=0; j<couleurs[i]; j++){
-					
-					if(e.getX() >= pts[i][j].getX() && e.getX() <= pts[i][j].getX() + taille_cube){
-						if(e.getY() >= pts[i][j].getY() && e.getY() <= pts[i][j].getY() + taille_cube){
-							l = i;
-							c = couleurs[i] - j - 1;
-							// cube = i;
-							// System.out.println("couleur : " + cube);
-							p = new Point(l, couleurs[i] - j - 1);
-							nivGraph.modifierLignePioche(p);
-							controle.clicSourisPioche(l,  c);
-						}
+				somme += couleurs[i];
+			}
+			for(int i = 0; i < somme; i++){
+				if(e.getX() >= pts[i].getX() && e.getX() <= pts[i].getX() + taille_cube){
+					if(e.getY() >= pts[i].getY() && e.getY() <= pts[i].getY() + taille_cube){
+						couleur = nivGraph.couleur_case(i+1, couleurs);
+						controle.clicSourisPioche(couleur);
+						nivGraph.modifierPioche(i);
 					}
 				}
 			}
