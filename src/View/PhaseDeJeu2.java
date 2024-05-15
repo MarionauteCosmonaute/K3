@@ -1,12 +1,7 @@
 package View;
 
-import Global.FileLoader;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
 import Model.Jeu;
 
@@ -23,20 +18,21 @@ public class PhaseDeJeu2 extends Menu
             JPanel topPanel = new JPanel(); //pour les boutons
             JPanel centrePanel = new JPanel(); //reste du jeu
             centrePanel.setLayout(new GridLayout(2,1));
-            // topPanel.setBackground(Color. MAGENTA);
-            // centrePanel.setBackground(Color.ORANGE);
             content.add(topPanel, BorderLayout.NORTH);
             content.add(centrePanel, BorderLayout.CENTER);
             
             // On sépare la partie du jeu en une partie pyramide et une partie pour les joueurs
-            JPanel pyramidePanel = new JPanel();
+            JPanel pyramidePanel = new JPanel(new BorderLayout());
             JPanel joueursPanel = new JPanel();
             centrePanel.add(pyramidePanel);
             centrePanel.add(joueursPanel);
-            // pyramidePanel.setBackground(Color.BLACK);
-            // joueursPanel.setBackground(Color.YELLOW);
             pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
-            pyramidePanel.add(new AffichagePhaseDeJeu2(J));
+            PDJPyramideCentrale pdj = (new PDJPyramideCentrale(J, pyramidePanel));
+            
+            // pyramidePanel.setBackground(Color.RED);
+            pyramidePanel.add(pdj);
+            pdj.setVisible(true);
+            pyramidePanel.validate();
 
             // On sépare la partie des joueurs en jour gauche (joueur1) et joueur droit (joueur2)
             JPanel leftPanel = new JPanel();
@@ -44,8 +40,6 @@ public class PhaseDeJeu2 extends Menu
             joueursPanel.setLayout(new GridLayout(1,2));
             joueursPanel.add(leftPanel);
             joueursPanel.add(rightPanel);
-            // leftPanel.setBackground(Color.RED);
-            // rightPanel.setBackground(Color.BLUE);
             leftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5));
             rightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
        
