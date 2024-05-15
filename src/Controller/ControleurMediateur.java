@@ -13,6 +13,9 @@ public class ControleurMediateur implements CollecteurEvenements
 	MusicPlayer musique;
 	Vector<Menu> menuListe = new Vector<>();
 	int indice_courant = 0;
+
+	Cube cube;
+	// int x, y;
 	
 	public ControleurMediateur(Jeu j, MusicPlayer musique)
 	{
@@ -42,12 +45,38 @@ public class ControleurMediateur implements CollecteurEvenements
 	@Override
 	public void clicSourisPyr(int ligne, int col)
     {
+		jeu.construction(ligne, col, cube);
         // System.out.println("case : ("+ligne+","+col+")");
 	}
 
 	@Override
 	public void clicSourisPioche(int ligne, int col)
     {
+		switch(ligne){
+			case 0:
+				cube = Cube.Noir;
+				break;
+			case 1:
+				cube = Cube.Neutre;
+				break;
+			case 2:
+				cube = Cube.Blanc;
+				break;
+			case 3:
+				cube = Cube.Vert;
+				break;
+			case 4:
+				cube = Cube.Jaune;
+				break;
+			case 5:
+				cube = Cube.Rouge;
+				break;
+			case 6:
+				cube = Cube.Bleu;
+				break;
+		}
+		
+
         // System.out.println("Pioche : ("+ligne+","+col+")");
 	}
 

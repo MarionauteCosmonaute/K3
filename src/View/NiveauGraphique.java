@@ -57,17 +57,22 @@ public class NiveauGraphique extends JComponent implements Observateur{
     }
 
 
-    public int tailleCubePyramide(){
-        return cons.tailleCubePyramide();
+    // public int tailleCubePyramide(){
+    //     return cons.tailleCubePyramide();
+    // }
+
+    public int tailleCube(){
+        return cons.tailleCube();
     }
+
 
     public Point[][] pointsPyr(){
         return cons.points_pyr();
     }
 
-    public int tailleCubePioche(){
-        return cons.tailleCubePioche();
-    }
+    // public int tailleCubePioche(){
+    //     return cons.tailleCubePioche();
+    // }
 
     public Point[][] pointsPioche(){
         return cons.points_pioche();

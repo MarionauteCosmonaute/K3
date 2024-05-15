@@ -25,7 +25,7 @@ public class AdaptateurSouris extends MouseAdapter
 				return;
 			}
 			System.out.println("pyramide");
-			int taille_cube = nivGraph.tailleCubePyramide();
+			int taille_cube = nivGraph.tailleCube();
 			Point pts[][] = nivGraph.pointsPyr();
 			int l, c;
 			Point p;
@@ -44,19 +44,24 @@ public class AdaptateurSouris extends MouseAdapter
 				}
 			}
 		}
-		else if(e.getX() >= nivGraph.Largeur_Fenetre()*3/4){
-			System.out.println("cote");
-			int taille_cube = nivGraph.tailleCubePioche();
+		else if(e.getX() >= nivGraph.Largeur_Fenetre()*7/10){
+			System.out.println("pioche");
+			int taille_cube = nivGraph.tailleCube();
 			Point pts[][] = nivGraph.pointsPioche();
 			int l, c;
 			int couleurs[] = nivGraph.couleurs();
 			Point p;
+
+			// int cube;
 			for(int i=0; i<7; i++){
 				for(int j=0; j<couleurs[i]; j++){
+					
 					if(e.getX() >= pts[i][j].getX() && e.getX() <= pts[i][j].getX() + taille_cube){
 						if(e.getY() >= pts[i][j].getY() && e.getY() <= pts[i][j].getY() + taille_cube){
 							l = i;
 							c = couleurs[i] - j - 1;
+							// cube = i;
+							// System.out.println("couleur : " + cube);
 							p = new Point(l, couleurs[i] - j - 1);
 							nivGraph.modifierLignePioche(p);
 							controle.clicSourisPioche(l,  c);

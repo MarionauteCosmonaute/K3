@@ -32,12 +32,13 @@ public class PhaseConstruction
     int taille_cube_pyr;
     Point case_select;
     // ArrayList<Point> tab_cote[];
-    Point tab_cote[][];
+    Point tab_cote[][]; //////// A ENLEVER
+    Point tab_pioche[];
     int taille_cube_pioche;
 
     Point cube_pioche;
     int couleur_selectionnee;
-    Cube cube_a_mettre;
+    // Cube cube_a_mettre;
 
     boolean cube_sel;
 
@@ -48,6 +49,8 @@ public class PhaseConstruction
     // Point cube_echange1, cube_echange2;
     // boolean cube1_sel, cube2_sel;
     int cpt;
+
+    int taille_cube;
     
 
     public PhaseConstruction(JFrame frame, CollecteurEvenements controle, Jeu jeu){
@@ -94,26 +97,32 @@ public class PhaseConstruction
         couleur_selectionnee = -1;
         pioche = false;
         cube_sel = false;
-        // cube1_sel = false;
-        // cube2_sel = false;
-        // clic_centre = false;
+
+        tab_pioche = new Point[21];
     }
 
     public Point[][] points_pyr(){
         return tab_pts;
     }
 
-    public int tailleCubePyramide(){
-        return taille_cube_pyr;
+    // public int tailleCubePyramide(){
+    //     // return taille_cube_pyr;
+    //     return taille_cube;
+    // }
+
+    public int tailleCube(){
+        // return taille_cube_pyr;
+        return taille_cube;
     }
 
     public Point[][] points_pioche(){
         return tab_cote;
     }
 
-    public int tailleCubePioche(){
-        return taille_cube_pioche;
-    }
+    // public int tailleCubePioche(){
+    //     // return taille_cube_pioche;
+    //     return taille_cube;
+    // }
 
     public int[] couleurs(){
         return nb_couleurs;
@@ -162,7 +171,6 @@ public class PhaseConstruction
     // }
 
     public void fonction_globale(Jeu jeu, Graphics g, int width_fenetre, int height_fenetre){
-        Pyramid pyr = jeu.getPlayer(0).getPyramid();
         
         dessiner_pyramide_centrale(g, width_fenetre, height_fenetre);
         dessiner_pyramide_joueur(g, width_fenetre, height_fenetre);
@@ -181,17 +189,26 @@ public class PhaseConstruction
         return max;
     }
 
-    public void dessiner_cubes_pioches(Graphics g, int width_fenetre, int height_fenetre){
+    public int couleur_case(int emplacement, int[] couleurs){
+        int somme = 0;
+        for(int i=0; i<7; i++){
+            somme += couleurs[i];
+            if(emplacement <= somme){
+                return i;
+            }
+        }
+        return somme; //juste parce qu'il faut renvoyer un int dans tous les cas
+    }
+
+    public void dessiner_cubes_pioches2(Graphics g, int width_fenetre, int height_fenetre){
         nb_couleurs = jeu.compte_personal_bag();
         drawable = (Graphics2D) g;
         int debut_zone_haut = height_fenetre / 10;
 
         int fin_zone_gauche = (int)(0.95 * width_fenetre);
         
-        
         int nb;
-
-        int taille_cube = 9*width_fenetre / (4*9*10);
+        // int taille_cube = 9*width_fenetre / (4*9*10);
         taille_cube_pioche = taille_cube;
         int y=0;
         Point p;
@@ -200,7 +217,6 @@ public class PhaseConstruction
         int c_y = ((int)cube_pioche.getY());
         int x_cube_vide = 0;
         int y_cube_vide = 0;
-        Cube cube = Cube.Vide;
         for (int i=0; i<7; i++){
             nb = nb_couleurs[i];
             if (nb > 0){
@@ -217,58 +233,105 @@ public class PhaseConstruction
                 switch(i){
                     case 0:
                         drawable.drawImage(noir, x_haut, y_haut, taille_cube, taille_cube, null);
-                        cube = Cube.Noir;
                         break;
                     case 1:
                         drawable.drawImage(neutre, x_haut, y_haut, taille_cube, taille_cube, null);                    
-                        cube = Cube.Neutre;
                         break;
                     case 2:
                         drawable.drawImage(blanc, x_haut, y_haut, taille_cube, taille_cube, null);   
-                        cube = Cube.Blanc;
                         break;
                     case 3:
                         drawable.drawImage(vert, x_haut, y_haut, taille_cube, taille_cube, null);                      
-                        cube = Cube.Vert;
                         break;
                     case 4:
                         drawable.drawImage(jaune, x_haut, y_haut, taille_cube, taille_cube, null);                     
-                        cube = Cube.Jaune;
                         break;
                     case 5:
                         drawable.drawImage(rouge, x_haut, y_haut, taille_cube, taille_cube, null);                   
-                        cube = Cube.Rouge;
                         break;
                     case 6:
                         drawable.drawImage(bleu, x_haut, y_haut, taille_cube, taille_cube, null);                    
-                        cube = Cube.Bleu;
                         break;
                 }
                 if (x == c_y && i == c_x){
-                    x_cube_vide = fin_zone_gauche - (nb_couleurs[i] -1 -x)*(taille_cube + taille_cube/10);
+                    x_cube_vide = fin_zone_gauche - (nb_couleurs[c_x] -1 - c_y)*(taille_cube + taille_cube/10);
                     y_cube_vide = y_haut;
-                    couleur_selectionnee = i;
-                    cube_a_mettre = cube;
-                    // System.out.println("i :" + i);
-                    
+                    // couleur_selectionnee = i;
                 }
                 
             }   
         }
-        
         if(pioche){
-            System.out.println("pioche " + cpt);
-            cpt++;
             drawable.drawImage(carre_noir_vide, x_cube_vide, y_cube_vide, taille_cube, taille_cube, null);
             pioche = false;
         }
-        
-        
     }
 
-    public void dessiner_pyramide_centrale(Graphics g, int width_fenetre, int height_fenetre){
+    public void dessiner_cubes_pioches(Graphics g, int width_fenetre, int height_fenetre){
+        nb_couleurs = jeu.compte_personal_bag();
         drawable = (Graphics2D) g;
-        int taille_cube = height_fenetre/12;
+        int espace = taille_cube/10;
+        int debut_zone_haut = height_fenetre *7 / 10;
+        int hauteur_utilisee = taille_cube*3 + 2*espace;
+        int largeur_utilisee = taille_cube*7 + 6*espace;
+
+        int y_haut = debut_zone_haut + (height_fenetre - debut_zone_haut - hauteur_utilisee)/2;
+        int x_gauche = (width_fenetre - largeur_utilisee)/2;
+        
+        int somme = 0;
+        for(int i=0; i<7; i++){
+            somme += nb_couleurs[i];
+            System.out.println("il y a "+ nb_couleurs[i] + " éléments de couleur " + i);
+        }
+        System.out.println("somme : " + somme);
+
+        int x, y;
+        Point p;
+        int couleur;
+        nb_couleurs[2] = 0;
+        int ligne, col;
+        for(int i=0; i<somme; i++){
+            ligne = i/7;
+            col = i % 7;
+            if (somme >= i+1){
+                x = x_gauche + col*(taille_cube+espace);
+                y = y_haut + ligne*(taille_cube+espace);
+                couleur = couleur_case(i+1, nb_couleurs);
+                System.out.println(i+1);
+                p = new Point(x, y);
+                tab_pioche[i] = p;
+                switch(couleur){
+                    case 0:
+                        drawable.drawImage(noir, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case 1:
+                        drawable.drawImage(neutre, x, y, taille_cube, taille_cube, null);                    
+                        break;
+                    case 2:
+                        drawable.drawImage(blanc, x, y, taille_cube, taille_cube, null); 
+                        break;
+                    case 3:
+                        drawable.drawImage(vert, x, y, taille_cube, taille_cube, null);                    
+                        break;
+                    case 4:
+                        drawable.drawImage(jaune, x, y, taille_cube, taille_cube, null);       
+                        break;
+                    case 5:
+                        drawable.drawImage(rouge, x, y, taille_cube, taille_cube, null);                  
+                        break;
+                    case 6:
+                        drawable.drawImage(bleu, x, y, taille_cube, taille_cube, null);           
+                        break;
+                }
+                
+            }
+        }
+    }
+
+    public void dessiner_pyramide_centrale2(Graphics g, int width_fenetre, int height_fenetre){
+        drawable = (Graphics2D) g;
+        // int taille_cube = height_fenetre/12;
+        taille_cube = this.taille_cube*3/4;
         int debut_zone_haut = height_fenetre * 85/100;
         int taille_pyramide = (taille_cube+taille_cube/10)*9;
         int taille_zone = width_fenetre*3/4;
@@ -277,31 +340,24 @@ public class PhaseConstruction
         for (int i=0; i<9; i++){
             switch(jeu.principale.get(0, i)){
                 case Noir:
-                // System.out.println("noir");
                     drawable.drawImage(noir, debut_zone_gauche+(taille_cube+taille_cube/10)*i, debut_zone_haut, taille_cube, taille_cube, null);
                     break;
                 case Bleu:
-                // System.out.println("bleu");
                     drawable.drawImage(bleu, debut_zone_gauche+(taille_cube+taille_cube/10)*i, debut_zone_haut, taille_cube, taille_cube, null);
                     break;
                 case Blanc:
-                // System.out.println("blanc");
                     drawable.drawImage(blanc, debut_zone_gauche+(taille_cube+taille_cube/10)*i, debut_zone_haut, taille_cube, taille_cube, null);
                     break;
                 case Rouge:
-                // System.out.println("rouge");
                     drawable.drawImage(rouge, debut_zone_gauche+(taille_cube+taille_cube/10)*i, debut_zone_haut, taille_cube, taille_cube, null);
                     break;
                 case Jaune:
-                // System.out.println("jaune");
                     drawable.drawImage(jaune, debut_zone_gauche+(taille_cube+taille_cube/10)*i, debut_zone_haut, taille_cube, taille_cube, null);
                     break;
                 case Vert:
-                // System.out.println("vert");
                     drawable.drawImage(vert, debut_zone_gauche+(taille_cube+taille_cube/10)*i, debut_zone_haut, taille_cube, taille_cube, null);
                     break;
                 case Neutre:
-                // System.out.println("neutre");
                     drawable.drawImage(neutre, debut_zone_gauche+(taille_cube+taille_cube/10)*i, debut_zone_haut, taille_cube, taille_cube, null);
                     break;
                 default:
@@ -310,37 +366,36 @@ public class PhaseConstruction
         }
     }
 
-    public void dessiner_pyramide_joueur(Graphics g, int width_fenetre, int height_fenetre){
-        // if(cube1_sel){
-        //     System.out.println(cube_echange1.getX() + " " + cube_echange1.getY());
-        //     System.out.println(cube_echange2.getX() + " " + cube_echange2.getY());
-        // }
-        
+    public void dessiner_pyramide_centrale(Graphics g, int width_fenetre, int height_fenetre){
         drawable = (Graphics2D) g;
-        int taille_cube = height_fenetre/12;
-        int debut_zone_bas = height_fenetre*7/10;
+        taille_cube = this.taille_cube*2/3;
+        int debut_zone_haut = height_fenetre * 2/10;
+        int espace = taille_cube/10;
+        int taille_pyramide = taille_cube*9 + espace*8;
+        int debut_zone_gauche = width_fenetre - width_fenetre/10 - taille_pyramide;
+        for(int col = 0; col<9; col++){
+            drawable.drawImage(bleu, debut_zone_gauche + col*(taille_cube+espace), debut_zone_haut, taille_cube, taille_cube, null);
+        }
+    }
+
+    public void dessiner_pyramide_joueur2(Graphics g, int width_fenetre, int height_fenetre){
+        drawable = (Graphics2D) g;
+        // int taille_cube = height_fenetre/12;
+        taille_cube = height_fenetre/12;
         int debut_zone_haut = height_fenetre/10;
         int taille_pyramide = (taille_cube+taille_cube/10)*6;
         int taille_zone = width_fenetre*3/4;
         int debut_zone_gauche = (taille_zone - taille_pyramide) / 4;
         int x_haut, y_haut;
 
-        taille_cube_pyr = taille_cube;
+        // taille_cube_pyr = taille_cube;
         Point p;
         Cube cube;
-        int xx,yy;
         if(case_select.getX() >= 0 && case_select.getY() >= 0){
-            xx = (int)case_select.getX();
-            yy = (int)case_select.getY();
-            jeu.construction(xx, yy, cube_a_mettre);
-            cube_a_mettre = Cube.Vide;
             case_select.setLocation(-1, -1);
             nb_couleurs = jeu.compte_personal_bag();
 
         }
-        // if (couleur_selectionnee != -1){
-        //     System.out.println("----");
-        // }
         
         for (int x=0; x<6; x++){
             for (int y = 0; y<=x; y++){
@@ -380,6 +435,65 @@ public class PhaseConstruction
                         break;
                 }
                 
+            }
+        }
+    }
+
+    public void dessiner_pyramide_joueur(Graphics g, int width_fenetre, int height_fenetre){
+        drawable = (Graphics2D) g;
+        // int taille_cube = height_fenetre/12;
+        taille_cube = height_fenetre/12;
+        int debut_zone_haut = height_fenetre/10;
+        int taille_pyramide = (taille_cube+taille_cube/10)*6;
+        int taille_zone = width_fenetre*3/4;
+        int debut_zone_gauche = width_fenetre*1/5;
+        int x_haut, y_haut;
+
+        // taille_cube_pyr = taille_cube;
+        Point p;
+        Cube cube;
+        if(case_select.getX() >= 0 && case_select.getY() >= 0){
+            case_select.setLocation(-1, -1);
+            nb_couleurs = jeu.compte_personal_bag();
+
+        }
+        for(int x = 0; x<6; x++){
+            for(int y = 0; y<(6-x); y++){
+                cube = jeu.getPlayer().get(x, y);
+                
+                x_haut = debut_zone_haut + (5-x)*(taille_cube + taille_cube/10);
+                y_haut = debut_zone_gauche + x*(taille_cube + taille_cube/10)/2 + (taille_cube + taille_cube/10)*(y);
+                p = new Point(y_haut, x_haut);
+                tab_pts[x][y] = p;
+
+                switch (cube) {
+                    case Noir:
+                        drawable.drawImage(noir, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Neutre:
+                        drawable.drawImage(neutre, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Blanc:
+                        drawable.drawImage(blanc, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Vert:
+                        drawable.drawImage(vert, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Jaune:
+                        drawable.drawImage(jaune, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Rouge:
+                        drawable.drawImage(rouge, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Bleu:
+                        drawable.drawImage(bleu, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Vide:
+                        drawable.drawImage(vide, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
