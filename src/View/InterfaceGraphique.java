@@ -57,8 +57,8 @@ public class InterfaceGraphique implements Runnable, Observateur
 
     public void run()
     {
-		frame = new BackgroundPanel();
-		// frame = new JFrame();
+		// frame = new BackgroundPanel();
+		frame = new JFrame();
 		frame.setTitle("K3");
 		frame.setSize(500, 300);
        	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,6 +73,9 @@ public class InterfaceGraphique implements Runnable, Observateur
 		Mp.setVisible(true);
 
 		MenuNouvellePartie Mnp = new MenuNouvellePartie(controle);
+
+		PhaseDeJeu2 PhaseDeJeu2 = new PhaseDeJeu2(controle, jeu);
+		controle.commande("MenuOnline");
 
 		// On ajoute la souris et le clavier
 		niv.addMouseListener(new AdaptateurSouris(controle, niv));

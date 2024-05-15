@@ -63,11 +63,7 @@ public class ControleurMediateur implements CollecteurEvenements
 			case "fullscreen":
 				vue.basculePleinEcran();
 				break;
-
-			case "NouvellePartie":
-				//jeu.renitialiser(); 
-				break;
-
+				
             case "Lan":
 				break;
                 
@@ -78,9 +74,6 @@ public class ControleurMediateur implements CollecteurEvenements
                 break;
 
             case "EN":
-                break;
-			
-			case "Regles":
                 break;
 
 			case "Son":
@@ -94,7 +87,7 @@ public class ControleurMediateur implements CollecteurEvenements
 				changeVisible(1);
 				break;
 			case "MenuOnline":
-				//changeVisible(2);
+				changeVisible(2);
 				//TODO: decommenter ci dessus quand fenetre online dispo
 				break;
 			default:
