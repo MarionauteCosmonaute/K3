@@ -243,11 +243,11 @@ public class Player implements Cloneable{
     }
 
 
-    /*Puts back a pawn of the pyramid in the bag */
-    public void remise(int x, int y){
-        addBag(get(x,y));
-        set(x,y,Cube.Vide);
-    }
+    // /*Puts back a pawn of the pyramid in the bag */
+    // public void remise(int x, int y){
+    //     addBag(get(x,y));
+    //     set(x,y,Cube.Vide);
+    // }
 
     /*Swaps two cubes positions*/
     public void permutation(int x, int y, int x_p, int y_p){

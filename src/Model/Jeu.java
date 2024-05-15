@@ -101,8 +101,14 @@ public class Jeu implements Cloneable{
     }
 
     public void construction(int x, int y, Cube cube){
-        players[current_player].construction(x, y, cube);
+        getPlayer().construction(x, y, cube);
     }
+
+    /*Swaps two cubes positions*/
+    public void permutation(int x, int y, int x_p, int y_p){
+        getPlayer().permutation(x, y, x_p, y_p);
+    }
+
 
     /** Jouer **/
     public void setCubePlayer(int x, int y, Cube cube){     /* Ajoute le cube au coordonnee x y de la pyramide du joueur courant  */
