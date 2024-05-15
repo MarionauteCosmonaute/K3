@@ -13,6 +13,29 @@ public class Pyramid {
             }
         }
     }
+    Pyramid(String string){
+        String[] charge = string.split(" ");
+        size = Integer.parseInt(charge[0]);
+        int index = 2;
+        pyramid = new Cube[size][size];
+        for(int i = size-1; i > 0; i--){
+            for(int j = 0; j < i; j++){
+                pyramid[i][j] = Cube.conversion(charge[index++]);
+            }
+        }
+    }
+    
+
+    public String sauvegarde(){
+        String sauvegarde = size + " ";
+        for(int i = size-1; i > 0; i--){
+            for (int j = 0; j < i; j++){
+                sauvegarde += Cube.conversionString(get(i, j));
+            }
+        }
+        sauvegarde += "\n";
+        return sauvegarde;
+    }
 
     //Cloning of a Pyramid object
     public Pyramid clone() throws CloneNotSupportedException {

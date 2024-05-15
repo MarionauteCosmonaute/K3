@@ -1,13 +1,17 @@
 package Model;
 
 import java.util.Random;
+import java.util.Scanner;
 //import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Point;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 //import java.io.FileInputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 
 public class Jeu implements Cloneable{
     Player[] players;
@@ -47,6 +51,22 @@ public class Jeu implements Cloneable{
         Random r = new Random();
         current_player = r.nextInt(nb);
     }
+    public Jeu(String fileName) throws FileNotFoundException{
+        Scanner s = new Scanner(new FileInputStream(fileName));
+        String[] chaine = s.nextLine().split(" ");
+        nbJoueur = Integer.parseInt(chaine[0]);
+        current_player = Integer.parseInt(chaine[1]);
+        principale = new Pyramid(s.nextLine());
+        players = new Player[nbJoueur];
+        String[] playeString = new String[4];
+        for(int i = 0; i < nbJoueur; i++){
+            for(int j = 0; j < 4; j++){
+                playeString[j] = s.nextLine();
+            }
+            players[i] = new Player(playeString);
+        }
+        s.close();
+    }
 
     //Tirage de la base de la pyramide central 
     public void initPrincipale(){       /* base central aleatoire */
@@ -65,45 +85,27 @@ public class Jeu implements Cloneable{
         }
     }
 
-    public void sauvegarde() throws Exception{
-        String fileName = "FichierSauvegarde.txt";
-        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-        String sauvegarde = "";
-        sauvegarde += nbJoueur + " " + current_player + "\n";
-        for(int i = principale.getSize()-1; i > 0; i--){
-            for (int j = 0; j < i; j++){
-                switch(principale.get(i, j)){
-                    case Cube.Vide:
-                        sauvegarde += "0 ";
-                        break;
-                    case Cube.Noir:
-                        sauvegarde += "1 ";
-                        break;
-                    case Cube.Bleu:
-                        sauvegarde += "2 ";
-                        break;
-                    case Cube.Vert:
-                        sauvegarde += "3 ";
-                        break;
-                    case Cube.Rouge:
-                        sauvegarde += "4 ";
-                        break;
-                    case Cube.Jaune:
-                        sauvegarde += "5 ";
-                        break;
-                    case Cube.Neutre:
-                        sauvegarde += "6 ";
-                        break;
-                    case default:
-                        System.exit(2);
+    public void sauvegarde(){
+        try{
+            String fileName = "FichierSauvegarde.txt";
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+            String sauvegarde = "";
+            sauvegarde += nbJoueur + " " + current_player + "\n";
+            sauvegarde+= "9 ";
+            for(int i = principale.getSize()-1; i > 0; i--){
+                for (int j = 0; j <= i; j++){
+                    sauvegarde += Cube.conversionString(principale.get(i, j));
                 }
             }
-        }
-        sauvegarde +="\n";
-
-
-        writer.write(sauvegarde);
-        writer.close();
+            sauvegarde +="\n";
+            System.out.println(sauvegarde);
+            for(int i = 0; i < nbJoueur; i++){
+                sauvegarde += players[i].sauvegarde();
+            }
+            System.out.println(sauvegarde);
+            writer.write(sauvegarde);
+            writer.close();
+        }catch(Exception e){e.printStackTrace();}
     }
 
         /************************************ */

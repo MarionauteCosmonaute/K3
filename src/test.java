@@ -172,6 +172,7 @@ public class test{
                 }
                 
             }
+            if(entree[0].equals("save")){jeu.sauvegarde();}
             if(entree[0].equals("colors")){
                 HashMap<Cube,Boolean> list = jeu.accessibleColors();
                 System.out.print("Colors possible to play: ");

@@ -18,7 +18,36 @@ public class Player implements Cloneable{
         side = new ArrayList<>();
         personalBag = new ArrayList<>();
     }
+    
+    Player(String[] string){
+        personalBag = new ArrayList<>();
+        String[] charge = string[0].split(" ");
+        for(int i = 0; i < charge.length; i++){
+            personalBag.add(Cube.conversion(charge[i]));
+        }
+        side = new ArrayList<>();
+        charge = string[1].split(" ");
+        for(int i = 0; i < charge.length; i++){
+            side.add(Cube.conversion(charge[i]));
+        }
+        loss = Boolean.parseBoolean(string[2]);
+        pyramid = new Pyramid(string[3]);
+    }
 
+    public String sauvegarde(){
+        String chaine="";
+        for (int i = 0; i < personalBag.size(); i++){
+            chaine += Cube.conversionString(personalBag.get(i));
+        }
+        chaine+= "\n";
+        for (int i = 0; i < side.size(); i++){
+            chaine += Cube.conversionString(side.get(i));
+        }
+        chaine += "\n" + Boolean.toString(loss) + "\n";
+        chaine += pyramid.sauvegarde();
+        System.out.println(chaine);
+        return chaine;
+    }
     //CLONING METHOD
     public Player clone() throws CloneNotSupportedException {
         Player clone = (Player) super.clone();  // Clone the basic object structure
@@ -249,6 +278,8 @@ public class Player implements Cloneable{
         set(x,y,get(x_p,y_p));
         set(x_p,y_p,cube);
     }
+
+    
 
 
     @Override
