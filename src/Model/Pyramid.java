@@ -34,7 +34,12 @@ public class Pyramid {
     }
 
     public void extend(){
-        Cube cop_pyramid = new Cube[i+2][i+2];
+        Cube cop_pyramid = new Cube[size+2][size+2];
+        for (int i=0; i<size+2; i++ ){
+            for (int j=0; j<size+2; j++ ){
+                pyramid[i][j] = Cube.Vide;
+            }
+        }
         for (int i=0; i<size; i++){
             for (int j; j<size; j++){
                 cop_pyramid[i][j+1] = pyramid[i][j];
