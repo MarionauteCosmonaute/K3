@@ -135,7 +135,7 @@ public class Jeu implements Cloneable{
             if(valid != 0){
                 players[current_player].set(x_player, y_player, Cube.Vide);
                 principale.set(x_central, y_central, cube);
-                if(x == 9){
+                if(x_central == 9){
                     principale.extend();
                 }
             }
