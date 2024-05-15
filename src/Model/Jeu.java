@@ -66,6 +66,15 @@ public class Jeu implements Cloneable{
         }
     }
 
+    public Pyramid getPricipale(){
+        return principale;
+    }
+
+    public Cube getCubePrincipale(int x,int y){
+        return principale.get(x,y);
+    }
+
+
         /************************************ */
         /* Fonction lier a une action de jeu */
         /********************************** */
@@ -336,8 +345,6 @@ public class Jeu implements Cloneable{
     }
 
 
-    
-    
     public Point findFirstFreeElement() {   //return first free or (-1,-1)
         for (int i = getPlayer().getSize()-1; i >= 0; i--) {
             for (int j = 0; j < getPlayer().getSize()-i; j++) {
@@ -348,7 +355,8 @@ public class Jeu implements Cloneable{
         }
         return (new Point(-1,-1));
     }
-    
+
+
     public String bag(){     /* le tostring du bag */
         return bag.toString();
     }
@@ -375,6 +383,10 @@ public class Jeu implements Cloneable{
 
     public Player getPlayer(){
         return getPlayer(current_player);
+    }
+
+    public Pyramid getPyrPlayer(int i){
+        return getPlayer(i).getPyramid();
     }
 
     public ArrayList<Cube> getPlayerBag(){
