@@ -241,7 +241,7 @@ public class Player implements Cloneable{
         personalBag.remove(cube);
         pyramid.set(x,y,cube);
     }
-    
+
 
     /*Puts back a pawn of the pyramid in the bag */
     public void remise(int x, int y){
