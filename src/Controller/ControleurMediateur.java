@@ -51,6 +51,14 @@ public class ControleurMediateur implements CollecteurEvenements
 	}
 
 	@Override
+	public void clicSourisEchange(int x1, int y1, int x2, int y2)
+    {
+		jeu.permutation(x1, y1, x2, y2);
+		// System.out.println(cube);
+        // System.out.println("case : ("+ligne+","+col+")");
+	}
+
+	@Override
 	public void clicSourisPioche(int couleur)
     {
 		// System.out.println("coul : " + couleur);

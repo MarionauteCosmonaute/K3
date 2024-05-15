@@ -8,9 +8,9 @@ import java.awt.*;
 public class AdaptateurSouris extends MouseAdapter 
 {
 	CollecteurEvenements controle;
-	NiveauGraphique nivGraph;
+	AffichagePhaseConstruction nivGraph;
 
-	AdaptateurSouris(CollecteurEvenements c, NiveauGraphique nivGraph)
+	AdaptateurSouris(CollecteurEvenements c, AffichagePhaseConstruction nivGraph)
 	{
 		controle = c;
 		this.nivGraph = nivGraph;
@@ -20,7 +20,34 @@ public class AdaptateurSouris extends MouseAdapter
 	public void mousePressed(MouseEvent e)
 	{
 		if(e.getY() < nivGraph.Hauteur_Fenetre()*7/10){
+			int l = 0, c = 0;
+			int x2, y2;
 			if(!nivGraph.peut_cliquer_pyramide()){
+				int taille_cube = nivGraph.tailleCube();
+				Point pts[][] = nivGraph.pointsPyr();
+				Point p = new Point(-1, -1);
+				for(int x = 0; x<6; x++){
+					for(int y = 0; y<(6-x); y++){
+						if(e.getX() >= pts[x][y].getX() && e.getX() <= pts[x][y].getX() + taille_cube){
+							if(e.getY() >= pts[x][y].getY() && e.getY() <= pts[x][y].getY() + taille_cube){
+								l = x;
+								c = y;
+								
+							}
+						}
+					}
+				}
+				if(nivGraph.getEchange()%2 == 0){
+					nivGraph.setX1(l);
+					nivGraph.setY1(c);
+				}
+				else{
+					x2 = l;
+					y2 = c;
+					controle.clicSourisEchange(nivGraph.getX1(), nivGraph.getY1(), x2, y2);
+					nivGraph.echange();
+				}
+				nivGraph.setEchange();
 				return;
 			}
 			int taille_cube = nivGraph.tailleCube();

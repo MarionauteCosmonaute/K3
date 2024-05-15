@@ -10,7 +10,7 @@ import java.io.InputStream;
 import Model.Jeu;
 import Patterns.Observateur;
 
-public class NiveauGraphique extends JComponent implements Observateur{
+public class AffichagePhaseConstruction extends JComponent implements Observateur{
     int width_fenetre, height_fenetre, nb_ligne, nb_colonne, largeur_case, hauteur_case;
     JFrame frame;
     Graphics2D drawable;
@@ -18,7 +18,7 @@ public class NiveauGraphique extends JComponent implements Observateur{
 
     PhaseConstruction cons;
 
-    NiveauGraphique(Jeu jeu, PhaseConstruction c)
+    AffichagePhaseConstruction(Jeu jeu, PhaseConstruction c)
     {
         this.jeu = jeu;
         cons = c;
@@ -75,11 +75,6 @@ public class NiveauGraphique extends JComponent implements Observateur{
         return cons.couleur_case(emplacement, couleurs);
     }
 
-    public void modifierLignePioche(Point p){
-        cons.modifierLignePioche(p);
-        repaint();
-    }
-
     public void modifierPioche(int emplacement){
         cons.set_cube_sel(true);
         cons.modifierPioche(emplacement);
@@ -92,8 +87,36 @@ public class NiveauGraphique extends JComponent implements Observateur{
         repaint();
     }
 
+    public void echange(){
+        repaint();
+    }
+
     public boolean peut_cliquer_pyramide(){
         return cons.peut_cliquer_pyramide();
+    }
+
+    public int getEchange(){
+        return cons.getEchange();
+    }
+
+    public void setEchange( ){
+        cons.setEchange();
+    }
+
+    public int getX1(){
+        return cons.getX1();
+    }
+
+    public int getY1(){
+        return cons.getY1();
+    }
+
+    public void setX1(int x){
+        cons.setX1(x);
+    }
+
+    public void setY1(int y){
+        cons.setY1(y);
     }
 
     public void paintComponent(Graphics g)

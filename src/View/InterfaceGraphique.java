@@ -11,7 +11,7 @@ public class InterfaceGraphique implements Runnable, Observateur
     JFrame frame;
     CollecteurEvenements controle;
     Jeu jeu;
-    NiveauGraphique niv;
+    AffichagePhaseConstruction niv;
     boolean maximized;
 	Timer t;
 	Boolean bool = true;
@@ -63,7 +63,7 @@ public class InterfaceGraphique implements Runnable, Observateur
        	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		PhaseConstruction cons = new PhaseConstruction(frame, controle, jeu);
-        niv = new NiveauGraphique(jeu, cons);
+        niv = new AffichagePhaseConstruction(jeu, cons);
 
 		
 

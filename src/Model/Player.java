@@ -1,13 +1,14 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Player implements Cloneable{
     Pyramid pyramid;
 
     ArrayList<Cube> side, personalBag;
+
     int[] totalCube;
+
     int noir, bleu, blanc, rouge, jaune, vert, neutre;
     int size;
     boolean loss;
@@ -15,12 +16,14 @@ public class Player implements Cloneable{
     Player(int i){
         pyramid = new Pyramid(i);
         size = i;
+
         totalCube = new int[7];
+
         side = new ArrayList<>();
         personalBag = new ArrayList<>();
     }
-
     //CLONING METHOD
+
     public Player clone() throws CloneNotSupportedException {
         Player clone = (Player) super.clone();  // Clone the basic object structure
 
@@ -45,6 +48,9 @@ public class Player implements Cloneable{
         loss = true;
     }
 
+    public ArrayList<Cube> getPersonalBag(){
+        return personalBag;
+    }
     /*Cubes stats */
     public int totalCube(){
         //CUBE VIDE => Total of all colours
@@ -132,6 +138,7 @@ public class Player implements Cloneable{
         }
     }
 
+
     public int[] compte_personal_bag(){
         int nb[] = new int[7];
         for(Cube cube : personalBag){
@@ -214,13 +221,11 @@ public class Player implements Cloneable{
         return personalBag.isEmpty();
     }
 
+    
     public int getBagSize(){
         return personalBag.size();
     }
 
-    // public int[] compte_personnal_bag(){
-    //     return totalCube;
-    // }
 
     public void addBag(Cube cube){
         increment(cube);
@@ -236,6 +241,7 @@ public class Player implements Cloneable{
         personalBag.remove(cube);
         pyramid.set(x,y,cube);
     }
+
 
     /*Puts back a pawn of the pyramid in the bag */
     public void remise(int x, int y){

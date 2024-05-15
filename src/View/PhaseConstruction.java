@@ -27,23 +27,14 @@ public class PhaseConstruction
     Image neutre, bleu, vert, jaune, noir, blanc, rouge, vide, carre_noir_vide;
     Jeu jeu;
     int nb_couleurs[];
-
     Point tab_pts[][];
-    int taille_cube_pyr;
     Point tab_pioche[];
-    int taille_cube_pioche;
-
-    Point cube_pioche;
-    int couleur_selectionnee;
     boolean cube_sel;
-
-    boolean pioche;
-
-    int cpt;
-
     int taille_cube;
     int emplacement;
     boolean dessiner_vide;
+    int echange;
+    int x1,y1;
     
 
     public PhaseConstruction(JFrame frame, CollecteurEvenements controle, Jeu jeu){
@@ -71,7 +62,7 @@ public class PhaseConstruction
 			carre_noir_vide = ImageIO.read(in);
 
 		} catch (FileNotFoundException e) {
-			System.err.println("ERREUR : impossible de trouver le fichier du pousseur");
+			System.err.println("ERREUR : impossible de trouver le fichier");
 			System.exit(2);
 		} catch (IOException e) {
 			System.err.println("ERREUR : impossible de charger l'image");
@@ -82,15 +73,14 @@ public class PhaseConstruction
         {
         }
 
-        cpt = 0;
         tab_pts = new Point[6][6]; //a adapter selon le nombre de joueurs
-        cube_pioche = new Point(-1, -1);
-        couleur_selectionnee = -1;
-        pioche = false;
         cube_sel = false;
 
         dessiner_vide = false;
         tab_pioche = new Point[21];
+
+        // echange = false;
+        echange = 0;
     }
 
     public Point[][] points_pyr(){
@@ -107,10 +97,6 @@ public class PhaseConstruction
 
     public int[] couleurs(){
         return nb_couleurs;
-    }
-
-    public void modifierLignePioche(Point p){
-        cube_pioche = new Point((int)p.getX(), (int)p.getY());
     }
 
     public void modifierPioche(int emplacement){
@@ -130,6 +116,32 @@ public class PhaseConstruction
     public void set_cube_sel(boolean bool){
         cube_sel = bool;
     }
+
+    public int getEchange(){
+        return echange;
+    }
+
+    //incremente echange
+    public void setEchange(){
+        echange++;
+    }
+
+    public int getX1(){
+        return x1;
+    }
+
+    public int getY1(){
+        return y1;
+    }
+
+    public void setX1(int x){
+        x1 = x;
+    }
+
+    public void setY1(int y){
+        y1 = y;
+    }
+
 
     public void fonction_globale(Jeu jeu, Graphics g, int width_fenetre, int height_fenetre){
         
