@@ -13,7 +13,7 @@ public class IAFacile extends IA {
         int value_max= -100000;
         ArrayList<Point> cubes_access = j.Accessible_Playable();
         for(Point depart : cubes_access){
-            ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations(j.getPlayer().get((int) depart.getX(),(int) depart.getY()));
+            ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations((int) depart.getX(),(int) depart.getY());
             for(Point arrivee : coups_jouables){
                 ArrayList<Point> pos = new ArrayList<>();
                 pos.add(depart);
@@ -46,16 +46,16 @@ public class IAFacile extends IA {
         return resultat_ok;
     }
 
-    public ArrayList<int> pyramideIA(Jeu j, int joueur1){
-        ArrayList<int> resultat_ok = new ArrayList<>();
-        ArrayList<int> resultat_ko = new ArrayList<>();
+    public ArrayList<Integer> pyramideIA(Jeu j, int joueur1){
+        ArrayList<Integer> resultat_ok = new ArrayList<>();
+        ArrayList<Integer> resultat_ko = new ArrayList<>();
         int value_max= -100000;
         for(int i=0; i<j.getPlayer(joueur1).getBagSize();i++){
-            ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations(j.getPlayer(player1).personalBag(i));
+            ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations(i, -1);
             for(Point coup : coups_jouables){
                 Jeu clone = new Jeu(2);
                 clone = j.clone();
-                clone.add_central_pyramid(coup.getX(), coup.getY(), (int) j.getPlayer(joueur1).getBag().get(i).getX(), (int) j.getPlayer(joueur1).getBag().get(i).getY());
+                clone.add_central_pyramid((int) coup.getX(),(int) coup.getY(), i, -1);
                 int value= MinMaxIA(clone, 2, joueur1, -10000, +10000, -1);
                 if(value==value_max){
                     resultat_ok.add(i);
@@ -90,12 +90,12 @@ public class IAFacile extends IA {
     }
 
     @Override
-    public void ajoute(){
-        ArrayList<int> coups_possibles = pyramideIA(jeu, jeu.current_player);
+    public void construction(){
+        ArrayList<Integer> coups_possibles = pyramideIA(jeu, jeu.current_player);
         Random random = new Random();
         Point x_y_pyra;
         x_y_pyra = jeu.findFirstFreeElement();
         int cube_a_placer = coups_possibles.get(random.nextInt(coups_possibles.size()));
-        jeu.ajoute((int) x_y_pyra.getX(), (int) x_y_pyra.getY(), cube_a_placer);
+        jeu.construction((int) x_y_pyra.getX(), (int) x_y_pyra.getY(), jeu.getPlayer().getSide(cube_a_placer));
     }
 }
