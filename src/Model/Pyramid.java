@@ -16,10 +16,10 @@ public class Pyramid {
     Pyramid(String string){
         String[] charge = string.split(" ");
         size = Integer.parseInt(charge[0]);
-        int index = 2;
+        int index = 1;
         pyramid = new Cube[size][size];
-        for(int i = size-1; i > 0; i--){
-            for(int j = 0; j < i; j++){
+        for(int i = size-1; i >= 0; i--){
+            for(int j = 0; j <= size-1-i; j++){
                 pyramid[i][j] = Cube.conversion(charge[index++]);
             }
         }
@@ -28,8 +28,8 @@ public class Pyramid {
 
     public String sauvegarde(){
         String sauvegarde = size + " ";
-        for(int i = size-1; i > 0; i--){
-            for (int j = 0; j < i; j++){
+        for(int i = size-1; i >= 0; i--){
+            for (int j = 0; j <= size-i-1; j++){
                 sauvegarde += Cube.conversionString(get(i, j));
             }
         }

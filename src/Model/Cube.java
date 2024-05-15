@@ -29,6 +29,7 @@ public enum Cube {
             case Rouge: return "4 ";
             case Jaune: return "5 ";
             case Neutre: return "6 ";
+            case Blanc: return "7 ";
             default:
                 System.exit(2);
         }

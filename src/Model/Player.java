@@ -21,17 +21,19 @@ public class Player implements Cloneable{
     
     Player(String[] string){
         personalBag = new ArrayList<>();
+        totalCube = new int[7];
         String[] charge = string[0].split(" ");
         for(int i = 0; i < charge.length; i++){
-            personalBag.add(Cube.conversion(charge[i]));
+            if(!charge[i].equals("")){personalBag.add(Cube.conversion(charge[i]));}
         }
         side = new ArrayList<>();
         charge = string[1].split(" ");
         for(int i = 0; i < charge.length; i++){
-            side.add(Cube.conversion(charge[i]));
+            if(!charge[i].equals("")){side.add(Cube.conversion(charge[i]));}
         }
         loss = Boolean.parseBoolean(string[2]);
         pyramid = new Pyramid(string[3]);
+        size = pyramid.getSize();
     }
 
     public String sauvegarde(){
@@ -43,9 +45,9 @@ public class Player implements Cloneable{
         for (int i = 0; i < side.size(); i++){
             chaine += Cube.conversionString(side.get(i));
         }
-        chaine += "\n" + Boolean.toString(loss) + "\n";
+        chaine += "\n";
+        chaine += Boolean.toString(loss) + "\n";
         chaine += pyramid.sauvegarde();
-        System.out.println(chaine);
         return chaine;
     }
     //CLONING METHOD

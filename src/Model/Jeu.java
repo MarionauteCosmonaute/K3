@@ -15,10 +15,10 @@ import java.io.IOException;
 
 public class Jeu implements Cloneable{
     Player[] players;
-    public int nbJoueur;
-    public Pyramid principale;
+    int nbJoueur;
+    Pyramid principale;
     PawnsBag bag;
-    public int current_player, size;
+    int current_player, size;
     boolean End;
 
         /*****************************/
@@ -51,21 +51,27 @@ public class Jeu implements Cloneable{
         Random r = new Random();
         current_player = r.nextInt(nb);
     }
-    public Jeu(String fileName) throws FileNotFoundException{
-        Scanner s = new Scanner(new FileInputStream(fileName));
-        String[] chaine = s.nextLine().split(" ");
-        nbJoueur = Integer.parseInt(chaine[0]);
-        current_player = Integer.parseInt(chaine[1]);
-        principale = new Pyramid(s.nextLine());
-        players = new Player[nbJoueur];
-        String[] playeString = new String[4];
-        for(int i = 0; i < nbJoueur; i++){
-            for(int j = 0; j < 4; j++){
-                playeString[j] = s.nextLine();
+    public Jeu(String fileName){
+        try{
+            Scanner s = new Scanner(new FileInputStream(fileName));
+            String[] chaine = s.nextLine().split(" ");
+            nbJoueur = Integer.parseInt(chaine[0]);
+            bag = new PawnsBag(nbJoueur);
+            size = 8-nbJoueur;
+            current_player = Integer.parseInt(chaine[1]);
+            principale = new Pyramid(s.nextLine());
+            players = new Player[nbJoueur];
+            String[] playerString = new String[4];
+            for(int i = 0; i < nbJoueur; i++){
+                for(int j = 0; j < 4; j++){
+                    playerString[j] = s.nextLine();
+                }
+                players[i] = new Player(playerString);
             }
-            players[i] = new Player(playeString);
+            End = false;
+            s.close();
         }
-        s.close();
+        catch(FileNotFoundException e){System.err.println(e);System.exit(2);}
     }
 
     //Tirage de la base de la pyramide central 
@@ -85,27 +91,19 @@ public class Jeu implements Cloneable{
         }
     }
 
-    public void sauvegarde(){
+    public void sauvegarde(String fileName){
         try{
-            String fileName = "FichierSauvegarde.txt";
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
             String sauvegarde = "";
             sauvegarde += nbJoueur + " " + current_player + "\n";
-            sauvegarde+= "9 ";
-            for(int i = principale.getSize()-1; i > 0; i--){
-                for (int j = 0; j <= i; j++){
-                    sauvegarde += Cube.conversionString(principale.get(i, j));
-                }
-            }
-            sauvegarde +="\n";
-            System.out.println(sauvegarde);
+            sauvegarde+= principale.sauvegarde();
             for(int i = 0; i < nbJoueur; i++){
                 sauvegarde += players[i].sauvegarde();
             }
-            System.out.println(sauvegarde);
             writer.write(sauvegarde);
             writer.close();
-        }catch(Exception e){e.printStackTrace();}
+        }
+        catch(IOException e){System.err.println(e);System.exit(2);}
     }
 
         /************************************ */
@@ -232,7 +230,7 @@ public class Jeu implements Cloneable{
     }
 
     public boolean accessible(Pyramid pyramid , int x, int y){
-        return (pyramid.get(x, y) != Cube.Vide) && (( x == size-1 && y == 0  ) || (( y == size-x-1 || pyramid.get(x+1, y) == Cube.Vide) && (y == 0 || pyramid.get(x+1, y-1)== Cube.Vide)));
+        return (pyramid.get(x, y) != Cube.Vide) && (( x == size-1 && y == 0 ) || (( y == size-x-1 || pyramid.get(x+1, y) == Cube.Vide) && (y == 0 || pyramid.get(x+1, y-1)== Cube.Vide)));
     }
 
     public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l'on peu poser un cube sur un cube de la pyramide central */
@@ -262,6 +260,10 @@ public class Jeu implements Cloneable{
         /**************************************** */
         /* Fonction lier aux informations du jeu */
         /************************************* */
+
+    public Pyramid getPrincipale(){
+        return principale;
+    }
 
     /* Recuperation de l'indice d'un joueur */
 
@@ -400,6 +402,10 @@ public class Jeu implements Cloneable{
 
     public int get_player(){
         return current_player;
+    }
+
+    public int nbJoueur(){
+        return nbJoueur;
     }
 
     public Player getPlayer(int i){
