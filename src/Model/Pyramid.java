@@ -33,6 +33,17 @@ public class Pyramid {
         return size;
     }
 
+    public void extend(){
+        Cube cop_pyramid = new Cube[i+2][i+2];
+        for (int i=0; i<size; i++){
+            for (int j; j<size; j++){
+                cop_pyramid[i][j+1] = pyramid[i][j];
+            }
+        }
+        pyramid = cop_pyramid;
+        size = size + 2;
+    }
+
 
     //Get an element at x y position
     public Cube get(int x, int y){
