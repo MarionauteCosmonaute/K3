@@ -222,7 +222,7 @@ public class Jeu implements Cloneable{
 
     /* Penalitee */
 
-    public boolean check_penality(Cube cube, int x, int y) {    /* a appelle qu'apres la fonction move_validity */
+    public boolean check_penality(int x, int y) {  
         return principale.get(x-1, y) == principale.get(x-1, y+1);
     }
 
@@ -241,7 +241,7 @@ public class Jeu implements Cloneable{
     // 2 -> VALID WITH PENALITY
     public int move_validity(Cube cube, int x, int y){          /* bonne validitee renvoyee */
         if ( sameColor(principale.get(x, y), Cube.Vide) && check_under(x,y) && (sameColor(principale.get(x-1, y),cube) || ( sameColor(principale.get(x-1, y+1),cube))) ){
-            if (check_penality(cube, x, y)){
+            if (check_penality(x, y)){
                 return 2;
             }
             return 1;
