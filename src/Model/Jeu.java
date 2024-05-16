@@ -387,6 +387,15 @@ public class Jeu implements Cloneable{
         return getPlayer(i).personalBag;
     }
 
+
+    public Pyramid getPrincipale(){
+        return principale;
+    }
+
+    public Cube getCubePrincipale(int x,int y){
+        return principale.get(x,y);
+    }
+
     public Jeu clone() throws CloneNotSupportedException {
         Jeu clone = (Jeu) super.clone();  // Clone the basic object structure
 

@@ -7,7 +7,7 @@ import Model.Jeu;
 
 public class PhaseDeJeu2 extends Menu
 {
-    PhaseDeJeu2(CollecteurEvenements controle,Jeu J)
+    PhaseDeJeu2(CollecteurEvenements controle, Jeu J)
     {
         super();
         try
@@ -15,7 +15,13 @@ public class PhaseDeJeu2 extends Menu
             JPanel content = new JPanel(new BorderLayout());   
 
             // On sépare la partie qui contient les boutons retour/aide/son et la partie du jeu
-            JPanel topPanel = new JPanel(); //pour les boutons
+            JPanel topPanel = new JPanel(new BorderLayout()); //pour les boutons
+            JButton UnMute = Bouton.BoutonUnMute(controle);
+            JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            topRightPanel.add(UnMute,BorderLayout.EAST);
+            topRightPanel.setOpaque(false);
+            topPanel.add(topRightPanel);
+
             JPanel centrePanel = new JPanel(); //reste du jeu
             centrePanel.setLayout(new GridLayout(2,1));
             content.add(topPanel, BorderLayout.NORTH);
@@ -26,7 +32,7 @@ public class PhaseDeJeu2 extends Menu
             JPanel joueursPanel = new JPanel();
             centrePanel.add(pyramidePanel);
             centrePanel.add(joueursPanel);
-            pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
+            pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             PDJPyramideCentrale pdj = (new PDJPyramideCentrale(J, pyramidePanel)); //ajoute la pyramide centrale
             System.out.println(pdj.isOpaque());
             
@@ -40,13 +46,13 @@ public class PhaseDeJeu2 extends Menu
             joueursPanel.setLayout(new GridLayout(1,2));
             joueursPanel.add(leftPanel);
             joueursPanel.add(rightPanel);
-            leftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 5));
+            leftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
             
-            PDJPyramideCentrale joueur1 = (new PDJPyramideCentrale(J, leftPanel)); //ajoute la pyramide du joueur 1
+            PDJPyramideJoueur joueur1 = (new PDJPyramideJoueur(J, leftPanel,0)); //ajoute la pyramide du joueur 1
             leftPanel.add(joueur1);
             joueur1.setVisible(true);
-            rightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
-            PDJPyramideCentrale joueur2 = (new PDJPyramideCentrale(J, rightPanel)); //ajoute la pyramide du joueur 2
+            rightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            PDJPyramideJoueur joueur2 = (new PDJPyramideJoueur(J, rightPanel,1)); //ajoute la pyramide du joueur 2
             rightPanel.add(joueur2);
             joueur2.setVisible(true);
 

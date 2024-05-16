@@ -12,6 +12,7 @@ class K3
         Jeu jeu = new Jeu(2);
         jeu.initPrincipale();
         MusicPlayer musique = new MusicPlayer();
+        StructurePainter.init();
         ControleurMediateur contMEd = new ControleurMediateur(jeu, musique);
         InterfaceGraphique.demarrer(jeu, contMEd);
     }

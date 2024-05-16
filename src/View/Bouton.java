@@ -20,7 +20,7 @@ public class Bouton
 		bouton.setFocusable(false);
 		return bouton;
 	}
-
+	@Deprecated
 	public static JButton BoutonMute()
 	{
         ImageIcon iconMute = new ImageIcon("res/son.png");
