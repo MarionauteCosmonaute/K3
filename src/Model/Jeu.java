@@ -153,6 +153,10 @@ public class Jeu implements Cloneable{
         getPlayer().permutation(x, y, x_p, y_p);
     }
 
+    public void resetBag(){
+        getPlayer().resetBag();
+    }
+
 
     /** Jouer **/
     public void setCubePlayer(int x, int y, Cube cube){     /* Ajoute le cube au coordonnee x y de la pyramide du joueur courant  */
@@ -202,7 +206,7 @@ public class Jeu implements Cloneable{
 
     public void takePenaltyCubeFromPyramid(int x,int y) {               /*Recupere le cube de la position x y du joueur courant et l'ajoute au side du joueur precedent */
         players[previous_player()].addSide(players[current_player].get(x,y));
-        players[current_player].set(x,y,Cube.Vide);
+        players[current_player].remove(x,y);
     }
 
     public void takePenaltyCubeFromSide(int x) {            /* Recupere le cube de la position x dans la liste de cotee du joueur courant et l'ajoute au side du joueur precedent */
