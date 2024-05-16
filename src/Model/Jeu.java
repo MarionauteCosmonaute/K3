@@ -348,7 +348,7 @@ public class Jeu implements Cloneable{
         ArrayList<Point> list = new ArrayList<Point>();
         for (int i=getPlayer(joueur).getSize()-1; i>=0; i--){
             for (int j=0; j<getPlayer(joueur).getSize()-i; j++){
-                if (accessible(i,j)){
+                if (accessible(i,j, joueur)){
                     Point p = new Point(i, j);
                     list.add(p);
                 }
