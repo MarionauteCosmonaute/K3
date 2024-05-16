@@ -251,10 +251,13 @@ public class Jeu implements Cloneable{
 
 
     /* Accessibilitee */
-
     public boolean accessible(int x, int y){
+        return accessible(x,y,current_player);
+    }
 
-        Pyramid pyramid = players[current_player].getPyramid();
+    public boolean accessible(int x, int y, int joueur){
+
+        Pyramid pyramid = getPlayer(joueur).getPyramid();
         return accessible(pyramid , x, y);
     }
 
@@ -337,11 +340,14 @@ public class Jeu implements Cloneable{
         return getPlayer().compte_personal_bag();
     }
 
+    public ArrayList<Point> AccessibleCubesPlayer(){
+        return AccessibleCubesPlayer(current_player);
+    }
 
-    public ArrayList<Point> AccessibleCubesPlayer(){            /* Fonctionne mais crash?(tres rarement)*/
+    public ArrayList<Point> AccessibleCubesPlayer(int joueur){            /* Fonctionne mais crash?(tres rarement)*/
         ArrayList<Point> list = new ArrayList<Point>();
-        for (int i=players[current_player].getSize()-1; i>=0; i--){
-            for (int j=0; j<players[current_player].getSize()-i; j++){
+        for (int i=getPlayer(joueur).getSize()-1; i>=0; i--){
+            for (int j=0; j<getPlayer(joueur).getSize()-i; j++){
                 if (accessible(i,j)){
                     Point p = new Point(i, j);
                     list.add(p);
@@ -372,18 +378,22 @@ public class Jeu implements Cloneable{
         return list;
     }
 
-    public ArrayList<Point> Accessible_Playable(){          /* parmis les cube accessible les quel sont possible d'etre jouer, renvoie une liste de coordonee */
+    public ArrayList<Point> Accessible_Playable(){
+        return Accessible_Playable(current_player);
+    }
+
+    public ArrayList<Point> Accessible_Playable(int i){          /* parmis les cube accessible les quel sont possible d'etre jouer, renvoie une liste de coordonee */
         HashMap<Cube,Boolean> list = accessibleColors();
         ArrayList<Point> Aksel = new ArrayList<Point>();
 
-        for(Point e : AccessibleCubesPlayer()){
-            Cube cube = getPlayer().get(e.x, e.y);
+        for(Point e : AccessibleCubesPlayer(i)){
+            Cube cube = getPlayer(i).get(e.x, e.y);
             if(cube == Cube.Blanc || cube == Cube.Neutre || list.get(cube) != null){
                 Aksel.add(e);
             }
         }
         int x = 0;
-        for(Cube c : getPlayer().getSide()){
+        for(Cube c : getPlayer(i).getSide()){
             if(c == Cube.Blanc || c == Cube.Neutre || list.get(c) != null){
                 Point p = new Point(x, -1);
                 Aksel.add(p);
