@@ -22,6 +22,38 @@ public class Player implements Cloneable{
         side = new ArrayList<>();
         personalBag = new ArrayList<>();
     }
+    
+    Player(String[] string){
+        personalBag = new ArrayList<>();
+        totalCube = new int[7];
+        String[] charge = string[0].split(" ");
+        for(int i = 0; i < charge.length; i++){
+            if(!charge[i].equals("")){personalBag.add(Cube.conversion(charge[i]));}
+        }
+        side = new ArrayList<>();
+        charge = string[1].split(" ");
+        for(int i = 0; i < charge.length; i++){
+            if(!charge[i].equals("")){side.add(Cube.conversion(charge[i]));}
+        }
+        loss = Boolean.parseBoolean(string[2]);
+        pyramid = new Pyramid(string[3]);
+        size = pyramid.getSize();
+    }
+
+    public String sauvegarde(){
+        String chaine="";
+        for (int i = 0; i < personalBag.size(); i++){
+            chaine += Cube.conversionString(personalBag.get(i));
+        }
+        chaine+= "\n";
+        for (int i = 0; i < side.size(); i++){
+            chaine += Cube.conversionString(side.get(i));
+        }
+        chaine += "\n";
+        chaine += Boolean.toString(loss) + "\n";
+        chaine += pyramid.sauvegarde();
+        return chaine;
+    }
     //CLONING METHOD
 
     public Player clone() throws CloneNotSupportedException {
@@ -203,6 +235,10 @@ public class Player implements Cloneable{
         return pyramid.get(x, y);
     }
 
+    public void remove (int x, int y){
+        set(x,y,Cube.Vide);
+    }
+
     public void set(int x, int y, Cube c){
         Cube cube = get(x, y);
         decrement(cube);
@@ -221,7 +257,6 @@ public class Player implements Cloneable{
         return personalBag.isEmpty();
     }
 
-    
     public int getBagSize(){
         return personalBag.size();
     }
@@ -242,18 +277,20 @@ public class Player implements Cloneable{
         pyramid.set(x,y,cube);
     }
 
-
-    /*Puts back a pawn of the pyramid in the bag */
-    public void remise(int x, int y){
-        addBag(get(x,y));
-        set(x,y,Cube.Vide);
-    }
-
     /*Swaps two cubes positions*/
     public void permutation(int x, int y, int x_p, int y_p){
         Cube cube = get(x,y);
         set(x,y,get(x_p,y_p));
         set(x_p,y_p,cube);
+    }
+
+    public void resetBag(){
+        for (int i=0; i<size; i++){
+            for (int j=0; j<size; j++){
+                addBag(get(i,j));
+                remove(i,j);
+            }
+        }
     }
 
 

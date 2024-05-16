@@ -122,6 +122,12 @@ public class ControleurMediateur implements CollecteurEvenements
 			case "Regles":
                 break;
 
+			case "Reset":
+				System.out.println("reset");
+				jeu.resetBag();
+				vue.phaseConstruction().repaint(); //ça me paraît bizarre de faire ça comme ça 
+				break;
+
 			case "Son":
 				System.out.println("Case son de ControleurMediateur");
 				musique.jouerMusique();

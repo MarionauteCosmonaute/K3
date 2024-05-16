@@ -54,6 +54,10 @@ public class InterfaceGraphique implements Runnable, Observateur
 	{
 	}
 
+	public AffichagePhaseConstruction phaseConstruction(){
+		return niv;
+	}
+
     public void run()
     {
 		// frame = new BackgroundPanel();

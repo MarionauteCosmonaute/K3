@@ -99,8 +99,8 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
         return cons.getEchange();
     }
 
-    public void setEchange( ){
-        cons.setEchange();
+    public void setEchange(int val){
+        cons.setEchange(val);
     }
 
     public int getX1(){
@@ -119,6 +119,10 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
         cons.setY1(y);
     }
 
+    public int nbJoueur(){
+        return jeu.nbJoueur();
+    }
+
     public void paintComponent(Graphics g)
     {
         // System.out.println("PaintComponent de NiveauGraphique");
@@ -130,8 +134,6 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
 		height_fenetre = getSize().height;
 		drawable.clearRect(0, 0, width_fenetre, height_fenetre);
         
-        //drawable.drawLine(0, 0, 50, 50);
-        // cons.set_cube_sel(false);
         cons.fonction_globale(jeu, g, width_fenetre, height_fenetre);
     }
 }
