@@ -203,6 +203,14 @@ public class Jeu implements Cloneable{
     }
 
         /* Penalitee */
+    
+    public void takePenaltyCube(int x,int y){
+        if (y==-1){
+            return takePenaltyCubeFromSide(x);
+        }else{
+            return takePenaltyCubeFromPyramid(x,y);
+        }
+    }
 
     public void takePenaltyCubeFromPyramid(int x,int y) {               /*Recupere le cube de la position x y du joueur courant et l'ajoute au side du joueur precedent */
         players[previous_player()].addSide(players[current_player].get(x,y));
