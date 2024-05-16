@@ -206,9 +206,9 @@ public class Jeu implements Cloneable{
     
     public void takePenaltyCube(int x,int y){
         if (y==-1){
-            return takePenaltyCubeFromSide(x);
+            takePenaltyCubeFromSide(x);
         }else{
-            return takePenaltyCubeFromPyramid(x,y);
+            takePenaltyCubeFromPyramid(x,y);
         }
     }
 
