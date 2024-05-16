@@ -492,6 +492,7 @@ public class Jeu implements Cloneable{
 
             return clone;
         }catch(Exception e){System.err.println("Error Clone");System.exit(1);}
+        return new Jeu(2);
     }
 }
 
