@@ -67,9 +67,18 @@ public class AdaptateurSouris extends MouseAdapter
 			}
 		}
 		else if(e.getY() >= nivGraph.Hauteur_Fenetre()*7/10){
-			
 			int taille_cube = nivGraph.tailleCube();
 			Point pts[] = nivGraph.pointsPioche2();
+			int emp = nivGraph.getEmplacement();
+			if(nivGraph.peut_cliquer_pyramide()){ //un cube a été selectionné dans la pioche
+				if(e.getX() >= pts[emp].getX() && e.getX() <= pts[emp].getX() + taille_cube){
+					if(e.getY() >= pts[emp].getY() && e.getY() <= pts[emp].getY() + taille_cube){
+						nivGraph.doubleClic();
+						return;
+					}
+				}
+			}
+			
 			int couleurs[] = nivGraph.couleurs();
 			int couleur;
 			int somme = 0;

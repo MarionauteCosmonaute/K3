@@ -117,6 +117,20 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
     public int nbJoueur(){
         return jeu.nbJoueur();
     }
+    
+    public int getEmplacement(){
+        return cons.getEmplacement();
+    }
+
+    public void doubleClic(){
+        cons.set_cube_sel(false);
+        cons.setDessinVideFalse();
+        repaint();
+    }
+
+    // public void setCubeSel(boolean b){
+    //     cons.set_cube_sel(b);
+    // }
 
     public void paintComponent(Graphics g)
     {

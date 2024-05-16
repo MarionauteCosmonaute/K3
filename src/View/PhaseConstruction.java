@@ -154,9 +154,12 @@ public class PhaseConstruction
         y1 = y;
     }
 
+    public int getEmplacement(){
+        return emplacement;
+    }
+
 
     public void fonction_globale(Jeu jeu, Graphics g, int width_fenetre, int height_fenetre){
-        System.out.println(echange);
         taille_cube = height_fenetre/12;
         // reset.setPreferredSize(new Dimension(, ));
         dessiner_pyramide_joueur(g, width_fenetre, height_fenetre);
@@ -364,12 +367,10 @@ public class PhaseConstruction
             // System.out.println("Dans if : x haut : " + x_haut + ", y haut : " + y_haut);
             
             if(jeu.getPlayer().get(x1, y1) == Cube.Blanc){
-                System.out.println("blanc");
-                drawable.setColor(Color.RED); 
+                // System.out.println("blanc");
+                // drawable.setColor(Color.RED); 
             }
-            else{
-                drawable.setColor(Color.RED); 
-            }
+            drawable.setColor(Color.RED);
             
 
             drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
