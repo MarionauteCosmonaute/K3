@@ -160,7 +160,7 @@ public class PhaseConstruction
 
 
     public void fonction_globale(Jeu jeu, Graphics g, int width_fenetre, int height_fenetre){
-        taille_cube = height_fenetre/12;
+        taille_cube = Math.min(height_fenetre/12, width_fenetre/18);
         // reset.setPreferredSize(new Dimension(, ));
         dessiner_pyramide_joueur(g, width_fenetre, height_fenetre);
         dessiner_pyramide_centrale(g, width_fenetre, height_fenetre);
