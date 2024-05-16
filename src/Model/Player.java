@@ -235,7 +235,7 @@ public class Player implements Cloneable{
         return pyramid.get(x, y);
     }
 
-    public void remove (x,y){
+    public void remove(int x,int y){
         set(x,y,Cube.Vide);
     }
 
@@ -287,8 +287,8 @@ public class Player implements Cloneable{
     public void resetBag(){
         for (int i=0; i<size; i++){
             for (int j=0; j<size; j++){
-                addSide(get(x,y));
-                remove(x,y);
+                addBag(get(i,j));
+                remove(i,j);
             }
         }
     }
