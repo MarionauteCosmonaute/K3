@@ -471,18 +471,19 @@ public class Jeu implements Cloneable{
         return getPlayer(i).personalBag;
     }
 
-    public Jeu clone() throws CloneNotSupportedException {
-        Jeu clone = (Jeu) super.clone();  // Clone the basic object structure
+    public Jeu clone() {
+        try{
+            Jeu clone = (Jeu) super.clone();  // Clone the basic object structure
 
-        clone.players = new Player[nbJoueur];
-        for (int i = 0; i < nbJoueur; i++) {
-            clone.players[i] = players[i].clone();
-        }
-        clone.principale = principale.clone();
-        clone.bag = bag.clone();
+            clone.players = new Player[nbJoueur];
+            for (int i = 0; i < nbJoueur; i++) {
+                clone.players[i] = players[i].clone();
+            }   
+            clone.principale = principale.clone();
+            clone.bag = bag.clone();
 
-        return clone;
+            return clone;
+        }catch(Exception e){System.err.println("Error Clone");System.exit(1);}
     }
-
 }
 
