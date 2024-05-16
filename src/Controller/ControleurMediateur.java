@@ -3,6 +3,9 @@ package Controller;
 import View.*;
 
 import java.util.Vector;
+
+import javax.swing.JFrame;
+
 import Model.*;
 
 public class ControleurMediateur implements CollecteurEvenements 
@@ -11,6 +14,7 @@ public class ControleurMediateur implements CollecteurEvenements
 	InterfaceGraphique vue;
 	boolean toggleIA = false;
 	MusicPlayer musique;
+	JFrame frame=null;
 	Vector<Menu> menuListe = new Vector<>();
 	int indice_courant = 0;
 	
@@ -21,6 +25,9 @@ public class ControleurMediateur implements CollecteurEvenements
     }
 	public void addMenu(Menu m){
 		menuListe.add(m);
+	}
+	public void addFenetre(JFrame j){
+		frame=j;
 	}
 
 	private Menu getcurMenu()
@@ -88,6 +95,7 @@ public class ControleurMediateur implements CollecteurEvenements
 				break;
 			case "MenuOnline":
 				changeVisible(2);
+				((BackgroundPanel)frame).setBackgroundPicture("res/background.jpg");
 				//TODO: decommenter ci dessus quand fenetre online dispo
 				break;
 			default:

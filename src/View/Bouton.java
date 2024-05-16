@@ -2,7 +2,6 @@ package View;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import java.io.IOException;
 
 import Global.FileLoader;
 

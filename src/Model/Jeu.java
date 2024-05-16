@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Point;
 
+import java.util.Collections;
+
 
 public class Jeu implements Cloneable{
     Player[] players;
@@ -396,6 +398,23 @@ public class Jeu implements Cloneable{
         clone.bag = bag.clone();
 
         return clone;
+    }
+
+
+
+
+
+
+
+
+    public static void build(Player player){
+        Collections.shuffle(player.getPersonalBag());
+        for(int i = player.getSize()-1; i >= 0; i--){
+            for(int j = 0; j < player.getSize()-i; j++){
+                //System.out.println( i + " " + j + " " + "0" );
+                if(!player.bagEmpty()){player.construction(j, i, player.getPersonalBag().get(0));}
+            }
+        }
     }
 
 }

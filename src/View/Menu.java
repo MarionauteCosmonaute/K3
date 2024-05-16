@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 public abstract class Menu extends JPanel {
     public Menu(){
         super(new BorderLayout());
+        setOpaque(false);
         if (!isVisible()){
             setVisible(true);
         }

@@ -57,8 +57,9 @@ public class InterfaceGraphique implements Runnable, Observateur
 
     public void run()
     {
-		// frame = new BackgroundPanel();
-		frame = new JFrame();
+		frame = new BackgroundPanel();
+		//frame = new JFrame();
+		controle.addFenetre(frame);
 		frame.setTitle("K3");
 		frame.setSize(500, 300);
        	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
