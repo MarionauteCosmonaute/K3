@@ -1,12 +1,7 @@
 package View;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import Model.Jeu;
 import Patterns.Observateur;
 
@@ -132,7 +127,6 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
 	    drawable = (Graphics2D) g;
 		width_fenetre = getSize().width;
 		height_fenetre = getSize().height;
-		drawable.clearRect(0, 0, width_fenetre, height_fenetre);
         
         cons.fonction_globale(jeu, g, width_fenetre, height_fenetre);
     }

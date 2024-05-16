@@ -1,22 +1,14 @@
 package View;
 
 import Model.Jeu;
-import Model.Pyramid;
 import Model.Cube;
-import Patterns.Observateur;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.lang.Math;
-import java.net.Proxy;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 public class PhaseConstruction
 {
@@ -93,25 +85,13 @@ public class PhaseConstruction
         
 
         reset = Bouton.creerButton("Reset");
-        // JPanel panel = new JPanel(new BorderLayout());
-        // // panel.add(reset, BorderLayout.EAST);
-        // JPanel centrePanel = new JPanel();
-        // centrePanel.add(reset);
-        // panel.add(centrePanel, BorderLayout.CENTER);
-        // frame.add(reset);
-        // frame.add(centrePanel);
-
-        // reset.setPreferredSize(new Dimension(50, 50));
-
+        
         Box boiteTexte = Box.createVerticalBox();
         JPanel centrePanel = new JPanel();
         reset.addActionListener(new AdaptateurReset(controle));
         centrePanel.add(reset);
         boiteTexte.add(centrePanel);
         frame.add(boiteTexte, BorderLayout.SOUTH);
-
-        
-
 
     }
 
@@ -176,12 +156,12 @@ public class PhaseConstruction
 
 
     public void fonction_globale(Jeu jeu, Graphics g, int width_fenetre, int height_fenetre){
+        System.out.println(echange);
         taille_cube = height_fenetre/12;
+        // reset.setPreferredSize(new Dimension(, ));
         dessiner_pyramide_joueur(g, width_fenetre, height_fenetre);
         dessiner_pyramide_centrale(g, width_fenetre, height_fenetre);
         dessiner_cubes_pioches(g, width_fenetre, height_fenetre);
-
-        
     }
 
     public int max_nb(int[] tab){
@@ -383,7 +363,14 @@ public class PhaseConstruction
             y_haut = debut_zone_gauche + x1*(taille_cube + taille_cube/10)/2 + (taille_cube + taille_cube/10)*(y1);
             // System.out.println("Dans if : x haut : " + x_haut + ", y haut : " + y_haut);
             
-            drawable.setColor(Color.BLACK); 
+            if(jeu.getPlayer().get(x1, y1) == Cube.Blanc){
+                System.out.println("blanc");
+                drawable.setColor(Color.RED); 
+            }
+            else{
+                drawable.setColor(Color.RED); 
+            }
+            
 
             drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
             drawable.drawRect(y_haut+1, x_haut+1, taille_cube-2, taille_cube-2);
