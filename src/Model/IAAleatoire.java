@@ -1,7 +1,7 @@
 package Model;
 
 import java.util.Random;
-
+/* 
 public class IAAleatoire extends IA {
     Random rand;
 
@@ -20,3 +20,4 @@ public class IAAleatoire extends IA {
         while (plateau.joue(aleatoire(plateau.hauteur), aleatoire(plateau.longueur)) == 2) {}
     }
 }
+*/

@@ -20,6 +20,7 @@ public class PawnsBag implements Cloneable{
         }
     }
 
+    //Cloning method
     public PawnsBag clone() throws CloneNotSupportedException {
         PawnsBag clone = (PawnsBag) super.clone();  // Clone the basic object structure
 
@@ -35,6 +36,8 @@ public class PawnsBag implements Cloneable{
     public boolean empty(){
         return PawnsBag.size() == 0;
     }
+
+    //Checking 4 colors minimum in the generated base
     public boolean count_colors (ArrayList<Cube> cubes){
         boolean Rouge=false , Vert=false, Bleu=false, Noir=false, Jaune=false;
         for (Cube cube : cubes){
@@ -70,6 +73,7 @@ public class PawnsBag implements Cloneable{
         return count >= 4;
     }
 
+    //Generates the base of the central pyramid
     public ArrayList<Cube> init_center() {
         ArrayList<Cube> cubes = new ArrayList<>();
         while (! count_colors (cubes)){
@@ -86,6 +90,7 @@ public class PawnsBag implements Cloneable{
         return cubes;
     }
 
+    //Methode piocheuse
     public ArrayList<Cube> draw() {
         ArrayList<Cube> cubes = new ArrayList<>();
         Collections.shuffle(PawnsBag); // Mélanger le PawnsBag pour assurer l'aléatoire

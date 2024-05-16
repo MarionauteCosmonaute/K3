@@ -5,8 +5,6 @@ import java.awt.Point;
 
 public class IAFacile extends IA {
 
-    
-
     public ArrayList<ArrayList<Point>> coupIA(Jeu j, int joueur1){
         ArrayList<ArrayList<Point>> resultat_ok = new ArrayList<>();
         ArrayList<ArrayList<Point>> resultat_ko = new ArrayList<>();

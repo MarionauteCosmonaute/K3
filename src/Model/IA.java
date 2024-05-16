@@ -5,14 +5,14 @@ import java.awt.Point;
 
 public abstract class IA {
     Jeu jeu;
-
+    
     public static IA nouvelle(Jeu j) {
         IA resultat = null;
-        String type = "Aleatoire";
+        String type = "Facile";
 
         switch (type) {
             case "Aleatoire":
-                resultat = new IAAleatoire();
+                //resultat = new IAAleatoire();
                 break;
             case "Facile":
                 resultat = new IAFacile();
@@ -67,7 +67,7 @@ public abstract class IA {
                     total_j1+= current_possibilities;
                 }
                 int total_j2 = 0;
-                ArrayList<Point> cubes_access2 = j.Accessible_Playable(j.next_player()); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
+                ArrayList<Point> cubes_access2 = j.Accessible_Playable(); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
                 for(Point compte : cubes_access2) {
                     int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
                     total_j2+= current_possibilities;
@@ -112,10 +112,10 @@ public abstract class IA {
         return value;
     }
 
-    void add_central() {
+    public void add_central() {
         throw new UnsupportedOperationException();
     }
-    void construction(){
+    public void construction(){
         throw new UnsupportedOperationException();
     }
 }
