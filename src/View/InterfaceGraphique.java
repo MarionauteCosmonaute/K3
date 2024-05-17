@@ -9,15 +9,11 @@ public class InterfaceGraphique implements Runnable, Observateur {
 	JFrame frame;
 	CollecteurEvenements controle;
 	Jeu jeu;
-	NiveauGraphique niv;
+	//NiveauGraphique niv;
 	boolean maximized;
 	Timer t;
 	Boolean bool = true;
 
-	InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
-		this.jeu = jeu;
-		controle = c;
-	}
 	InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
 		this.jeu = jeu;
 		controle = c;
@@ -31,16 +27,13 @@ public class InterfaceGraphique implements Runnable, Observateur {
 	}
 
 	public void stopTimer() {
-	public void stopTimer() {
 		t.stop();
 	}
 
 	public void startTimer() {
-	public void startTimer() {
 		t.start();
 	}
 
-	public void basculePleinEcran() {
 	public void basculePleinEcran() {
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice device = env.getDefaultScreenDevice();
@@ -55,7 +48,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 
 	@Override
 	public void miseAJour() {
-	public void miseAJour() {
+
 	}
 
 	public void run() {
@@ -66,7 +59,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		frame.setSize(500, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		PhaseConstruction cons = new PhaseConstruction(frame, controle, jeu);
-		niv = new NiveauGraphique(jeu, cons);
+		//niv = new NiveauGraphique(jeu, cons);
 
 		// new FenetreNouvellePartie(frame, controle);
 
@@ -81,7 +74,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		controle.commande("MenuOnline");
 
 		// On ajoute la souris et le clavier
-		niv.addMouseListener(new AdaptateurSouris(controle, niv));
+		//niv.addMouseListener(new AdaptateurSouris(controle, niv));
 		frame.addKeyListener(new AdaptateurClavier(controle));
 
 		frame.setVisible(true);
