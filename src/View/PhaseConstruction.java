@@ -39,7 +39,7 @@ public class PhaseConstruction
     public PhaseConstruction(JFrame frame, CollecteurEvenements controle, Jeu jeu){
         this.frame = frame;
         this.controle = controle;
-        this.jeu = jeu; //est-ce qu'il faudrait pas plutôt recuperer le jeu de controle ?
+        this.jeu = jeu;
         try {
 			InputStream in = new FileInputStream("res/carre_bois.png");
 			neutre = ImageIO.read(in);
@@ -74,13 +74,12 @@ public class PhaseConstruction
 
         nbJoueur = jeu.nbJoueur();
         taille_base_pyramide = 8 - nbJoueur;
-        tab_pts = new Point[taille_base_pyramide][taille_base_pyramide]; //a adapter selon le nombre de joueurs
+        tab_pts = new Point[taille_base_pyramide][taille_base_pyramide]; 
         cube_sel = false;
 
         dessiner_vide = false;
         tab_pioche = new Point[21];
 
-        // echange = false;
         echange = 0;
         
 
@@ -92,6 +91,7 @@ public class PhaseConstruction
         centrePanel.add(reset);
         boiteTexte.add(centrePanel);
         frame.add(boiteTexte, BorderLayout.SOUTH);
+        frame.addKeyListener(new AdaptateurClavier(controle));
 
     }
 
@@ -133,7 +133,6 @@ public class PhaseConstruction
         return echange;
     }
 
-    //incremente echange
     public void setEchange(int val){
         echange = val;
     }
@@ -259,7 +258,6 @@ public class PhaseConstruction
             drawable.drawRect(x_selection+4, y_selection+4, taille_cube-8, taille_cube-8);
             drawable.drawRect(x_selection+5, y_selection+5, taille_cube-10, taille_cube-10);
             drawable.setColor(Color.BLACK); 
-            // drawable.drawImage(carre_noir_vide, x_selection, y_selection, taille_cube, taille_cube, null); 
         }
         
     }
@@ -323,9 +321,6 @@ public class PhaseConstruction
                 
                 x_haut = debut_zone_haut + (taille_base_pyramide - 1 -x)*(taille_cube + taille_cube/10);
                 y_haut = debut_zone_gauche + x*(taille_cube + taille_cube/10)/2 + (taille_cube + taille_cube/10)*(y);
-                // if(x == 0 && y == 5){
-                //     System.out.println("x haut : " + x_haut + ", y haut : " + y_haut);
-                // }
                 p = new Point(y_haut, x_haut);
                 tab_pts[x][y] = p;
 
@@ -360,16 +355,13 @@ public class PhaseConstruction
             }
         }
         if(echange % 2 == 1){
-            // System.out.println("if "+echange);
-            // System.out.println("x1 : " +x1 + ", y1 : "+y1);
             x_haut = debut_zone_haut + (taille_base_pyramide - 1-x1)*(taille_cube + taille_cube/10);
             y_haut = debut_zone_gauche + x1*(taille_cube + taille_cube/10)/2 + (taille_cube + taille_cube/10)*(y1);
-            // System.out.println("Dans if : x haut : " + x_haut + ", y haut : " + y_haut);
             
-            if(jeu.getPlayer().get(x1, y1) == Cube.Blanc){
-                // System.out.println("blanc");
-                // drawable.setColor(Color.RED); 
-            }
+            // if(jeu.getPlayer().get(x1, y1) == Cube.Blanc){
+            //     System.out.println("blanc");
+            //     drawable.setColor(Color.RED); 
+            // }
             drawable.setColor(Color.RED);
             
 
@@ -385,10 +377,6 @@ public class PhaseConstruction
 
             drawable.setColor(Color.BLACK); 
         }
-        // else{
-        //     System.out.println("else "+echange);
-        // }
-        // drawable.drawRect(x_selection+3, y_selection+3, taille_cube-6, taille_cube-6);
     }
    
 }

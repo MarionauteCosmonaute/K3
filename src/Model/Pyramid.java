@@ -41,9 +41,7 @@ public class Pyramid {
     //Cloning of a Pyramid object
 
     public Pyramid clone() throws CloneNotSupportedException {
-        Pyramid clone = (Pyramid) super.clone();  // Clone the basic object structure
-
-        clone.pyramid = new Cube[size][size];
+        Pyramid clone = new Pyramid(size);  // Clone the basic object structure
         for (int i = 0; i < size; i++) {
             System.arraycopy(pyramid[i], 0, clone.pyramid[i], 0, size);
         }
