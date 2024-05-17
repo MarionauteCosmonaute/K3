@@ -106,6 +106,17 @@ public class PhaseConstruction
         boite_aide.add(panel);
         frame.add(boite_aide, BorderLayout.NORTH);
 
+        
+        
+        JPanel content = new JPanel(new BorderLayout());   
+        // On sépare la partie qui contient les boutons retour/aide/son et la partie du jeu
+        JPanel topPanel = new JPanel(new BorderLayout()); //pour les boutons
+        JButton UnMute = Bouton.BoutonUnMute(controle);
+        JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        topRightPanel.add(UnMute,BorderLayout.EAST);
+        topRightPanel.setOpaque(false);
+        topPanel.add(topRightPanel);
+
     }
 
     public Point[][] points_pyr(){

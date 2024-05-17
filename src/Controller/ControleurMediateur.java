@@ -13,6 +13,7 @@ public class ControleurMediateur implements CollecteurEvenements
 	MusicPlayer musique;
 	Vector<Menu> menuListe = new Vector<>();
 	int indice_courant = 0;
+	int joueur_initial;
 
 	Cube cube;
 	// int x, y;
@@ -21,6 +22,7 @@ public class ControleurMediateur implements CollecteurEvenements
 	{
 		jeu = j;
 		this.musique = musique;
+		joueur_initial = j.get_player();
     }
 	public void addMenu(Menu m){
 		menuListe.add(m);
@@ -132,6 +134,16 @@ public class ControleurMediateur implements CollecteurEvenements
 				jeu.constructionAleatoire(jeu.getPlayer(jeu.get_player()));
 				vue.phaseConstruction().repaint();
 				break;
+
+			case "Valider":
+				jeu.avance();
+				// if(jeu.get_player().estIA()){
+				// 	jeu.avance();
+				// }
+				if(jeu.get_player() == joueur_initial){
+					
+					// passer au menu d'après
+				}
 
 			case "Son":
 				System.out.println("Case son de ControleurMediateur");
