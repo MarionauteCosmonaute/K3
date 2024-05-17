@@ -30,7 +30,14 @@ public class Jeu implements Cloneable{
         /***************************/
 
     public Jeu(int nb){             /* creation de l'objet jeu ainsi que les joueurs */
+        reset(nb);
+    }
 
+    public Jeu(String fileName){
+        reset(fileName);
+    }
+
+    public void reset(int nb){
         nbJoueur = nb;
         End = false;
         players = new Player[nb];
@@ -55,7 +62,8 @@ public class Jeu implements Cloneable{
         Random r = new Random();
         current_player = r.nextInt(nb);
     }
-    public Jeu(String fileName){
+
+    public void reset(String fileName){
         try{
             Scanner s = new Scanner(new FileInputStream(fileName));
             String[] chaine = s.nextLine().split(" ");
@@ -122,7 +130,7 @@ public class Jeu implements Cloneable{
     public void constructionAleatoire(Player player){
         for(int i = player.getSize()-1; i >= 0; i--){
             for(int j = 0; j < player.getSize()-i; j++){
-                if(player.getPyramid().get(i,j)==Cube.Vide && !player.bagEmpty()){player.construction(j, i, player.getPersonalBag().get(0));}
+                if(player.getPyramid().get(j, i) == Cube.Vide && !player.bagEmpty()){player.construction(j, i, player.getPersonalBag().get(0));}
             }
         }    
     }
