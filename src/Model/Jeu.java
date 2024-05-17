@@ -119,6 +119,13 @@ public class Jeu implements Cloneable{
     }
 
 
+    public void constructionAleatoire(Player player){
+        for(int i = player.getSize()-1; i >= 0; i--){
+            for(int j = 0; j < player.getSize()-i; j++){
+                if(!player.bagEmpty()){player.construction(j, i, player.getPersonalBag().get(0));}
+            }
+        }    
+    }
         /************************************ */
         /* Fonction lier a une action de jeu */
         /********************************** */
