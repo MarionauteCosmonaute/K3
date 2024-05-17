@@ -11,9 +11,9 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
     Graphics2D drawable;
     Jeu jeu;
 
-    PhaseConstruction cons;
+    OldPhaseConstruction cons;
 
-    AffichagePhaseConstruction(Jeu jeu, PhaseConstruction c) {
+    AffichagePhaseConstruction(Jeu jeu, OldPhaseConstruction c) {
         this.jeu = jeu;
         cons = c;
     }

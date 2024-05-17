@@ -10,8 +10,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.io.FileNotFoundException;
 
-public class PhaseConstruction {
-    JFrame frame;
+public class OldPhaseConstruction {
+    JPanel frame;
     JButton Aide;
     CollecteurEvenements controle;
     Graphics2D drawable;
@@ -33,7 +33,7 @@ public class PhaseConstruction {
 
     JButton reset, valider, aide;
 
-    public PhaseConstruction(JFrame frame, CollecteurEvenements controle, Jeu jeu) {
+    public OldPhaseConstruction(JPanel frame, CollecteurEvenements controle, Jeu jeu) {
         this.frame = frame;
         this.controle = controle;
         this.jeu = jeu;

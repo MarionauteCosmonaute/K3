@@ -10,7 +10,7 @@ import Model.Pyramid;
 
 public class StructurePainter {
 
-    static Image neutre, bleu, vert, jaune, noir, blanc, rouge, access;
+    static Image neutre, bleu, vert, jaune, noir, blanc, rouge, access, vide;
     static Boolean inititalised = false;
 
     public static void init() {
@@ -24,6 +24,7 @@ public class StructurePainter {
                 blanc = FileLoader.getImage("res/carre_blanc.png");
                 rouge = FileLoader.getImage("res/carre_rouge.png");
                 access = FileLoader.getImage("res/carre_noir_vide.png");
+                vide = FileLoader.getImage("res/carre_vide.png");
                 inititalised = true;
             } catch (Exception e) {
                 System.exit(1);

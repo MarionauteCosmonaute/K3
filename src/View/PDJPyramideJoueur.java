@@ -10,7 +10,6 @@ import java.util.Collections;
 
 public class PDJPyramideJoueur extends JComponent implements Observateur {
     int width_fenetre, height_fenetre, nb_ligne, nb_colonne, largeur_case, hauteur_case;
-    JFrame frame;
     Graphics2D drawable;
     Jeu jeu;
     int joueur;

@@ -58,7 +58,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		frame.setTitle("K3");
 		frame.setSize(500, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		PhaseConstruction cons = new PhaseConstruction(frame, controle, jeu);
+		//OldPhaseConstruction cons = new OldPhaseConstruction(frame, controle, jeu);
 		//niv = new NiveauGraphique(jeu, cons);
 
 		// new FenetreNouvellePartie(frame, controle);
@@ -67,14 +67,13 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		MenuPrincipal Mp = new MenuPrincipal(controle);
 		frame.add(Mp);
 		Mp.setVisible(true);
-
 		MenuNouvellePartie Mnp = new MenuNouvellePartie(controle);
-
-		PhaseDeJeu2 PhaseDeJeu2 = new PhaseDeJeu2(controle, jeu);
+		MenuPhaseConstruction pC =new MenuPhaseConstruction(controle, jeu);
+		MenuPhaseDeJeu2 PhaseDeJeu2 = new MenuPhaseDeJeu2(controle, jeu);
 		controle.commande("MenuOnline");
 
 		// On ajoute la souris et le clavier
-		//niv.addMouseListener(new AdaptateurSouris(controle, niv));
+
 		frame.addKeyListener(new AdaptateurClavier(controle));
 
 		frame.setVisible(true);

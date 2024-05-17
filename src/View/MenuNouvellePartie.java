@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+
 public class MenuNouvellePartie extends Menu {
     public MenuNouvellePartie(CollecteurEvenements controle) {
         super();
@@ -27,6 +28,7 @@ public class MenuNouvellePartie extends Menu {
             JMenu fileMenu = new JMenu("2 Joueurs");
             menuBar.add(fileMenu); // Ajouter le menu "Fichier" à la barre de menu
             JMenuItem joueurVSjoueur = new JMenuItem("joueur VS joueur");
+            joueurVSjoueur.addActionListener(new AdaptateurJoueurVSJoueur(controle));
             JMenuItem joueurVSia = new JMenuItem("joueur VS ia");
             fileMenu.add(joueurVSjoueur); // Ajouter "Nouveau" au menu "Fichier"
             fileMenu.add(joueurVSia); // Ajouter "Ouvrir" au menu "Fichier"

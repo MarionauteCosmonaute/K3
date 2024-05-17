@@ -112,22 +112,27 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "FR":
 				break;
 
-            case "EN":
-                break;
-			
-			case "Regles":
-                break;
+			case "EN":
+				break;
 
-			//case "Reset":
-			//	jeu.resetBag();
-			//	vue.phaseConstruction().setValider(false);
-			//	vue.phaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme ça
-			//	break;
-//
-			//case "AideConstruction":
-			//	jeu.constructionAleatoire(jeu.getPlayer(jeu.get_player()));
-			//	vue.phaseConstruction().repaint();
-			//	break;
+			// case "Reset":
+			// jeu.resetBag();
+			// vue.phaseConstruction().setValider(false);
+			// vue.phaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme
+			// ça
+			// break;
+			//
+			// case "AideConstruction":
+			// jeu.constructionAleatoire(jeu.getPlayer(jeu.get_player()));
+			// vue.phaseConstruction().repaint();
+			// break;
+
+			case "JoueurVSJoueur":
+			    ((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
+				changeVisible(2);
+				//jeu.reset(2, false); // On cree une partie a 2
+
+				break;
 
 			case "Valider":
 				jeu.avance();
@@ -150,10 +155,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "MenuLocal":
 				changeVisible(1);
 				break;
-			case "MenuOnline":
-				changeVisible(2);
+			case "PDJ2":
+				changeVisible(3);
 				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
-				// TODO: decommenter ci dessus quand fenetre online dispo
 				break;
 			default:
 				return false;

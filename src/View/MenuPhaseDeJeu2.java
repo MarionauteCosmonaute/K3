@@ -5,8 +5,8 @@ import java.awt.*;
 
 import Model.Jeu;
 
-public class PhaseDeJeu2 extends Menu {
-    PhaseDeJeu2(CollecteurEvenements controle, Jeu J) {
+public class MenuPhaseDeJeu2 extends Menu {
+    public MenuPhaseDeJeu2(CollecteurEvenements controle, Jeu J) {
         super();
         try {
             JPanel content = new JPanel(new BorderLayout());
