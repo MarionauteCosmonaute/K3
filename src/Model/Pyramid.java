@@ -4,29 +4,58 @@ public class Pyramid {
     Cube[][] pyramid;
     int size;
 
-    Pyramid(int i){
+    Pyramid(int i) {
         pyramid = new Cube[i][i];
         size = i;
-        for (int x=0; x<i; x++ ){
-            for (int y=0; y<i; y++ ){
+        for (int x = 0; x < i; x++) {
+            for (int y = 0; y < i; y++) {
                 pyramid[x][y] = Cube.Vide;
             }
         }
     }
 
+<<<<<<< HEAD
 
     //Cloning of a Pyramid object
 
     public Pyramid clone() throws CloneNotSupportedException {
         Pyramid clone = (Pyramid) super.clone();  // Clone the basic object structure
+=======
+    Pyramid(String string) {
+        String[] charge = string.split(" ");
+        size = Integer.parseInt(charge[0]);
+        int index = 1;
+        pyramid = new Cube[size][size];
+        for (int i = size - 1; i >= 0; i--) {
+            for (int j = 0; j <= size - 1 - i; j++) {
+                pyramid[i][j] = Cube.conversion(charge[index++]);
+            }
+        }
+    }
+>>>>>>> origin/phaseConstruction
 
-        clone.pyramid = new Cube[size][size];
+    public String sauvegarde() {
+        String sauvegarde = size + " ";
+        for (int i = size - 1; i >= 0; i--) {
+            for (int j = 0; j <= size - i - 1; j++) {
+                sauvegarde += Cube.conversionString(get(i, j));
+            }
+        }
+        sauvegarde += "\n";
+        return sauvegarde;
+    }
+
+    // Cloning of a Pyramid object
+
+    public Pyramid clone() throws CloneNotSupportedException {
+        Pyramid clone = new Pyramid(size); // Clone the basic object structure
         for (int i = 0; i < size; i++) {
             System.arraycopy(pyramid[i], 0, clone.pyramid[i], 0, size);
         }
         return clone;
     }
 
+<<<<<<< HEAD
 
     //Size Pyramid
     public int getSize(){
@@ -51,13 +80,49 @@ public class Pyramid {
 
 
     public String tmp(int i){
+=======
+    // Size Pyramid
+    public int getSize() {
+        return size;
+    }
+
+    public void extend() {
+        Cube cop_pyramid[][] = new Cube[size + 2][size + 2];
+        for (int i = 0; i < size + 2; i++) {
+            for (int j = 0; j < size + 2; j++) {
+                pyramid[i][j] = Cube.Vide;
+            }
+        }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                cop_pyramid[i][j + 1] = pyramid[i][j];
+            }
+        }
+        pyramid = cop_pyramid;
+        size = size + 2;
+    }
+
+    // Get an element at x y position
+    public Cube get(int x, int y) {
+        return pyramid[x][y];
+    }
+
+    // Put a cube of a color on the pyramid at x y
+
+    public void set(int x, int y, Cube c) {
+        pyramid[x][y] = c;
+    }
+
+    public String tmp(int i) {
+>>>>>>> origin/phaseConstruction
         String chaine = "";
-        for(int j = 0; j < i; j++){
+        for (int j = 0; j < i; j++) {
             chaine += "   ";
         }
         return chaine;
     }
-    public String milieu(Cube c){
+
+    public String milieu(Cube c) {
         String chaine = "";
         switch (c) {
             case Noir:
@@ -77,18 +142,22 @@ public class Pyramid {
         }
         return chaine;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         String chaine = "";
-        for(int i = size-1; i >= 0; i--){
+        for (int i = size - 1; i >= 0; i--) {
             chaine += tmp(i);
-            for (int j = 0; j <= size - 1 - i; j++){
+            for (int j = 0; j <= size - 1 - i; j++) {
                 chaine += milieu(pyramid[i][j]) + " ";
             }
-            chaine+="\n";
+            chaine += "\n";
         }
         return chaine;
     }
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> origin/phaseConstruction

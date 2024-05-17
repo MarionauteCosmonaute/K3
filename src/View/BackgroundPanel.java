@@ -21,6 +21,9 @@ public class BackgroundPanel extends JFrame {
     // Classe personnalisée pour le panneau avec image en arrière-plan
     class ImageBackgroundPanel extends JPanel {
         private Image backgroundImage;
+    // Classe personnalisée pour le panneau avec image en arrière-plan
+    class ImageBackgroundPanel extends JPanel {
+        private Image backgroundImage;
 
         // Constructeur
         public ImageBackgroundPanel() {

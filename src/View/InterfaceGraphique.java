@@ -18,6 +18,10 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		this.jeu = jeu;
 		controle = c;
 	}
+	InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
+		this.jeu = jeu;
+		controle = c;
+	}
 
 	public static void demarrer(Jeu j, CollecteurEvenements c) {
 		InterfaceGraphique vue = new InterfaceGraphique(j, c);
@@ -27,13 +31,16 @@ public class InterfaceGraphique implements Runnable, Observateur {
 	}
 
 	public void stopTimer() {
+	public void stopTimer() {
 		t.stop();
 	}
 
 	public void startTimer() {
+	public void startTimer() {
 		t.start();
 	}
 
+	public void basculePleinEcran() {
 	public void basculePleinEcran() {
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice device = env.getDefaultScreenDevice();
@@ -47,6 +54,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 	}
 
 	@Override
+	public void miseAJour() {
 	public void miseAJour() {
 	}
 

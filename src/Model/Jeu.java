@@ -1,18 +1,26 @@
 package Model;
 
 import java.util.Random;
+import java.util.Scanner;
+//import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Point;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+//import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import java.util.Collections;
 
 public class Jeu implements Cloneable {
     Player[] players;
-    public int nbJoueur;
-    public Pyramid principale;
+    int nbJoueur;
+    Pyramid principale;
     PawnsBag bag;
-    public int current_player, size;
+    int current_player, size;
     boolean End;
 
     /*****************************/
@@ -51,6 +59,31 @@ public class Jeu implements Cloneable {
         current_player = r.nextInt(nb);
     }
 
+    public Jeu(String fileName) {
+        try {
+            Scanner s = new Scanner(new FileInputStream(fileName));
+            String[] chaine = s.nextLine().split(" ");
+            nbJoueur = Integer.parseInt(chaine[0]);
+            bag = new PawnsBag(nbJoueur);
+            size = 8 - nbJoueur;
+            current_player = Integer.parseInt(chaine[1]);
+            principale = new Pyramid(s.nextLine());
+            players = new Player[nbJoueur];
+            String[] playerString = new String[4];
+            for (int i = 0; i < nbJoueur; i++) {
+                for (int j = 0; j < 4; j++) {
+                    playerString[j] = s.nextLine();
+                }
+                players[i] = new Player(playerString);
+            }
+            End = false;
+            s.close();
+        } catch (FileNotFoundException e) {
+            System.err.println(e);
+            System.exit(2);
+        }
+    }
+
     // Tirage de la base de la pyramide central
     public void initPrincipale() { /* base central aleatoire */
         int y = 0;
@@ -65,6 +98,41 @@ public class Jeu implements Cloneable {
         for (Cube cube : bag) {
             principale.set(0, y, cube);
             y++;
+        }
+    }
+
+    public void sauvegarde(String fileName) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+            String sauvegarde = "";
+            sauvegarde += nbJoueur + " " + current_player + "\n";
+            sauvegarde += principale.sauvegarde();
+            for (int i = 0; i < nbJoueur; i++) {
+                sauvegarde += players[i].sauvegarde();
+            }
+            writer.write(sauvegarde);
+            writer.close();
+        } catch (IOException e) {
+            System.err.println(e);
+            System.exit(2);
+        }
+    }
+
+    public Pyramid getPricipale() {
+        return principale;
+    }
+
+    public Cube getCubePrincipale(int x, int y) {
+        return principale.get(x, y);
+    }
+
+    public void constructionAleatoire(Player player) {
+        for (int i = player.getSize() - 1; i >= 0; i--) {
+            for (int j = 0; j < player.getSize() - i; j++) {
+                if (!player.bagEmpty()) {
+                    player.construction(j, i, player.getPersonalBag().get(0));
+                }
+            }
         }
     }
 
@@ -93,7 +161,16 @@ public class Jeu implements Cloneable {
     }
 
     public void construction(int x, int y, Cube cube) {
-        players[current_player].construction(x, y, cube);
+        getPlayer().construction(x, y, cube);
+    }
+
+    /* Swaps two cubes positions */
+    public void permutation(int x, int y, int x_p, int y_p) {
+        getPlayer().permutation(x, y, x_p, y_p);
+    }
+
+    public void resetBag() {
+        getPlayer().resetBag();
     }
 
     /** Jouer **/
@@ -129,6 +206,9 @@ public class Jeu implements Cloneable {
             if (valid != 0) {
                 players[current_player].set(x_player, y_player, Cube.Vide);
                 principale.set(x_central, y_central, cube);
+                if (x_central == 9) {
+                    principale.extend();
+                }
             }
             return valid;
         }
@@ -147,12 +227,20 @@ public class Jeu implements Cloneable {
 
     /* Penalitee */
 
+    public void takePenaltyCube(int x, int y) {
+        if (y == -1) {
+            takePenaltyCubeFromSide(x);
+        } else {
+            takePenaltyCubeFromPyramid(x, y);
+        }
+    }
+
     public void takePenaltyCubeFromPyramid(int x, int y) { /*
                                                             * Recupere le cube de la position x y du joueur courant et
                                                             * l'ajoute au side du joueur precedent
                                                             */
         players[previous_player()].addSide(players[current_player].get(x, y));
-        players[current_player].set(x, y, Cube.Vide);
+        players[current_player].remove(x, y);
     }
 
     public void takePenaltyCubeFromSide(int x) { /*
@@ -171,7 +259,7 @@ public class Jeu implements Cloneable {
 
     /* Penalitee */
 
-    public boolean check_penality(Cube cube, int x, int y) { /* a appelle qu'apres la fonction move_validity */
+    public boolean check_penality(int x, int y) {
         return principale.get(x - 1, y) == principale.get(x - 1, y + 1);
     }
 
@@ -190,7 +278,7 @@ public class Jeu implements Cloneable {
     public int move_validity(Cube cube, int x, int y) { /* bonne validitee renvoyee */
         if (sameColor(principale.get(x, y), Cube.Vide) && check_under(x, y)
                 && (sameColor(principale.get(x - 1, y), cube) || (sameColor(principale.get(x - 1, y + 1), cube)))) {
-            if (check_penality(cube, x, y)) {
+            if (check_penality(x, y)) {
                 return 2;
             }
             return 1;
@@ -200,10 +288,13 @@ public class Jeu implements Cloneable {
     }
 
     /* Accessibilitee */
-
     public boolean accessible(int x, int y) {
+        return accessible(x, y, current_player);
+    }
 
-        Pyramid pyramid = players[current_player].getPyramid();
+    public boolean accessible(int x, int y, int joueur) {
+
+        Pyramid pyramid = getPlayer(joueur).getPyramid();
         return accessible(pyramid, x, y);
     }
 
@@ -256,6 +347,10 @@ public class Jeu implements Cloneable {
     /* Fonction lier aux informations du jeu */
     /************************************* */
 
+    public Pyramid getPrincipale() {
+        return principale;
+    }
+
     /* Recuperation de l'indice d'un joueur */
     public int next_player() { /* Fonctionne */
         return next_player(current_player);
@@ -299,11 +394,15 @@ public class Jeu implements Cloneable {
         return getPlayer().compte_personal_bag();
     }
 
-    public ArrayList<Point> AccessibleCubesPlayer() { /* Fonctionne mais crash?(tres rarement) */
+    public ArrayList<Point> AccessibleCubesPlayer() {
+        return AccessibleCubesPlayer(current_player);
+    }
+
+    public ArrayList<Point> AccessibleCubesPlayer(int joueur) { /* Fonctionne mais crash?(tres rarement) */
         ArrayList<Point> list = new ArrayList<Point>();
-        for (int i = players[current_player].getSize() - 1; i >= 0; i--) {
-            for (int j = 0; j < players[current_player].getSize() - i; j++) {
-                if (accessible(i, j)) {
+        for (int i = getPlayer(joueur).getSize() - 1; i >= 0; i--) {
+            for (int j = 0; j < getPlayer(joueur).getSize() - i; j++) {
+                if (accessible(i, j, joueur)) {
                     Point p = new Point(i, j);
                     list.add(p);
                 }
@@ -333,21 +432,25 @@ public class Jeu implements Cloneable {
         return list;
     }
 
-    public ArrayList<Point> Accessible_Playable() { /*
-                                                     * parmis les cube accessible les quel sont possible d'etre jouer,
-                                                     * renvoie une liste de coordonee
-                                                     */
+    public ArrayList<Point> Accessible_Playable() {
+        return Accessible_Playable(current_player);
+    }
+
+    public ArrayList<Point> Accessible_Playable(int i) { /*
+                                                          * parmis les cube accessible les quel sont possible d'etre
+                                                          * jouer, renvoie une liste de coordonee
+                                                          */
         HashMap<Cube, Boolean> list = accessibleColors();
         ArrayList<Point> Aksel = new ArrayList<Point>();
 
-        for (Point e : AccessibleCubesPlayer()) {
-            Cube cube = getPlayer().get(e.x, e.y);
+        for (Point e : AccessibleCubesPlayer(i)) {
+            Cube cube = getPlayer(i).get(e.x, e.y);
             if (cube == Cube.Blanc || cube == Cube.Neutre || list.get(cube) != null) {
                 Aksel.add(e);
             }
         }
         int x = 0;
-        for (Cube c : getPlayer().getSide()) {
+        for (Cube c : getPlayer(i).getSide()) {
             if (c == Cube.Blanc || c == Cube.Neutre || list.get(c) != null) {
                 Point p = new Point(x, -1);
                 Aksel.add(p);
@@ -403,12 +506,20 @@ public class Jeu implements Cloneable {
 
     }
 
+    public int nbJoueur() {
+        return nbJoueur;
+    }
+
     public Player getPlayer(int i) {
         return players[i];
     }
 
     public Player getPlayer() {
         return getPlayer(current_player);
+    }
+
+    public Pyramid getPyrPlayer(int i) {
+        return getPlayer(i).getPyramid();
     }
 
     public ArrayList<Cube> getPlayerBag() {
@@ -419,25 +530,25 @@ public class Jeu implements Cloneable {
         return getPlayer(i).personalBag;
     }
 
-    public Pyramid getPrincipale() {
-        return principale;
-    }
 
-    public Cube getCubePrincipale(int x, int y) {
-        return principale.get(x, y);
-    }
 
-    public Jeu clone() throws CloneNotSupportedException {
-        Jeu clone = (Jeu) super.clone(); // Clone the basic object structure
+    public Jeu clone() {
+        try {
+            Jeu clone = (Jeu) super.clone(); // Clone the basic object structure
 
-        clone.players = new Player[nbJoueur];
-        for (int i = 0; i < nbJoueur; i++) {
-            clone.players[i] = players[i].clone();
+            clone.players = new Player[nbJoueur];
+            for (int i = 0; i < nbJoueur; i++) {
+                clone.players[i] = players[i].clone();
+            }
+            clone.principale = principale.clone();
+            clone.bag = bag.clone();
+
+            return clone;
+        } catch (Exception e) {
+            System.err.println("Error Clone");
+            System.exit(1);
         }
-        clone.principale = principale.clone();
-        clone.bag = bag.clone();
-
-        return clone;
+        return new Jeu(2);
     }
 
     public static void build(Player player) {

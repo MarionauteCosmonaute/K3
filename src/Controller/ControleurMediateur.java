@@ -16,10 +16,15 @@ public class ControleurMediateur implements CollecteurEvenements {
 	JFrame frame = null;
 	Vector<Menu> menuListe = new Vector<>();
 	int indice_courant = 0;
+	int joueur_initial;
+
+	Cube cube;
+	// int x, y;
 
 	public ControleurMediateur(Jeu j, MusicPlayer musique) {
 		jeu = j;
 		this.musique = musique;
+		joueur_initial = j.get_player();
 	}
 
 	public void addMenu(Menu m) {
@@ -45,11 +50,45 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicSourisPyr(int ligne, int col) {
+		jeu.construction(ligne, col, cube);
+		// System.out.println(cube);
 		// System.out.println("case : ("+ligne+","+col+")");
 	}
 
 	@Override
-	public void clicSourisPioche(int ligne, int col) {
+	public void clicSourisEchange(int x1, int y1, int x2, int y2) {
+		jeu.permutation(x1, y1, x2, y2);
+		// System.out.println(cube);
+		// System.out.println("case : ("+ligne+","+col+")");
+	}
+
+	@Override
+	public void clicSourisPioche(int couleur) {
+		// System.out.println("coul : " + couleur);
+		switch (couleur) {
+			case 0:
+				cube = Cube.Noir;
+				break;
+			case 1:
+				cube = Cube.Neutre;
+				break;
+			case 2:
+				cube = Cube.Blanc;
+				break;
+			case 3:
+				cube = Cube.Vert;
+				break;
+			case 4:
+				cube = Cube.Jaune;
+				break;
+			case 5:
+				cube = Cube.Rouge;
+				break;
+			case 6:
+				cube = Cube.Bleu;
+				break;
+		}
+
 		// System.out.println("Pioche : ("+ligne+","+col+")");
 	}
 
@@ -73,8 +112,32 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "FR":
 				break;
 
-			case "EN":
+            case "EN":
+                break;
+			
+			case "Regles":
+                break;
+
+			case "Reset":
+				jeu.resetBag();
+				vue.phaseConstruction().setValider(false);
+				vue.phaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme ça
 				break;
+
+			case "AideConstruction":
+				jeu.constructionAleatoire(jeu.getPlayer(jeu.get_player()));
+				vue.phaseConstruction().repaint();
+				break;
+
+			case "Valider":
+				jeu.avance();
+				// if(jeu.get_player().estIA()){
+				// jeu.avance();
+				// }
+				if (jeu.get_player() == joueur_initial) {
+
+					// passer au menu d'après
+				}
 
 			case "Son":
 				System.out.println("Case son de ControleurMediateur");
