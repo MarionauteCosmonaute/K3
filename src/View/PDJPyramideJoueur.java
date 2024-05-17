@@ -1,10 +1,12 @@
 package View;
 
 import Model.Jeu;
+import Model.Player;
 import Patterns.Observateur;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
 
 public class PDJPyramideJoueur extends JComponent implements Observateur {
     int width_fenetre, height_fenetre, nb_ligne, nb_colonne, largeur_case, hauteur_case;
@@ -31,7 +33,7 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
 
         while (jeu.draw()) {
         }
-        Jeu.build(jeu.getPlayer(joueur));
+        build(jeu.getPlayer(joueur));
         System.out.println("PaintComponent de PDJPyramideJoueur");
         drawable = (Graphics2D) g;
         width_fenetre = parent.getWidth();
@@ -40,5 +42,15 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
         System.out.println("width_fenetre " + width_fenetre);
         System.out.println("height_fenetre " + height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid());
+    }
+
+    void build(Player player){
+        Collections.shuffle(player.getPersonalBag());
+        for(int i = player.getSize()-1; i >= 0; i--){
+            for(int j = 0; j < player.getSize()-i; j++){
+                //System.out.println( i + " " + j + " " + "0" );
+                if(!player.bagEmpty()){player.construction(j, i, player.getPersonalBag().get(0));}
+            }
+        }
     }
 }

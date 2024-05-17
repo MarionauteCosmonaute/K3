@@ -45,10 +45,16 @@ public class test{
 
     public static void main(String[] args) {
         Scanner s = new Scanner(System.in);
-        Jeu jeu = new Jeu(Integer.parseInt(args[0]));
-        jeu.initPrincipale();
+        Jeu jeu;
+        if(args[0].equals("charge")){
+            jeu = new Jeu(args[1]);
+            
+        }
+        else{
+            jeu = new Jeu(Integer.parseInt(args[0]));
+            jeu.initPrincipale();    
+        }
         boolean not = true,start = false;
-
         Player player;
         int x = 0,y = 0,z = 0,w = 0,validity = 0;
 
@@ -56,13 +62,13 @@ public class test{
         System.out.println("help pour afficher le menue");
         while(true){
             if(jeu.End_Game()){
-                System.out.println("Game Done winner is player: " + (jeu.current_player + 1) );
+                System.out.println("Game Done winner is player: " + (jeu.get_player() + 1) );
                 break;
             }
             //System.out.println(jeu.check_loss());
             if(start && jeu.check_loss()){jeu.avance();}
             else{
-            System.out.println("tour du joueur:" + (jeu.current_player+1));
+            System.out.println("tour du joueur:" + (jeu.get_player()+1));
             entree = s.nextLine().split("\\s+");
             if(entree[0].equals("start")){System.out.println("game started");start = true;}
             if(entree[0].equals("print")){
@@ -77,7 +83,7 @@ public class test{
                     }
                 }
                 if(entree[1].equals("mid")){
-                    System.out.println(jeu.principale);
+                    System.out.println(jeu.getPrincipale());
                 }
                 
             }
@@ -172,6 +178,7 @@ public class test{
                 }
                 
             }
+            if(entree[0].equals("save")){jeu.sauvegarde(entree[1]);}
             if(entree[0].equals("colors")){
                 HashMap<Cube,Boolean> list = jeu.accessibleColors();
                 System.out.print("Colors possible to play: ");
@@ -188,7 +195,7 @@ public class test{
             }
             if(entree[0].equals("auto")){
                 drawAll(jeu);
-                for(int i = 0; i < jeu.nbJoueur; i++){
+                for(int i = 0; i < jeu.nbJoueur(); i++){
                     build(jeu.getPlayer());
                     if(entree.length > 1 ) {jeu.getPlayer().addBag(Cube.Vide);};
                     jeu.avance();

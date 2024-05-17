@@ -13,8 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import java.util.Collections;
-
 public class Jeu implements Cloneable {
     Player[] players;
     int nbJoueur;
@@ -165,9 +163,9 @@ public class Jeu implements Cloneable {
     }
 
     /* Swaps two cubes positions */
-    public void permutation(int x, int y, int x_p, int y_p) {
-        getPlayer().permutation(x, y, x_p, y_p);
-    }
+    //public void permutation(int x, int y, int x_p, int y_p) {
+    //    getPlayer().permutation(x, y, x_p, y_p);
+    //}
 
     public void resetBag() {
         getPlayer().resetBag();
@@ -503,7 +501,6 @@ public class Jeu implements Cloneable {
 
     public int get_player() {
         return current_player;
-
     }
 
     public int nbJoueur() {
@@ -530,8 +527,6 @@ public class Jeu implements Cloneable {
         return getPlayer(i).personalBag;
     }
 
-
-
     public Jeu clone() {
         try {
             Jeu clone = (Jeu) super.clone(); // Clone the basic object structure
@@ -550,17 +545,4 @@ public class Jeu implements Cloneable {
         }
         return new Jeu(2);
     }
-
-    public static void build(Player player) {
-        Collections.shuffle(player.getPersonalBag());
-        for (int i = player.getSize() - 1; i >= 0; i--) {
-            for (int j = 0; j < player.getSize() - i; j++) {
-                // System.out.println( i + " " + j + " " + "0" );
-                if (!player.bagEmpty()) {
-                    player.construction(j, i, player.getPersonalBag().get(0));
-                }
-            }
-        }
-    }
-
 }

@@ -22,9 +22,6 @@ public class Player implements Cloneable {
         side = new ArrayList<>();
         personalBag = new ArrayList<>();
     }
-<<<<<<< HEAD
-    //CLONING METHOD
-=======
 
     Player(String[] string) {
         personalBag = new ArrayList<>();
@@ -62,7 +59,6 @@ public class Player implements Cloneable {
         return chaine;
     }
     // CLONING METHOD
->>>>>>> origin/phaseConstruction
 
     public Player clone() throws CloneNotSupportedException {
         Player clone = (Player) super.clone(); // Clone the basic object structure
@@ -88,14 +84,6 @@ public class Player implements Cloneable {
         loss = true;
     }
 
-<<<<<<< HEAD
-    public ArrayList<Cube> getPersonalBag(){
-        return personalBag;
-    }
-    /*Cubes stats */
-    public int totalCube(){
-        //CUBE VIDE => Total of all colours
-=======
     public ArrayList<Cube> getPersonalBag() {
         return personalBag;
     }
@@ -103,7 +91,6 @@ public class Player implements Cloneable {
     /* Cubes stats */
     public int totalCube() {
         // CUBE VIDE => Total of all colours
->>>>>>> origin/phaseConstruction
         return ColourAmmount(Cube.Vide);
     }
 
@@ -188,12 +175,7 @@ public class Player implements Cloneable {
         }
     }
 
-<<<<<<< HEAD
-
-    public int[] compte_personal_bag(){
-=======
     public int[] compte_personal_bag() {
->>>>>>> origin/phaseConstruction
         int nb[] = new int[7];
         for (Cube cube : personalBag) {
             switch (cube) {
@@ -257,11 +239,11 @@ public class Player implements Cloneable {
         return pyramid.get(x, y);
     }
 
-    public void remove(int x, int y) {
-        set(x, y, Cube.Vide);
+    public void remove(int x,int y){
+        set(x,y,Cube.Vide);
     }
 
-    public void set(int x, int y, Cube c) {
+    public void set(int x, int y, Cube c){
         Cube cube = get(x, y);
         decrement(cube);
         pyramid.set(x, y, c);
@@ -278,21 +260,12 @@ public class Player implements Cloneable {
         return personalBag.isEmpty();
     }
 
-<<<<<<< HEAD
-    
     public int getBagSize(){
         return personalBag.size();
     }
 
 
     public void addBag(Cube cube){
-=======
-    public int getBagSize() {
-        return personalBag.size();
-    }
-
-    public void addBag(Cube cube) {
->>>>>>> origin/phaseConstruction
         increment(cube);
         personalBag.add(cube);
     }
@@ -308,14 +281,6 @@ public class Player implements Cloneable {
         }
         personalBag.remove(cube);
         pyramid.set(x, y, cube);
-    }
-    
-
-    /* Swaps two cubes positions */
-    public void permutation(int x, int y, int x_p, int y_p) {
-        Cube cube = get(x, y);
-        set(x, y, get(x_p, y_p));
-        set(x_p, y_p, cube);
     }
 
     public void resetBag() {

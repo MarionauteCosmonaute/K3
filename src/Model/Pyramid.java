@@ -14,13 +14,6 @@ public class Pyramid {
         }
     }
 
-<<<<<<< HEAD
-
-    //Cloning of a Pyramid object
-
-    public Pyramid clone() throws CloneNotSupportedException {
-        Pyramid clone = (Pyramid) super.clone();  // Clone the basic object structure
-=======
     Pyramid(String string) {
         String[] charge = string.split(" ");
         size = Integer.parseInt(charge[0]);
@@ -32,8 +25,6 @@ public class Pyramid {
             }
         }
     }
->>>>>>> origin/phaseConstruction
-
     public String sauvegarde() {
         String sauvegarde = size + " ";
         for (int i = size - 1; i >= 0; i--) {
@@ -55,32 +46,6 @@ public class Pyramid {
         return clone;
     }
 
-<<<<<<< HEAD
-
-    //Size Pyramid
-    public int getSize(){
-        return size;
-    }
-
-
-    //Get an element at x y position
-    public Cube get(int x, int y){
-        return pyramid[x][y];
-    }
-
-
-
-    //Put a cube of a color on the pyramid at x y
-
-    public void set(int x, int y, Cube c){
-        pyramid[x][y] = c;
-    }
-
-
-
-
-    public String tmp(int i){
-=======
     // Size Pyramid
     public int getSize() {
         return size;
@@ -114,7 +79,6 @@ public class Pyramid {
     }
 
     public String tmp(int i) {
->>>>>>> origin/phaseConstruction
         String chaine = "";
         for (int j = 0; j < i; j++) {
             chaine += "   ";
@@ -155,9 +119,4 @@ public class Pyramid {
         }
         return chaine;
     }
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> origin/phaseConstruction
