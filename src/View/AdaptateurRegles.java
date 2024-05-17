@@ -3,11 +3,10 @@ package View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class AdaptateurRegles implements ActionListener {
-    CollecteurEvenements control;
+	CollecteurEvenements control;
 
-    AdaptateurRegles(CollecteurEvenements c) {
+	AdaptateurRegles(CollecteurEvenements c) {
 		control = c;
 	}
 

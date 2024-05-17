@@ -4,9 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AdaptateurAideConstruction implements ActionListener {
-    CollecteurEvenements control;
+	CollecteurEvenements control;
 
-    AdaptateurAideConstruction(CollecteurEvenements c) {
+	AdaptateurAideConstruction(CollecteurEvenements c) {
 		control = c;
 	}
 

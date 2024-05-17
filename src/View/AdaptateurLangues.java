@@ -3,11 +3,10 @@ package View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class AdaptateurLangues implements ActionListener {
-    CollecteurEvenements control;
+	CollecteurEvenements control;
 
-    AdaptateurLangues(CollecteurEvenements c) {
+	AdaptateurLangues(CollecteurEvenements c) {
 		control = c;
 	}
 

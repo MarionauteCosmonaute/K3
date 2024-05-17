@@ -17,17 +17,17 @@ public class BoutonArrondi extends JButton {
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-    
+
         // Activer l'antialiasing
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         // Créer une forme arrondie
         RoundRectangle2D formeArrondie = new RoundRectangle2D.Float(
-            0, 0, getWidth(), getHeight(), rayon, rayon);
-        
+                0, 0, getWidth(), getHeight(), rayon, rayon);
+
         // Appliquer la forme arrondie comme clip
         g2d.setClip(formeArrondie);
-        
+
         // Dessiner la zone de contenu
         super.paintComponent(g);
     }

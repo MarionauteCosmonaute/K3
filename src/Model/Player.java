@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Player implements Cloneable{
+public class Player implements Cloneable {
     Pyramid pyramid;
 
     ArrayList<Cube> side, personalBag;
@@ -13,7 +13,7 @@ public class Player implements Cloneable{
     int size;
     boolean loss;
 
-    Player(int i){
+    Player(int i) {
         pyramid = new Pyramid(i);
         size = i;
 
@@ -22,31 +22,35 @@ public class Player implements Cloneable{
         side = new ArrayList<>();
         personalBag = new ArrayList<>();
     }
-    
-    Player(String[] string){
+
+    Player(String[] string) {
         personalBag = new ArrayList<>();
         totalCube = new int[7];
         String[] charge = string[0].split(" ");
-        for(int i = 0; i < charge.length; i++){
-            if(!charge[i].equals("")){personalBag.add(Cube.conversion(charge[i]));}
+        for (int i = 0; i < charge.length; i++) {
+            if (!charge[i].equals("")) {
+                personalBag.add(Cube.conversion(charge[i]));
+            }
         }
         side = new ArrayList<>();
         charge = string[1].split(" ");
-        for(int i = 0; i < charge.length; i++){
-            if(!charge[i].equals("")){side.add(Cube.conversion(charge[i]));}
+        for (int i = 0; i < charge.length; i++) {
+            if (!charge[i].equals("")) {
+                side.add(Cube.conversion(charge[i]));
+            }
         }
         loss = Boolean.parseBoolean(string[2]);
         pyramid = new Pyramid(string[3]);
         size = pyramid.getSize();
     }
 
-    public String sauvegarde(){
-        String chaine="";
-        for (int i = 0; i < personalBag.size(); i++){
+    public String sauvegarde() {
+        String chaine = "";
+        for (int i = 0; i < personalBag.size(); i++) {
             chaine += Cube.conversionString(personalBag.get(i));
         }
-        chaine+= "\n";
-        for (int i = 0; i < side.size(); i++){
+        chaine += "\n";
+        for (int i = 0; i < side.size(); i++) {
             chaine += Cube.conversionString(side.get(i));
         }
         chaine += "\n";
@@ -54,44 +58,45 @@ public class Player implements Cloneable{
         chaine += pyramid.sauvegarde();
         return chaine;
     }
-    //CLONING METHOD
+    // CLONING METHOD
 
     public Player clone() throws CloneNotSupportedException {
-        Player clone = (Player) super.clone();  // Clone the basic object structure
+        Player clone = (Player) super.clone(); // Clone the basic object structure
 
         clone.pyramid = pyramid.clone();
         clone.side = new ArrayList<>(side.size());
         for (Cube cube : side) {
-          clone.side.add(cube);  // Add existing cube references
+            clone.side.add(cube); // Add existing cube references
         }
         clone.personalBag = new ArrayList<>(personalBag.size());
         for (Cube cube : personalBag) {
-          clone.personalBag.add(cube);  // Add existing cube references
+            clone.personalBag.add(cube); // Add existing cube references
         }
         return clone;
     }
 
-     /*loss Setting/Checking */
-    public boolean lost(){
+    /* loss Setting/Checking */
+    public boolean lost() {
         return loss;
     }
 
-    public void playerLost(){
+    public void playerLost() {
         loss = true;
     }
 
-    public ArrayList<Cube> getPersonalBag(){
+    public ArrayList<Cube> getPersonalBag() {
         return personalBag;
     }
-    /*Cubes stats */
-    public int totalCube(){
-        //CUBE VIDE => Total of all colours
+
+    /* Cubes stats */
+    public int totalCube() {
+        // CUBE VIDE => Total of all colours
         return ColourAmmount(Cube.Vide);
     }
 
-    public int ColourAmmount (Cube cube){
+    public int ColourAmmount(Cube cube) {
         int total = 0;
-        switch(cube){
+        switch (cube) {
             case Noir:
                 return totalCube[0];
             case Neutre:
@@ -107,14 +112,14 @@ public class Player implements Cloneable{
             case Bleu:
                 return totalCube[6];
             default:
-                for(int i = 0; i < 7; i++){
-                    total+=totalCube[i];
+                for (int i = 0; i < 7; i++) {
+                    total += totalCube[i];
                 }
                 return total;
         }
     }
 
-    public void increment(Cube c){
+    public void increment(Cube c) {
         switch (c) {
             case Noir:
                 totalCube[0]++;
@@ -142,7 +147,7 @@ public class Player implements Cloneable{
         }
     }
 
-    public void decrement(Cube c){
+    public void decrement(Cube c) {
         switch (c) {
             case Noir:
                 totalCube[0]--;
@@ -170,10 +175,9 @@ public class Player implements Cloneable{
         }
     }
 
-
-    public int[] compte_personal_bag(){
+    public int[] compte_personal_bag() {
         int nb[] = new int[7];
-        for(Cube cube : personalBag){
+        for (Cube cube : personalBag) {
             switch (cube) {
                 case Noir:
                     nb[0]++;
@@ -203,114 +207,116 @@ public class Player implements Cloneable{
         return nb;
     }
 
-    /*Side access methods */
-    public ArrayList<Cube> getSide(){
+    /* Side access methods */
+    public ArrayList<Cube> getSide() {
         return side;
     }
 
-    public Cube getSide(int x){
+    public Cube getSide(int x) {
         return side.get(x);
 
     }
 
-    public void addSide(Cube c){
+    public void addSide(Cube c) {
         side.add(c);
         increment(c);
     }
 
-    public void removeSide(int x){
+    public void removeSide(int x) {
         decrement(side.remove(x));
     }
 
-    public int getSideSize(){
+    public int getSideSize() {
         return side.size();
     }
 
-    /*Pyramid access methods */
-    public Pyramid getPyramid(){
+    /* Pyramid access methods */
+    public Pyramid getPyramid() {
         return pyramid;
     }
 
-    public Cube get(int x, int y){
+    public Cube get(int x, int y) {
         return pyramid.get(x, y);
     }
 
-    public void remove(int x,int y){
-        set(x,y,Cube.Vide);
+    public void remove(int x, int y) {
+        set(x, y, Cube.Vide);
     }
 
-    public void set(int x, int y, Cube c){
+    public void set(int x, int y, Cube c) {
         Cube cube = get(x, y);
         decrement(cube);
-        pyramid.set(x,y,c);
+        pyramid.set(x, y, c);
         increment(c);
     }
 
-    public int getSize(){
+    public int getSize() {
         return size;
     }
 
-
     /* FONCTION AJOUTER */
-    /*Pers Bag access methods */
-    public boolean bagEmpty(){
+    /* Pers Bag access methods */
+    public boolean bagEmpty() {
         return personalBag.isEmpty();
     }
 
-    public int getBagSize(){
+    public int getBagSize() {
         return personalBag.size();
     }
 
-
-    public void addBag(Cube cube){
+    public void addBag(Cube cube) {
         increment(cube);
         personalBag.add(cube);
     }
 
-    /*Construct method -> Puts a cube in a position after checking its content:       */
-   /*If cube already existing in position -> Puts it back in the bag and replaces it */
-    public void construction(int x, int y,Cube cube){
-        if(!(get(x, y) == Cube.Vide)){
+    /* Construct method -> Puts a cube in a position after checking its content: */
+    /*
+     * If cube already existing in position -> Puts it back in the bag and replaces
+     * it
+     */
+    public void construction(int x, int y, Cube cube) {
+        if (!(get(x, y) == Cube.Vide)) {
             personalBag.add(get(x, y));
         }
         personalBag.remove(cube);
-        pyramid.set(x,y,cube);
+        pyramid.set(x, y, cube);
     }
 
-    /*Swaps two cubes positions*/
-    public void permutation(int x, int y, int x_p, int y_p){
-        Cube cube = get(x,y);
-        set(x,y,get(x_p,y_p));
-        set(x_p,y_p,cube);
+    /* Swaps two cubes positions */
+    public void permutation(int x, int y, int x_p, int y_p) {
+        Cube cube = get(x, y);
+        set(x, y, get(x_p, y_p));
+        set(x_p, y_p, cube);
     }
 
-    public void resetBag(){
-        for (int i=0; i<size; i++){
-            for (int j=0; j<size; j++){
-                if(get(i,j) != Cube.Vide){
-                addBag(get(i,j));
-                remove(i,j);}
+    public void resetBag() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (get(i, j) != Cube.Vide) {
+                    addBag(get(i, j));
+                    remove(i, j);
+                }
             }
         }
     }
 
-
     @Override
-    public String toString(){
-        String chaine = "Noir: "+ noir + "     Bleu: " + bleu + "     Blanc: "+ blanc + "     Rouge: " + rouge +"\nJaune: " + jaune +"     Vert: " + vert + "      Neutre: " + neutre + "\n";
-        chaine +="Bag: ";
+    public String toString() {
+        String chaine = "Noir: " + noir + "     Bleu: " + bleu + "     Blanc: " + blanc + "     Rouge: " + rouge
+                + "\nJaune: " + jaune + "     Vert: " + vert + "      Neutre: " + neutre + "\n";
+        chaine += "Bag: ";
         int nb = 0;
-        for(Cube cube : personalBag){
-            chaine+= nb + ":" + cube + " ";
+        for (Cube cube : personalBag) {
+            chaine += nb + ":" + cube + " ";
             nb++;
         }
-        chaine +="\nSide: ";
+        chaine += "\nSide: ";
         nb = 0;
-        for( Cube cube : side ){
-            chaine+= nb + ":" + cube + " ";
+        for (Cube cube : side) {
+            chaine += nb + ":" + cube + " ";
             nb++;
         }
-        chaine+="\nPyramide:\n" + pyramid;
+        chaine += "\nPyramide:\n" + pyramid;
 
         return chaine;
     }

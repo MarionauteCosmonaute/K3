@@ -4,9 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AdaptateurValider implements ActionListener {
-    CollecteurEvenements control;
+	CollecteurEvenements control;
 
-    AdaptateurValider(CollecteurEvenements c) {
+	AdaptateurValider(CollecteurEvenements c) {
 		control = c;
 	}
 

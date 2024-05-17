@@ -13,8 +13,7 @@ public class AdaptateurClavier extends KeyAdapter {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		System.out.println("KeyPressed AdaptateurClavier");
-		switch (e.getKeyCode())
-		{
+		switch (e.getKeyCode()) {
 			case KeyEvent.VK_Q:
 				controle.commande("quit");
 				break;

@@ -3,11 +3,10 @@ package View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class AdaptateurLan implements ActionListener {
-    CollecteurEvenements control;
+	CollecteurEvenements control;
 
-    AdaptateurLan(CollecteurEvenements c) {
+	AdaptateurLan(CollecteurEvenements c) {
 		control = c;
 	}
 

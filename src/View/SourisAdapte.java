@@ -6,7 +6,6 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.sound.sampled.*;
 
-
 public class SourisAdapte extends MouseAdapter {
     private Color originalBackgroundColor;
     private Color originalForegroundColor;
@@ -20,7 +19,7 @@ public class SourisAdapte extends MouseAdapter {
         this.originalForegroundColor = bouton.getForeground();
 
         // Charger le fichier audio
-        audioClip=audio;
+        audioClip = audio;
     }
 
     @Override
@@ -28,10 +27,10 @@ public class SourisAdapte extends MouseAdapter {
         // Changer la couleur du bouton
         bouton.setBackground(Color.YELLOW);
         bouton.setForeground(Color.BLACK);
-        
+
         // Jouer le son dans un thread séparé
-        Thread t=new Thread() {
-            public void run(){
+        Thread t = new Thread() {
+            public void run() {
                 if (audioClip != null && !audioClip.isRunning()) {
                     audioClip.setFramePosition(0); // Repositionner le clip au début
                     audioClip.start(); // Jouer le son
