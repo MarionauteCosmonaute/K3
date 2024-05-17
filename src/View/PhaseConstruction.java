@@ -33,7 +33,7 @@ public class PhaseConstruction
     int taille_base_pyramide;
     
 
-    JButton reset;
+    JButton reset, valider, aide;
 
 
     public PhaseConstruction(JFrame frame, CollecteurEvenements controle, Jeu jeu){
@@ -82,16 +82,29 @@ public class PhaseConstruction
 
         echange = 0;
         
+        frame.addKeyListener(new AdaptateurClavier(controle));
 
-        reset = Bouton.creerButton("Reset");
-        
         Box boiteTexte = Box.createVerticalBox();
         JPanel centrePanel = new JPanel();
+        reset = Bouton.creerButton("Reset");
         reset.addActionListener(new AdaptateurReset(controle));
         centrePanel.add(reset);
         boiteTexte.add(centrePanel);
+
+        valider = Bouton.creerButton("Valider");
+        valider.setEnabled(false);
+        centrePanel.add(valider);
+        boiteTexte.add(centrePanel);
         frame.add(boiteTexte, BorderLayout.SOUTH);
-        frame.addKeyListener(new AdaptateurClavier(controle));
+
+
+        Box boite_aide = Box.createVerticalBox();
+        JPanel panel = new JPanel();
+        aide = Bouton.creerButton("Aide");
+        aide.addActionListener(new AdaptateurAideConstruction(controle));
+        panel.add(aide);
+        boite_aide.add(panel);
+        frame.add(boite_aide, BorderLayout.NORTH);
 
     }
 
@@ -157,8 +170,16 @@ public class PhaseConstruction
         return emplacement;
     }
 
+    public void setValider(boolean b){
+        valider.setEnabled(b);
+    }
+
 
     public void fonction_globale(Jeu jeu, Graphics g, int width_fenetre, int height_fenetre){
+        if(pyramidePleine()){
+            // System.out.println("true");
+            setValider(true);
+        }
         taille_cube = Math.min(height_fenetre/12, width_fenetre/18);
         // reset.setPreferredSize(new Dimension(, ));
         dessiner_pyramide_joueur(g, width_fenetre, height_fenetre);
@@ -185,6 +206,17 @@ public class PhaseConstruction
             }
         }
         return somme; //juste parce qu'il faut renvoyer un int dans tous les cas
+    }
+
+    public boolean pyramidePleine(){
+        for(int x = 0; x<taille_base_pyramide; x++){
+            for(int y = 0; y<(taille_base_pyramide-x); y++){
+                if(jeu.getPlayer().get(x, y) == Cube.Vide){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void dessiner_cubes_pioches(Graphics g, int width_fenetre, int height_fenetre){

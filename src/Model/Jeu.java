@@ -119,6 +119,13 @@ public class Jeu implements Cloneable{
     }
 
 
+    public void constructionAleatoire(Player player){
+        for(int i = player.getSize()-1; i >= 0; i--){
+            for(int j = 0; j < player.getSize()-i; j++){
+                if(!player.bagEmpty()){player.construction(j, i, player.getPersonalBag().get(0));}
+            }
+        }    
+    }
         /************************************ */
         /* Fonction lier a une action de jeu */
         /********************************** */
@@ -203,6 +210,14 @@ public class Jeu implements Cloneable{
     }
 
         /* Penalitee */
+    
+    public void takePenaltyCube(int x,int y){
+        if (y==-1){
+            takePenaltyCubeFromSide(x);
+        }else{
+            takePenaltyCubeFromPyramid(x,y);
+        }
+    }
 
     public void takePenaltyCubeFromPyramid(int x,int y) {               /*Recupere le cube de la position x y du joueur courant et l'ajoute au side du joueur precedent */
         players[previous_player()].addSide(players[current_player].get(x,y));
@@ -222,7 +237,7 @@ public class Jeu implements Cloneable{
 
     /* Penalitee */
 
-    public boolean check_penality(Cube cube, int x, int y) {    /* a appelle qu'apres la fonction move_validity */
+    public boolean check_penality(int x, int y) {  
         return principale.get(x-1, y) == principale.get(x-1, y+1);
     }
 
@@ -241,7 +256,7 @@ public class Jeu implements Cloneable{
     // 2 -> VALID WITH PENALITY
     public int move_validity(Cube cube, int x, int y){          /* bonne validitee renvoyee */
         if ( sameColor(principale.get(x, y), Cube.Vide) && check_under(x,y) && (sameColor(principale.get(x-1, y),cube) || ( sameColor(principale.get(x-1, y+1),cube))) ){
-            if (check_penality(cube, x, y)){
+            if (check_penality(x, y)){
                 return 2;
             }
             return 1;
@@ -471,7 +486,8 @@ public class Jeu implements Cloneable{
         return getPlayer(i).personalBag;
     }
 
-    public Jeu clone() throws CloneNotSupportedException  {
+    public Jeu clone() {
+        try{
             Jeu clone = (Jeu) super.clone();  // Clone the basic object structure
 
             clone.players = new Player[nbJoueur];
@@ -482,5 +498,7 @@ public class Jeu implements Cloneable{
             clone.bag = bag.clone();
 
             return clone;
+        }catch(Exception e){System.err.println("Error Clone");System.exit(1);}
+        return new Jeu(2);
     }
 }

@@ -287,8 +287,9 @@ public class Player implements Cloneable{
     public void resetBag(){
         for (int i=0; i<size; i++){
             for (int j=0; j<size; j++){
+                if(get(i,j) != Cube.Vide){
                 addBag(get(i,j));
-                remove(i,j);
+                remove(i,j);}
             }
         }
     }

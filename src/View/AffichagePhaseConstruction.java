@@ -122,6 +122,10 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
         return cons.getEmplacement();
     }
 
+    public void setValider(boolean b){
+        cons.setValider(b);
+    }
+
     public void doubleClic(){
         cons.set_cube_sel(false);
         cons.setDessinVideFalse();

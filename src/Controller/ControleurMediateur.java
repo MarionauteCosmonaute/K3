@@ -123,9 +123,14 @@ public class ControleurMediateur implements CollecteurEvenements
                 break;
 
 			case "Reset":
-				System.out.println("reset");
 				jeu.resetBag();
+				vue.phaseConstruction().setValider(false);
 				vue.phaseConstruction().repaint(); //ça me paraît bizarre de faire ça comme ça 
+				break;
+
+			case "AideConstruction":
+				jeu.constructionAleatoire(jeu.getPlayer(jeu.get_player()));
+				vue.phaseConstruction().repaint();
 				break;
 
 			case "Son":
