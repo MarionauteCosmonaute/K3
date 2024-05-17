@@ -71,6 +71,13 @@ public class Player implements Cloneable{
         return clone;
     }
 
+    public void fusion(){
+        int bagSize = personalBag.size();
+        for (int i = 0; i < bagSize;i++){
+            side.add(personalBag.remove(0));
+        }
+    }
+
      /*loss Setting/Checking */
     public boolean lost(){
         return loss;

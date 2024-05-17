@@ -372,16 +372,8 @@ public class Jeu implements Cloneable{
         return list;
     }
 
-    //COORD POSITION POSSIBLES POUR UN CUBE DONNEE
-    public ArrayList<Point> CubeAccessibleDestinations(int x, int y){
-        ArrayList<Point> list = new ArrayList<Point>();
-        Cube cube ;
-        if (y==-1){
-            cube = getPlayer().getSide(x);
-        }else{
-            cube = getPlayer().get(x,y);
-        }
-
+    public ArrayList<Point> destination(Cube cube){
+        ArrayList<Point> list = new ArrayList<>();
         for(int i = principale.getSize()-1; i >= 0; i--){
             for(int j = 0; j < principale.getSize()-i; j++){
                 if(move_validity(cube,i,j)!=0){
@@ -392,6 +384,20 @@ public class Jeu implements Cloneable{
         }
         return list;
     }
+    public ArrayList<Point> CubeAccessibleDestinationBag(int index){        
+        return destination(getPlayer().getPersonalBag().get(index));
+}
+
+    //COORD POSITION POSSIBLES POUR UN CUBE DONNEE
+    public ArrayList<Point> CubeAccessibleDestinations(int x, int y){
+        if (y==-1){
+            return destination(getPlayer().getSide(x));
+        }
+        else{
+            return destination(getPlayer().get(x, y));
+        }
+    }
+    
 
     public ArrayList<Point> Accessible_Playable(){
         return Accessible_Playable(current_player);
