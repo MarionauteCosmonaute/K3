@@ -3,11 +3,12 @@ package View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RetourMenuPAdapeur implements ActionListener{
+public class RetourMenuPAdapeur implements ActionListener {
 
     CollecteurEvenements controle;
-    public RetourMenuPAdapeur(CollecteurEvenements c){
-        controle=c;
+
+    public RetourMenuPAdapeur(CollecteurEvenements c) {
+        controle = c;
     }
 
     @Override

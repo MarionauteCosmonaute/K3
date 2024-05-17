@@ -3,11 +3,10 @@ package View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class AdaptateurCharger implements ActionListener {
-    CollecteurEvenements control;
+	CollecteurEvenements control;
 
-    AdaptateurCharger(CollecteurEvenements c) {
+	AdaptateurCharger(CollecteurEvenements c) {
 		control = c;
 	}
 

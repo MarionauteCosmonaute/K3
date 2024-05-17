@@ -3,11 +3,10 @@ package View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class AdaptateurBack implements ActionListener {
-    CollecteurEvenements control;
+	CollecteurEvenements control;
 
-    AdaptateurBack(CollecteurEvenements c) {
+	AdaptateurBack(CollecteurEvenements c) {
 		control = c;
 	}
 

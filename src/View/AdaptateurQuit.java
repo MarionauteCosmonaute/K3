@@ -3,11 +3,10 @@ package View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class AdaptateurQuit implements ActionListener {
-    CollecteurEvenements control;
+	CollecteurEvenements control;
 
-    AdaptateurQuit(CollecteurEvenements c) {
+	AdaptateurQuit(CollecteurEvenements c) {
 		control = c;
 	}
 

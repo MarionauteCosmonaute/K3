@@ -1,5 +1,5 @@
-package Model;
+// package Model;
 
-public class IADifficile extends IA {
+// public class IADifficile extends IA {
 
-}
+// }
