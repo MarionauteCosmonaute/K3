@@ -12,6 +12,6 @@ public class AdaptateurQuit implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		control.commande("Quit");
+		control.commande("quit");
 	}
 }

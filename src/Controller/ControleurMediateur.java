@@ -95,7 +95,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	@Override
 	public boolean commande(String c) {
 		switch (c) {
-			case "Quit":
+			case "quit":
 				System.exit(0);
 				break;
 
@@ -128,7 +128,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			// break;
 
 			case "JoueurVSJoueur":
-			    ((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
+			   ((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
 				changeVisible(2);
 				//jeu.reset(2, false); // On cree une partie a 2
 

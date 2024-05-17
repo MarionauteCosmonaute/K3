@@ -163,9 +163,9 @@ public class Jeu implements Cloneable {
     }
 
     /* Swaps two cubes positions */
-    //public void permutation(int x, int y, int x_p, int y_p) {
-    //    getPlayer().permutation(x, y, x_p, y_p);
-    //}
+    // public void permutation(int x, int y, int x_p, int y_p) {
+    // getPlayer().permutation(x, y, x_p, y_p);
+    // }
 
     public void resetBag() {
         getPlayer().resetBag();
@@ -525,6 +525,10 @@ public class Jeu implements Cloneable {
 
     public ArrayList<Cube> getPlayerBag(int i) {
         return getPlayer(i).personalBag;
+    }
+
+    public void permutation(int x, int y, int x_p, int y_p) {
+        getPlayer().permutation(x, y, x_p, y_p);
     }
 
     public Jeu clone() {

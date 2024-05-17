@@ -239,11 +239,11 @@ public class Player implements Cloneable {
         return pyramid.get(x, y);
     }
 
-    public void remove(int x,int y){
-        set(x,y,Cube.Vide);
+    public void remove(int x, int y) {
+        set(x, y, Cube.Vide);
     }
 
-    public void set(int x, int y, Cube c){
+    public void set(int x, int y, Cube c) {
         Cube cube = get(x, y);
         decrement(cube);
         pyramid.set(x, y, c);
@@ -260,12 +260,11 @@ public class Player implements Cloneable {
         return personalBag.isEmpty();
     }
 
-    public int getBagSize(){
+    public int getBagSize() {
         return personalBag.size();
     }
 
-
-    public void addBag(Cube cube){
+    public void addBag(Cube cube) {
         increment(cube);
         personalBag.add(cube);
     }
@@ -292,6 +291,14 @@ public class Player implements Cloneable {
                 }
             }
         }
+    }
+
+    /* Swaps two cubes positions */
+
+    public void permutation(int x, int y, int x_p, int y_p) {
+        Cube cube = get(x, y);
+        set(x, y, get(x_p, y_p));
+        set(x_p, y_p, cube);
     }
 
     @Override

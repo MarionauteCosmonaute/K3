@@ -78,8 +78,6 @@ public class OldPhaseConstruction {
 
         echange = 0;
 
-        frame.addKeyListener(new AdaptateurClavier(controle));
-
         Box boiteTexte = Box.createVerticalBox();
         JPanel centrePanel = new JPanel();
         reset = Bouton.creerButton("Reset");

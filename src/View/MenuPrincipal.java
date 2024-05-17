@@ -15,6 +15,7 @@ public class MenuPrincipal extends Menu {
         super();
         JPanel content = new JPanel(new BorderLayout());
         JButton NewGame, Charger, Lan, Quit, Regles, FR, EN, UnMute;
+        addKeyListener(new AdaptateurClavier(controle));
         try {
             // Panneau central avec les boutons
             JPanel centrePanel = new JPanel();
