@@ -4,7 +4,7 @@ public class Pyramid {
     Cube[][] pyramid;
     int size;
 
-    Pyramid(int i){
+    public Pyramid(int i){
         pyramid = new Cube[i][i];
         size = i;
         for (int x=0; x<i; x++ ){
@@ -13,6 +13,7 @@ public class Pyramid {
             }
         }
     }
+    
     Pyramid(String string){
         String[] charge = string.split(" ");
         size = Integer.parseInt(charge[0]);
@@ -25,7 +26,6 @@ public class Pyramid {
         }
     }
     
-
     public String sauvegarde(){
         String sauvegarde = size + " ";
         for(int i = size-1; i >= 0; i--){
@@ -37,18 +37,6 @@ public class Pyramid {
         return sauvegarde;
     }
 
-
-    //Cloning of a Pyramid object
-
-    public Pyramid clone() throws CloneNotSupportedException {
-        Pyramid clone = new Pyramid(size);  // Clone the basic object structure
-        for (int i = 0; i < size; i++) {
-            System.arraycopy(pyramid[i], 0, clone.pyramid[i], 0, size);
-        }
-        return clone;
-    }
-
-
     //Size Pyramid
     public int getSize(){
         return size;
@@ -56,45 +44,34 @@ public class Pyramid {
 
     public void extend(){
         Cube cop_pyramid[][] = new Cube[size+2][size+2];
-        for (int i=0; i<size+2; i++ ){
-            for (int j=0; j<size+2; j++ ){
-                pyramid[i][j] = Cube.Vide;
-            }
-        }
         for (int i=0; i<size; i++){
             for (int j=0; j<size; j++){
                 cop_pyramid[i][j+1] = pyramid[i][j];
             }
         }
         pyramid = cop_pyramid;
-        size = size + 2;
+        size += 2;
     }
-
 
     //Get an element at x y position
     public Cube get(int x, int y){
         return pyramid[x][y];
     }
 
-
-
     //Put a cube of a color on the pyramid at x y
-
     public void set(int x, int y, Cube c){
         pyramid[x][y] = c;
     }
 
 
-
-
-    public String tmp(int i){
+    public String centrer(int i){
         String chaine = "";
         for(int j = 0; j < i; j++){
             chaine += "   ";
         }
         return chaine;
     }
-    public String milieu(Cube c){
+    public String centrerCube(Cube c){
         String chaine = "";
         switch (c) {
             case Noir:
@@ -119,13 +96,23 @@ public class Pyramid {
     public String toString(){
         String chaine = "";
         for(int i = size-1; i >= 0; i--){
-            chaine += tmp(i);
+            chaine += centrer(i);
             for (int j = 0; j <= size - 1 - i; j++){
-                chaine += milieu(pyramid[i][j]) + " ";
+                chaine += centrerCube(pyramid[i][j]) + " ";
             }
             chaine+="\n";
         }
         return chaine;
     }
+
+    //Fonction Clone 
+    public Pyramid clone() throws CloneNotSupportedException {
+        Pyramid clone = new Pyramid(size);  // Clone the basic object structure
+        for (int i = 0; i < size; i++) {
+            System.arraycopy(pyramid[i], 0, clone.pyramid[i], 0, size);
+        }
+        return clone;
+    }
+    
 }
 
