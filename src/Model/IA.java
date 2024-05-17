@@ -67,7 +67,7 @@ public abstract class IA {
                     total_j1+= current_possibilities;
                 }
                 int total_j2 = 0;
-                ArrayList<Point> cubes_access2 = j.Accessible_Playable(); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
+                ArrayList<Point> cubes_access2 = j.Accessible_Playable(j.next_player()); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
                 for(Point compte : cubes_access2) {
                     int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
                     total_j2+= current_possibilities;
@@ -86,8 +86,20 @@ public abstract class IA {
             for(Point depart : cubes_access){
                 ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations((int) depart.getX(),(int) depart.getY());
                 for(Point arrivee : coups_jouables){
-                    j.add_central_pyramid((int) arrivee.getX(), (int) arrivee.getY(), (int) depart.getX(),(int) depart.getY());
-                    value = Math.max(value,MinMaxIA(j,depth-1,player_max, alpha, beta, IA));
+                    if(j.add_central((int) arrivee.getX(), (int) arrivee.getY(), (int) depart.getX(),(int) depart.getY()) == 2){ //On joue une pénalité
+                        for(Point access : j.Accessible_Playable()){
+                            Jeu clone = j.clone();
+                            clone.takePenaltyCube((int) access.getX(), (int) access.getY());
+                            value = Math.max(value,MinMaxIA(clone,depth-1,player_max, alpha, beta, IA));
+                        }
+                    }
+                    else{
+                        //System.out.println( value + " " + depth + " " + alpha + " " + beta );
+                        value = Math.max(value,MinMaxIA(j,depth-1,player_max, alpha, beta, IA));
+                        /*System.out.println();
+                        System.out.println();
+                        System.out.println();*/
+                    }
                     if(alpha >= value){
                         return value;
                     }
@@ -100,8 +112,16 @@ public abstract class IA {
             for(Point depart : cubes_access){
                 ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations((int) depart.getX(),(int) depart.getY());
                 for(Point arrivee : coups_jouables){
-                    j.add_central_pyramid((int) arrivee.getX(), (int) arrivee.getY(), (int) depart.getX(),(int) depart.getY());
-                    value = Math.min(value,MinMaxIA(j,depth-1,player_max, alpha, beta, IA));
+                    if(j.add_central((int) arrivee.getX(), (int) arrivee.getY(), (int) depart.getX(),(int) depart.getY())==2){
+                        for(Point access : j.Accessible_Playable()){
+                            Jeu clone = j.clone();
+                            clone.takePenaltyCube((int) access.getX(), (int) access.getY());
+                            value = Math.min(value,MinMaxIA(clone,depth-1,player_max, alpha, beta, IA));
+                        }
+                    }
+                    else{
+                        value = Math.min(value,MinMaxIA(j,depth-1,player_max, alpha, beta, IA));
+                    }
                     if(beta <= value){
                         return value;
                     }

@@ -18,7 +18,6 @@ public class IAFacile extends IA {
                 pos.add(arrivee);
                 Jeu clone = new Jeu(2);
                 clone = j.clone();
-                clone.add_central_pyramid((int) arrivee.getX(), (int) arrivee.getY(), (int) depart.getX(),(int) depart.getY());
                 int value= MinMaxIA(clone, 2, joueur1, -10000, +10000, 0);
                 if(value==value_max){
                     resultat_ok.add(pos);
@@ -49,11 +48,12 @@ public class IAFacile extends IA {
         ArrayList<Integer> resultat_ko = new ArrayList<>();
         int value_max= -100000;
         for(int i=0; i<j.getPlayer(joueur1).getBagSize();i++){
-            ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations(i, -1);
+            ArrayList<Point> coups_jouables = j.CubeAccessibleDestinationBag(i);
             for(Point coup : coups_jouables){
                 Jeu clone = new Jeu(2);
                 clone = j.clone();
-                clone.add_central_pyramid((int) coup.getX(),(int) coup.getY(), i, -1);
+                clone.getPlayer(joueur1).fusion();
+                clone.getPlayer((joueur1+1)%2).fusion();
                 int value= MinMaxIA(clone, 2, joueur1, -10000, +10000, -1);
                 if(value==value_max){
                     resultat_ok.add(i);
@@ -88,11 +88,13 @@ public class IAFacile extends IA {
     }
 
     @Override
-    public void construction(){
+    public void construction(){ //Tout refaire en choisissant les 3 cubes les plus hauts, puis en énumérant des pyramides aléatoires et en calculant a chaque fois qu'on enleve un cube le nombre de cubes de couleur différents accessibles
+                                // On prendra a la fin la pyramide où on a le plus de cubes de couleur différente accessibles a chaque coup
         ArrayList<Integer> coups_possibles = pyramideIA(jeu, jeu.current_player);
         Random random = new Random();
         Point x_y_pyra;
         x_y_pyra = jeu.findFirstFreeElement();
+        System.out.println(coups_possibles.size());
         int cube_a_placer = coups_possibles.get(random.nextInt(coups_possibles.size()));
         jeu.construction((int) x_y_pyra.getX(), (int) x_y_pyra.getY(), jeu.getPlayer().getSide(cube_a_placer));
     }
