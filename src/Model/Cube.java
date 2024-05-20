@@ -21,20 +21,9 @@ public enum Cube {
     }
 
     static String conversionString(Cube cube){
-        switch(cube){
-            case Vide: return "7 ";
-            case Noir: return  "1 ";
-            case Bleu: return "2 ";
-            case Vert: return "3 ";
-            case Rouge: return "4 ";
-            case Jaune: return "5 ";
-            case Neutre: return "6 ";
-            case Blanc: return "0 ";
-            default:
-                System.exit(2);
-        }
-        return "";
+        return cube.value + " ";
     }
+
     static Cube conversion(String s){
         switch(s){
             case "7": return Cube.Vide;  
@@ -59,7 +48,7 @@ public enum Cube {
             case 5: return Cube.Jaune;
             case 6: return Cube.Neutre;
             case 7: return Cube.Blanc;
-            default: System.err.println("Conversion Cube impossible pour le int: " + s);System.exit(2);
+            default: System.err.println("Conversion Cube impossible pour le int: " + s);System. exit(2);
         }
         return Cube.Vide;
     }

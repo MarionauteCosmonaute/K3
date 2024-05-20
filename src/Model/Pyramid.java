@@ -63,6 +63,10 @@ public class Pyramid {
         pyramid[x][y] = c;
     }
 
+    public Iterateur iterateur(){
+        return new IterateurUP(this,true);
+    }
+
 
     public String centrer(int i){
         String chaine = "";
@@ -113,6 +117,7 @@ public class Pyramid {
         }
         return clone;
     }
-    
+     
 }
+
 
