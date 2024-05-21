@@ -131,6 +131,17 @@ public class Player {
         decrement(side.remove(x));
     }
 
+    public void removeCubeSide(Cube cube){
+        int i = 0;
+        for(Cube c : side){
+            if (c==cube){
+                removeSide(i);
+                return;
+            }
+            i++;
+        }
+    }
+
     public int getSideSize(){
         return side.size();
     }

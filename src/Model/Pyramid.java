@@ -65,6 +65,11 @@ public class Pyramid {
     public void set(int x, int y, Cube c){
         pyramid[x][y] = c;
     }
+    
+    public void remove(int x,int y){
+        set(x,y,Cube.Vide);
+    }
+
 
     public Iterateur iterateur(String start){
         switch (start) {

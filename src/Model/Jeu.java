@@ -142,6 +142,43 @@ public class Jeu implements Cloneable{
         current_player = next_player();
     }
 
+    public void annule() {
+        Coup coup = hist.annule();
+        current_player = previous_player();
+        switch (coup.type) {
+            case 1:
+                getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
+                principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                break;
+
+            case 2:
+                getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
+                principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                break;
+            
+            case 3:
+                getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.intToCube((int) coup.dest.getX()));
+                getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                break;
+
+            case 4:
+                getPlayer().addSide(Cube.intToCube((int) coup.dest.getX()));
+                getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                break;
+
+            case 5:
+                getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), Cube.Blanc);
+                break;
+
+            case 6:
+                getPlayer().addSide(Cube.Blanc);
+                break;
+        
+            default:
+                break;
+        }
+    }
+
 
     /** Coup **/
     /** Debut de partie **/
@@ -217,7 +254,7 @@ public class Jeu implements Cloneable{
         else if(valid != 0){
             players[current_player].removeSide(x_player);
             principale.set(x_central, y_central, cube);
-            hist.action(2, new Point(cube.getInt(),-1),new Point(x_central,y_central));
+            hist.action(2, null,new Point(x_central,y_central));
         }
         return valid;
     }
@@ -261,7 +298,7 @@ public class Jeu implements Cloneable{
         Cube cube = players[current_player].getSide(x);
         players[next_player()].addSide(cube);
         getPlayer().removeSide(x);
-        hist.action(4, new Point(cube.getInt(),-1), null);
+        hist.action(4, null, new Point(cube.getInt(),-1));
     }
 
     
