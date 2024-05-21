@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 //import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.awt.Point;
 import java.io.BufferedWriter;
@@ -128,6 +129,7 @@ public class Jeu implements Cloneable {
         for (int i = player.getSize() - 1; i >= 0; i--) {
             for (int j = 0; j < player.getSize() - i; j++) {
                 if ( player.getPyramid().get(i, j) == Cube.Vide && !player.bagEmpty()) {
+                    Collections.shuffle(player.getPersonalBag());
                     player.construction(i, j, player.getPersonalBag().get(0));
                 }
             }

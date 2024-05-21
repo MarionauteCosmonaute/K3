@@ -61,23 +61,25 @@ public class MenuPhaseDeJeu2 extends Menu {
             pyramidePanel.add(pdj);
             pdj.setVisible(true);
 
-            // On sépare la partie des joueurs en jour gauche (joueur1) et joueur droit
+            // On sépare la partie des joueurs en joueur gauche (joueur1) et joueur droit
             // (joueur2)
             JPanel bottomLeftPanel = new JPanel(new BorderLayout());
             JPanel bottomRightPanel = new JPanel(new BorderLayout());
             joueursPanel.setLayout(new GridLayout(1, 2));
             joueursPanel.add(bottomLeftPanel);
             joueursPanel.add(bottomRightPanel);
-            bottomLeftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
 
-            // On ajoute les pyramides des joueurs
-            PDJPyramideJoueur joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur
-                                                                                        // 1
+            // Joueur Bleu
+            bottomLeftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+            PDJPyramideJoueur joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur 1
+            bottomLeftPanel.addMouseListener(new AdaptateurSourisBasGauche(controle, joueur1));
             bottomLeftPanel.add(joueur1);
             joueur1.setVisible(true);
+
+            // Joueur Rouge
             bottomRightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-            PDJPyramideJoueur joueur2 = (new PDJPyramideJoueur(J, bottomRightPanel, 1)); // ajoute la pyramide du joueur
-                                                                                         // 2
+            PDJPyramideJoueur joueur2 = (new PDJPyramideJoueur(J, bottomRightPanel, 1)); // ajoute la pyramide du joueur 2
+            // bottomRightPanel.addMouseListener(new AdaptateurSourisBasGauche(controle, joueur2));                                                                             // 2
             bottomRightPanel.add(joueur2);
             joueur2.setVisible(true);
 

@@ -28,6 +28,22 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
         repaint();
     }
 
+    // Retourne le tableau qui contient les coordonnées des points de la pyramide du joueur
+    public Point[][] PointPyramideJoueurs(){
+        return StructurePainter.PointPyramideJoueurs();
+    }
+
+    // Retourne la taille des cubes des joueurs
+    public int TailleCubeJoueur(){
+        return StructurePainter.TailleCubeJoueur();
+    }
+
+    // Retourne le nombre de joueur présent dans la partie
+    public int NombreDeJoueur(){
+        return jeu.nbJoueur();
+    }
+    
+
     public void paintComponent(Graphics g) {
 
         System.out.println("PaintComponent de PDJPyramideJoueur");
@@ -38,7 +54,9 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
         System.out.println("width_fenetre " + width_fenetre);
         System.out.println("height_fenetre " + height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid());
-        StructurePainter.Contour_Accessible_Joueur(1, jeu, g, height_fenetre, width_fenetre);
+        if(joueur == jeu.get_player()){
+            StructurePainter.Contour_Accessible_Joueur(1, jeu, g, height_fenetre, width_fenetre);
+        }
     }
 
     void build(Player player){
