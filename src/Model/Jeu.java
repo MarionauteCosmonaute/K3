@@ -12,7 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import Model.Historique.Historique;
 
-//Ceci est un test
 public class Jeu implements Cloneable{
     Player[] players;
     int nbJoueur;
@@ -252,15 +251,15 @@ public class Jeu implements Cloneable{
 
     public void takePenaltyCubeFromPyramid(int x,int y) {               /*Recupere le cube de la position x y du joueur courant et l'ajoute au side du joueur precedent */
         Cube cube  = players[current_player].get(x,y);
-        players[previous_player()].addSide(cube);
-        players[current_player].remove(x,y);
+        players[next_player()].addSide(cube);
+        getPlayer().remove(x,y);
         hist.action(3,new Point(x,y), new Point(cube.getInt(),-1));
     }
 
     public void takePenaltyCubeFromSide(int x) {            /* Recupere le cube de la position x dans la liste de cotee du joueur courant et l'ajoute au side du joueur precedent */
         Cube cube = players[current_player].getSide(x);
-        players[previous_player()].addSide(cube);
-        players[current_player].removeSide(x);
+        players[next_player()].addSide(cube);
+        getPlayer().removeSide(x);
         hist.action(4, new Point(cube.getInt(),-1), null);
     }
 
