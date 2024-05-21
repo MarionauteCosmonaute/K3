@@ -6,15 +6,21 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
+import javax.sound.sampled.Clip;
 
 
 public class MenuNouvellePartie extends Menu {
+    JButton joueurs3, joueurs4;
+    JMenu fileMenu;
+    JMenuItem joueurVSjoueur, joueurVSia;
     public MenuNouvellePartie(CollecteurEvenements controle) {
         super();
         try {
             JPanel content = new JPanel(new BorderLayout());
-            JButton joueurs3, joueurs4, UnMute, Retour;
+            JButton UnMute, Retour;
             addKeyListener(new AdaptateurClavier(controle));
             // Panneau central avec les boutons
             JPanel centrePanel = new JPanel();
@@ -26,11 +32,29 @@ public class MenuNouvellePartie extends Menu {
 
             // On s'occupe du bouton 2 Joueurs sous forme d'un menu déroulant
             JMenuBar menuBar = new MenuArrondi(20);
-            JMenu fileMenu = new JMenu("2 Joueurs");
+            fileMenu = new JMenu("2 Joueurs");
             menuBar.add(fileMenu); // Ajouter le menu "Fichier" à la barre de menu
-            JMenuItem joueurVSjoueur = new JMenuItem("joueur VS joueur");
+            joueurVSjoueur = new JMenuItem("joueur VS joueur");
             joueurVSjoueur.addActionListener(new AdaptateurJoueurVSJoueur(controle));
-            JMenuItem joueurVSia = new JMenuItem("joueur VS ia");
+            joueurVSia = new JMenuItem("joueur VS ia");
+            joueurVSia.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    (new Thread(){
+                        public void run(){
+                            Clip c=null;
+                            try{
+                                c=FileLoader.getSound("res/IA.wav");
+                            }catch(Exception e){
+                                System.exit(1);
+                            }
+                            c.setFramePosition(0);
+                            c.start();
+                        }
+                    }).run();
+                }
+            });
             fileMenu.add(joueurVSjoueur); // Ajouter "Nouveau" au menu "Fichier"
             fileMenu.add(joueurVSia); // Ajouter "Ouvrir" au menu "Fichier"
             centrePanel.add(menuBar);
@@ -101,5 +125,33 @@ public class MenuNouvellePartie extends Menu {
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             System.exit(1);
         }
+    }
+
+    @Override
+    public void updateLanguageCode() {
+        String languageCode = Global.Config.getLanguage();
+        switch (languageCode) {
+            case "FR":
+                joueurs3.setText("3 players");
+                joueurs4.setText("4 players");
+                fileMenu.setText("2 players");
+                joueurVSjoueur.setText("player vs player");
+                joueurVSia.setText("player vs AI");
+                break;
+            case "EN":
+                joueurs3.setText("3 players");
+                joueurs4.setText("4 players");
+                fileMenu.setText("2 players");
+                joueurVSjoueur.setText("player vs player");
+                joueurVSia.setText("player vs AI");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        updateLanguageCode();
     }
 }

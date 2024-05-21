@@ -19,4 +19,7 @@ public abstract class Menu extends JPanel {
             setVisible(true);
         }
     }
+    public void updateLanguageCode() {
+        System.out.println("wdym??");
+    }
 }

@@ -1,12 +1,13 @@
 package Controller;
 
 import View.*;
+import Model.*;
 
 import java.util.Vector;
 
 import javax.swing.JFrame;
 
-import Model.*;
+
 
 public class ControleurMediateur implements CollecteurEvenements {
 	Jeu jeu;
@@ -16,7 +17,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	JFrame frame = null;
 	Vector<Menu> menuListe = new Vector<>();
 	int indice_courant = 0;
-	int joueur_initial;
+	int joueur_initial;	
 
 	Cube cube;
 	// int x, y;
@@ -42,6 +43,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	public void ImporterVue(InterfaceGraphique vue) {
 		this.vue = vue;
 	}
+
 
 	@Override
 	public void clicSouris(int x, int y) {
@@ -110,15 +112,19 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;
 
 			case "FR":
+				Global.Config.setLanguage("FR");
+				menuListe.get(0).updateLanguageCode();
 				break;
 
 			case "EN":
+				Global.Config.setLanguage("EN");
+				menuListe.get(0).updateLanguageCode();
 				break;
 
 			case "Reset":
 				jeu.resetBag();
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getOldPhaseConstruction().setValider(false);
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getOldPhaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme ça
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setValider(false);
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme ça
 			break;
 			
 			case "AideConstruction":
@@ -135,8 +141,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "Valider":
 				jeu.avance();
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getOldPhaseConstruction().setValider(false);
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getOldPhaseConstruction().repaint();
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setValider(false);
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint();
 				// if(jeu.get_player().estIA()){
 				// jeu.avance();
 				// }

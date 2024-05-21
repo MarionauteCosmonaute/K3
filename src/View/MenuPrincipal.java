@@ -11,10 +11,12 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class MenuPrincipal extends Menu {
+    JButton NewGame, Charger, Quit, Lan, Regles;
+
     public MenuPrincipal(CollecteurEvenements controle) {
         super();
         JPanel content = new JPanel(new BorderLayout());
-        JButton NewGame, Charger, Lan, Quit, Regles, FR, EN, UnMute;
+        JButton FR, EN, UnMute;
         addKeyListener(new AdaptateurClavier(controle));
         try {
             // Panneau central avec les boutons
@@ -60,8 +62,8 @@ public class MenuPrincipal extends Menu {
             UnMute = Bouton.BoutonUnMute(controle);
 
             // Ajouter des écouteurs d'actions aux boutons
-            FR.addActionListener(new AdaptateurLangues(controle));
-            EN.addActionListener(new AdaptateurLangues(controle));
+            FR.addActionListener(new AdaptateurFR(controle));
+            EN.addActionListener(new AdaptateurEN(controle));
 
             // Panneau en bas à gauche pour les drapeaux
             JPanel bottomLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -77,7 +79,13 @@ public class MenuPrincipal extends Menu {
             Regles.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    String rules = "DÉROULEMENT DU JEU\n" +
+                    String languageCode = Global.Config.getLanguage();
+                    String rules = null;
+                    String title = null;
+                    switch (languageCode) {
+                        case "FR":
+                            title = "Règles du jeu";
+                            rules = "DÉROULEMENT DU JEU\n" +
                             "À votre tour, vous devez jouez un des pions de votre pyramide. Vous pouvez :\n" +
                             " -> Jouer un pion coloré et le placer sur le K3.\n" +
                             " -> Jouer un pion naturel et le placer sur le K3. Un pion naturel est considéré comme un joker et peut remplacer n'importe quelle couleur.\n"
@@ -103,7 +111,13 @@ public class MenuPrincipal extends Menu {
                             "Si, lorsque vient votre tour, vous ne pouvez plus jouer, vous êtes éliminé de la partie.\n"
                             +
                             "Lors d’une partie à 3, le joueur précédant la première personne éliminée récupère le pion blanc écarté en début de jeu. Ce pion est placé à côté de sa pyramide et pourra être joué lors d’un prochain tour.";
-                    JOptionPane.showMessageDialog(content, rules, "Regles du jeu", JOptionPane.INFORMATION_MESSAGE);
+                            break;
+                        case "EN" :
+                            title = "Game rules";
+                            rules = "Game rules are coming soon :)";
+                            break;
+                    }
+                    JOptionPane.showMessageDialog(content, rules, title, JOptionPane.INFORMATION_MESSAGE);
                 }
 
             });
@@ -150,6 +164,7 @@ public class MenuPrincipal extends Menu {
             EN.setBorder(BorderFactory.createEmptyBorder());
             EN.setContentAreaFilled(false);
 
+            updateLanguageCode();
             content.setVisible(true);
             content.setOpaque(false);
             setOpaque(false);
@@ -157,6 +172,29 @@ public class MenuPrincipal extends Menu {
             controle.addMenu(this);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             System.exit(1);
+        }
+    }
+
+    @Override
+    public void updateLanguageCode() {
+        String languageCode = Global.Config.getLanguage();
+        switch (languageCode) {
+            case "FR":
+                NewGame.setText("Nouvelle Partie");
+                Charger.setText("Charger Partie");
+                Lan.setText("LAN");
+                Quit.setText("Quitter");
+                Regles.setText("Règles");
+                break;
+            case "EN":
+                NewGame.setText("New game");
+                Charger.setText("Load Game");
+                Lan.setText("LAN");
+                Quit.setText("Quit");
+                Regles.setText("Rules");
+                break;
+            default:
+                break;
         }
     }
 }
