@@ -25,10 +25,6 @@ public class Jeu implements Cloneable{
         /* Fonction creation du jeu */
         /***************************/
 
-        /*****************************/
-        /* Fonction creation du jeu */
-        /***************************/
-
     public Jeu(int nb){             /* creation de l'objet jeu ainsi que les joueurs */
         reset(nb);
     }
@@ -185,6 +181,7 @@ public class Jeu implements Cloneable{
     // 0 -> NOT VALID
     // 1 -> VALID
     // 2 -> VALID WITH PENALITY
+    // 3 -> PLAY WHITE
     public int add_central(int x_central, int y_central, int x_player, int y_player){
         if (y_player==-1){
             return add_central_side(x_central, y_central, x_player);
@@ -197,7 +194,8 @@ public class Jeu implements Cloneable{
         if(accessible(x_player, y_player)){
             Cube cube = players[current_player].get(x_player, y_player);
             int valid = move_validity(cube, x_central, y_central);
-            if(valid != 0){
+            if(valid == 3){joueBlancPyramide(x_player, y_player);}
+            else if(valid != 0){
                 players[current_player].set(x_player, y_player, Cube.Vide);
                 principale.set(x_central, y_central, cube);
                 if(x_central == 9){
@@ -213,7 +211,10 @@ public class Jeu implements Cloneable{
     public int add_central_side(int x_central, int y_central, int x_player){        /* meme valeur renvoyer */
         Cube cube = players[current_player].getSide(x_player);
         int valid = move_validity(cube, x_central, y_central);
-        if(valid != 0){
+        if(valid == 3) {
+            joueBlancSide(x_player);
+        }
+        else if(valid != 0){
             players[current_player].removeSide(x_player);
             principale.set(x_central, y_central, cube);
             hist.action(2, new Point(cube.getInt(),-1),new Point(x_central,y_central));
@@ -290,8 +291,10 @@ public class Jeu implements Cloneable{
     // 0 -> NOT VALID
     // 1 -> VALID
     // 2 -> VALID WITH PENALITY
+    // 3 -> PLAY WHITE
     public int move_validity(Cube cube, int x, int y){          /* bonne validitee renvoyee */
-        if ( cube != Cube.Blanc && sameColor(principale.get(x, y), Cube.Vide) && check_under(x,y) && (sameColor(principale.get(x-1, y),cube) || ( sameColor(principale.get(x-1, y+1),cube))) ){
+        if(cube == Cube.Blanc) return 3;
+        if ( sameColor(principale.get(x, y), Cube.Vide) && check_under(x,y) && (sameColor(principale.get(x-1, y),cube) || ( sameColor(principale.get(x-1, y+1),cube))) ){
             if (check_penality(x, y)){
                 return 2;
             }
