@@ -413,9 +413,13 @@ public class Jeu implements Cloneable{
 
     public ArrayList<Point> destination(Cube cube){
         ArrayList<Point> list = new ArrayList<>();
+        if(cube == Cube.Blanc){
+            list.add(new Point(-1,-1));
+            return list;
+        }
         for(int i = principale.getSize()-1; i >= 0; i--){
             for(int j = 0; j < principale.getSize()-i; j++){
-                if(move_validity(cube,i,j)!=0){
+                if( move_validity(cube,i,j)!=0){
                     Point p = new Point(i,j);
                     list.add(p);
                 }
