@@ -1,6 +1,5 @@
 package Model;
 
-import java.util.Iterator;
 import Model.Iterateur.*;
 
 public class Pyramid {
