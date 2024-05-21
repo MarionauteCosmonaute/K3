@@ -57,13 +57,6 @@ public class StructurePainter {
                    points_pyramide_joueur[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
                    taille_cube_joueur = taille_cube; 
                 }
-                
-                // System.out.println("x_haut " + x_haut);
-                // System.out.println("y_haut " + y_haut);
-                // System.out.println("taille_cube " + taille_cube);
-                // System.out.println("height " + height);
-                // System.out.println("width " + width);
-
                 switch (cube) {
                     case Noir:
                         // System.out.println("cube noir");
@@ -106,17 +99,6 @@ public class StructurePainter {
                 }
             }
         }
-        if (taille_pyramide != 9){
-            System.out.println("taille des cube: "+ taille_cube_joueur);
-            for (int i = 8 - 2 - 1; i >= 0; i--) {
-                for(int j = 0; j<=i; j++){
-                    System.out.print("i: "+i+" j: "+j+" (" + points_pyramide_joueur[i][j].x + ", " + points_pyramide_joueur[i][j].y+")");
-                }
-                System.out.println();
-            }
-        }
-        // drawable.drawRect(width/2, 0, 0, height);
-        // drawable.drawRect(0, height/2, width, 0);
     }
 
     public static Point[][] PointPyramideJoueurs(){
@@ -139,7 +121,7 @@ public class StructurePainter {
         // On dessine la "sur-brillance"
         ArrayList<Point> ListePoints = jeu.AccessibleCubesPlayer(num_joueur);
         for(Point p : ListePoints){
-            // System.out.println("---------------------x : "+p.x + ", y: "+p.y);
+            // y_haut + espace * y, x_haut + espace * x
             x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (5-p.x)
                     - (espace * taille_pyramide) / 2;
             y_haut = width / 2 - (taille_cube / 2) * ((5-p.x) + 1) + taille_cube * p.y - (espace * (5-p.x)) / 2;

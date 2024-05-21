@@ -47,6 +47,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicSouris(int x, int y) {
+		
 		System.out.println("x : " + x + ",y : " + y);
 	}
 
@@ -128,7 +129,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 			break;
 			
 			case "AideConstruction":
-				jeu.constructionAleatoire(jeu.getPlayer(jeu.get_player()));
+				jeu.constructionAleatoire(jeu.getPlayer());
+				System.out.println(jeu.getPlayer().getPyramid());
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).repaint();
 			break;
 
@@ -156,17 +158,21 @@ public class ControleurMediateur implements CollecteurEvenements {
 				System.out.println("Case son de ControleurMediateur");
 				musique.jouerMusique();
 				break;
+
 			case "MenuP":
 				((BackgroundPanel) frame).setBackgroundPicture("res/Back.png");
 				changeVisible(0);
 				break;
+
 			case "MenuLocal":
 				changeVisible(1);
 				break;
+
 			case "PDJ2":
 				changeVisible(3);
 				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
 				break;
+				
 			default:
 				return false;
 		}

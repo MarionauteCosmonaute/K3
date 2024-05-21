@@ -176,7 +176,7 @@ public class Player {
     }
 
     public void addBag(Cube cube){
-        increment(cube);
+        incrementBag(cube);
         personalBag.add(cube);
     }
 
