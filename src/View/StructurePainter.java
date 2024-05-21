@@ -46,7 +46,7 @@ public class StructurePainter {
             x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * x
                     - (espace * taille_pyramide) / 2;
             for (int y = 0; y <= x; y++) {
-                cube = pyramide.get(taille_pyramide - 1 - x, x - y);
+                cube = pyramide.get(taille_pyramide - 1 - x, y);
                 y_haut = width / 2 - (taille_cube / 2) * (x + 1) + taille_cube * y - (espace * x) / 2;
 
                 System.out.println("x_haut " + x_haut);
