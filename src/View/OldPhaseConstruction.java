@@ -83,12 +83,14 @@ public class OldPhaseConstruction {
         reset = Bouton.creerButton("Reset");
         reset.addActionListener(new AdaptateurReset(controle));
         centrePanel.add(reset);
-        boiteTexte.add(centrePanel);
 
         valider = Bouton.creerButton("Valider");
+        valider.addActionListener(new AdaptateurValider(controle));
         valider.setEnabled(false);
         centrePanel.add(valider);
+        
         boiteTexte.add(centrePanel);
+        boiteTexte.setOpaque(false);
         frame.add(boiteTexte, BorderLayout.SOUTH);
 
         Box boite_aide = Box.createVerticalBox();
@@ -97,7 +99,10 @@ public class OldPhaseConstruction {
         aide.addActionListener(new AdaptateurAideConstruction(controle));
         panel.add(aide);
         boite_aide.add(panel);
+        boite_aide.setOpaque(false);
         frame.add(boite_aide, BorderLayout.NORTH);
+        centrePanel.setOpaque(false);
+        panel.setOpaque(false);
     }
 
     public Point[][] points_pyr() {
@@ -352,6 +357,7 @@ public class OldPhaseConstruction {
                 p = new Point(y_haut, x_haut);
                 tab_pts[x][y] = p;
 
+                if( x == 0 && y == 0 ){System.out.println(" Code de lisa le cube est: " + cube);}
                 switch (cube) {
                     case Noir:
                         drawable.drawImage(noir, y_haut, x_haut, taille_cube, taille_cube, null);

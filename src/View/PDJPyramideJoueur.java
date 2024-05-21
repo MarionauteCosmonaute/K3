@@ -30,9 +30,6 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
 
     public void paintComponent(Graphics g) {
 
-        while (jeu.draw()) {
-        }
-        build(jeu.getPlayer(joueur));
         System.out.println("PaintComponent de PDJPyramideJoueur");
         drawable = (Graphics2D) g;
         width_fenetre = parent.getWidth();

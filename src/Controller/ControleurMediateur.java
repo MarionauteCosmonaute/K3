@@ -51,8 +51,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 	@Override
 	public void clicSourisPyr(int ligne, int col) {
 		jeu.construction(ligne, col, cube);
-		// System.out.println(cube);
-		// System.out.println("case : ("+ligne+","+col+")");
+		 System.out.println(cube);
+		 System.out.println("case : ("+ligne+","+col+")");
 	}
 
 	@Override
@@ -115,20 +115,19 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "EN":
 				break;
 
-			// case "Reset":
-			// jeu.resetBag();
-			// vue.phaseConstruction().setValider(false);
-			// vue.phaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme
-			// ça
-			// break;
-			//
-			// case "AideConstruction":
-			// jeu.constructionAleatoire(jeu.getPlayer(jeu.get_player()));
-			// vue.phaseConstruction().repaint();
-			// break;
+			case "Reset":
+				jeu.resetBag();
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).getOldPhaseConstruction().setValider(false);
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).getOldPhaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme ça
+			break;
+			
+			case "AideConstruction":
+				jeu.constructionAleatoire(jeu.getPlayer(jeu.get_player()));
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).repaint();
+			break;
 
 			case "JoueurVSJoueur":
-			   ((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
+			    ((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
 				changeVisible(2);
 				//jeu.reset(2, false); // On cree une partie a 2
 
@@ -136,13 +135,16 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "Valider":
 				jeu.avance();
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).getOldPhaseConstruction().setValider(false);
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).getOldPhaseConstruction().repaint();
 				// if(jeu.get_player().estIA()){
 				// jeu.avance();
 				// }
 				if (jeu.get_player() == joueur_initial) {
+					changeVisible(3);
 
-					// passer au menu d'après
 				}
+				break;
 
 			case "Son":
 				System.out.println("Case son de ControleurMediateur");
