@@ -1,8 +1,9 @@
-package Model;
+package Model.Historique;
 
 
 import java.util.Stack;
 import java.awt.Point;
+import Model.Coup;
 
 public class Historique{
     
@@ -15,33 +16,34 @@ public class Historique{
         coup_annule = new Stack<>();
     }
 
-    public void action(int type, Point[] coordonee){
-        coup_jouer.add(new Coup(type, coordonee));
+    public void action(int type, Point s, Point d){
+        coup_jouer.add(new Coup(type, s, d));
+        coup_annule = new Stack<Coup>();
     }
 
     public Coup annule(){
-        if(annulePossible()){
+        if(isEmptyAnnule()){
             Coup coup = coup_jouer.pop();
             coup_annule.add(coup);
             return coup;
         }
-        return new Coup(-1, null);
+        return null;
     }
 
     public Coup refais(){
-        if(refaisPossible()){
-            
+        if(isEmptyRefaire()){
+            Coup coup = coup_annule.pop();
+            coup_jouer.add(coup);
+            return coup;
         }
-        return new Coup(-1,null);
+        return null;
     }
 
-    private boolean annulePossible(){
+    private boolean isEmptyAnnule(){
         return !coup_jouer.empty();
     }
 
-    private boolean refaisPossible(){
+    private boolean isEmptyRefaire(){
         return !coup_annule.empty();
     }
-
-    
-}
+}   
