@@ -10,7 +10,6 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
     JFrame frame;
     Graphics2D drawable;
     Jeu jeu;
-
     OldPhaseConstruction cons;
 
     AffichagePhaseConstruction(Jeu jeu, OldPhaseConstruction c) {
@@ -131,7 +130,7 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
 
     public void paintComponent(Graphics g) {
         // System.out.println("PaintComponent de NiveauGraphique");
-
+        cons.updateJoueurLabel();
         // Initialisation de la fenêtre graphique
         drawable = (Graphics2D) g;
         width_fenetre = getSize().width;

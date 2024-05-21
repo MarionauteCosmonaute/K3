@@ -34,9 +34,9 @@ public class MenuNouvellePartie extends Menu {
             JMenuBar menuBar = new MenuArrondi(20);
             fileMenu = new JMenu("2 Joueurs");
             menuBar.add(fileMenu); // Ajouter le menu "Fichier" à la barre de menu
-            joueurVSjoueur = new JMenuItem("joueur VS joueur");
+            joueurVSjoueur = new JMenuItem("Joueur VS Joueur");
             joueurVSjoueur.addActionListener(new AdaptateurJoueurVSJoueur(controle));
-            joueurVSia = new JMenuItem("joueur VS ia");
+            joueurVSia = new JMenuItem("Joueur VS IA");
             joueurVSia.addActionListener(new ActionListener() {
 
                 @Override
@@ -132,18 +132,18 @@ public class MenuNouvellePartie extends Menu {
         String languageCode = Global.Config.getLanguage();
         switch (languageCode) {
             case "FR":
-                joueurs3.setText("3 players");
-                joueurs4.setText("4 players");
-                fileMenu.setText("2 players");
-                joueurVSjoueur.setText("player vs player");
-                joueurVSia.setText("player vs AI");
+                joueurs3.setText("3 Joueurs");
+                joueurs4.setText("4 Joueurs");
+                fileMenu.setText("2 Joueurs");
+                joueurVSjoueur.setText("Joueur VS Joueur");
+                joueurVSia.setText("Joueur VS IA");
                 break;
             case "EN":
-                joueurs3.setText("3 players");
-                joueurs4.setText("4 players");
-                fileMenu.setText("2 players");
-                joueurVSjoueur.setText("player vs player");
-                joueurVSia.setText("player vs AI");
+                joueurs3.setText("3 Players");
+                joueurs4.setText("4 Players");
+                fileMenu.setText("2 Players");
+                joueurVSjoueur.setText("Player VS Player");
+                joueurVSia.setText("Player VS AI");
                 break;
             default:
                 break;

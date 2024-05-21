@@ -54,8 +54,19 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
         System.out.println("width_fenetre " + width_fenetre);
         System.out.println("height_fenetre " + height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid());
+        switch(joueur){
+            case 0:
+                drawable.setColor(Color.BLUE);
+            break;
+            case 1:
+                drawable.setColor(Color.RED);
+            break;
+        }
+        drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre/10,width_fenetre/10)));
+        drawable.drawString("Joueur "+(joueur+1), 5, Math.min(height_fenetre/10,width_fenetre/10));
+        drawable.setColor(Color.BLACK);
         if(joueur == jeu.get_player()){
-            StructurePainter.Contour_Accessible_Joueur(1, jeu, g, height_fenetre, width_fenetre);
+            StructurePainter.Contour_Accessible_Joueur(joueur, jeu, g, height_fenetre, width_fenetre);
         }
     }
 

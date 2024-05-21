@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 
 public class OldPhaseConstruction {
     JPanel frame;
+    JLabel joueurLabel;
     CollecteurEvenements controle;
     Graphics2D drawable;
     Image neutre, bleu, vert, jaune, noir, blanc, rouge, vide, carre_noir_vide;
@@ -103,8 +104,11 @@ public class OldPhaseConstruction {
         Retour.setBorder(BorderFactory.createEmptyBorder());
         Retour.setContentAreaFilled(false);
 
+        joueurLabel= new JLabel("Joueur "+ (jeu.get_player()+1));
+		panel.add(joueurLabel);
+
         // Bouton Aide
-        Aide = Bouton.creerButton("Aide");
+        Aide = Bouton.creerButton("Auto-construction");
         Aide.addActionListener(new AdaptateurAideConstruction(controle));
         JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topCenter.add(Aide, BorderLayout.CENTER);
@@ -135,12 +139,12 @@ public class OldPhaseConstruction {
             case "FR":
                 reset.setText("Redemarrer");
                 valider.setText("Valider");
-                Aide.setText("Aide");
+                Aide.setText("Auto-construction");
                 break;
             case "EN":
                 reset.setText("Reset");
                 valider.setText("Complete");
-                Aide.setText("Help");
+                Aide.setText("Auto-construction");
                 break;
             default:
                 break;
@@ -449,6 +453,10 @@ public class OldPhaseConstruction {
 
             drawable.setColor(Color.BLACK);
         }
+
     }
+    public void updateJoueurLabel(){
+        joueurLabel.setText("Joueur "+ (jeu.get_player()+1)); 
+    } 
 
 }
