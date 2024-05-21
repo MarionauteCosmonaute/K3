@@ -54,7 +54,7 @@ public class StructurePainter {
 
                 // On complète notre tableau de points uniquement si c'est la pyramide joueur
                 if(taille_pyramide != 9){
-                   points_pyramide_joueur[x][y] = new Point(x_haut, y_haut);
+                   points_pyramide_joueur[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
                    taille_cube_joueur = taille_cube; 
                 }
                 
@@ -107,9 +107,10 @@ public class StructurePainter {
             }
         }
         if (taille_pyramide != 9){
+            System.out.println("taille des cube: "+ taille_cube_joueur);
             for (int i = 8 - 2 - 1; i >= 0; i--) {
                 for(int j = 0; j<=i; j++){
-                    System.out.print("(" + points_pyramide_joueur[i][j].x + ", " + points_pyramide_joueur[i][j].y+")");
+                    System.out.print("i: "+i+" j: "+j+" (" + points_pyramide_joueur[i][j].x + ", " + points_pyramide_joueur[i][j].y+")");
                 }
                 System.out.println();
             }
