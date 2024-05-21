@@ -44,42 +44,49 @@ public abstract class IA {
             }
         }
         if (depth == 0){
-            if(IA == 0){ //IA Facile
+            int total = 0;
+            int total_j1 = 0;
+            int total_j2 = 0;
+            for(Point compte : cubes_access){ //Compte du nombre de coups jouable du j1
+                int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
+                total_j1+= current_possibilities;
+            }
+            ArrayList<Point> cubes_access2 = j.Accessible_Playable(j.next_player()); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
+            for(Point compte : cubes_access2) { //Compte du nombre de coups jouable du j1
+                int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
+                total_j2+= current_possibilities;
+            }
+            switch (IA){
+            case -1: //IA specifique à la création de la pyramide
+                
+                for(Point compte : cubes_access){
+                    int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
+                    total+= current_possibilities;
+                }
+                return total;
+            case 0: //IA Facile
                 if(bon_joueur){
                     return j.getPlayer().totalCube() - j.getPlayer(j.next_player()).totalCube();
                 }
                 else{
                     return j.getPlayer(j.next_player()).totalCube() - j.getPlayer().totalCube();
                 }
-            }
-            if(IA == -1){ //IA specifique à la création de la pyramide
-                int total = 0;
-                for(Point compte : cubes_access){
-                    int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
-                    total+= current_possibilities;
-                }
-                return total;
-            }
-            if(IA==1){ //IA Medium
-                int total_j1 = 0;
-                for(Point compte : cubes_access){
-                    int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
-                    total_j1+= current_possibilities;
-                }
-                int total_j2 = 0;
-                ArrayList<Point> cubes_access2 = j.Accessible_Playable(j.next_player()); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
-                for(Point compte : cubes_access2) {
-                    int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
-                    total_j2+= current_possibilities;
-                }
-                int total = (int)(total_j1 * 0.2) + (int)(j.getPlayer().totalCube()*0.8) - (int)(0.8 * j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2 * 0.2);
+            case 1 : //IA Medium
+                total = (int)(total_j1 * 0.2) + (int)(j.getPlayer().totalCube()*0.8) - (int)(0.8 * j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2 * 0.2);
                 if(bon_joueur){
                     return total; 
                 }
                 else{
                     return -total;
                 }
-            }
+            case 2 : //IA Difficile
+                total = (int)(total_j1 * 0.7) + (int)(j.getPlayer().totalCube()*0.3) - (int)(0.3 * j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2 * 0.7);
+                if(bon_joueur){
+                    return total; 
+                }
+                else{
+                    return -total;
+                }
         }
         if(bon_joueur){
             value = -1000;
@@ -132,10 +139,88 @@ public abstract class IA {
         return value;
     }
 
+    public ArrayList<ArrayList<Point>> coupIA(Jeu j, int joueur1, int difficulté){
+        ArrayList<ArrayList<Point>> resultat_ok = new ArrayList<>();
+        ArrayList<ArrayList<Point>> resultat_ko = new ArrayList<>();
+        int value_max= -100000;
+        ArrayList<Point> cubes_access = j.Accessible_Playable();
+        for(Point depart : cubes_access){
+            ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations((int) depart.getX(),(int) depart.getY());
+            for(Point arrivee : coups_jouables){
+                ArrayList<Point> pos = new ArrayList<>();
+                pos.add(depart);
+                pos.add(arrivee);
+                Jeu clone = new Jeu(2);
+                clone = j.clone();
+                int value = 0;
+                switch(difficulté){
+                    case 0:
+                    value= MinMaxIA(clone, 2, joueur1, -10000, +10000, 0);
+                    break;
+                    case 1:
+                    value = MinMaxIA(clone, 3, joueur1, -10000, +10000, 1);
+                    break;
+                    case 2:
+                    value = MinMaxIA(clone, 5, joueur1, -10000, +10000, 2);
+                    break;
+                }
+                
+                if(value==value_max){
+                    resultat_ok.add(pos);
+                }
+                else if(value>value_max){
+                    resultat_ok.clear();
+                    resultat_ok.add(pos);
+                    value_max = value;
+                }
+                else if(value==1000){
+                    resultat_ok.clear();
+                    resultat_ok.add(pos);
+                    return resultat_ok;
+                }
+                else{
+                    resultat_ko.add(pos);
+                }
+            }
+        }
+        if(resultat_ok.size()==0){
+            return resultat_ko;
+        }
+        return resultat_ok;
+    }
+
+    public ArrayList<Point> penaltyIA(Jeu j){
+        ArrayList<Point> resultat_ok = new ArrayList<>();
+        int max = 0;
+        Point x_y_to_take = new Point();
+        ArrayList<Point> cubes_access = j.Accessible_Playable();
+        for(Point cubes : cubes_access){
+            int nb = j.CubeAccessibleDestinations((int) cubes.getX(),(int) cubes.getY()).size();
+            x_y_to_take.x = (int) cubes.getX();
+            x_y_to_take.y = (int) cubes.getY();
+            if (max<nb){
+                resultat_ok.clear();
+                resultat_ok.add(x_y_to_take);
+                max = nb;
+            }
+            else if(nb==max){
+                resultat_ok.add(x_y_to_take);
+            }
+        }
+        return resultat_ok;
+    }
+
     public void add_central() {
         throw new UnsupportedOperationException();
     }
     public void construction(){
         throw new UnsupportedOperationException();
+    }
+
+    public void takePenaltyCube(){
+        ArrayList<Point> coups_possibles = penaltyIA(jeu);
+        Random random = new Random();
+        Point coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
+        jeu.takePenaltyCube((int) coup_a_jouer.getX(), (int) coup_a_jouer.getY());
     }
 }

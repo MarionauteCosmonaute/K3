@@ -2,16 +2,15 @@ package Model;
 
 import java.util.Random;
 import java.util.Scanner;
-//import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-//import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import Model.Historique.Historique;
 
 public class Jeu implements Cloneable{
     Player[] players;
@@ -20,20 +19,25 @@ public class Jeu implements Cloneable{
     PawnsBag bag;
     int current_player, size;
     boolean End;
-
-        /*****************************/
-        /* Fonction creation du jeu */
-        /***************************/
+    //Model.Historique.Historique hist;
 
         /*****************************/
         /* Fonction creation du jeu */
         /***************************/
 
     public Jeu(int nb){             /* creation de l'objet jeu ainsi que les joueurs */
+        reset(nb);
+    }
 
+    public Jeu(String fileName){
+        reset(fileName);
+    }
+
+    public void reset(int nb){
         nbJoueur = nb;
         End = false;
         players = new Player[nb];
+        //hist = new Historique();
 
         bag = new PawnsBag(nb);
         principale = new Pyramid(9);
@@ -55,10 +59,12 @@ public class Jeu implements Cloneable{
         Random r = new Random();
         current_player = r.nextInt(nb);
     }
-    public Jeu(String fileName){
+
+    public void reset(String fileName){
         try{
             Scanner s = new Scanner(new FileInputStream(fileName));
             String[] chaine = s.nextLine().split(" ");
+            //hist = new Historique();
             nbJoueur = Integer.parseInt(chaine[0]);
             bag = new PawnsBag(nbJoueur);
             size = 8-nbJoueur;
@@ -122,7 +128,7 @@ public class Jeu implements Cloneable{
     public void constructionAleatoire(Player player){
         for(int i = player.getSize()-1; i >= 0; i--){
             for(int j = 0; j < player.getSize()-i; j++){
-                if(!player.bagEmpty()){player.construction(j, i, player.getPersonalBag().get(0));}
+                if(player.getPyramid().get(j, i) == Cube.Vide && !player.bagEmpty()){player.construction(i, j, player.getPersonalBag().get(0));}
             }
         }    
     }
@@ -175,6 +181,7 @@ public class Jeu implements Cloneable{
     // 0 -> NOT VALID
     // 1 -> VALID
     // 2 -> VALID WITH PENALITY
+    // 3 -> PLAY WHITE
     public int add_central(int x_central, int y_central, int x_player, int y_player){
         if (y_player==-1){
             return add_central_side(x_central, y_central, x_player);
@@ -187,13 +194,15 @@ public class Jeu implements Cloneable{
         if(accessible(x_player, y_player)){
             Cube cube = players[current_player].get(x_player, y_player);
             int valid = move_validity(cube, x_central, y_central);
-            if(valid != 0){
+            if(valid == 3){joueBlancPyramide(x_player, y_player);}
+            else if(valid != 0){
                 players[current_player].set(x_player, y_player, Cube.Vide);
                 principale.set(x_central, y_central, cube);
                 if(x_central == 9){
                     principale.extend();
                 }
             }
+            //hist.action(1,new Point(x_player,y_player), new Point(x_central,y_central));
             return valid;
         }
         return 0;
@@ -202,11 +211,33 @@ public class Jeu implements Cloneable{
     public int add_central_side(int x_central, int y_central, int x_player){        /* meme valeur renvoyer */
         Cube cube = players[current_player].getSide(x_player);
         int valid = move_validity(cube, x_central, y_central);
-        if(valid != 0){
+        if(valid == 3) {
+            joueBlancSide(x_player);
+        }
+        else if(valid != 0){
             players[current_player].removeSide(x_player);
             principale.set(x_central, y_central, cube);
+            //hist.action(2, new Point(cube.getInt(),-1),new Point(x_central,y_central));
         }
         return valid;
+    }
+
+    public boolean joueBlancPyramide(int x, int y){
+        if(getPlayer().get(x,y) == Cube.Blanc){
+            getPlayer().remove(x, y);
+            //hist.action(5,new Point(x,y), null);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean joueBlancSide(int x){
+        if(getPlayer().getSide(x) == Cube.Blanc){
+            getPlayer().removeSide(x);
+            //hist.action(6, null, null);
+            return true;
+        }
+        return false;
     }
 
         /* Penalitee */
@@ -220,14 +251,20 @@ public class Jeu implements Cloneable{
     }
 
     public void takePenaltyCubeFromPyramid(int x,int y) {               /*Recupere le cube de la position x y du joueur courant et l'ajoute au side du joueur precedent */
-        players[previous_player()].addSide(players[current_player].get(x,y));
-        players[current_player].remove(x,y);
+        Cube cube  = players[current_player].get(x,y);
+        players[next_player()].addSide(cube);
+        getPlayer().remove(x,y);
+        //hist.action(3,new Point(x,y), new Point(cube.getInt(),-1));
     }
 
     public void takePenaltyCubeFromSide(int x) {            /* Recupere le cube de la position x dans la liste de cotee du joueur courant et l'ajoute au side du joueur precedent */
-        players[previous_player()].addSide(players[current_player].getSide(x));
-        players[current_player].removeSide(x);
+        Cube cube = players[current_player].getSide(x);
+        players[next_player()].addSide(cube);
+        getPlayer().removeSide(x);
+        //hist.action(4, new Point(cube.getInt(),-1), null);
     }
+
+    
 
     /*************/
 
@@ -254,7 +291,9 @@ public class Jeu implements Cloneable{
     // 0 -> NOT VALID
     // 1 -> VALID
     // 2 -> VALID WITH PENALITY
+    // 3 -> PLAY WHITE
     public int move_validity(Cube cube, int x, int y){          /* bonne validitee renvoyee */
+        if(cube == Cube.Blanc) return 3;
         if ( sameColor(principale.get(x, y), Cube.Vide) && check_under(x,y) && (sameColor(principale.get(x-1, y),cube) || ( sameColor(principale.get(x-1, y+1),cube))) ){
             if (check_penality(x, y)){
                 return 2;
@@ -374,9 +413,13 @@ public class Jeu implements Cloneable{
 
     public ArrayList<Point> destination(Cube cube){
         ArrayList<Point> list = new ArrayList<>();
+        if(cube == Cube.Blanc){
+            list.add(new Point(-1,-1));
+            return list;
+        }
         for(int i = principale.getSize()-1; i >= 0; i--){
             for(int j = 0; j < principale.getSize()-i; j++){
-                if(move_validity(cube,i,j)!=0){
+                if( move_validity(cube,i,j)!=0){
                     Point p = new Point(i,j);
                     list.add(p);
                 }
@@ -390,8 +433,6 @@ public class Jeu implements Cloneable{
 
     //COORD POSITION POSSIBLES POUR UN CUBE DONNEE
     public ArrayList<Point> CubeAccessibleDestinations(int x, int y){
-        if(y == -1 && (x > getPlayer(0).getSide().size() || x >= getPlayer(1).getSide().size())){return new ArrayList<>();}
-        //System.out.println(x+ " " +y);
         if (y==-1){
             return destination(getPlayer().getSide(x));
         }
