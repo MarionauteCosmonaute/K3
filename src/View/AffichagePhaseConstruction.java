@@ -138,5 +138,6 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
         height_fenetre = getSize().height;
 
         cons.fonction_globale(jeu, g, width_fenetre, height_fenetre);
+        cons.updateLanguageCode();
     }
 }

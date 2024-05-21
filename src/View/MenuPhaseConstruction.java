@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class MenuPhaseConstruction extends Menu {
     AffichagePhaseConstruction apc=null;
+    OldPhaseConstruction cons=null;
     public MenuPhaseConstruction(CollecteurEvenements controle, Jeu jeu) {
         super();
         JPanel content = new JPanel(new BorderLayout());
@@ -15,15 +16,23 @@ public class MenuPhaseConstruction extends Menu {
         apc.addMouseListener(new AdaptateurSouris(controle, apc));
         pc.add(apc);
         content.add(pc);
-        //content.add(apc);
         content.setVisible(true);
         content.setOpaque(false);
         pc.setOpaque(false);
         add(content);
         controle.addMenu(this);
     }
-    public AffichagePhaseConstruction getOldPhaseConstruction(){
+    public AffichagePhaseConstruction getAffichagePhaseConstruction(){
         return apc;
+    }
+    
+    @Override
+    public void updateLanguageCode() {
+        getOldPhaseConstruction().updateLanguageCode();
+
+    }
+    private OldPhaseConstruction getOldPhaseConstruction() {
+        return cons;
     }
 
 }

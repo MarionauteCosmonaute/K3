@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 
 public class OldPhaseConstruction {
     JPanel frame;
-    JButton Aide;
     CollecteurEvenements controle;
     Graphics2D drawable;
     Image neutre, bleu, vert, jaune, noir, blanc, rouge, vide, carre_noir_vide;
@@ -31,7 +30,7 @@ public class OldPhaseConstruction {
     int nbJoueur;
     int taille_base_pyramide;
 
-    JButton reset, valider, aide;
+    JButton reset, valider, Aide;
 
     public OldPhaseConstruction(JPanel frame, CollecteurEvenements controle, Jeu jeu) {
         this.frame = frame;
@@ -80,7 +79,7 @@ public class OldPhaseConstruction {
 
         Box boiteTexte = Box.createVerticalBox();
         JPanel centrePanel = new JPanel();
-        reset = Bouton.creerButton("Reset");
+        reset = Bouton.creerButton("Redemarrer");
         reset.addActionListener(new AdaptateurReset(controle));
         centrePanel.add(reset);
 
@@ -93,16 +92,59 @@ public class OldPhaseConstruction {
         boiteTexte.setOpaque(false);
         frame.add(boiteTexte, BorderLayout.SOUTH);
 
+        JButton UnMute, Retour;
+        JPanel panel = new JPanel(new GridLayout(1, 3));
+        Retour = Bouton.BoutonRetour();
+        Retour.addActionListener(new RetourMenuPAdapeur(controle));
+        JPanel topLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        topLeftPanel.add(Retour, BorderLayout.EAST);
+        topLeftPanel.setOpaque(false);
+        panel.add(topLeftPanel, BorderLayout.WEST);
+        Retour.setBorder(BorderFactory.createEmptyBorder());
+        Retour.setContentAreaFilled(false);
+
+        // Bouton Aide
+        Aide = Bouton.creerButton("Aide");
+        Aide.addActionListener(new AdaptateurAideConstruction(controle));
+        JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        topCenter.add(Aide, BorderLayout.CENTER);
+        topCenter.setOpaque(false);
+        panel.add(topCenter);
+
+        // Bouton du Son
+        UnMute = Bouton.BoutonUnMute(controle);
+        JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        topRightPanel.add(UnMute, BorderLayout.EAST);
+        topRightPanel.setOpaque(false);
+        panel.add(topRightPanel);
+        UnMute.setBorder(BorderFactory.createEmptyBorder());
+        UnMute.setContentAreaFilled(false);
+        
         Box boite_aide = Box.createVerticalBox();
-        JPanel panel = new JPanel();
-        aide = Bouton.creerButton("Aide");
-        aide.addActionListener(new AdaptateurAideConstruction(controle));
-        panel.add(aide);
         boite_aide.add(panel);
         boite_aide.setOpaque(false);
         frame.add(boite_aide, BorderLayout.NORTH);
         centrePanel.setOpaque(false);
         panel.setOpaque(false);
+        updateLanguageCode();
+    }
+
+    public void updateLanguageCode() {
+        String languageCode = Global.Config.getLanguage();
+        switch (languageCode) {
+            case "FR":
+                reset.setText("Redemarrer");
+                valider.setText("Valider");
+                Aide.setText("Aide");
+                break;
+            case "EN":
+                reset.setText("Reset");
+                valider.setText("Complete");
+                Aide.setText("Help");
+                break;
+            default:
+                break;
+        }
     }
 
     public Point[][] points_pyr() {

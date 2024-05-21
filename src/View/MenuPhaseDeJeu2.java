@@ -6,11 +6,12 @@ import java.awt.*;
 import Model.Jeu;
 
 public class MenuPhaseDeJeu2 extends Menu {
+    JButton Aide;
     public MenuPhaseDeJeu2(CollecteurEvenements controle, Jeu J) {
         super();
         try {
             JPanel content = new JPanel(new BorderLayout());
-            JButton UnMute, Retour, Aide;
+            JButton UnMute, Retour;
             addKeyListener(new AdaptateurClavier(controle));
 
             // On sépare la partie qui contient les boutons retour/aide/son et la partie du
@@ -97,6 +98,25 @@ public class MenuPhaseDeJeu2 extends Menu {
         } catch (Exception e) {
             System.exit(1);
         }
+    }
+
+     @Override
+    public void updateLanguageCode() {
+        String languageCode = Global.Config.getLanguage();
+        switch (languageCode) {
+            case "FR":
+                Aide.setText("Aide");
+                break;
+            case "EN":
+                Aide.setText("Help");
+                break;
+            default:
+                break;
+        }
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        updateLanguageCode();
     }
 
 }
