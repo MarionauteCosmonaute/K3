@@ -1,4 +1,4 @@
-package Model;
+/*package Model;
 import java.util.*;
 import java.io.*;
 import java.awt.Point;
@@ -14,3 +14,4 @@ public class IADifficile extends IA {
         jeu.add_central((int) coup_a_jouer.get(1).getX(), (int) coup_a_jouer.get(1).getY(), (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());
     }
 }
+*/

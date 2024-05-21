@@ -10,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import Model.Historique.Historique;
 
 public class Jeu implements Cloneable{
     Player[] players;

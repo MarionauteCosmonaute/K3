@@ -1,4 +1,4 @@
-package Model;
+/*package Model;
 import java.util.*;
 import java.io.*;
 import java.awt.Point;
@@ -22,3 +22,4 @@ public class IAMedium extends IA {
         jeu.construction((int) x_y_pyra.getX(), (int) x_y_pyra.getY(), jeu.getPlayer().getSide(cube_a_placer));
     }
 }
+*/

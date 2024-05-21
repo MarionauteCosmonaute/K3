@@ -211,8 +211,9 @@ public class Player {
     }
 
     public Player clone() throws CloneNotSupportedException {
-        Player clone = (Player) super.clone();  // Clone the basic object structure
+        Player clone = new Player(size);  // Clone the basic object structure
 
+        
         clone.pyramid = pyramid.clone();
         clone.side = new ArrayList<>(side.size());
         for (Cube cube : side) {

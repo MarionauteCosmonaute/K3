@@ -1,4 +1,4 @@
-package Model;
+/*package Model;
 
 import java.awt.Point;
 import java.util.Random;
@@ -30,3 +30,4 @@ public class IAAleatoire extends IA {
         jeu.constructionAleatoire(jeu.getPlayer());
     }
 }
+*/
