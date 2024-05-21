@@ -4,10 +4,12 @@ import java.awt.Point;
 
 public class Coup{
     int type;
-    Point[] coordonnee;
+    Point source;
+    Point dest;
     
-    Coup(int type, Point[] coordonnee){
+    public Coup(int type, Point source, Point dest){
         this.type = type;
-        this.coordonnee = coordonnee;
+        this.source = source;
+        this.dest = dest;
     }
 }
