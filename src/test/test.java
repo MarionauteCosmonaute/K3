@@ -47,7 +47,7 @@ public class test{
         Scanner s = new Scanner(System.in);
         Jeu jeu;
         if(args[0].equals("charge")){
-            jeu = new Jeu("./FichierSauvegarde.txt");
+            jeu = new Jeu(args[1]);
             
         }
         else{
