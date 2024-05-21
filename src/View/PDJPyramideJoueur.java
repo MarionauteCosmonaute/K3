@@ -41,6 +41,7 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
         System.out.println("width_fenetre " + width_fenetre);
         System.out.println("height_fenetre " + height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid());
+        StructurePainter.Contour_Accessible_Joueur(1, jeu, g, height_fenetre, width_fenetre);
     }
 
     void build(Player player){
