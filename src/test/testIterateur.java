@@ -1,6 +1,7 @@
 
 
 import Model.*;
+import Model.Iterateur.*;
 
 public class testIterateur {
     public static void main(String[] args) {
@@ -18,10 +19,17 @@ public class testIterateur {
             pyramid.set(3,i,Cube.Jaune);
         }
         pyramid.set(4, 0, Cube.Noir);
-        IterateurPyramide it = pyramid.iterateur();
-        for(int i = 0; i < 19; i++){
-            System.out.println(it.prochain());
-        }
+        Iterateur it = pyramid.iterateur("DOWN");
+        //it.modify(Cube.Rouge);
+        try{
+            while(true){
+                System.out.println(it.next());
+                /*if(it.next() == Cube.Bleu){
+                    it.modify(Cube.Vide);
+                }*/
+                
+            }
+        }catch(Exception e){}
 
         System.out.println(pyramid);
     }   
