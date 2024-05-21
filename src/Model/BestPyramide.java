@@ -9,7 +9,7 @@ public class BestPyramide {
         profondeur = 0;
     }
     
-    synchronized public void set(Pyramid pyramid, int profondeur){
+    public synchronized void set(Pyramid pyramid, int profondeur){
         if(this.profondeur < profondeur){
             this.pyramide = pyramid;
             this.profondeur = profondeur;

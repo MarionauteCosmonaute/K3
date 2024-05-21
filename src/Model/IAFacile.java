@@ -1,6 +1,6 @@
 package Model;
 import java.util.*;
-import java.io.*;
+// import java.io.*;
 import java.awt.Point;
 
 public class IAFacile extends IA {
@@ -8,9 +8,12 @@ public class IAFacile extends IA {
     @Override
     public int add_central(){
         ArrayList<ArrayList<Point>> coups_possibles = coupIA(jeu, jeu.current_player, 0);
-        Random random = new Random();
-        ArrayList<Point> coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
-        return jeu.add_central((int) coup_a_jouer.get(1).getX(), (int) coup_a_jouer.get(1).getY(), (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());
+        if(coups_possibles.size() != 0){
+            Random random = new Random();
+            ArrayList<Point> coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
+            return jeu.add_central((int) coup_a_jouer.get(1).getX(), (int) coup_a_jouer.get(1).getY(), (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());
+        }
+        return 0;
     }
 
     /*@Override

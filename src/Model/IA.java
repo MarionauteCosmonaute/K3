@@ -214,26 +214,27 @@ public abstract class IA {
         return resultat_ok;
     }
 
-    public ArrayList<Cube> cubePotentiel(Jeu jeu){
+    public ArrayList<Cube> cubePotentiel(){
         Player player = jeu.getPlayer(1);
         ArrayList<Cube> list = new ArrayList<>();
         for(Cube cube : Cube.values()){
-            if((cube != Cube.Blanc && cube != Cube.Neutre) && player.getSide().contains(cube) && (jeu.destination(cube).size() > 1)){
+            if((cube != Cube.Blanc && cube != Cube.Neutre) && player.getPersonalBag().contains(cube) && (jeu.destination(cube).size() > 1)){
                 list.add(cube);
             }
         }
         return list;
     }
 
-    public Pyramid generePyramide(int index, int p){
+    public BestPyramide generePyramide(int index, int p){
         Player player = jeu.getPlayer(index);
         int size = player.getSize();
         BestPyramide ZeBest = new BestPyramide(size);
-        ArrayList<Cube> list = cubePotentiel(jeu);
+        ArrayList<Cube> list = cubePotentiel();
         Thread[] threads = new Thread[list.size()*p];       /* Potentiel amelioration afin d'avoir un nombre fixe qui ne varie pas selon la size */
         int j = 0;
         Jeu cloneBase = jeu.clone();
-        cloneBase.getPlayer(0).fusion();
+        cloneBase.getPlayer(jeu.next_player(index)).fusion();
+        player = cloneBase.getPlayer(index);
         Jeu clone;
         
         for(Cube cube : list){
@@ -241,7 +242,9 @@ public abstract class IA {
             player.construction(size-1, 0, cube);
             for (int i = 0; i < p; i++){
                 clone = cloneBase.clone();
-                threads[(j*p) + i] = new Thread(new PlayGameThread(clone,ZeBest));
+                clone.constructionAleatoire(clone.getPlayer(index));
+                threads[(j*p) + i] = new Thread(new PlayGameThread(clone,ZeBest,index));
+                threads[(j*p) + i].start();
             }
             j++;
         }
@@ -251,21 +254,24 @@ public abstract class IA {
             catch(InterruptedException e){System.out.println("Interuption catched");System.exit(1);}
         }
         
-        return ZeBest.getPyramid();
+        return ZeBest;
     }
 
     public int add_central() {  /* Modifier pour savoir si il y a une penalitee */
         throw new UnsupportedOperationException();
     }
+    
     public void construction(){
         throw new UnsupportedOperationException();
     }
 
     public void takePenaltyCube(){
         ArrayList<Point> coups_possibles = penaltyIA(jeu);
-        Random random = new Random();
-        Point coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
-        jeu.takePenaltyCube((int) coup_a_jouer.getX(), (int) coup_a_jouer.getY());
+        if(coups_possibles.size() != 0){
+            Random random = new Random();
+            Point coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
+            jeu.takePenaltyCube((int) coup_a_jouer.getX(), (int) coup_a_jouer.getY());
+        }
     }
 
     

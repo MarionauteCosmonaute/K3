@@ -3,6 +3,8 @@ package Model;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.awt.Point;
 import java.io.BufferedWriter;
@@ -127,9 +129,12 @@ public class Jeu implements Cloneable{
     public void constructionAleatoire(Player player){
         for(int i = player.getSize()-1; i >= 0; i--){
             for(int j = 0; j < player.getSize()-i; j++){
-                if(player.getPyramid().get(j, i) == Cube.Vide && !player.bagEmpty()){player.construction(i, j, player.getPersonalBag().get(0));}
+                if(player.getPyramid().get(i, j) == Cube.Vide && !player.bagEmpty()){
+                    Collections.shuffle(player.getPersonalBag());
+                    player.construction(i, j, player.getPersonalBag().get(0));
+                }
             }
-        }    
+        }
     }
         /************************************ */
         /* Fonction lier a une action de jeu */
@@ -309,7 +314,6 @@ public class Jeu implements Cloneable{
     }
 
     public boolean accessible(int x, int y, int joueur){
-
         Pyramid pyramid = getPlayer(joueur).getPyramid();
         return accessible(pyramid , x, y);
     }
@@ -451,13 +455,13 @@ public class Jeu implements Cloneable{
 
         for(Point e : AccessibleCubesPlayer(i)){
             Cube cube = getPlayer(i).get(e.x, e.y);
-            if(cube == Cube.Blanc || cube == Cube.Neutre || list.get(cube) != null){
+            if(cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube)){
                 Aksel.add(e);
             }
         }
         int x = 0;
         for(Cube c : getPlayer(i).getSide()){
-            if(c == Cube.Blanc || c == Cube.Neutre || list.get(c) != null){
+            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c)){
                 Point p = new Point(x, -1);
                 Aksel.add(p);
             }

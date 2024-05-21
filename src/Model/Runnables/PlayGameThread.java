@@ -6,13 +6,15 @@ public class PlayGameThread implements Runnable{
     Jeu jeu;
     BestPyramide best;
     Pyramid pyramid;
+    int index;
 
-    public PlayGameThread(Jeu jeu, BestPyramide best){
+    public PlayGameThread(Jeu jeu, BestPyramide best,int index){
         this.jeu = jeu;
+        this.index = index;
         this.best = best;
-        jeu.constructionAleatoire(jeu.getPlayer(1));
-        try{pyramid = jeu.getPlayer(1).getPyramid().clone();}
-        catch(CloneNotSupportedException e){System.err.println("Erreur clonnage de la pyramide");System.exit(1);}
+        jeu.constructionAleatoire(jeu.getPlayer(index));
+        try{pyramid = jeu.getPlayer(index).getPyramid().clone();}
+        catch(CloneNotSupportedException e){System.err.println("Erreur clonnage de la pyramide lors de la simulation du jeu");System.exit(1);}
     }
     
     public void run(){
@@ -20,9 +22,14 @@ public class PlayGameThread implements Runnable{
         int nbCoup = 0;
         while(!jeu.End_Game()){
             if(jeu.check_loss()){jeu.avance();}
-            else if(ia.add_central() == 2){
-                ia.takePenaltyCube();
+            else{
+                if(jeu.get_player() == index){
+                    nbCoup++;
+                }
+                if(ia.add_central() == 2){ia.takePenaltyCube();}
+                jeu.avance();
             }
+                
         }
         best.set(pyramid, nbCoup);
     }
