@@ -38,7 +38,7 @@ public enum Cube {
         }
         return Cube.Vide;
     }
-    static Cube intToCube(int s){
+    public static Cube intToCube(int s){
         switch(s){
             case 7: return Cube.Vide;  
             case 1: return Cube.Noir;

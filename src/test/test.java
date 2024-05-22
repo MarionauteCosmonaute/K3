@@ -1,5 +1,3 @@
-
-
 import Model.*;
 
 import java.awt.Point;
