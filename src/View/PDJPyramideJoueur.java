@@ -2,13 +2,13 @@ package View;
 
 import Model.Jeu;
 import Model.Player;
-import Patterns.Observateur;
+
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
 
-public class PDJPyramideJoueur extends JComponent implements Observateur {
+public class PDJPyramideJoueur extends JComponent {
     int width_fenetre, height_fenetre, nb_ligne, nb_colonne, largeur_case, hauteur_case;
     Graphics2D drawable;
     Jeu jeu;
@@ -22,12 +22,6 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
         joueur = nj;
         setOpaque(false);
     }
-
-    @Override
-    public void miseAJour() {
-        repaint();
-    }
-
     // Retourne le tableau qui contient les coordonnées des points de la pyramide du joueur
     public Point[][] PointPyramideJoueurs(){
         return StructurePainter.PointPyramideJoueurs();
@@ -66,7 +60,15 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
             break;
         }
         drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre/10,width_fenetre/10)));
-        drawable.drawString("Joueur "+(joueur+1), 5, Math.min(height_fenetre/10,width_fenetre/10));
+        String languageCode = Global.Config.getLanguage();
+        switch(languageCode){
+            case "FR":
+                drawable.drawString("Joueur "+(joueur+1), 5, Math.min(height_fenetre/10,width_fenetre/10));
+                break;
+            case "EN":
+                drawable.drawString("Player "+(joueur+1), 5, Math.min(height_fenetre/10,width_fenetre/10));
+                break;
+        }
         drawable.setColor(Color.BLACK);
         if(joueur == jeu.get_player()){
             StructurePainter.Contour_Accessible_Joueur(joueur, jeu, g, height_fenetre, width_fenetre);

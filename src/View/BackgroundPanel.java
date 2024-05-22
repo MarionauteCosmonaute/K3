@@ -8,9 +8,7 @@ public class BackgroundPanel extends JFrame {
 
     // Constructeur
     public BackgroundPanel() {
-        // Configurer la fenêtre
-
-        setLocationRelativeTo(null); // Centrer la fenêtre
+        // Configurer la fenêtre  
         backgroundPanel = new ImageBackgroundPanel();
         backgroundPanel.setLayout(new BorderLayout()); // Utiliser BorderLayout pour le panneau
         backgroundPanel.setOpaque(false);

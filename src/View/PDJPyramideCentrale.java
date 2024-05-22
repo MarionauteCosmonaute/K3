@@ -46,22 +46,6 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         return StructurePainter.PointPyramideCentrale();
     }
 
-    public void DessineAccessible(int x, int y)
-    {
-        int x_haut, y_haut;
-        int taille_pyramide = jeu.getPrincipale().getSize();
-        int taille_cube = Math.min(80 * height_fenetre / (100 * taille_pyramide), 80 * width_fenetre / (100 * taille_pyramide));
-        int espace = taille_cube / 10;
-
-        ArrayList<Point> Listeaccessible = jeu.CubeAccessibleDestinations(x,y);
-         for(Point p : Listeaccessible){
-            x_haut = height_fenetre / 2 - (taille_cube / 2) * (taille_pyramide - 1) + taille_cube * (taille_pyramide - 1-p.x) - (espace * (taille_pyramide)) / 2;
-            y_haut = width_fenetre / 2 - (taille_cube / 2) * ((taille_pyramide - 1 -p.x) + 1) + taille_cube * p.y - (espace * (taille_pyramide-p.x)) / 2;
-
-            drawable.drawRect(y_haut + espace * p.y, x_haut + espace * p.x, taille_cube, taille_cube);
-            drawable.drawRect(y_haut + espace * p.y + 1, x_haut + espace * p.x + 1, taille_cube - 2, taille_cube - 2);
-        }
-    }
 
     public void paintComponent(Graphics g) {
         System.out.println("PaintComponent de PDJPyramideCentrale");
@@ -74,7 +58,7 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPrincipale());
         if (ControleurMediateur.GetClic() && jeu.accessible(ControleurMediateur.GetLigne(), ControleurMediateur.GetColonne()))
         {
-            DessineAccessible(ControleurMediateur.GetLigne(),ControleurMediateur.GetColonne());
+            StructurePainter.DessineAccessible(g, ControleurMediateur.GetLigne(),ControleurMediateur.GetColonne(), height_fenetre, width_fenetre, jeu);
             // Mettre le booléen à false quand on clique sur la pyramide centrale et quand on clique sur un cube non accessible
         }
         else

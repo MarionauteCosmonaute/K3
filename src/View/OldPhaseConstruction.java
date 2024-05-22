@@ -496,7 +496,17 @@ public class OldPhaseConstruction {
 
     }
     public void updateJoueurLabel(){
-        joueurLabel.setText("Joueur "+ (jeu.get_player()+1));
+        String languageCode = Global.Config.getLanguage();
+        String text = null;
+        switch (languageCode) {
+            case "FR":
+                text = "Joueur ";
+                break;
+            case "EN":
+                text = "Player ";
+                break;
+        }
+        joueurLabel.setText(text + (jeu.get_player()+1));
         switch(jeu.get_player()){
             case 0:
                 joueurLabel.setForeground(new Color(0,0,255));

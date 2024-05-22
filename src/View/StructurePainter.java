@@ -108,6 +108,31 @@ public class StructurePainter {
         }
     }
 
+    public static void DessineAccessible(Graphics g, int ligne, int colonne,int height, int width, Jeu jeu)
+    {
+        Graphics2D drawable = (Graphics2D) g;
+        int x_haut, y_haut;
+        int taille_pyramide = jeu.getPrincipale().getSize();
+        int taille_cube = Math.min(80 * height / (100 * taille_pyramide), 80 * width / (100 * taille_pyramide));
+        int espace = taille_cube / 10;
+
+        ArrayList<Point> Listeaccessible = jeu.CubeAccessibleDestinations(ligne,colonne);
+        Point p;
+        for (int x = taille_pyramide - 1; x >= 0; x--) {
+            x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * x
+                    - (espace * taille_pyramide) / 2;
+            for (int y = 0; y <= x; y++) {
+                y_haut = width / 2 - (taille_cube / 2) * (x + 1) + taille_cube * y - (espace * x) / 2;
+                p = new Point(taille_pyramide - 1 - x, y);
+                if(Listeaccessible.contains(p)){
+                    drawable.drawRect(y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube);
+                    drawable.drawRect(y_haut + espace * y + 1, x_haut + espace * x + 1, taille_cube - 2, taille_cube - 2);
+                }
+            }
+        }
+
+    }
+
     public static Point[][] PointPyramideJoueurs(){
         return points_pyramide_joueur;
     }

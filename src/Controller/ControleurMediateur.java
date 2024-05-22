@@ -21,6 +21,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	int joueur_initial;
 	static boolean clic = false;
 	static int ligne_joueur, colonne_joueur;
+	boolean penalite;
 
 	Cube cube, cube_selectionne;
 
@@ -28,6 +29,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		jeu = j;
 		this.musique = musique;
 		joueur_initial = j.get_player();
+		penalite = false;
 	}
 
 	public void addMenu(Menu m) {
@@ -50,9 +52,23 @@ public class ControleurMediateur implements CollecteurEvenements {
 	@Override
 	public void clicJoueur(int x, int y) {
 		// cube_selectionne = jeu.getPlayer().get(x, y);
-		clic = true;
-		ligne_joueur = x;
-		colonne_joueur = y;
+		if(penalite == true){
+			//tester que le cube est accessible dans la pyramide du joueur
+			if(jeu.accessible(x,y)){
+				jeu.takePenaltyCube(x, y); // y : mettre -1 si ça vient du side
+				penalite = false;
+				// if (jeu.End_Game())
+				// {
+				// 	FinPartie();
+				// }
+			}
+		}
+		else{
+			clic = true;
+			ligne_joueur = x;
+			colonne_joueur = y; //mettre -1 si ça vient du side
+		}
+		
 	}
 
 	@Override
@@ -60,7 +76,22 @@ public class ControleurMediateur implements CollecteurEvenements {
 		int res;
 		if(jeu.accessible(ligne_joueur,colonne_joueur)){
 			res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
+			if(res == 2){
+				penalite = true;
+			}
+			// else
+			// {
+			// 	if (jeu.End_Game())
+			// 	{
+			// 		FinPartie();
+			// 	}
+			// }
 		}
+	}
+
+	public void FinPartie()
+	{
+		System.out.println("Fin de la Partie!");
 	}
 
 	public static int GetLigne()
@@ -138,8 +169,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "JoueurVSJoueur":
 			    ((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
 				changeVisible(2);
-				//jeu.reset(2, false); // On cree une partie a 2
-
+				jeu.reset(2);
+				jeu.initPrincipale();
+				joueur_initial=jeu.get_player();
+				while(jeu.draw()){} // On cree une partie a 2
 				break;
 
 			case "Valider":
@@ -151,7 +184,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				// }
 				if (jeu.get_player() == joueur_initial) {
 					changeVisible(3);
-
+					jeu.gameStart();
 				}
 				break;
 

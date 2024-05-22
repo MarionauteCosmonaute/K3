@@ -21,7 +21,7 @@ public class Jeu extends Observable implements Cloneable{
     Pyramid principale;
     PawnsBag bag;
     int current_player, size;
-    boolean End;
+    boolean End,start;
     Model.Historique.Historique hist;
 
         /*****************************/
@@ -39,6 +39,7 @@ public class Jeu extends Observable implements Cloneable{
     public void reset(int nb){
         nbJoueur = nb;
         End = false;
+        start = false;
         players = new Player[nb];
         hist = new Historique();
 
@@ -147,6 +148,11 @@ public class Jeu extends Observable implements Cloneable{
 
     public void avance(){           /* le bon joueur est envoyer */
         current_player = next_player();
+        // if(start) check_loss();
+    }
+
+    public void gameStart(){
+        start = true;
     }
 
     public void annule() {
@@ -382,7 +388,7 @@ public class Jeu extends Observable implements Cloneable{
     }
 
     public boolean check_under(int x, int y){
-        return !sameColor(principale.get(x-1, y),Cube.Vide) && !sameColor(principale.get(x-1, y+1),Cube.Vide);
+        return !(principale.get(x-1, y) == Cube.Vide) && !(principale.get(x-1, y+1) == Cube.Vide);
     }
 
     public boolean sameColor(Cube c1,Cube c2){
@@ -397,7 +403,7 @@ public class Jeu extends Observable implements Cloneable{
     // 3 -> PLAY WHITE
     public int move_validity(Cube cube, int x, int y){          /* bonne validitee renvoyee */
         if(cube == Cube.Blanc) return 3;
-        if ( sameColor(principale.get(x, y), Cube.Vide) && check_under(x,y) && (sameColor(principale.get(x-1, y),cube) || ( sameColor(principale.get(x-1, y+1),cube))) ){
+        if ( (principale.get(x, y) == Cube.Vide) && check_under(x,y) && (sameColor(principale.get(x-1, y),cube) || ( sameColor(principale.get(x-1, y+1),cube))) ){
             if (check_penality(x, y)){
                 return 2;
             }
