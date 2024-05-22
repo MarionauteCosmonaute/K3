@@ -1,7 +1,5 @@
 package Model;
 
-//import Model.Iterateur.*;
-
 public class Pyramid {
     Cube[][] pyramid;
     int size;
@@ -64,19 +62,11 @@ public class Pyramid {
     public void set(int x, int y, Cube c){
         pyramid[x][y] = c;
     }
-
-    /*public Iterateur iterateur(String start){
-        switch (start) {
-            case "UP":
-                return new IterateurUtoD(this);
-            case "DOWN":
-                return new IterateurDtoU(this);
-            default:
-                throw new NullPointerException();
-        }
-    }*/
-
-
+    
+    public void remove(int x,int y){
+        set(x,y,Cube.Vide);
+    }
+    
     public String centrer(int i){
         String chaine = "";
         for(int j = 0; j < i; j++){
