@@ -181,6 +181,7 @@ public class Player {
 
     public void incrementBag(Cube cube){
         if(cube != Cube.Vide){nbCubeBag[cube.getInt()]++;}
+        
     }
 
     public void decrementBag(Cube cube){
@@ -188,6 +189,7 @@ public class Player {
     }
 
     public void addBag(Cube cube){
+        //System.out.println(cube);
         incrementBag(cube);
         personalBag.add(cube);
     }
@@ -216,23 +218,33 @@ public class Player {
         for (int i=0; i<size; i++){
             for (int j=0; j<size; j++){
                 if(get(i,j) != Cube.Vide){
-                addBag(get(i,j));
-                remove(i,j);}
+                try{
+                    addBag(get(i,j));
+                    remove(i,j);
+                }
+                catch(NullPointerException e){
+                    System.err.println("le cube est en position" + i + " " +j);
+                }
+            }
             }
         }
     }
 
     public Player clone() throws CloneNotSupportedException {
-        Player clone = (Player) super.clone();  // Clone the basic object structure
+        Player clone = new Player(size);  // Clone the basic object structure
 
+        
         clone.pyramid = pyramid.clone();
+        for(int i = 0; i < 7; i++){
+            clone.nbCube[i] = nbCube[i];
+        }
         clone.side = new ArrayList<>(side.size());
         for (Cube cube : side) {
-          clone.side.add(cube);  // Add existing cube references
+          clone.addSide(cube);  // Add existing cube references
         }
         clone.personalBag = new ArrayList<>(personalBag.size());
         for (Cube cube : personalBag) {
-          clone.personalBag.add(cube);  // Add existing cube references
+          clone.addBag(cube);  // Add existing cube references
         }
         return clone;
     }

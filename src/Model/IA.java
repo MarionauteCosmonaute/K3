@@ -36,8 +36,8 @@ public abstract class IA {
         int value;
         boolean bon_joueur = player_max == j.get_player();
         ArrayList<Point> cubes_access = j.Accessible_Playable();
-        j.check_loss();
-        if(j.End_Game()){ //Condition de défaite de tous les autres joueurs en même temps à implémenter
+        if(cubes_access.size() == 0){return -1000;}
+        if(j.check_loss()){ //Condition de défaite de tous les autres joueurs en même temps à implémenter
                                              //Besoin d'une fonctione auxiliaire qui permet lors de tests de si un joueur a perdu de l'exclure du calcul
                                              //Et appeler l'IA avec les nouveaux paramètres.
             if(j.getPlayer(player_max).lost()){
@@ -77,7 +77,7 @@ public abstract class IA {
             case 1 : //IA Medium
                 total = (int)(total_j1 * 0.2) + (int)(j.getPlayer().totalCube()*0.8) - (int)(0.8 * j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2 * 0.2);
                 if(bon_joueur){
-                    return total; 
+                    return total;
                 }
                 else{
                     return -total;
@@ -91,57 +91,59 @@ public abstract class IA {
                     return -total;
                 }
             }
-            if(bon_joueur){
-                value = -1000;
-                for(Point depart : cubes_access){
-                    ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations((int) depart.getX(),(int) depart.getY());
-                    for(Point arrivee : coups_jouables){
-                        if(j.add_central((int) arrivee.getX(), (int) arrivee.getY(), (int) depart.getX(),(int) depart.getY()) == 2){ //On joue une pénalité
-                            for(Point access : j.Accessible_Playable()){
-                                Jeu clone = j.clone();
-                                clone.takePenaltyCube((int) access.getX(), (int) access.getY());
-                                value = Math.max(value,MinMaxIA(clone,depth-1,player_max, alpha, beta, IA));
-                            }
+        }
+        if(bon_joueur){
+            value = -1000;
+            for(Point depart : cubes_access){
+                ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations((int) depart.getX(),(int) depart.getY());
+                for(Point arrivee : coups_jouables){
+                    Jeu clone = j.clone();
+                    if(clone.add_central((int) arrivee.getX(), (int) arrivee.getY(), (int) depart.getX(),(int) depart.getY()) == 2){ //On joue une pénalité
+                        for(Point access : clone.Accessible_Playable()){
+                            Jeu clone_pen = clone.clone();
+                            clone_pen.takePenaltyCube((int) access.getX(), (int) access.getY());
+                            value = Math.max(value,MinMaxIA(clone_pen,depth-1,player_max, alpha, beta, IA));
                         }
-                        else{
-                            //System.out.println( value + " " + depth + " " + alpha + " " + beta );
-                            value = Math.max(value,MinMaxIA(j,depth-1,player_max, alpha, beta, IA));
-                            /*System.out.println();
-                            System.out.println();
-                            System.out.println();*/
-                        }
-                        if(alpha >= value){
-                            return value;
-                        }
-                        beta = Math.min(beta,value);
                     }
+                    else{
+                        //System.out.println( value + " " + depth + " " + alpha + " " + beta );
+                        value = Math.max(value,MinMaxIA(clone,depth-1,player_max, alpha, beta, IA));
+                        /*System.out.println();
+                        System.out.println();
+                        System.out.println();*/
+                    }
+                    if(alpha >= value){
+                        return value;
+                    }
+                    beta = Math.min(beta,value);
                 }
             }
-            else{
-                value = 1000;
-                for(Point depart : cubes_access){
-                    ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations((int) depart.getX(),(int) depart.getY());
-                    for(Point arrivee : coups_jouables){
-                        if(j.add_central((int) arrivee.getX(), (int) arrivee.getY(), (int) depart.getX(),(int) depart.getY())==2){
-                            for(Point access : j.Accessible_Playable()){
-                                Jeu clone = j.clone();
-                                clone.takePenaltyCube((int) access.getX(), (int) access.getY());
-                                value = Math.min(value,MinMaxIA(clone,depth-1,player_max, alpha, beta, IA));
-                            }
+        }
+        else{
+            value = 1000;
+            for(Point depart : cubes_access){
+                ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations((int) depart.getX(),(int) depart.getY());
+                for(Point arrivee : coups_jouables){
+                    Jeu clone = j.clone();
+                    if(clone.add_central((int) arrivee.getX(), (int) arrivee.getY(), (int) depart.getX(),(int) depart.getY())==2){
+                        for(Point access : clone.Accessible_Playable()){
+                            Jeu clone_pen = clone.clone();
+                            clone_pen.takePenaltyCube((int) access.getX(), (int) access.getY());
+                            value = Math.min(value,MinMaxIA(clone_pen,depth-1,player_max, alpha, beta, IA));
                         }
-                        else{
-                            value = Math.min(value,MinMaxIA(j,depth-1,player_max, alpha, beta, IA));
-                        }
-                        if(beta <= value){
-                            return value;
-                        }
-                        alpha = Math.max(alpha,value);
                     }
+                    else{
+                        value = Math.min(value,MinMaxIA(clone,depth-1,player_max, alpha, beta, IA));
+                    }
+                    if(beta <= value){
+                        return value;
+                    }
+                    alpha = Math.max(alpha,value);
                 }
             }
+        }
+        
         return value;
-        }/* FAIT ATTENTION IL MANQUAIS UN CROCHET?? */
-        return -1;  /* J'ai ajouter un - parce que c'etais pas bon */
     }      
 
     public ArrayList<ArrayList<Point>> coupIA(Jeu j, int joueur1, int difficulté){
@@ -238,9 +240,9 @@ public abstract class IA {
         player = cloneBase.getPlayer(index);
         Jeu clone;
         
-        for(Cube cube : list){
+        // for(Cube cube : list){
             player.resetBag();
-            player.construction(size-1, 0, cube);
+            player.construction(size-1, 0, list.get(0));
             for (int i = 0; i < p; i++){
                 clone = cloneBase.clone();
                 clone.constructionAleatoire(clone.getPlayer(index));
@@ -248,7 +250,7 @@ public abstract class IA {
                 threads[(j*p) + i].start();
             }
             j++;
-        }
+        //}
 
         for(Thread thread : threads){
             try{thread.join();}
