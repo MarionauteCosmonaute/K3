@@ -238,7 +238,7 @@ public class test{
                             y = Integer.parseInt(entree[1]);
                         }
                         not = true;
-                        jeu.takePenaltyCubeFromPyramid(x,y);
+                        jeu.takePenaltyCube(x,y);
                     }
                     if(entree[0].equals("s")){
                         while(not || x > jeu.getPlayer().getSideSize()){
@@ -248,7 +248,7 @@ public class test{
                             x = Integer.parseInt(entree[0]);
                         }
                         not = true;
-                        jeu.takePenaltyCubeFromSide(x);
+                        jeu.takePenaltyCube(x,-1);
                     }
                 }
                 System.out.println("apres \n" + jeu.getPlayer(1));
