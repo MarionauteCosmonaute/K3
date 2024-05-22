@@ -79,7 +79,7 @@ public class MenuPhaseDeJeu2 extends Menu {
             // Joueur Rouge
             bottomRightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
             PDJPyramideJoueur joueur2 = (new PDJPyramideJoueur(J, bottomRightPanel, 1)); // ajoute la pyramide du joueur 2
-            bottomRightPanel.addMouseListener(new AdaptateurSourisBasGauche(controle, joueur2));  
+            bottomRightPanel.addMouseListener(new AdaptateurSourisBasGauche(controle, joueur2,pdj));  
 		    bottomRightPanel.add(joueur2, BorderLayout.CENTER);
             joueur2.setVisible(true);
 
