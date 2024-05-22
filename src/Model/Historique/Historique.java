@@ -6,7 +6,6 @@ import java.awt.Point;
 import Model.Coup;
 
 public class Historique{
-    
 
     Stack<Coup> coup_jouer;
     Stack<Coup> coup_annule;
