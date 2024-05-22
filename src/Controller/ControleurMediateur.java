@@ -17,7 +17,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 	JFrame frame = null;
 	Vector<Menu> menuListe = new Vector<>();
 	int indice_courant = 0;
-	int joueur_initial;	
+	int joueur_initial;
+	static boolean clic = false;
+	static int abcisse, ordonnee;
 
 	Cube cube;
 	// int x, y;
@@ -47,8 +49,28 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicSouris(int x, int y) {
-		
-		System.out.println("x : " + x + ",y : " + y);
+		System.out.println("x: "+x+" y: "+y);
+		clic = true;
+		abcisse = x;
+		ordonnee = y;
+	}
+
+	public static int GetAbscisse()
+	{
+		return abcisse;
+	}
+
+	public static int GetOrdonnee()
+	{
+		return ordonnee;
+	}
+
+	public static void SetClic(boolean bool){
+		clic = bool;
+	}
+
+	public static boolean GetClic(){
+		return clic;
 	}
 
 	@Override

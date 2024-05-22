@@ -4,6 +4,9 @@ import Model.Jeu;
 import Patterns.Observateur;
 
 import javax.swing.*;
+
+import Controller.ControleurMediateur;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -42,13 +45,8 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
 
             drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
             drawable.drawRect(y_haut + 1, x_haut + 1, taille_cube - 2, taille_cube - 2);
-
-            
             drawable.drawRect(y_haut + 2, x_haut + 2, taille_cube - 4, taille_cube - 4);
-        //     drawable.setColor(Color.BLACK);
-
-        //     drawable.drawRect(y_haut + 3, x_haut + 3, taille_cube - 6, taille_cube - 6);
-
+            drawable.drawRect(y_haut + 3, x_haut + 3, taille_cube - 6, taille_cube - 6);
         //     // drawable.setColor(Color.YELLOW);
         //     drawable.drawRect(y_haut + 4, x_haut + 4, taille_cube - 8, taille_cube - 8);
         //     drawable.drawRect(y_haut + 5, x_haut + 5, taille_cube - 10, taille_cube - 10);
@@ -64,5 +62,10 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         System.out.println("width_fenetre " + width_fenetre);
         System.out.println("height_fenetre " + height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPrincipale());
+        if (ControleurMediateur.GetClic())
+        {
+            DessineAccessible(ControleurMediateur.GetAbscisse(),ControleurMediateur.GetOrdonnee());
+            ControleurMediateur.SetClic(false);
+        }
     }
 }
