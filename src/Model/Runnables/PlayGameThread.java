@@ -31,6 +31,9 @@ public class PlayGameThread implements Runnable{
             }
                 
         }
-        best.set(pyramid, nbCoup);
+        //try{
+            best.set(pyramid, jeu.getPrincipale(),jeu.getPlayer(index).getPyramid(),nbCoup);
+        /*}
+        catch(CloneNotSupportedException e){System.err.println("clone pas fonctionner pyramide");System.exit(1);}*/
     }
 }
