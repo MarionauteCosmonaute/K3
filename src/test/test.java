@@ -49,12 +49,12 @@ public class test{
         jeu = new Jeu(2);
         jeu.initPrincipale();  
         IA ia = IA.nouvelle(jeu);
-        boolean not = true,start = false;
+        boolean not = true;
         Player player;
         int x = 0,y = 0,z = 0,w = 0,validity = 0;
 
         String[] entree;
-        System.out.println("help pour afficher le menue");
+        System.out.println("help pour afficher le menu");
         
         /*for (int i = 0; i<21; i++){
             ia.construction();
@@ -63,165 +63,164 @@ public class test{
             catch(Exception e){System.err.println("Thread cassé");System.exit(1);}
         }*/
         drawAll(jeu);
-            for(int i = 0; i < jeu.nbJoueur(); i++){
-                build(jeu.getPlayer());
-                jeu.avance();
-            }
-        start = true;
+        for(int i = 0; i < jeu.nbJoueur(); i++){
+            build(jeu.getPlayer());
+            //System.out.println(jeu.getPlayer().getPyramid());
+            jeu.avance();
+        }
         while(true){
-            if(jeu.get_player() == 0){
-                entree = s.nextLine().split("\\s+");
-                if(jeu.End_Game()){
+            //System.out.println(jeu.getPrincipale());
+            jeu.check_loss();
+            if(jeu.End_Game()){
                 System.out.println("Game Done winner is player: " + (jeu.get_player() + 1) );
                 break;
             }
-            //System.out.println(jeu.check_loss());
-            if(start && jeu.check_loss()){}
-            else{
-            System.out.println("tour du joueur:" + (jeu.get_player()+1));
-            if(entree[0].equals("print")){
-                if(entree[1].equals("joueur")){
-                    if(entree.length == 2){
-                        player = jeu.getPlayer();
-                        System.out.println(player);
+            if(jeu.get_player() == 0){
+                entree = s.nextLine().split("\\s+");
+                System.out.println("tour du joueur:" + (jeu.get_player()+1));
+                if(entree[0].equals("print")){
+                    if(entree[1].equals("joueur")){
+                        if(entree.length == 2){
+                            player = jeu.getPlayer();
+                            System.out.println(player);
+                        }
+                        else{
+                            player = jeu.getPlayer(Integer.parseInt(entree[2]) - 1);
+                            System.out.println(player);
+                        }
+                    }
+                    if(entree[1].equals("mid")){
+                        System.out.println(jeu.getPrincipale());
+                    }
+
+                }
+                if(entree[0].equals("accessible")){
+                    x = Integer.parseInt(entree[1]);
+                    y = Integer.parseInt(entree[2]);
+                    if(!jeu.accessible(x, y)){System.out.print("Not ");}
+                    System.out.println("Accessible");
+                }
+                if(entree[0].equals("draw")){
+                    if(entree.length == 1){
+                        if(!jeu.draw()){
+                            System.out.println("plus rien dans le sac");
+                        }
                     }
                     else{
-                        player = jeu.getPlayer(Integer.parseInt(entree[2]) - 1);
-                        System.out.println(player);
+                        drawAll(jeu);
                     }
                 }
-                if(entree[1].equals("mid")){
-                    System.out.println(jeu.getPrincipale());
-                }
-                
-            }
-            if(entree[0].equals("accessible")){
-                x = Integer.parseInt(entree[1]);
-                y = Integer.parseInt(entree[2]);
-                if(!jeu.accessible(x, y)){System.out.print("Not ");}
-                System.out.println("Accessible");
-            }
-            if(entree[0].equals("draw")){
-                if(entree.length == 1){
-                    if(!jeu.draw()){
-                        System.out.println("plus rien dans le sac");
-                    }
-                }
-                else{
-                    drawAll(jeu);
-                }
-            }
-            
-            if(entree[0].equals("ajoute")){
-                x = Integer.parseInt(entree[1]);
-                y = Integer.parseInt(entree[2]);
-                z = Integer.parseInt(entree[3]);
-                jeu.construction(x, y, jeu.getPlayer().getPersonalBag().get(z));
-                System.out.println(jeu.getPlayer());
 
-            }
-            if(entree[0].equals("joue")){
-                if(entree[1].equals("blanc")){
-                    if(entree[2].equals("p")){
-                        x = Integer.parseInt(entree[3]);
-                        y = Integer.parseInt(entree[4]);
-                        validity = joueBlanc(jeu,x,y);
+                if(entree[0].equals("ajoute")){
+                    x = Integer.parseInt(entree[1]);
+                    y = Integer.parseInt(entree[2]);
+                    z = Integer.parseInt(entree[3]);
+                    jeu.construction(x, y, jeu.getPlayer().getPersonalBag().get(z));
+                    System.out.println(jeu.getPlayer());
+
+                }
+                if(entree[0].equals("joue")){
+                    if(entree[1].equals("blanc")){
+                        if(entree[2].equals("p")){
+                            x = Integer.parseInt(entree[3]);
+                            y = Integer.parseInt(entree[4]);
+                            validity = jeu.add_central(-1,-1,x,y);
+                        }
+                        if(entree[2].equals("s")){
+                            x = Integer.parseInt(entree[3]);
+                            validity = jeu.add_central(-1,-1,x,-1);
+                        }
                     }
-                    if(entree[2].equals("s")){
-                        x = Integer.parseInt(entree[3]);
-                        validity = joueBlanc(jeu,x);
+                    else if(entree[1].equals("s")){
+                        x = Integer.parseInt(entree[2]);
+                        y = Integer.parseInt(entree[3]);
+                        drawAll(jeu);
+                        for(int i = 0; i < jeu.nbJoueur(); i++){
+                            build(jeu.getPlayer());
+                            if(entree.length > 1 ) {jeu.getPlayer().addBag(Cube.Vide);};
+                        } z = Integer.parseInt(entree[4]);
+                        validity = jeu.add_central(x, y,z,-1);
+                    }
+                    else{
+                        x = Integer.parseInt(entree[1]);
+                        y = Integer.parseInt(entree[2]);
+                        z = Integer.parseInt(entree[3]);
+                        w = Integer.parseInt(entree[4]);
+                        validity = jeu.add_central(x,y,z,w);
+                    }
+                    switch(validity){
+                        case 0:
+                            System.err.println("coup non valide");
+                            break;
+                        case 1:
+                            System.out.println("coup valide");
+                            break;
+                        case 2:
+                            System.out.println("coup valide mais penalitee appliquee\nvoici le jeu du joueur penaliser:");
+                            System.out.println(jeu.getPlayer());
+                            ia.takePenaltyCube();
+
+                        default:
+                            break;
+                    }
+
+                }
+                if(entree[0].equals("save")){jeu.sauvegarde(entree[1]);}
+                if(entree[0].equals("colors")){
+                    HashMap<Cube,Boolean> list = jeu.accessibleColors();
+                    System.out.print("Colors possible to play: ");
+                    for (Cube cube : Cube.values()){
+                        if(list.get(cube) != null){System.out.print(cube + " ");}
                     }
                 }
-                else if(entree[1].equals("s")){
-                    x = Integer.parseInt(entree[2]);
-                    y = Integer.parseInt(entree[3]);
+                if(entree[0].equals("playable")){
+                    if(jeu.noPlay()){System.out.print("Not ");}
+                    System.out.println("Playable");
+                }
+                if(entree[0].equals("rempli")){
+                    rempli(jeu);
+                }
+                if(entree[0].equals("auto")){
                     drawAll(jeu);
                     for(int i = 0; i < jeu.nbJoueur(); i++){
                         build(jeu.getPlayer());
                         if(entree.length > 1 ) {jeu.getPlayer().addBag(Cube.Vide);};
-                    } z = Integer.parseInt(entree[4]);
-                    validity = jeu.add_central_side(x, y,z);
-                }
-                else{
-                    x = Integer.parseInt(entree[1]);
-                    y = Integer.parseInt(entree[2]);
-                    z = Integer.parseInt(entree[3]);
-                    w = Integer.parseInt(entree[4]);
-                    validity = jeu.add_central_pyramid(x,y,z,w);
-                }
-                switch(validity){
-                    case 0:
-                        System.err.println("coup non valide");
-                        break;
-                    case 1:
-                        System.out.println("coup valide");
-                        break;
-                    case 2:
-                        System.out.println("coup valide mais penalitee appliquee\nvoici le jeu du joueur penaliser:");
-                        System.out.println(jeu.getPlayer());
-                        ia.takePenaltyCube();
-
-                    default:
-                        break;
-                }
-                
-            }
-            if(entree[0].equals("save")){jeu.sauvegarde(entree[1]);}
-            if(entree[0].equals("colors")){
-                HashMap<Cube,Boolean> list = jeu.accessibleColors();
-                System.out.print("Colors possible to play: ");
-                for (Cube cube : Cube.values()){
-                    if(list.get(cube) != null){System.out.print(cube + " ");}
-                }
-            }
-            if(entree[0].equals("playable")){
-                if(jeu.noPlay()){System.out.print("Not ");}
-                System.out.println("Playable");
-            }
-            if(entree[0].equals("rempli")){
-                rempli(jeu);
-            }
-            if(entree[0].equals("auto")){
-                drawAll(jeu);
-                for(int i = 0; i < jeu.nbJoueur(); i++){
-                    build(jeu.getPlayer());
-                    if(entree.length > 1 ) {jeu.getPlayer().addBag(Cube.Vide);};
-                    jeu.avance();
-                }
-            }
-            if(entree[0].equals("build")){
-                if(entree.length == 1){build(jeu.getPlayer());}
-                else{build(jeu.getPlayer(Integer.parseInt(entree[1])-1));}
-            }
-            if(entree[0].equals("show")){
-                if(entree[1].equals("bag")){
-                    System.out.println(jeu.bag());
-                }
-                else if(entree[1].equals("accessible")) {
-                    for (Point e : jeu.AccessibleCubesPlayer()){
-                        System.out.print(e.x + "." + e.y + ":" + jeu.getPlayer().get(e.x, e.y) + " ");
+                        jeu.avance();
                     }
-                    System.out.println();
                 }
-            }
+                if(entree[0].equals("build")){
+                    if(entree.length == 1){build(jeu.getPlayer());}
+                    else{build(jeu.getPlayer(Integer.parseInt(entree[1])-1));}
+                }
+                if(entree[0].equals("show")){
+                    if(entree[1].equals("bag")){
+                        System.out.println(jeu.bag());
+                    }
+                    else if(entree[1].equals("accessible")) {
+                        for (Point e : jeu.AccessibleCubesPlayer()){
+                            System.out.print(e.x + "." + e.y + ":" + jeu.getPlayer().get(e.x, e.y) + " ");
+                        }
+                        System.out.println();
+                    }
+                }
 
-            if(entree[0].equals("next")){jeu.avance();}
-            if(entree[0].equals("quit")){break;}
-            if(entree[0].equals("help")){
-                System.out.println("-print <joueur/mid> <n du joueur (optionelle)> #affiche la pyramide");
-                System.out.println("-accessible <x> <y> ##affiche si la case du joueur est accessible");
-                System.out.println("-draw <all (optionnelle)> ##ajoute au joueur courant les cube piochee, si all ajouter tout les cubes sont distribuer");
-                System.out.println("-ajoute <x> <y> <z> #ajoute a la pyramide du joueur au coordonnee x y le cube dans son sac a l'emplacement z");
-                System.out.println("-joue <'s'/'blanc' (optionelle si du side ou blanc)> <x> <y> <z> <w> #joue le cube de coordonnee (z,y) a l'emplacement (x,y)");
-                System.out.println("-rempli #rempli la premiere ligne de la pyramide du joueur aleatoirement");
-                System.out.println("-auto #effectue la fonction draw all puis remplie toute les pyramide de tout les joueur de maniere aleatoire");
-                System.out.println("-build <n joueur (optionnelle)> #rempli toute la pyramide du joueur courant ou le nombre indiquee");
-                System.out.println("-show <bag/accesible> #affiche le contenue de la pioche ou affiche toute les case accessible du joueur");
-                System.out.println("-next #donne la main au prochain joueur");
-                System.out.println("-quit #quite le jeu");
-            }
-            System.out.println();
-            System.out.println();}
+                if(entree[0].equals("next")){jeu.avance();}
+                if(entree[0].equals("quit")){break;}
+                if(entree[0].equals("help")){
+                    System.out.println("-print <joueur/mid> <n du joueur (optionelle)> #affiche la pyramide");
+                    System.out.println("-accessible <x> <y> ##affiche si la case du joueur est accessible");
+                    System.out.println("-draw <all (optionnelle)> ##ajoute au joueur courant les cube piochee, si all ajouter tout les cubes sont distribuer");
+                    System.out.println("-ajoute <x> <y> <z> #ajoute a la pyramide du joueur au coordonnee x y le cube dans son sac a l'emplacement z");
+                    System.out.println("-joue <'s'/'blanc' (optionelle si du side ou blanc)> <x> <y> <z> <w> #joue le cube de coordonnee (z,y) a l'emplacement (x,y)");
+                    System.out.println("-rempli #rempli la premiere ligne de la pyramide du joueur aleatoirement");
+                    System.out.println("-auto #effectue la fonction draw all puis remplie toute les pyramide de tout les joueur de maniere aleatoire");
+                    System.out.println("-build <n joueur (optionnelle)> #rempli toute la pyramide du joueur courant ou le nombre indiquee");
+                    System.out.println("-show <bag/accesible> #affiche le contenue de la pioche ou affiche toute les case accessible du joueur");
+                    System.out.println("-next #donne la main au prochain joueur");
+                    System.out.println("-quit #quite le jeu");
+                }
+                System.out.println();
+                System.out.println();
             }
             else{
                 System.out.println("Tour IA");

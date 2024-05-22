@@ -441,6 +441,7 @@ public class Jeu implements Cloneable{
         }
         return list;
     }
+
     public ArrayList<Point> CubeAccessibleDestinationBag(int index){        
         return destination(getPlayer().getPersonalBag().get(index));
 }
@@ -478,6 +479,9 @@ public class Jeu implements Cloneable{
             }
             x++;
         }
+        /*for(int j = 0; j < Aksel.size(); j++ ){
+            System.out.println(Aksel.get(j));
+        }*/
         return Aksel;
     }
 
