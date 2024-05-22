@@ -294,7 +294,7 @@ public class Jeu implements Cloneable{
     }
 
     public boolean check_under(int x, int y){
-        return !sameColor(principale.get(x-1, y),Cube.Vide) && !sameColor(principale.get(x-1, y+1),Cube.Vide);
+        return !(principale.get(x-1, y) == Cube.Vide) && !(principale.get(x-1, y+1) == Cube.Vide);
     }
 
     public boolean sameColor(Cube c1,Cube c2){
@@ -309,7 +309,7 @@ public class Jeu implements Cloneable{
     // 3 -> PLAY WHITE
     public int move_validity(Cube cube, int x, int y){          /* bonne validitee renvoyee */
         if(cube == Cube.Blanc) return 3;
-        if ( sameColor(principale.get(x, y), Cube.Vide) && check_under(x,y) && (sameColor(principale.get(x-1, y),cube) || ( sameColor(principale.get(x-1, y+1),cube))) ){
+        if ( (principale.get(x, y) == Cube.Vide) && check_under(x,y) && (sameColor(principale.get(x-1, y),cube) || ( sameColor(principale.get(x-1, y+1),cube))) ){
             if (check_penality(x, y)){
                 return 2;
             }
