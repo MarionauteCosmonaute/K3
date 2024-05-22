@@ -335,10 +335,24 @@ public class Jeu implements Cloneable{
 
 
     public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l'on peu poser un cube sur un cube de la pyramide central */
-        if( (principale.get(x, y) != Cube.Vide) && ( !caseAdjacenteVide(x, y) ) && ( principale.get(x+1, y) == Cube.Vide || ( y != 0 && principale.get(x+1, y-1) == Cube.Vide ))) {return true;}
+        if( (principale.get(x, y) != Cube.Vide) && (caseDessusDroitPossible(x, y) || caseDessusGauchePossible(x, y))) {
+            return true;
+        }
         return false;
     }
 
+    public boolean caseDessusDroitPossible(int x, int y){
+        return (y != principale.getSize()-x-1) && principale.get(x, y+1) != Cube.Vide && principale.get(x+1, y) == Cube.Vide;
+    }
+    public boolean caseDessusGauchePossible(int x, int y){
+        return ( y != 0 && (principale.get(x, y-1) != Cube.Vide) && principale.get(x+1, y-1) == Cube.Vide );
+    }
+
+
+    public boolean uneCaseAdjacentePasVide(int x, int y){
+        return ( (y != 0 && principale.get(x, y-1) != Cube.Vide ) || ( (y != principale.getSize()-x-1) && principale.get(x, y+1) != Cube.Vide) );
+    }
+    
     public boolean caseAdjacenteVide(int x, int y){         /* renvoie vrai si les cases adjacente sont vide */
         return (( y == 0 || principale.get(x, y-1) == Cube.Vide ) && (y == (principale.getSize()-1-x) || principale.get(x, y+1) == Cube.Vide) );
     }
@@ -491,6 +505,18 @@ public class Jeu implements Cloneable{
             for(int j = 0; j < principale.getSize()-i; j++){
                 if(case_dessus_possible(i, j)){
                     list.put(principale.get(i, j), true);
+                }
+            }
+        }
+        return list;
+    }
+    public HashMap<Cube,Boolean> accessibleColors(boolean bool){    /* renvoie un dictionnaire avec comme clef une couleur de cube et un booleen en fonction de si la couleur est accessible sur la pyramide du milieu */
+        HashMap<Cube,Boolean> list = new HashMap<>();
+        for(int i = principale.getSize()-1; i >= 0; i--){
+            for(int j = 0; j < principale.getSize()-i; j++){
+                if(case_dessus_possible(i, j)){
+                    list.put(principale.get(i, j), true);
+                    System.out.println(i + " " + j);
                 }
             }
         }

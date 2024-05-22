@@ -247,9 +247,9 @@ public abstract class IA {
         player = cloneBase.getPlayer(index);
         Jeu clone;
         
-        // for(Cube cube : list){
+        for(Cube cube : list){
             player.resetBag();
-            player.construction(size-1, 0, list.get(0));
+            player.construction(size-1, 0, cube);
             for (int i = 0; i < p; i++){
                 clone = cloneBase.clone();
                 clone.constructionAleatoire(clone.getPlayer(index));
@@ -257,7 +257,7 @@ public abstract class IA {
                 threads[(j*p) + i].start();
             }
             j++;
-        //}
+        }
 
         for(Thread thread : threads){
             try{thread.join();}
