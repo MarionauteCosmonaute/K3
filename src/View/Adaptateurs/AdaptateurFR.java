@@ -1,17 +1,18 @@
-package View;
+package View.Adaptateurs;
+import View.CollecteurEvenements;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AdaptateurLan implements ActionListener {
+public class AdaptateurFR implements ActionListener {
 	CollecteurEvenements control;
 
-	AdaptateurLan(CollecteurEvenements c) {
+	public AdaptateurFR(CollecteurEvenements c) {
 		control = c;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		control.commande("Lan");
+		control.commande("FR");
 	}
 }

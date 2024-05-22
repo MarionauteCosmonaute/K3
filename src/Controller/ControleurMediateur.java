@@ -2,6 +2,7 @@ package Controller;
 
 import View.*;
 import Model.*;
+import View.Menu.*;
 
 import java.util.Vector;
 
@@ -19,10 +20,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 	int indice_courant = 0;
 	int joueur_initial;
 	static boolean clic = false;
-	static int abcisse, ordonnee;
+	static int ligne, colonne;
 
-	Cube cube;
-	// int x, y;
+	Cube cube, cube_selectionne;
 
 	public ControleurMediateur(Jeu j, MusicPlayer musique) {
 		jeu = j;
@@ -48,21 +48,27 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 
 	@Override
-	public void clicSouris(int x, int y) {
-		System.out.println("x: "+x+" y: "+y);
+	public void clicJoueur(int x, int y) {
+		cube_selectionne = jeu.getPlayer().get(x, y);
+		System.out.println("x: "+x+" y: "+y+ ", cube : "+cube_selectionne);
 		clic = true;
-		abcisse = x;
-		ordonnee = y;
+		ligne = x;
+		colonne = y;
 	}
 
-	public static int GetAbscisse()
-	{
-		return abcisse;
+	@Override
+	public void clicPyramideCentrale(int x, int y) {
+		System.out.println("x: "+x+" y: "+y);
 	}
 
-	public static int GetOrdonnee()
+	public static int GetLigne()
 	{
-		return ordonnee;
+		return ligne;
+	}
+
+	public static int GetColonne()
+	{
+		return colonne;
 	}
 
 	public static void SetClic(boolean bool){

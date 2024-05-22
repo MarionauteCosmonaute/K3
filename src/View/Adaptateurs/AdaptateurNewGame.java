@@ -1,4 +1,5 @@
-package View;
+package View.Adaptateurs;
+import View.CollecteurEvenements;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,7 +7,7 @@ import java.awt.event.ActionListener;
 public class AdaptateurNewGame implements ActionListener {
 	CollecteurEvenements control;
 
-	AdaptateurNewGame(CollecteurEvenements c) {
+	public AdaptateurNewGame(CollecteurEvenements c) {
 		control = c;
 	}
 

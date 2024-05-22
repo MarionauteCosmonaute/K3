@@ -12,7 +12,7 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
     Jeu jeu;
     OldPhaseConstruction cons;
 
-    AffichagePhaseConstruction(Jeu jeu, OldPhaseConstruction c) {
+    public AffichagePhaseConstruction(Jeu jeu, OldPhaseConstruction c) {
         this.jeu = jeu;
         cons = c;
     }
@@ -135,8 +135,9 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
         drawable = (Graphics2D) g;
         width_fenetre = getSize().width;
         height_fenetre = getSize().height;
+        
+        cons.fonction_globale(jeu, drawable, width_fenetre, height_fenetre);
 
-        cons.fonction_globale(jeu, g, width_fenetre, height_fenetre);
         cons.updateLanguageCode();
     }
 }

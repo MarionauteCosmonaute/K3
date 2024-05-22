@@ -1,17 +1,18 @@
-package View;
+package View.Adaptateurs;
+import View.CollecteurEvenements;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AdaptateurLangues implements ActionListener {
+public class AdaptateurEN implements ActionListener {
 	CollecteurEvenements control;
 
-	AdaptateurLangues(CollecteurEvenements c) {
+	public AdaptateurEN(CollecteurEvenements c) {
 		control = c;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		control.commande("Langues");
+		control.commande("EN");
 	}
 }

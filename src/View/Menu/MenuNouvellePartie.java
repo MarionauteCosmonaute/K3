@@ -1,4 +1,8 @@
-package View;
+package View.Menu;
+
+import View.CollecteurEvenements;
+import View.Bouton;
+import View.Adaptateurs.*;
 
 import Global.FileLoader;
 

@@ -1,4 +1,5 @@
-package View;
+package View.Adaptateurs;
+import View.CollecteurEvenements;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -6,7 +7,7 @@ import java.awt.event.KeyEvent;
 public class AdaptateurClavier extends KeyAdapter {
 	CollecteurEvenements controle;
 
-	AdaptateurClavier(CollecteurEvenements c) {
+	public AdaptateurClavier(CollecteurEvenements c) {
 		controle = c;
 	}
 

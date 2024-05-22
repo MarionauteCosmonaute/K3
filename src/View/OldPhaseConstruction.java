@@ -2,6 +2,8 @@ package View;
 
 import Model.Jeu;
 import Model.Cube;
+import View.Adaptateurs.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.FileInputStream;
@@ -9,6 +11,8 @@ import java.io.InputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.io.FileNotFoundException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class OldPhaseConstruction {
     JPanel frame;
@@ -31,7 +35,7 @@ public class OldPhaseConstruction {
     int nbJoueur;
     int taille_base_pyramide;
 
-    JButton reset, valider, Aide;
+    JButton reset, valider, Aide, Regles;
 
     public OldPhaseConstruction(JPanel frame, CollecteurEvenements controle, Jeu jeu) {
         this.frame = frame;
@@ -88,6 +92,32 @@ public class OldPhaseConstruction {
         valider.addActionListener(new AdaptateurValider(controle));
         valider.setEnabled(false);
         centrePanel.add(valider);
+
+        Regles = Bouton.creerButton("Règles");
+            Regles.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String languageCode = Global.Config.getLanguage();
+                    String rules = null;
+                    String title = null;
+                    switch (languageCode) {
+                        case "FR":
+                            title = "Règles de construction de pyramide";
+                            rules = "MISE EN PLACE DE VOTRE PYRAMIDE\n" +
+                            "Organisez et empilez tous vos pions en pyramide devant vous en les faisant chevaucher.\n" +
+                            "Les pions non bloqués sont les seuls accessibles, choississez bien votre agencement pour l'adapter à votre stratégie.";
+                            break;
+                        case "EN" :
+                            title = "Rules to set up a pyramid";
+                            rules = "SETTING UP YOUR PYRAMID\n"+
+                            "Arrange and stack all your pawns in a pyramid in front of you, making them overlap.\n";
+                            break;
+                    }
+                    JOptionPane.showMessageDialog(frame, rules, title, JOptionPane.INFORMATION_MESSAGE);
+                }
+
+            });
+        centrePanel.add(Regles);
         
         boiteTexte.add(centrePanel);
         boiteTexte.setOpaque(false);
@@ -105,6 +135,7 @@ public class OldPhaseConstruction {
         Retour.setContentAreaFilled(false);
 
         joueurLabel= new JLabel("Joueur "+ (jeu.get_player()+1));
+        joueurLabel.setFont(new Font("Default", Font.BOLD, 20));
 		panel.add(joueurLabel);
 
         // Bouton Aide
@@ -140,11 +171,13 @@ public class OldPhaseConstruction {
                 reset.setText("Redemarrer");
                 valider.setText("Valider");
                 Aide.setText("Auto-construction");
+                Regles.setText("Règles");
                 break;
             case "EN":
                 reset.setText("Reset");
                 valider.setText("Complete");
-                Aide.setText("Auto-construction");
+                Aide.setText("Auto-build");
+                Regles.setText("Rules");
                 break;
             default:
                 break;
@@ -465,7 +498,14 @@ public class OldPhaseConstruction {
 
     }
     public void updateJoueurLabel(){
-        joueurLabel.setText("Joueur "+ (jeu.get_player()+1)); 
+        joueurLabel.setText("Joueur "+ (jeu.get_player()+1));
+        switch(jeu.get_player()){
+            case 0:
+                joueurLabel.setForeground(new Color(0,0,255));
+                break;
+            case 1:
+                joueurLabel.setForeground(new Color(255,0,0));
+                break;
+        }
     } 
-
 }

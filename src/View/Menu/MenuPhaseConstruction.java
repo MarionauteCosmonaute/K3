@@ -1,6 +1,11 @@
-package View;
+package View.Menu;
+
+import View.CollecteurEvenements;
+import View.OldPhaseConstruction;
+import View.AffichagePhaseConstruction;
 
 import Model.Jeu;
+import View.Adaptateurs.AdaptateurSouris;
 import javax.swing.*;
 import java.awt.*;
 

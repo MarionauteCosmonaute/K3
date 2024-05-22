@@ -1,16 +1,26 @@
-package View;
+package View.Menu;
+
+import View.CollecteurEvenements;
+import View.Bouton;
+import View.PDJPyramideCentrale;
+import View.PDJPyramideJoueur;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import View.Adaptateurs.*;
 import java.awt.*;
 
 import Model.Jeu;
 
 public class MenuPhaseDeJeu2 extends Menu {
+    JButton Aide, Regles;
+
     public MenuPhaseDeJeu2(CollecteurEvenements controle, Jeu J) {
         super();
         try {
             JPanel content = new JPanel(new BorderLayout());
-            JButton UnMute, Retour, Aide;
+            JButton UnMute, Retour;
             addKeyListener(new AdaptateurClavier(controle));
 
             // On sépare la partie qui contient les boutons retour/aide/son et la partie du
@@ -19,7 +29,17 @@ public class MenuPhaseDeJeu2 extends Menu {
 
             // Bouton Retour
             Retour = Bouton.BoutonRetour();
-            Retour.addActionListener(new RetourMenuPAdapeur(controle));
+            Retour.addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int retour = showConfirmDialog();
+                    if (retour == 0) {
+                        controle.commande("MenuP");
+                    }
+                }
+            });
+
             JPanel topLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             topLeftPanel.add(Retour, BorderLayout.EAST);
             topLeftPanel.setOpaque(false);
@@ -28,10 +48,13 @@ public class MenuPhaseDeJeu2 extends Menu {
             Retour.setContentAreaFilled(false);
 
             // Bouton Aide
-            Aide = Bouton.creerButton("Aide");
+            Aide = Bouton.creerButton("Suggestion");
             // Aide.addActionListener(new AideAdaptateur(controle));
             JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
             topCenter.add(Aide, BorderLayout.CENTER);
+
+            Regles = Bouton.Rules(content);
+            topCenter.add(Regles);
             topCenter.setOpaque(false);
             topPanel.add(topCenter);
 
@@ -58,6 +81,7 @@ public class MenuPhaseDeJeu2 extends Menu {
             centrePanel.add(joueursPanel);
             pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
             PDJPyramideCentrale pdj = (new PDJPyramideCentrale(J, pyramidePanel)); // ajoute la pyramide centrale
+            pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj));
             pyramidePanel.add(pdj);
             pdj.setVisible(true);
 
@@ -71,16 +95,18 @@ public class MenuPhaseDeJeu2 extends Menu {
 
             // Joueur Bleu
             bottomLeftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
-            PDJPyramideJoueur joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur 1
-            bottomLeftPanel.addMouseListener(new AdaptateurSourisBasGauche(controle, joueur1, pdj));
-            bottomLeftPanel.add(joueur1,BorderLayout.CENTER);
+            PDJPyramideJoueur joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur
+                                                                                        // 1
+            bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, pdj));
+            bottomLeftPanel.add(joueur1, BorderLayout.CENTER);
             joueur1.setVisible(true);
 
             // Joueur Rouge
             bottomRightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-            PDJPyramideJoueur joueur2 = (new PDJPyramideJoueur(J, bottomRightPanel, 1)); // ajoute la pyramide du joueur 2
-            bottomRightPanel.addMouseListener(new AdaptateurSourisBasGauche(controle, joueur2));  
-		    bottomRightPanel.add(joueur2, BorderLayout.CENTER);
+            PDJPyramideJoueur joueur2 = (new PDJPyramideJoueur(J, bottomRightPanel, 1)); // ajoute la pyramide du joueur
+                                                                                         // 2
+            bottomRightPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur2, pdj));
+            bottomRightPanel.add(joueur2, BorderLayout.CENTER);
             joueur2.setVisible(true);
 
             // Du blabla pour la classe Menu
@@ -101,4 +127,44 @@ public class MenuPhaseDeJeu2 extends Menu {
         }
     }
 
+    @Override
+    public void updateLanguageCode() {
+        String languageCode = Global.Config.getLanguage();
+        switch (languageCode) {
+            case "FR":
+                Aide.setText("Suggestion");
+                Regles.setText("Règles");
+                break;
+            case "EN":
+                Aide.setText("Suggestion");
+                Regles.setText("Rules");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        updateLanguageCode();
+    }
+
+    static int showConfirmDialog() {
+        String languageCode = Global.Config.getLanguage();
+        String message = null;
+        String title = null;
+        switch (languageCode) {
+            case "FR":
+                message = "Voulez-vous vraiment quitter?";
+                title = "Quitter";
+                break;
+            case "EN":
+                message = "Are you sure you want to quit?";
+                title = "Quit";
+                break;
+            default:
+                break;
+        }
+        return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+    }
 }

@@ -1,17 +1,20 @@
-package View;
+package View.Adaptateurs;
+import View.CollecteurEvenements;
+import View.PDJPyramideCentrale;
+import View.PDJPyramideJoueur;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.*;
 
-public class AdaptateurSourisBasGauche extends MouseAdapter {
+public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
 	CollecteurEvenements controle;
 	int nbJoueur;
 	int taille_base_pyramide;
     PDJPyramideJoueur pdj;
     PDJPyramideCentrale pdjCentrale;
 
-	AdaptateurSourisBasGauche(CollecteurEvenements c, PDJPyramideJoueur pdj, PDJPyramideCentrale pdjCentrale) {
+	public AdaptateurSourisPhaseJoueur(CollecteurEvenements c, PDJPyramideJoueur pdj, PDJPyramideCentrale pdjCentrale) {
 		controle = c;
 		this.pdj = pdj;
         nbJoueur = pdj.NombreDeJoueur();
@@ -21,7 +24,10 @@ public class AdaptateurSourisBasGauche extends MouseAdapter {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
+        // System.out.println("joueur courant : "+ pdjCentrale.GetJoueurCourant() + ", joueur adaptateur : " + pdj.NumeroJoueur());
+        if(pdj.NumeroJoueur() != pdjCentrale.GetJoueurCourant()){
+            return;
+        }
         int taille_cube_joueur = pdj.TailleCubeJoueur();
         Point points_pyramide_joueurs[][] = pdj.PointPyramideJoueurs();
         for (int x = 0; x < taille_base_pyramide; x++) {
@@ -30,7 +36,7 @@ public class AdaptateurSourisBasGauche extends MouseAdapter {
                 && (e.getX() >= points_pyramide_joueurs[x][y].getX()) && (e.getX() <= (points_pyramide_joueurs[x][y].getX() + taille_cube_joueur)))
                 {
                     System.out.print("joueur" + (pdj.NumeroJoueur() + 1) + " : ");
-                    controle.clicSouris(taille_base_pyramide - 1 - x, y);
+                    controle.clicJoueur(taille_base_pyramide - 1 - x, y);
                     pdjCentrale.repaint();
                 }
             }

@@ -1,13 +1,13 @@
-package View;
+package View.Menu;
 
 import Global.FileLoader;
+import View.Adaptateurs.*;
+import View.*;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class MenuPrincipal extends Menu {
@@ -37,7 +37,7 @@ public class MenuPrincipal extends Menu {
             centrePanel.add(Charger);
             centrePanel.add(Box.createVerticalStrut(10));
 
-            Lan = Bouton.creerButton("LAN");
+            Lan = Bouton.creerButton("En ligne");
             Lan.addActionListener(new AdaptateurLan(controle));
             centrePanel.add(Lan);
             centrePanel.add(Box.createVerticalStrut(10));
@@ -75,52 +75,7 @@ public class MenuPrincipal extends Menu {
             // Panneau en bas à droite pour le bouton "Règles"
             JPanel bottomRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             bottomRightPanel.setOpaque(false);
-            Regles = Bouton.creerButton("Règles");
-            Regles.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String languageCode = Global.Config.getLanguage();
-                    String rules = null;
-                    String title = null;
-                    switch (languageCode) {
-                        case "FR":
-                            title = "Règles du jeu";
-                            rules = "DÉROULEMENT DU JEU\n" +
-                            "À votre tour, vous devez jouez un des pions de votre pyramide. Vous pouvez :\n" +
-                            " -> Jouer un pion coloré et le placer sur le K3.\n" +
-                            " -> Jouer un pion naturel et le placer sur le K3. Un pion naturel est considéré comme un joker et peut remplacer n'importe quelle couleur.\n"
-                            +
-                            " -> Jouer un pion blanc : vous le retirez alors de votre pyramide, et passez votre tour. Chaque pion blanc n’est utilisable qu’une fois par partie.\n"
-                            +
-                            " -> Vous pouvez jouer un pion uniquement s'il est accessible.\n" +
-                            " -> Un pion est toujours placé à cheval sur deux autres pions du K3.\n" +
-                            " -> Un pion coloré doit toujours être placé sur au moins un pion de la même couleur, ou un pion naturel. Un pion naturel peut être placé sur n’importe quel pion.\n"
-                            +
-                            " Attention : placer un pion sur deux pions de la même couleur (colorés ou naturels) entraîne une pénalité.\n"
-                            +
-                            "\n" +
-                            "PENALITÉ\n" +
-                            "Jouer votre pion sur deux pions de la même couleur entraîne une pénalité. Le joueur qui vous précède récupère un de vos pions accessibles au choix et le place à côté de sa propre pyramide.\n"
-                            +
-                            "Il fait partie de ses pions accessibles pour le reste de la partie et pourra être joué lors d’un prochain tour de jeu, ou récupéré par un adversaire lors d’une prochaine pénalité.\n"
-                            +
-                            "Note: lors d’une partie à 4, le pion blanc à côté de la pyramide est également accessible et peut être récupéré comme pénalité.\n"
-                            +
-                            "\n" +
-                            "ÉLIMINATION\n" +
-                            "Si, lorsque vient votre tour, vous ne pouvez plus jouer, vous êtes éliminé de la partie.\n"
-                            +
-                            "Lors d’une partie à 3, le joueur précédant la première personne éliminée récupère le pion blanc écarté en début de jeu. Ce pion est placé à côté de sa pyramide et pourra être joué lors d’un prochain tour.";
-                            break;
-                        case "EN" :
-                            title = "Game rules";
-                            rules = "Game rules are coming soon :)";
-                            break;
-                    }
-                    JOptionPane.showMessageDialog(content, rules, title, JOptionPane.INFORMATION_MESSAGE);
-                }
-
-            });
+            Regles = Bouton.Rules(content);
             bottomRightPanel.add(Regles);
 
             // Combiner les panneaux en bas à gauche et à droite dans un seul panneau en bas
@@ -182,14 +137,14 @@ public class MenuPrincipal extends Menu {
             case "FR":
                 NewGame.setText("Nouvelle Partie");
                 Charger.setText("Charger Partie");
-                Lan.setText("LAN");
+                Lan.setText("En ligne");
                 Quit.setText("Quitter");
                 Regles.setText("Règles");
                 break;
             case "EN":
                 NewGame.setText("New game");
                 Charger.setText("Load Game");
-                Lan.setText("LAN");
+                Lan.setText("Online");
                 Quit.setText("Quit");
                 Regles.setText("Rules");
                 break;

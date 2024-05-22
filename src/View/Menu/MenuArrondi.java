@@ -1,4 +1,4 @@
-package View;
+package View.Menu;
 
 import javax.swing.*;
 import java.awt.*;

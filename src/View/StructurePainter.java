@@ -13,7 +13,9 @@ public class StructurePainter {
     static Image neutre, bleu, vert, jaune, noir, blanc, rouge, access, vide;
     static Boolean inititalised = false;
     static Point points_pyramide_joueur[][];
+    static Point points_pyramide_centrale[][];
     static int taille_cube_joueur;
+    static int taille_cube_pyramide_centrale;
 
     public static void init() {
         if (!inititalised) {
@@ -32,6 +34,7 @@ public class StructurePainter {
                 System.exit(1);
             }
             points_pyramide_joueur = new Point[6][6];
+            points_pyramide_centrale = new Point[9][9];
         }
     }
 
@@ -54,8 +57,12 @@ public class StructurePainter {
 
                 // On complète notre tableau de points uniquement si c'est la pyramide joueur
                 if(taille_pyramide != 9){
-                   points_pyramide_joueur[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
-                   taille_cube_joueur = taille_cube; 
+                    points_pyramide_joueur[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
+                    taille_cube_joueur = taille_cube; 
+                }
+                else{
+                    points_pyramide_centrale[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
+                    taille_cube_pyramide_centrale = taille_cube; 
                 }
                 switch (cube) {
                     case Noir:
@@ -103,6 +110,10 @@ public class StructurePainter {
 
     public static Point[][] PointPyramideJoueurs(){
         return points_pyramide_joueur;
+    }
+
+    public static Point[][] PointPyramideCentrale(){
+        return points_pyramide_centrale;
     }
 
     public static int TailleCubeJoueur(){

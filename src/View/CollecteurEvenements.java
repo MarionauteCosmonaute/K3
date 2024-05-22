@@ -1,9 +1,13 @@
 package View;
 
+import View.Menu.*;
+
 import javax.swing.JFrame;
 
 public interface CollecteurEvenements {
-    void clicSouris(int l, int c);
+    void clicJoueur(int l, int c);
+
+    void clicPyramideCentrale(int l, int c);
 
     void clicSourisPyr(int l, int c);
 

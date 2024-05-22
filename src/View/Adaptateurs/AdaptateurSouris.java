@@ -1,4 +1,6 @@
-package View;
+package View.Adaptateurs;
+import View.CollecteurEvenements;
+import View.AffichagePhaseConstruction;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,7 +12,7 @@ public class AdaptateurSouris extends MouseAdapter {
 	int nbJoueur;
 	int taille_base_pyramide;
 
-	AdaptateurSouris(CollecteurEvenements c, AffichagePhaseConstruction nivGraph) {
+	public AdaptateurSouris(CollecteurEvenements c, AffichagePhaseConstruction nivGraph) {
 		controle = c;
 		this.nivGraph = nivGraph;
 		nbJoueur = nivGraph.nbJoueur();

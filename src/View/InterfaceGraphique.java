@@ -1,4 +1,7 @@
 package View;
+import View.Adaptateurs.*;
+import View.Menu.Menu;
+import View.Menu.*;
 
 import Model.Jeu;
 import Patterns.Observateur;

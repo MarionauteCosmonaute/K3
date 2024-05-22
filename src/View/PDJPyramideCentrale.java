@@ -14,10 +14,9 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
     int width_fenetre, height_fenetre, nb_ligne, nb_colonne;
     Graphics2D drawable;
     Jeu jeu;
-
     JPanel parent;
 
-    PDJPyramideCentrale(Jeu jeu, JPanel parent) {
+    public PDJPyramideCentrale(Jeu jeu, JPanel parent) {
         this.jeu = jeu;
         this.parent = parent;
         setOpaque(false);
@@ -26,6 +25,25 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
     @Override
     public void miseAJour() {
         repaint();
+    }
+
+    public int GetJoueurCourant()
+    {
+        return jeu.get_player();
+    }
+
+    public int GetTaillePyramide(){
+        return jeu.getPricipale().getSize();
+    }
+
+    public int GetTailleCubePyramideCentrale()
+    {
+        return Math.min(80 * height_fenetre / (100 * GetTaillePyramide()), 80 * width_fenetre / (100 * GetTaillePyramide()));
+    }
+
+    public Point[][] GetPointPyramideCentrale()
+    {
+        return StructurePainter.PointPyramideCentrale();
     }
 
     public void DessineAccessible(int x, int y)
@@ -37,19 +55,11 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
 
         ArrayList<Point> Listeaccessible = jeu.CubeAccessibleDestinations(x,y);
          for(Point p : Listeaccessible){
-            x_haut = height_fenetre / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (5-p.x)
-                    - (espace * taille_pyramide) / 2;
-            y_haut = width_fenetre / 2 - (taille_cube / 2) * ((5-p.x) + 1) + taille_cube * p.y - (espace * (5-p.x)) / 2;
+            x_haut = height_fenetre / 2 - (taille_cube / 2) * (taille_pyramide - 1) + taille_cube * (taille_pyramide - 1-p.x) - (espace * taille_pyramide) / 2;
+            y_haut = width_fenetre / 2 - (taille_cube / 2) * ((taille_pyramide - 1 -p.x) + 1) + taille_cube * p.y - (espace * (taille_pyramide-p.x)) / 2;
 
-            // drawable.setColor(Color.BLACK);
-
-            drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
-            drawable.drawRect(y_haut + 1, x_haut + 1, taille_cube - 2, taille_cube - 2);
-            drawable.drawRect(y_haut + 2, x_haut + 2, taille_cube - 4, taille_cube - 4);
-            drawable.drawRect(y_haut + 3, x_haut + 3, taille_cube - 6, taille_cube - 6);
-        //     // drawable.setColor(Color.YELLOW);
-        //     drawable.drawRect(y_haut + 4, x_haut + 4, taille_cube - 8, taille_cube - 8);
-        //     drawable.drawRect(y_haut + 5, x_haut + 5, taille_cube - 10, taille_cube - 10);
+            drawable.drawRect(y_haut + espace * p.y, x_haut + espace * p.x, taille_cube, taille_cube);
+            drawable.drawRect(y_haut + espace * p.y + 1, x_haut + espace * p.x + 1, taille_cube - 2, taille_cube - 2);
         }
     }
 
@@ -62,9 +72,13 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         System.out.println("width_fenetre " + width_fenetre);
         System.out.println("height_fenetre " + height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPrincipale());
-        if (ControleurMediateur.GetClic())
+        if (ControleurMediateur.GetClic() && jeu.accessible(ControleurMediateur.GetLigne(), ControleurMediateur.GetColonne()))
         {
-            DessineAccessible(ControleurMediateur.GetAbscisse(),ControleurMediateur.GetOrdonnee());
+            DessineAccessible(ControleurMediateur.GetLigne(),ControleurMediateur.GetColonne());
+            // Mettre le booléen à false quand on clique sur la pyramide centrale et quand on clique sur un cube non accessible
+        }
+        else
+        {
             ControleurMediateur.SetClic(false);
         }
     }

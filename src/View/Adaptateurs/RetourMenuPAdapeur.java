@@ -1,4 +1,6 @@
-package View;
+package View.Adaptateurs;
+import View.CollecteurEvenements;
+
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

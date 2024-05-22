@@ -16,7 +16,7 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
 
     JPanel parent;
 
-    PDJPyramideJoueur(Jeu jeu, JPanel parent, int nj) {
+    public PDJPyramideJoueur(Jeu jeu, JPanel parent, int nj) {
         this.jeu = jeu;
         this.parent = parent;
         joueur = nj;
