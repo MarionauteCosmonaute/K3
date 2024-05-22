@@ -201,11 +201,31 @@ public class Jeu implements Cloneable{
             case 1:
                 principale.set((int) coup.dest.getX(),(int) coup.dest.getY(), getPlayer().get((int) coup.source.getX(),(int) coup.source.getY()));
                 getPlayer().remove((int) coup.source.getX(),(int) coup.source.getY());
+                coup = hist.refais();
+                if (coup.type == 3){
+                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                } else if (coup.type == 4) {
+                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                } else {
+                    hist.backOnRefais();
+                }
                 break;
 
             case 2:
                 principale.set((int) coup.dest.getX(),(int) coup.dest.getY(), Cube.intToCube((int) coup.source.getX()));
                 getPlayer().removeCubeSide(Cube.intToCube((int) coup.source.getX()));
+                coup = hist.refais();
+                if (coup.type == 3){
+                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                } else if (coup.type == 4) {
+                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                } else {
+                    hist.backOnRefais();
+                }
                 break;
 
             case 5:

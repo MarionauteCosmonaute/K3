@@ -38,6 +38,11 @@ public class Historique{
         return null;
     }
 
+    public void backOnRefais(){
+        Coup coup = coup_jouer.pop();
+        coup_annule.add(coup);
+    }
+
     private boolean isEmptyAnnule(){
         return !coup_jouer.empty();
     }
