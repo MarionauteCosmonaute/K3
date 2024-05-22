@@ -1,7 +1,6 @@
 package Model;
 
-// import java.util.Iterator;
-// import Model.Iterateur.*;
+import Model.Iterateur.*;
 
 public class Pyramid {
     Cube[][] pyramid;
@@ -65,17 +64,22 @@ public class Pyramid {
     public void set(int x, int y, Cube c){
         pyramid[x][y] = c;
     }
+    
+    public void remove(int x,int y){
+        set(x,y,Cube.Vide);
+    }
 
-    // public Iterateur iterateur(String start){
-    //     switch (start) {
-    //         case "UP":
-    //             return new IterateurUtoD(this);
-    //         case "DOWN":
-    //             return new IterateurDtoU(this);
-    //         default:
-    //             throw new NullPointerException();
-    //     }
-    // }
+
+    public Iterateur iterateur(String start){
+        switch (start) {
+            case "UP":
+                return new IterateurUtoD(this);
+            case "DOWN":
+                return new IterateurDtoU(this);
+            default:
+                throw new NullPointerException();
+        }
+    }
 
 
     public String centrer(int i){
@@ -127,5 +131,5 @@ public class Pyramid {
         }
         return clone;
     }
-     
+    
 }

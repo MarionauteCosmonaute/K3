@@ -24,7 +24,7 @@ public enum Cube {
         return cube.value + " ";
     }
 
-    public static Cube conversion(String s){
+    static Cube conversion(String s){
         switch(s){
             case "7": return Cube.Vide;  
             case "1": return Cube.Noir;
@@ -38,7 +38,7 @@ public enum Cube {
         }
         return Cube.Vide;
     }
-    public static Cube intToCube(int s){
+    static Cube intToCube(int s){
         switch(s){
             case 7: return Cube.Vide;  
             case 1: return Cube.Noir;
