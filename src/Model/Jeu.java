@@ -263,11 +263,20 @@ public class Jeu implements Cloneable{
     // 2 -> VALID WITH PENALITY
     // 3 -> PLAY WHITE
     public int add_central(int x_central, int y_central, int x_player, int y_player){
+        int valid;
         if (y_player==-1){
-            return add_central_side(x_central, y_central, x_player);
+            valid = add_central_side(x_central, y_central, x_player);
         } else {
-            return add_central_pyramid(x_central, y_central, x_player, y_player);
+            valid = add_central_pyramid(x_central, y_central, x_player, y_player);
         }
+        switch (valid) {
+            case 1:
+            case 3:
+                avance();
+            default:
+                break;
+        }
+        return valid;    
     }
 
     public int add_central_pyramid(int x_central, int y_central, int x_player, int y_player){   /* meme valeur renvoyer */
@@ -328,6 +337,7 @@ public class Jeu implements Cloneable{
         }else{
             takePenaltyCubeFromPyramid(x,y);
         }
+        avance();
     }
 
     public void takePenaltyCubeFromPyramid(int x,int y) {               /*Recupere le cube de la position x y du joueur courant et l'ajoute au side du joueur precedent */
