@@ -261,6 +261,7 @@ public class OldPhaseConstruction {
 
     public void dessiner_cubes_pioches(Graphics g, int width_fenetre, int height_fenetre) {
         nb_couleurs = jeu.compte_personal_bag();
+        System.out.println("----------------" + nb_couleurs[0]);
         drawable = (Graphics2D) g;
         int espace = taille_cube / 10;
         int debut_zone_haut = height_fenetre * 7 / 10;
@@ -279,6 +280,10 @@ public class OldPhaseConstruction {
         Point p;
         int couleur;
         int ligne, col;
+        Cube sCube;
+        for(int i = 0; i < 7; i++){
+            System.out.println("cube " + Cube.intToCube(i) + ": " + nb_couleurs[i] );
+        }
 
         for (int i = 0; i < somme; i++) {
             ligne = i / 7;
@@ -289,28 +294,32 @@ public class OldPhaseConstruction {
                 couleur = couleur_case(i + 1, nb_couleurs);
                 p = new Point(x, y);
                 tab_pioche[i] = p;
-                switch (couleur) {
-                    case 0:
+                sCube = Cube.intToCube(couleur);
+                switch (sCube) {
+                    case Noir:
                         drawable.drawImage(noir, x, y, taille_cube, taille_cube, null);
                         break;
-                    case 1:
+                    case Neutre:
                         drawable.drawImage(neutre, x, y, taille_cube, taille_cube, null);
                         break;
-                    case 2:
+                    case Blanc:
                         drawable.drawImage(blanc, x, y, taille_cube, taille_cube, null);
                         break;
-                    case 3:
+                    case Vert:
                         drawable.drawImage(vert, x, y, taille_cube, taille_cube, null);
                         break;
-                    case 4:
+                    case Jaune:
                         drawable.drawImage(jaune, x, y, taille_cube, taille_cube, null);
                         break;
-                    case 5:
+                    case Rouge:
                         drawable.drawImage(rouge, x, y, taille_cube, taille_cube, null);
                         break;
-                    case 6:
+                    case Bleu:
                         drawable.drawImage(bleu, x, y, taille_cube, taille_cube, null);
                         break;
+                    default:
+                        System.err.println("le cube Vide est dans le bag");
+                        System.exit(2);
                 }
 
             }
@@ -347,7 +356,7 @@ public class OldPhaseConstruction {
             c = jeu.getCubePrincipale(0, col);
             switch (c) {
                 case Noir:
-                    drawable.drawImage(bleu, debut_zone_gauche + col * (taille_cube + espace), debut_zone_haut,
+                    drawable.drawImage(noir, debut_zone_gauche + col * (taille_cube + espace), debut_zone_haut,
                             taille_cube, taille_cube, null);
                     break;
                 case Neutre:

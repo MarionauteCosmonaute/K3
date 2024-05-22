@@ -27,6 +27,7 @@ public class AdaptateurSourisBasGauche extends MouseAdapter {
                 if((e.getY() >= points_pyramide_joueurs[x][y].getY()) && (e.getY() <= (points_pyramide_joueurs[x][y].getY() + taille_cube_joueur))
                 && (e.getX() >= points_pyramide_joueurs[x][y].getX()) && (e.getX() <= (points_pyramide_joueurs[x][y].getX() + taille_cube_joueur)))
                 {
+                    System.out.print("joueur" + (pdj.NumeroJoueur() + 1) + " : ");
                     controle.clicSouris(taille_base_pyramide - 1 - x, y);
                 }
             }

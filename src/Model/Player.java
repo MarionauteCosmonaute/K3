@@ -184,9 +184,8 @@ public class Player {
    /*If cube already existing in position -> Puts it back in the bag and replaces it */
     public void construction(int x, int y,Cube cube){
         if(!(get(x, y) == Cube.Vide)){
-            increment(get(x, y));
+            incrementBag(get(x, y));
             personalBag.add(get(x, y));
-
         }
         decrementBag(cube);
         personalBag.remove(cube);

@@ -122,6 +122,13 @@ public class StructurePainter {
         ArrayList<Point> ListePoints = jeu.AccessibleCubesPlayer(num_joueur);
         for(Point p : ListePoints){
             // y_haut + espace * y, x_haut + espace * x
+
+            /*
+            //si on veut ne pas avoir à recalculer, mais à vérifier pour les autres points
+            x_haut = points_pyramide_joueur[5-p.x][p.y].y;
+            y_haut = points_pyramide_joueur[5-p.x][p.y].x;
+            */
+            
             x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (5-p.x)
                     - (espace * taille_pyramide) / 2;
             y_haut = width / 2 - (taille_cube / 2) * ((5-p.x) + 1) + taille_cube * p.y - (espace * (5-p.x)) / 2;

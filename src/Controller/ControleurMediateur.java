@@ -68,30 +68,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	@Override
 	public void clicSourisPioche(int couleur) {
 		// System.out.println("coul : " + couleur);
-		switch (couleur) {
-			case 0:
-				cube = Cube.Noir;
-				break;
-			case 1:
-				cube = Cube.Neutre;
-				break;
-			case 2:
-				cube = Cube.Blanc;
-				break;
-			case 3:
-				cube = Cube.Vert;
-				break;
-			case 4:
-				cube = Cube.Jaune;
-				break;
-			case 5:
-				cube = Cube.Rouge;
-				break;
-			case 6:
-				cube = Cube.Bleu;
-				break;
-		}
-
+		cube = Cube.intToCube(couleur);
 		// System.out.println("Pioche : ("+ligne+","+col+")");
 	}
 

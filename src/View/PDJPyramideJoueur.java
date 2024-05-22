@@ -43,6 +43,9 @@ public class PDJPyramideJoueur extends JComponent implements Observateur {
         return jeu.nbJoueur();
     }
     
+    public int NumeroJoueur(){
+        return joueur;
+    }
 
     public void paintComponent(Graphics g) {
 
