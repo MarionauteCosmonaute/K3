@@ -2,7 +2,6 @@ package View.Adaptateurs;
 
 import View.CollecteurEvenements;
 import View.PDJPyramideCentrale;
-import View.PDJPyramideJoueur;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

@@ -12,12 +12,16 @@ import View.Adaptateurs.*;
 import java.awt.*;
 
 import Model.Jeu;
+import Patterns.Observateur;
 
-public class MenuPhaseDeJeu2 extends Menu {
+public class MenuPhaseDeJeu2 extends Menu implements Observateur {
     JButton Aide, Regles;
+    PDJPyramideCentrale pdj;
+    PDJPyramideJoueur joueur1,joueur2;
 
     public MenuPhaseDeJeu2(CollecteurEvenements controle, Jeu J) {
         super();
+        J.ajouteObservateur(this);
         try {
             JPanel content = new JPanel(new BorderLayout());
             JButton UnMute, Retour;
@@ -80,7 +84,7 @@ public class MenuPhaseDeJeu2 extends Menu {
             centrePanel.add(pyramidePanel);
             centrePanel.add(joueursPanel);
             pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-            PDJPyramideCentrale pdj = (new PDJPyramideCentrale(J, pyramidePanel)); // ajoute la pyramide centrale
+            pdj = (new PDJPyramideCentrale(J, pyramidePanel)); // ajoute la pyramide centrale
             pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj));
             pyramidePanel.add(pdj);
             pdj.setVisible(true);
@@ -95,7 +99,7 @@ public class MenuPhaseDeJeu2 extends Menu {
 
             // Joueur Bleu
             bottomLeftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
-            PDJPyramideJoueur joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur
+            joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur
                                                                                         // 1
             bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, pdj));
             bottomLeftPanel.add(joueur1, BorderLayout.CENTER);
@@ -167,4 +171,11 @@ public class MenuPhaseDeJeu2 extends Menu {
         }
         return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
     }
+
+	@Override
+	public void miseAJour() {
+		joueur1.repaint();
+        joueur2.repaint();
+        pdj.repaint();
+	}
 }

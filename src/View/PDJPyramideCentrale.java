@@ -55,7 +55,7 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
 
         ArrayList<Point> Listeaccessible = jeu.CubeAccessibleDestinations(x,y);
          for(Point p : Listeaccessible){
-            x_haut = height_fenetre / 2 - (taille_cube / 2) * (taille_pyramide - 1) + taille_cube * (taille_pyramide - 1-p.x) - (espace * taille_pyramide) / 2;
+            x_haut = height_fenetre / 2 - (taille_cube / 2) * (taille_pyramide - 1) + taille_cube * (taille_pyramide - 1-p.x) - (espace * (taille_pyramide)) / 2;
             y_haut = width_fenetre / 2 - (taille_cube / 2) * ((taille_pyramide - 1 -p.x) + 1) + taille_cube * p.y - (espace * (taille_pyramide-p.x)) / 2;
 
             drawable.drawRect(y_haut + espace * p.y, x_haut + espace * p.x, taille_cube, taille_cube);

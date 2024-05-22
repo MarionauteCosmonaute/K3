@@ -294,7 +294,7 @@ public class OldPhaseConstruction {
 
     public void dessiner_cubes_pioches(Graphics g, int width_fenetre, int height_fenetre) {
         nb_couleurs = jeu.compte_personal_bag();
-        System.out.println("----------------" + nb_couleurs[0]);
+        // System.out.println("----------------" + nb_couleurs[0]);
         drawable = (Graphics2D) g;
         int espace = taille_cube / 10;
         int debut_zone_haut = height_fenetre * 7 / 10;
@@ -315,7 +315,7 @@ public class OldPhaseConstruction {
         int ligne, col;
         Cube sCube;
         for(int i = 0; i < 7; i++){
-            System.out.println("cube " + Cube.intToCube(i) + ": " + nb_couleurs[i] );
+            // System.out.println("cube " + Cube.intToCube(i) + ": " + nb_couleurs[i] );
         }
 
         for (int i = 0; i < somme; i++) {
@@ -444,8 +444,6 @@ public class OldPhaseConstruction {
                         + (taille_cube + taille_cube / 10) * (y);
                 p = new Point(y_haut, x_haut);
                 tab_pts[x][y] = p;
-
-                if( x == 0 && y == 0 ){System.out.println(" Code de lisa le cube est: " + cube);}
                 switch (cube) {
                     case Noir:
                         drawable.drawImage(noir, y_haut, x_haut, taille_cube, taille_cube, null);

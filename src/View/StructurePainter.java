@@ -132,7 +132,7 @@ public class StructurePainter {
         // On dessine la "sur-brillance"
         ArrayList<Point> ListePoints = jeu.AccessibleCubesPlayer(num_joueur);
         for(Point p : ListePoints){
-            // y_haut + espace * y, x_haut + espace * x
+            // y_haut + espace * p.y, x_haut + espace * p.x
 
             /*
             //si on veut ne pas avoir à recalculer, mais à vérifier pour les autres points
@@ -143,22 +143,19 @@ public class StructurePainter {
             x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (5-p.x)
                     - (espace * taille_pyramide) / 2;
             y_haut = width / 2 - (taille_cube / 2) * ((5-p.x) + 1) + taille_cube * p.y - (espace * (5-p.x)) / 2;
-
-            drawable.setColor(Color.BLACK);
             drawable.setColor(Color.YELLOW);
 
-            drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
-            drawable.drawRect(y_haut + 1, x_haut + 1, taille_cube - 2, taille_cube - 2);
+            drawable.drawRect(y_haut + espace * p.y, x_haut + espace * (5-p.x), taille_cube, taille_cube);
+            drawable.drawRect(y_haut + espace * p.y + 1, x_haut + espace * (5-p.x) + 1, taille_cube - 2, taille_cube - 2);
 
             
-            drawable.drawRect(y_haut + 2, x_haut + 2, taille_cube - 4, taille_cube - 4);
+            drawable.drawRect(y_haut + espace * p.y + 2, x_haut + espace * (5-p.x) + 2, taille_cube - 4, taille_cube - 4);
             drawable.setColor(Color.BLACK);
 
-            drawable.drawRect(y_haut + 3, x_haut + 3, taille_cube - 6, taille_cube - 6);
+            drawable.drawRect(y_haut + espace * p.y + 3, x_haut + espace * (5-p.x) + 3, taille_cube - 6, taille_cube - 6);
 
-            // drawable.setColor(Color.YELLOW);
-            drawable.drawRect(y_haut + 4, x_haut + 4, taille_cube - 8, taille_cube - 8);
-            drawable.drawRect(y_haut + 5, x_haut + 5, taille_cube - 10, taille_cube - 10);
+            drawable.drawRect(y_haut + espace * p.y + 4, x_haut + espace * (5-p.x) + 4, taille_cube - 8, taille_cube - 8);
+            drawable.drawRect(y_haut + espace * p.y + 5, x_haut + espace * (5-p.x) + 5, taille_cube - 10, taille_cube - 10);
         }
     }
 }

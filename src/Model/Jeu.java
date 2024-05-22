@@ -12,7 +12,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import Model.Historique.Historique;
 
-public class Jeu implements Cloneable{
+import Patterns.Observable;
+import java.util.Collections;
+
+public class Jeu extends Observable implements Cloneable{
     Player[] players;
     int nbJoueur;
     Pyramid principale;
@@ -58,6 +61,7 @@ public class Jeu implements Cloneable{
         }
         Random r = new Random();
         current_player = r.nextInt(nb);
+        metAJour();
     }
 
     public void reset(String fileName){
@@ -80,6 +84,7 @@ public class Jeu implements Cloneable{
             }
             End = false;
             s.close();
+            metAJour();
         }
         catch(FileNotFoundException e){System.err.println(e);System.exit(2);}
     }
@@ -128,7 +133,9 @@ public class Jeu implements Cloneable{
     public void constructionAleatoire(Player player){
         for(int i = player.getSize()-1; i >= 0; i--){
             for(int j = 0; j < player.getSize()-i; j++){
-                if(player.getPyramid().get(i, j) == Cube.Vide && !player.bagEmpty()){player.construction(i, j, player.getPersonalBag().get(0));}
+                if(player.getPyramid().get(i, j) == Cube.Vide && !player.bagEmpty()){
+                    Collections.shuffle(player.getPersonalBag());
+                    player.construction(i, j, player.getPersonalBag().get(0));}
             }
         }
     }
@@ -193,6 +200,8 @@ public class Jeu implements Cloneable{
             default:
                 break;
         }
+
+        metAJour();
     }
 
     public void refais(){
@@ -220,6 +229,8 @@ public class Jeu implements Cloneable{
                 break;
         }
         avance();
+
+        metAJour();
     }
 
 
@@ -262,7 +273,7 @@ public class Jeu implements Cloneable{
     // 1 -> VALID
     // 2 -> VALID WITH PENALITY
     // 3 -> PLAY WHITE
-    public int add_central(int x_central, int y_central, int x_player, int y_player){
+    public int jouer_coup(int x_central, int y_central, int x_player, int y_player){
         int valid;
         if (y_player==-1){
             valid = add_central_side(x_central, y_central, x_player);
@@ -276,6 +287,7 @@ public class Jeu implements Cloneable{
             default:
                 break;
         }
+        metAJour();
         return valid;    
     }
 
@@ -338,6 +350,7 @@ public class Jeu implements Cloneable{
             takePenaltyCubeFromPyramid(x,y);
         }
         avance();
+        metAJour();
     }
 
     public void takePenaltyCubeFromPyramid(int x,int y) {               /*Recupere le cube de la position x y du joueur courant et l'ajoute au side du joueur precedent */

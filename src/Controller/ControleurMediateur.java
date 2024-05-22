@@ -20,7 +20,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	int indice_courant = 0;
 	int joueur_initial;
 	static boolean clic = false;
-	static int ligne, colonne;
+	static int ligne_joueur, colonne_joueur;
 
 	Cube cube, cube_selectionne;
 
@@ -49,26 +49,28 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicJoueur(int x, int y) {
-		cube_selectionne = jeu.getPlayer().get(x, y);
-		System.out.println("x: "+x+" y: "+y+ ", cube : "+cube_selectionne);
+		// cube_selectionne = jeu.getPlayer().get(x, y);
 		clic = true;
-		ligne = x;
-		colonne = y;
+		ligne_joueur = x;
+		colonne_joueur = y;
 	}
 
 	@Override
 	public void clicPyramideCentrale(int x, int y) {
-		System.out.println("x: "+x+" y: "+y);
+		int res;
+		if(jeu.accessible(ligne_joueur,colonne_joueur)){
+			res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
+		}
 	}
 
 	public static int GetLigne()
 	{
-		return ligne;
+		return ligne_joueur;
 	}
 
 	public static int GetColonne()
 	{
-		return colonne;
+		return colonne_joueur;
 	}
 
 	public static void SetClic(boolean bool){
@@ -82,22 +84,16 @@ public class ControleurMediateur implements CollecteurEvenements {
 	@Override
 	public void clicSourisPyr(int ligne, int col) {
 		jeu.construction(ligne, col, cube);
-		 System.out.println(cube);
-		 System.out.println("case : ("+ligne+","+col+")");
 	}
 
 	@Override
 	public void clicSourisEchange(int x1, int y1, int x2, int y2) {
 		jeu.permutation(x1, y1, x2, y2);
-		// System.out.println(cube);
-		// System.out.println("case : ("+ligne+","+col+")");
 	}
 
 	@Override
 	public void clicSourisPioche(int couleur) {
-		// System.out.println("coul : " + couleur);
 		cube = Cube.intToCube(couleur);
-		// System.out.println("Pioche : ("+ligne+","+col+")");
 	}
 
 	@Override
