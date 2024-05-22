@@ -40,14 +40,14 @@ public enum Cube {
     }
     static Cube intToCube(int s){
         switch(s){
-            case 0: return Cube.Vide;  
+            case 7: return Cube.Vide;  
             case 1: return Cube.Noir;
             case 2: return Cube.Bleu;
             case 3: return Cube.Vert;
             case 4: return Cube.Rouge;
             case 5: return Cube.Jaune;
             case 6: return Cube.Neutre;
-            case 7: return Cube.Blanc;
+            case 0: return Cube.Blanc;
             default: System.err.println("Conversion Cube impossible pour le int: " + s);System. exit(2);
         }
         return Cube.Vide;

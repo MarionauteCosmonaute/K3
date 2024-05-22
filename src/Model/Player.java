@@ -20,6 +20,7 @@ public class Player {
         nbCube = new int[7];
         nbCubeBag = new int[7];
 
+        loss = false;
         side = new ArrayList<>();
         personalBag = new ArrayList<>();
     }
@@ -187,7 +188,7 @@ public class Player {
     }
 
     public void addBag(Cube cube){
-        increment(cube);
+        incrementBag(cube);
         personalBag.add(cube);
     }
 
@@ -195,7 +196,7 @@ public class Player {
    /*If cube already existing in position -> Puts it back in the bag and replaces it */
     public void construction(int x, int y,Cube cube){
         if(!(get(x, y) == Cube.Vide)){
-            increment(get(x, y));
+            incrementBag(get(x, y));
             personalBag.add(get(x, y));
 
         }
