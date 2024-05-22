@@ -76,7 +76,7 @@ public class test{
                 break;
             }
             //System.out.println(jeu.check_loss());
-            if(start && jeu.check_loss()){jeu.avance();}
+            if(start && jeu.check_loss()){}
             else{
             System.out.println("tour du joueur:" + (jeu.get_player()+1));
             if(entree[0].equals("print")){
@@ -139,7 +139,6 @@ public class test{
                     for(int i = 0; i < jeu.nbJoueur(); i++){
                         build(jeu.getPlayer());
                         if(entree.length > 1 ) {jeu.getPlayer().addBag(Cube.Vide);};
-                        jeu.avance();
                     } z = Integer.parseInt(entree[4]);
                     validity = jeu.add_central_side(x, y,z);
                 }
@@ -156,35 +155,11 @@ public class test{
                         break;
                     case 1:
                         System.out.println("coup valide");
-                        jeu.avance();
                         break;
                     case 2:
                         System.out.println("coup valide mais penalitee appliquee\nvoici le jeu du joueur penaliser:");
                         System.out.println(jeu.getPlayer());
-                        System.out.println("Joueur " + (jeu.previous_player()+1) +" selectionnez 'p' si vous voulez prendre de sa pyramide ou 's' de son sac" );
-                        entree = s.nextLine().split("\\s+");
-                        if(entree[0].equals("p")){
-                            while(not || !jeu.accessible(jeu.getPlayer().getPyramid(),x, y)){
-                                not = false;
-                                System.out.println("Selectionnez une case accessible a voler");
-                                entree = s.nextLine().split("\\s+");
-                                x = Integer.parseInt(entree[0]);
-                                y = Integer.parseInt(entree[1]);
-                            }
-                            not = true;
-                            jeu.takePenaltyCubeFromPyramid(x,y);
-                        }
-                        if(entree[0].equals("s")){
-                            while(not || x > jeu.getPlayer().getSideSize()){
-                                not = false;
-                                System.out.println("Selectionnez l'indice du cube a voler");
-                                entree = s.nextLine().split("\\s+");
-                                x = Integer.parseInt(entree[0]);
-                            }
-                            not = true;
-                            jeu.takePenaltyCubeFromSide(x);
-                        }
-                        jeu.avance();
+                        ia.takePenaltyCube();
 
                     default:
                         break;
@@ -251,8 +226,32 @@ public class test{
             else{
                 System.out.println("Tour IA");
                 System.out.println("avant \n" + jeu.getPlayer(1));
-                ia.add_central();
-                jeu.avance();
+                if(ia.add_central() == 2){
+                    System.out.println(jeu.getPlayer());
+                    System.out.println("Joueur " + (jeu.next_player()+1) +" selectionnez 'p' si vous voulez prendre de sa pyramide ou 's' de son sac" );
+                    entree = s.nextLine().split("\\s+");
+                    if(entree[0].equals("p")){
+                        while(not || !jeu.accessible(jeu.getPlayer().getPyramid(),x, y)){
+                            not = false;
+                            System.out.println("Selectionnez une case accessible a voler");
+                            entree = s.nextLine().split("\\s+");
+                            x = Integer.parseInt(entree[0]);
+                            y = Integer.parseInt(entree[1]);
+                        }
+                        not = true;
+                        jeu.takePenaltyCubeFromPyramid(x,y);
+                    }
+                    if(entree[0].equals("s")){
+                        while(not || x > jeu.getPlayer().getSideSize()){
+                            not = false;
+                            System.out.println("Selectionnez l'indice du cube a voler");
+                            entree = s.nextLine().split("\\s+");
+                            x = Integer.parseInt(entree[0]);
+                        }
+                        not = true;
+                        jeu.takePenaltyCubeFromSide(x);
+                    }
+                }
                 System.out.println("apres \n" + jeu.getPlayer(1));
             }
         }
