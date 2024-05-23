@@ -177,6 +177,8 @@ public class test{
                 
             }
             if(entree[0].equals("save")){jeu.sauvegarde(entree[1]);}
+            if(entree[0].equals("Annule")) {jeu.annule();}
+            if(entree[0].equals("Refaire")) {jeu.refais();}
             if(entree[0].equals("colors")){
                 HashMap<Cube,Boolean> list = jeu.accessibleColors();
                 System.out.print("Colors possible to play: ");
@@ -229,6 +231,8 @@ public class test{
                 System.out.println("-show <bag/accesible> #affiche le contenue de la pioche ou affiche toute les case accessible du joueur");
                 System.out.println("-next #donne la main au prochain joueur");
                 System.out.println("-quit #quite le jeu");
+                System.out.println("-Annule");
+                System.out.println("-Refaire");
             }
             System.out.println();
             System.out.println();}
