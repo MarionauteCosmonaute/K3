@@ -4,23 +4,24 @@ import Model.*;
 import java.awt.Point;
 import java.util.HashMap;
 
-public class SimationIAvsIA implements Runnable{
+public class ConstructionRunable implements Runnable{
     Jeu jeu;
     BestPyramide best;
     Pyramid pyramid;
-    int index;
+    int index, difficulte;
 
-    public SimationIAvsIA(Jeu jeu, BestPyramide best,int index){
+    public ConstructionRunable(Jeu jeu, BestPyramide best,int index,int difficulte){
         this.jeu = jeu;
         this.index = index;
         this.best = best;
+        this.difficulte = difficulte;
         jeu.constructionAleatoire(jeu.getPlayer(index));
         try{pyramid = jeu.getPlayer(index).getPyramid().clone();}
         catch(CloneNotSupportedException e){System.err.println("Erreur clonnage de la pyramide lors de la simulation du jeu");System.exit(1);}
     }
     
     public void run(){
-        IA ia = IA.nouvelle(jeu,"Difficile");           /* pas tres sur de le faire avec une ia facile */
+        IA ia = IA.nouvelle(jeu, difficulte);           /* pas tres sur de le faire avec une ia facile */
         int nbCoup = 0;
         while(!jeu.End_Game()){
             if(jeu.check_loss()){}

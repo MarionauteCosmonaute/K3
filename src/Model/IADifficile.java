@@ -5,7 +5,6 @@ import java.awt.Point;
 
 public class IADifficile extends IA {
 
-
     @Override
     public int add_central(){
         ArrayList<ArrayList<Point>> coups_possibles = coupIA(jeu, jeu.current_player, 2);

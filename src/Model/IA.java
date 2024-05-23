@@ -6,22 +6,23 @@ import Model.Runnables.*;
 
 public abstract class IA {
     Jeu jeu;
+    int difficulte;
     
-    public static IA nouvelle(Jeu j,String niveau) {
+    public static IA nouvelle(Jeu j,int difficulte) {
         IA resultat = null;
         resultat = new IAFacile();
 
-        switch (niveau) {
-            case "Aleatoire":
+        switch (difficulte) {
+            case -1:
                 //resultat = new IAAleatoire();
                 break;
-            case "Facile":
+            case 0:
                 resultat = new IAFacile();
                 break;
-            case "Medium":
+            case 1:
                 resultat = new IAMedium();
                 break;
-            case "Difficile":
+            case 2:
                 resultat = new IADifficile();
                 break;
             default:
@@ -29,6 +30,7 @@ public abstract class IA {
         }
         if (resultat != null) {
             resultat.jeu = j;
+            resultat.difficulte = difficulte;
         }
         return resultat;
     }
@@ -58,13 +60,6 @@ public abstract class IA {
             ArrayList<Point> cubes_access2 = new ArrayList<>();
             
             switch (IA){
-            case -1: //IA specifique à la création de la pyramide
-                
-                for(Point compte : cubes_access){
-                    int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
-                    total+= current_possibilities;
-                }
-                return total;
             case 0: //IA Facile
                 if(bon_joueur){
                     return j.getPlayer().totalCube() - j.getPlayer(j.next_player()).totalCube();
@@ -79,7 +74,7 @@ public abstract class IA {
                     total_j2+= current_possibilities;
                 }
 
-                total = (int)(total_j1 * 0.2) + (int)(j.getPlayer().totalCube()*0.8) - (int)(0.8 * j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2 * 0.2);
+                total = (int)(total_j1) + (int)(j.getPlayer().totalCube()*2) - (int)(2 * j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2);
                 if(bon_joueur){
                     return total;
                 }
@@ -92,7 +87,7 @@ public abstract class IA {
                     int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),(int) compte.getX(),(int) compte.getY()).size();
                     total_j2+= current_possibilities;
                 }
-                total = (int)(total_j1 * 0.7) + (int)(j.getPlayer().totalCube()*0.3) - (int)(0.3 * j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2 * 0.7);
+                total = (int)(total_j1 ) + (int)(j.getPlayer().totalCube()) - (int)(j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2);
                 if(bon_joueur){
                     return total; 
                 }
@@ -255,12 +250,26 @@ public abstract class IA {
             for (int i = 0; i < p; i++){
                 clone = cloneBase.clone();
                 clone.constructionAleatoire(clone.getPlayer(index));
-                threads[(j*p) + i] = new Thread(new SimationIAvsIA(clone,ZeBest,index));
+                threads[(j*p) + i] = new Thread(new ConstructionRunable(clone,ZeBest,index,difficulte));
                 threads[(j*p) + i].start();
             }
             j++;
         }
-
+        int max,min;
+        switch (difficulteIA1) {
+            case 0:
+            min = 9;
+            max = 13;                
+                break;
+            case 1:
+            default:
+                break;
+        }
+        
+        while(ZeBest.getProfondeur() > max){
+            try{wait();}
+            catch(InterruptedException e){System.out.println("Interuption catched");System.exit(1);}
+        }
         for(Thread thread : threads){
             try{thread.join();}
             catch(InterruptedException e){System.out.println("Interuption catched");System.exit(1);}
