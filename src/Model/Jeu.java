@@ -21,6 +21,11 @@ public class Jeu implements Cloneable{
     int current_player, size;
     boolean End;
     Model.Historique.Historique hist;
+    boolean penality = false;
+
+    public boolean getPenality(){
+        return penality;
+    }
 
         /*****************************/
         /* Fonction creation du jeu */
@@ -310,6 +315,9 @@ public class Jeu implements Cloneable{
             case 1:
             case 3:
                 avance();
+                break;
+            case 2:
+                penality = true;
             default:
                 break;
         }
@@ -320,8 +328,9 @@ public class Jeu implements Cloneable{
         if(accessible(x_player, y_player)){
             Cube cube = players[current_player].get(x_player, y_player);
             int valid = move_validity(cube, x_central, y_central);
-            if(valid == 3){joueBlancPyramide(x_player, y_player);}
-            else if(valid != 0){
+            if(valid == 3){
+                joueBlancPyramide(x_player, y_player);
+            }else if(valid != 0){
                 players[current_player].set(x_player, y_player, Cube.Vide);
                 principale.set(x_central, y_central, cube);
                 if(x_central == 9){
@@ -374,6 +383,7 @@ public class Jeu implements Cloneable{
         }else{
             takePenaltyCubeFromPyramid(x,y);
         }
+        penality=false;
         avance();
     }
 
