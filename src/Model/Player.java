@@ -71,6 +71,10 @@ public class Player {
     public void playerLost(){
         loss = true;
     }
+
+    public void playerCont(){
+        loss = false;
+    }
     
     public ArrayList<Cube> getPersonalBag(){
         return personalBag;

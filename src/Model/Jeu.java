@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import Model.Historique.Historique;
 
+
 public class Jeu implements Cloneable{
     Player[] players;
     int nbJoueur;
@@ -145,53 +146,59 @@ public class Jeu implements Cloneable{
     public void annule() {
         Coup coup = hist.annule();
         current_player = previous_player();
-        switch (coup.type) {
-            case 1:
-                getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                break;
+        if(getPlayer().lost()){
+            getPlayer().playerCont();
+            annule();
+        } else {
 
-            case 2:
-                getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                break;
-
-            case 3:
-                getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.intToCube((int) coup.dest.getX()));
-                getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
-                coup = hist.annule();
-                if (coup.type==1){
+            switch (coup.type) {
+                case 1:
                     getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
                     principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                } else {
+                    break;
+
+                case 2:
                     getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
                     principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                }
-                break;
+                    break;
 
-            case 4:
-                getPlayer().addSide(Cube.intToCube((int) coup.dest.getX()));
-                getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
-                coup = hist.annule();
-                if (coup.type==1){
-                    getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                    principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                } else {
-                    getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                    principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                }
-                break;
+                case 3:
+                    getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                    coup = hist.annule();
+                    if (coup.type==1){
+                        getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    } else {
+                        getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    }
+                    break;
 
-            case 5:
-                getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), Cube.Blanc);
-                break;
+                case 4:
+                    getPlayer().addSide(Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                    coup = hist.annule();
+                    if (coup.type==1){
+                        getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    } else {
+                        getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    }
+                    break;
 
-            case 6:
-                getPlayer().addSide(Cube.Blanc);
-                break;
+                case 5:
+                    getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), Cube.Blanc);
+                    break;
 
-            default:
-                break;
+                case 6:
+                    getPlayer().addSide(Cube.Blanc);
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 
