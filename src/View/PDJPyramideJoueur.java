@@ -23,8 +23,8 @@ public class PDJPyramideJoueur extends JComponent {
         setOpaque(false);
     }
     // Retourne le tableau qui contient les coordonnées des points de la pyramide du joueur
-    public Point[][] PointPyramideJoueurs(){
-        return StructurePainter.PointPyramideJoueurs();
+    public Point[][] PointPyramideJoueurs(int joueur){
+        return StructurePainter.PointPyramideJoueurs(joueur);
     }
 
     // Retourne la taille des cubes des joueurs
@@ -50,7 +50,9 @@ public class PDJPyramideJoueur extends JComponent {
         setSize(width_fenetre, height_fenetre);
         System.out.println("width_fenetre " + width_fenetre);
         System.out.println("height_fenetre " + height_fenetre);
-        StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid());
+        // if(jeu.getPlayer(joueur).getSideSize() > 0)
+        StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid(), jeu.getPlayer(joueur).getSideSize() > 0, joueur);
+        // StructurePainter.dessiner_side(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSide());
         switch(joueur){
             case 0:
                 drawable.setColor(Color.BLUE);
@@ -71,7 +73,7 @@ public class PDJPyramideJoueur extends JComponent {
         }
         drawable.setColor(Color.BLACK);
         if(joueur == jeu.get_player()){
-            StructurePainter.Contour_Accessible_Joueur(joueur, jeu, g, height_fenetre, width_fenetre);
+            StructurePainter.Contour_Accessible_Joueur(joueur, jeu, g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSideSize() > 0);
         }
     }
 

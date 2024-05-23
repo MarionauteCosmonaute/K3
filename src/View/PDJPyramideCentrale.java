@@ -55,7 +55,7 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         setSize(width_fenetre, height_fenetre);
         System.out.println("width_fenetre " + width_fenetre);
         System.out.println("height_fenetre " + height_fenetre);
-        StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPrincipale());
+        StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPrincipale(), false, -1);
         if (ControleurMediateur.GetClic() && jeu.accessible(ControleurMediateur.GetLigne(), ControleurMediateur.GetColonne()))
         {
             StructurePainter.DessineAccessible(g, ControleurMediateur.GetLigne(),ControleurMediateur.GetColonne(), height_fenetre, width_fenetre, jeu);

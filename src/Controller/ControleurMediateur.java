@@ -76,6 +76,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 		int res;
 		if(jeu.accessible(ligne_joueur,colonne_joueur)){
 			res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
+			if(res == 1 || res == 2){
+				clic = false;
+			}
 			if(res == 2){
 				penalite = true;
 			}

@@ -428,11 +428,20 @@ public class Jeu extends Observable implements Cloneable{
         return (pyramid.get(x, y) != Cube.Vide) && (( x == size-1 && y == 0 ) || (( y == size-x-1 || pyramid.get(x+1, y) == Cube.Vide) && (y == 0 || pyramid.get(x+1, y-1)== Cube.Vide)));
     }
 
-
-    public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l'on peu poser un cube sur un cube de la pyramide central */
-        if( (principale.get(x, y) != Cube.Vide) && ( !caseAdjacenteVide(x, y) ) && ( principale.get(x+1, y) == Cube.Vide || ( y != 0 && principale.get(x+1, y-1) == Cube.Vide ))) {return true;}
+public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l'on peu poser un cube sur un cube de la pyramide central */
+        if( (principale.get(x, y) != Cube.Vide) && (caseDessusDroitPossible(x, y) || caseDessusGauchePossible(x, y))) {
+            return true;
+        }
         return false;
     }
+
+    public boolean caseDessusDroitPossible(int x, int y){
+        return (y != principale.getSize()-x-1) && principale.get(x, y+1) != Cube.Vide && principale.get(x+1, y) == Cube.Vide;
+    }
+    public boolean caseDessusGauchePossible(int x, int y){
+        return ( y != 0 && (principale.get(x, y-1) != Cube.Vide) && principale.get(x+1, y-1) == Cube.Vide );
+    }
+
 
     public boolean caseAdjacenteVide(int x, int y){         /* renvoie vrai si les cases adjacente sont vide */
         return (( y == 0 || principale.get(x, y-1) == Cube.Vide ) && (y == (principale.getSize()-1-x) || principale.get(x, y+1) == Cube.Vide) );
@@ -538,7 +547,7 @@ public class Jeu extends Observable implements Cloneable{
     }
     public ArrayList<Point> CubeAccessibleDestinationBag(int index){        
         return destination(getPlayer().getPersonalBag().get(index));
-}
+    }
 
     //COORD POSITION POSSIBLES POUR UN CUBE DONNEE
     public ArrayList<Point> CubeAccessibleDestinations(int x, int y){
@@ -561,13 +570,13 @@ public class Jeu extends Observable implements Cloneable{
 
         for(Point e : AccessibleCubesPlayer(i)){
             Cube cube = getPlayer(i).get(e.x, e.y);
-            if(cube == Cube.Blanc || cube == Cube.Neutre || list.get(cube) != null){
+            if(cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube)){
                 Aksel.add(e);
             }
         }
         int x = 0;
         for(Cube c : getPlayer(i).getSide()){
-            if(c == Cube.Blanc || c == Cube.Neutre || list.get(c) != null){
+            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c)){
                 Point p = new Point(x, -1);
                 Aksel.add(p);
             }

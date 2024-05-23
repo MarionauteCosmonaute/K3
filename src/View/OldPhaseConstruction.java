@@ -27,7 +27,7 @@ public class OldPhaseConstruction {
     boolean cube_sel;
     int taille_cube;
     int emplacement;
-    boolean dessiner_vide;
+    boolean dessiner_vide; //a renommer : correspond au booléen pour l'encadrement du cube selectionné dans la pioche
 
     int echange;
     int x1, y1;
