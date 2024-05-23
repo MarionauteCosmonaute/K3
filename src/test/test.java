@@ -174,7 +174,7 @@ public class test{
                     default:
                         break;
                 }
-                
+
             }
             if(entree[0].equals("save")){jeu.sauvegarde(entree[1]);}
             if(entree[0].equals("Annule")) {jeu.annule();}
