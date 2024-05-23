@@ -137,7 +137,6 @@ public class test{
                         break;
                     case 1:
                         System.out.println("coup valide");
-                        jeu.avance();
                         break;
                     case 2:
                         System.out.println("coup valide mais penalitee appliquee\nvoici le jeu du joueur penaliser:");
@@ -165,12 +164,10 @@ public class test{
                             not = true;
                             jeu.takePenaltyCubeFromSide(x);
                         }
-                        jeu.avance();
 
                     default:
                         break;
                 }
-
             }
 
             if(entree[0].equals("ajoute")){
