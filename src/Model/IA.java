@@ -7,12 +7,11 @@ import Model.Runnables.*;
 public abstract class IA {
     Jeu jeu;
     
-    public static IA nouvelle(Jeu j) {
+    public static IA nouvelle(Jeu j,String niveau) {
         IA resultat = null;
         resultat = new IAFacile();
-        /*String type = "Facile";
 
-        switch (type) {
+        switch (niveau) {
             case "Aleatoire":
                 //resultat = new IAAleatoire();
                 break;
@@ -25,7 +24,9 @@ public abstract class IA {
             case "Difficile":
                 resultat = new IADifficile();
                 break;
-        }*/
+            default:
+                resultat = null;
+        }
         if (resultat != null) {
             resultat.jeu = j;
         }
@@ -36,8 +37,8 @@ public abstract class IA {
         int value;
         boolean bon_joueur = player_max == j.get_player();
         ArrayList<Point> cubes_access = j.Accessible_Playable();
-        if(cubes_access.size() == 0){return -1000;}
-        if(j.check_loss()){ //Condition de défaite de tous les autres joueurs en même temps à implémenter
+        
+        if(j.check_loss() || j.End_Game()){ //Condition de défaite de tous les autres joueurs en même temps à implémenter
                                              //Besoin d'une fonctione auxiliaire qui permet lors de tests de si un joueur a perdu de l'exclure du calcul
                                              //Et appeler l'IA avec les nouveaux paramètres.
             if(j.getPlayer(player_max).lost()){
@@ -54,7 +55,7 @@ public abstract class IA {
                 int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
                 total_j1+= current_possibilities;
             }
-            ArrayList<Point> cubes_access2;
+            ArrayList<Point> cubes_access2 = new ArrayList<>();
             
             switch (IA){
             case -1: //IA specifique à la création de la pyramide
@@ -74,9 +75,10 @@ public abstract class IA {
             case 1 : //IA Medium
                 cubes_access2 = j.Accessible_Playable(j.next_player()); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
                 for(Point compte : cubes_access2) { //Compte du nombre de coups jouable du j1
-                    int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
+                    int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),(int) compte.getX(),(int) compte.getY()).size();
                     total_j2+= current_possibilities;
                 }
+
                 total = (int)(total_j1 * 0.2) + (int)(j.getPlayer().totalCube()*0.8) - (int)(0.8 * j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2 * 0.2);
                 if(bon_joueur){
                     return total;
@@ -87,7 +89,7 @@ public abstract class IA {
             case 2 : //IA Difficile
                 cubes_access2 = j.Accessible_Playable(j.next_player()); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
                 for(Point compte : cubes_access2) { //Compte du nombre de coups jouable du j1
-                    int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
+                    int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),(int) compte.getX(),(int) compte.getY()).size();
                     total_j2+= current_possibilities;
                 }
                 total = (int)(total_j1 * 0.7) + (int)(j.getPlayer().totalCube()*0.3) - (int)(0.3 * j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2 * 0.7);
@@ -253,7 +255,7 @@ public abstract class IA {
             for (int i = 0; i < p; i++){
                 clone = cloneBase.clone();
                 clone.constructionAleatoire(clone.getPlayer(index));
-                threads[(j*p) + i] = new Thread(new PlayGameThread(clone,ZeBest,index));
+                threads[(j*p) + i] = new Thread(new SimationIAvsIA(clone,ZeBest,index));
                 threads[(j*p) + i].start();
             }
             j++;

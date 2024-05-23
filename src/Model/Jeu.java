@@ -458,8 +458,17 @@ public class Jeu implements Cloneable{
 
     public ArrayList<Point> CubeAccessibleDestinationBag(int index){        
         return destination(getPlayer().getPersonalBag().get(index));
-}
+    }
 
+    public ArrayList<Point> CubeAccessibleDestinations(Player player,int x, int y){
+        if (y==-1){
+            return destination(player.getSide(x));
+        }
+        else{
+            return destination(player.get(x, y));
+        }
+    }
+    
     //COORD POSITION POSSIBLES POUR UN CUBE DONNEE
     public ArrayList<Point> CubeAccessibleDestinations(int x, int y){
         if (y==-1){
@@ -493,9 +502,6 @@ public class Jeu implements Cloneable{
             }
             x++;
         }
-        /*for(int j = 0; j < Aksel.size(); j++ ){
-            System.out.println(Aksel.get(j));
-        }*/
         return Aksel;
     }
 
@@ -510,18 +516,7 @@ public class Jeu implements Cloneable{
         }
         return list;
     }
-    public HashMap<Cube,Boolean> accessibleColors(boolean bool){    /* renvoie un dictionnaire avec comme clef une couleur de cube et un booleen en fonction de si la couleur est accessible sur la pyramide du milieu */
-        HashMap<Cube,Boolean> list = new HashMap<>();
-        for(int i = principale.getSize()-1; i >= 0; i--){
-            for(int j = 0; j < principale.getSize()-i; j++){
-                if(case_dessus_possible(i, j)){
-                    list.put(principale.get(i, j), true);
-                    System.out.println(i + " " + j);
-                }
-            }
-        }
-        return list;
-    }
+    
 
 
     public Point findFirstFreeElement() {   //return first free or (-1,-1)

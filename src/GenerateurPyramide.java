@@ -8,8 +8,8 @@ public class GenerateurPyramide {
         Jeu jeu = new Jeu(2);
         jeu.initPrincipale();
         drawAll(jeu);
-        IA ia = IA.nouvelle(jeu);
-        BestPyramide pyramid = ia.generePyramide(1,10);
+        IA ia = IA.nouvelle(jeu,"Difficile");
+        BestPyramide pyramid = ia.generePyramide(1,1);
         System.out.println(pyramid.getPrincipal());
         //System.out.println(jeu.getPlayer(0).getPyramid());
         System.out.println("Pyramide de profondeur " + pyramid.getProfondeur() +" generer:\n" + pyramid.getPyramid());
