@@ -470,7 +470,7 @@ public class Jeu implements Cloneable{
     public boolean check_loss(){            /* Verifie si le joueur courrant n'a aucun coup possible, s'il ne peut rien jouer le joueur courant est le prochain joueur */
         if(noPlay() || getPlayer().totalCube() == 0){
             getPlayer().playerLost();
-            hist.action(7,null, new Point(current_player,null));
+            hist.action(7,null, new Point(current_player,-1));
             int next = next_player();
             if(next == next_player(next)){End = true;}          /* si un joueur est eliminer et que le prochain est le meme que le prochain du prochain, le joueur est donc seul et est le vainqueur */
             return true;
