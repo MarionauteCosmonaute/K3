@@ -144,12 +144,18 @@ public class Jeu implements Cloneable{
     }
 
     public void annule() {
+
         Coup coup = hist.annule();
-        current_player = previous_player();
-        if(getPlayer().lost()){
-            getPlayer().playerCont();
+
+        if(coup.type == 7){
+
+            getPlayer((int) coup.dest.getX()).playerCont();
+            current_player = (int) coup.dest.getX();
             annule();
+
         } else {
+
+            current_player = previous_player();
 
             switch (coup.type) {
                 case 1:
@@ -241,6 +247,10 @@ public class Jeu implements Cloneable{
 
             case 6:
                 getPlayer().removeCubeSide(Cube.Blanc);
+                break;
+
+            case 7:
+                getPlayer().playerLost();
                 break;
 
             default:
@@ -450,6 +460,7 @@ public class Jeu implements Cloneable{
     public boolean check_loss(){            /* Verifie si le joueur courrant n'a aucun coup possible, s'il ne peut rien jouer le joueur courant est le prochain joueur */
         if(noPlay() || getPlayer().totalCube() == 0){
             getPlayer().playerLost();
+            hist.action(7,null, new Point(current_player,null));
             int next = next_player();
             if(next == next_player(next)){End = true;}          /* si un joueur est eliminer et que le prochain est le meme que le prochain du prochain, le joueur est donc seul et est le vainqueur */
             return true;
