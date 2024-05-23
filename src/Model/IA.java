@@ -6,9 +6,9 @@ import Model.Runnables.*;
 
 public abstract class IA {
     Jeu jeu;
-    int difficulte;
+    int difficulte, indiceJoueur;
     
-    public static IA nouvelle(Jeu j,int difficulte) {
+    public static IA nouvelle(Jeu j,int difficulte,int indiceJoueur) {
         IA resultat = null;
         resultat = new IAFacile();
 
@@ -31,6 +31,7 @@ public abstract class IA {
         if (resultat != null) {
             resultat.jeu = j;
             resultat.difficulte = difficulte;
+            resultat.indiceJoueur = indiceJoueur;
         }
         return resultat;
     }
@@ -74,7 +75,7 @@ public abstract class IA {
                     total_j2+= current_possibilities;
                 }
 
-                total = (int)(total_j1) + (int)(j.getPlayer().totalCube()*2) - (int)(2 * j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2);
+                total = (int)(total_j1) + (int)(j.getPlayer().totalCube()) - (int)(j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2);
                 if(bon_joueur){
                     return total;
                 }
@@ -87,7 +88,7 @@ public abstract class IA {
                     int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),(int) compte.getX(),(int) compte.getY()).size();
                     total_j2+= current_possibilities;
                 }
-                total = (int)(total_j1 ) + (int)(j.getPlayer().totalCube()) - (int)(j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2);
+                total = (int)(total_j1 ) + (int)(j.getPlayer().totalCube()*2) - (int)(j.getPlayer(j.next_player()).totalCube()*2) - (int)(total_j2);
                 if(bon_joueur){
                     return total; 
                 }
@@ -169,10 +170,10 @@ public abstract class IA {
                     value= MinMaxIA(clone, 2, joueur1, -10000, +10000, 0);
                     break;
                     case 1:
-                    value = MinMaxIA(clone, 3, joueur1, -10000, +10000, 1);
+                    value = MinMaxIA(clone, 5, joueur1, -10000, +10000, 1);
                     break;
                     case 2:
-                    value = MinMaxIA(clone, 5, joueur1, -10000, +10000, 2);
+                    value = MinMaxIA(clone, 10, joueur1, -10000, +10000, 2);
                     break;
                 }
                 
@@ -222,7 +223,7 @@ public abstract class IA {
     }
 
     public ArrayList<Cube> cubePotentiel(){
-        Player player = jeu.getPlayer(1);
+        Player player = jeu.getPlayer(indiceJoueur);
         ArrayList<Cube> list = new ArrayList<>();
         for(Cube cube : Cube.values()){
             if((cube != Cube.Blanc && cube != Cube.Neutre) && player.getPersonalBag().contains(cube) && (jeu.destination(cube).size() > 1)){
@@ -235,7 +236,27 @@ public abstract class IA {
     public BestPyramide generePyramide(int index, int p){
         Player player = jeu.getPlayer(index);
         int size = player.getSize();
-        BestPyramide ZeBest = new BestPyramide(size);
+        int min,max;
+        switch (difficulte) {
+            case 0:
+                min = 9;
+                max = 12;
+                break;
+            case 1:
+                min = 12;
+                max = 15;
+                break;
+            case 2:
+                min = 15;
+                max = 30;
+                break;
+        
+            default:
+                min = 0;
+                max = 30;
+                break;
+        }
+        BestPyramide ZeBest = new BestPyramide(size, min, max);
         ArrayList<Cube> list = cubePotentiel();
         Thread[] threads = new Thread[list.size()*p];       /* Potentiel amelioration afin d'avoir un nombre fixe qui ne varie pas selon la size */
         int j = 0;
@@ -255,26 +276,20 @@ public abstract class IA {
             }
             j++;
         }
-        int max,min;
-        switch (difficulteIA1) {
-            case 0:
-            min = 9;
-            max = 13;                
-                break;
-            case 1:
-            default:
-                break;
-        }
-        
-        while(ZeBest.getProfondeur() > max){
-            try{wait();}
-            catch(InterruptedException e){System.out.println("Interuption catched");System.exit(1);}
-        }
+
         for(Thread thread : threads){
             try{thread.join();}
             catch(InterruptedException e){System.out.println("Interuption catched");System.exit(1);}
         }
-        
+
+        /*while(ZeBest.getProfondeur() == 0){
+            try{wait();}
+            catch(Exception e){System.out.println("Interuption catched");System.exit(1);}
+        }
+
+        for(Thread thread : threads){
+            thread.interrupt();
+        }*/
         return ZeBest;
     }
 
@@ -283,7 +298,7 @@ public abstract class IA {
     }
     
     public void construction(){
-        throw new UnsupportedOperationException();
+        jeu.constructionAleatoire(jeu.getPlayer(indiceJoueur));
     }
 
     public void takePenaltyCube(){

@@ -1,5 +1,7 @@
 package Model;
 
+import Model.Iterateur.*;
+
 public class Pyramid {
     Cube[][] pyramid;
     int size;
@@ -95,6 +97,18 @@ public class Pyramid {
         return chaine;
     }
     
+    public Iterateur iterateur(String start){
+        switch (start) {
+            case "UP":
+                return new IterateurUtoD(this);
+            case "DOWN":
+                return new IterateurDtoU(this);
+            default:
+                throw new NullPointerException();
+        }
+    }
+
+
     @Override
     public String toString(){
         String chaine = "";

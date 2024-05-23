@@ -1,8 +1,6 @@
 package Model.Runnables;
 
 import Model.*;
-import java.awt.Point;
-import java.util.HashMap;
 
 public class ConstructionRunable implements Runnable{
     Jeu jeu;
@@ -21,7 +19,7 @@ public class ConstructionRunable implements Runnable{
     }
     
     public void run(){
-        IA ia = IA.nouvelle(jeu, difficulte);           /* pas tres sur de le faire avec une ia facile */
+        IA ia = IA.nouvelle(jeu, difficulte,index);           /* pas tres sur de le faire avec une ia facile */
         int nbCoup = 0;
         while(!jeu.End_Game()){
             if(jeu.check_loss()){}
@@ -31,10 +29,10 @@ public class ConstructionRunable implements Runnable{
                 }
                 if(ia.add_central() == 2){ia.takePenaltyCube();}
             }
-                
         }
         try{
             best.set(pyramid, jeu.getPrincipale().clone(),jeu.getPlayer(index).getPyramid().clone(),nbCoup);
+            
         }
         catch(CloneNotSupportedException e){System.err.println("clone pas fonctionner pyramide");System.exit(1);}
     }

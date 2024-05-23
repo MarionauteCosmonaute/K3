@@ -2,17 +2,19 @@ package Model;
 
 public class BestPyramide {
     Pyramid pyramide,principal,fin;
-    int profondeur;
+    int profondeur,min,max;
     
-    BestPyramide(int taille){
-        pyramide = new Pyramid(taille);
+    BestPyramide(int taille,int min, int max){
+        pyramide = null;
         profondeur = 0;
         principal = null;
         fin = null;
+        this.min = min;
+        this.max = max;
     }
     
     public synchronized void set(Pyramid pyramid, Pyramid principal, Pyramid fin ,int profondeur){
-        if(this.profondeur < profondeur){
+        if(min <= profondeur && max <= max){
             this.pyramide = pyramid;
             this.profondeur = profondeur;
             this.principal = principal;
@@ -31,7 +33,7 @@ public class BestPyramide {
         return principal;
     }
     
-    public int getProfondeur(){
+    public synchronized int getProfondeur(){
         return profondeur;
     }
     

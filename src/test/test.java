@@ -48,7 +48,7 @@ public class test{
         
         jeu = new Jeu(2);
         jeu.initPrincipale();  
-        IA ia = IA.nouvelle(jeu);
+        IA ia = IA.nouvelle(jeu,1);
         boolean not = true;
         Player player;
         int x = 0,y = 0,z = 0,w = 0,validity = 0;
