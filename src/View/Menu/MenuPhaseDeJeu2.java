@@ -25,7 +25,6 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
         try {
             JPanel content = new JPanel(new BorderLayout());
             JButton UnMute, Retour;
-            addKeyListener(new AdaptateurClavier(controle));
 
             // On sépare la partie qui contient les boutons retour/aide/son et la partie du
             // jeu

@@ -25,7 +25,6 @@ public class MenuNouvellePartie extends Menu {
         try {
             JPanel content = new JPanel(new BorderLayout());
             JButton UnMute, Retour;
-            addKeyListener(new AdaptateurClavier(controle));
             // Panneau central avec les boutons
             JPanel centrePanel = new JPanel();
             centrePanel.setOpaque(false);
