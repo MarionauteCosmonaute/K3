@@ -67,11 +67,13 @@ public class Bouton {
 		});
 		out.setBorder(BorderFactory.createEmptyBorder());
 		out.setContentAreaFilled(false);
+		out.setFocusable(false);
 		return out;
 	}
 
 	public static JButton BoutonRetour() {
 		JButton out = new JButton();
+		out.setFocusable(false);
 		Image resizedImageRetour = null;
 		SourisAdapte sourisRetour = null;
 		try {
@@ -91,6 +93,7 @@ public class Bouton {
 	public static JButton Rules(Component content){
 		JButton out;
 		out = Bouton.creerButton("Règles");
+		out.setFocusable(false);
 		out.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

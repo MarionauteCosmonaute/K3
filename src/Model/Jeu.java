@@ -588,7 +588,7 @@ public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l
         }
         int x = 0;
         for(Cube c : getPlayer(i).getSide()){
-            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c)){
+            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c)|| list.containsKey(Cube.Neutre)){
                 Point p = new Point(x, -1);
                 Aksel.add(p);
             }

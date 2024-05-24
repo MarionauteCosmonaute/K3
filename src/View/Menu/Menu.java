@@ -10,6 +10,8 @@ public abstract class Menu extends JPanel {
         if (!isVisible()) {
             setVisible(true);
         }
+        setFocusable(false);
+        
     }
 
     public void changeVisibilite() {
