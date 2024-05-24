@@ -1,4 +1,4 @@
-package Model.Historique;
+package Model.History;
 
 
 import java.util.Stack;

@@ -9,4 +9,5 @@ public class Config {
     public static void setLanguage(String S){
         lan=S;
     }
+    public static final String IA = "Facile";
 }
