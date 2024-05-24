@@ -1,4 +1,5 @@
-package Model;
+package Model.IA;
+import Model.*;
 
 import java.util.*;
 import java.awt.Point;
@@ -170,10 +171,10 @@ public abstract class IA {
                     value= MinMaxIA(clone, 2, joueur1, -10000, +10000, 0);
                     break;
                     case 1:
-                    value = MinMaxIA(clone, 5, joueur1, -10000, +10000, 1);
+                    value = MinMaxIA(clone, 3, joueur1, -10000, +10000, 1);
                     break;
                     case 2:
-                    value = MinMaxIA(clone, 10, joueur1, -10000, +10000, 2);
+                    value = MinMaxIA(clone, 5, joueur1, -10000, +10000, 2);
                     break;
                 }
                 
@@ -233,72 +234,38 @@ public abstract class IA {
         return list;
     }
 
-    public BestPyramide generePyramide(int p){
-        Player player = jeu.getPlayer(indiceJoueur);
-        int size = player.getSize();
-        int min,max;
+    public Pyramid generePyramide(int min, int max){
+        Player player;
         ArrayList<Cube> list = cubePotentiel();
-        Thread[] threads = new Thread[list.size()*p];       /* Potentiel amelioration afin d'avoir un nombre fixe qui ne varie pas selon la size */
-        int j = 0;
-        Jeu cloneBase = jeu.clone();
-        cloneBase.getPlayer(jeu.next_player(indiceJoueur)).fusion();
-        player = cloneBase.getPlayer(indiceJoueur);
-        switch (difficulte) {
-            case 0:
-                min = 9;
-                max = 12;
-                break;
-            case 1:
-                min = 12;
-                max = 15;
-                break;
-            case 2:
-                min = 15;
-                max = 30;
-                break;
-        
-            default:
-                min = 0;
-                max = 30;
-                break;
-        }
-        BestPyramide ZeBest = new BestPyramide(size, min, max);
-        Jeu clone;
-        for(Cube cube : list){
-            player.resetBag();
-            player.construction(size-1, 0, cube);
-            for (int i = 0; i < p; i++){
-                clone = cloneBase.clone();
-                clone.constructionAleatoire(clone.getPlayer(indiceJoueur));
-                threads[(j*p) + i] = new Thread(new ConstructionRunable(clone,ZeBest,indiceJoueur,difficulte));
-                threads[(j*p) + i].start();
-            }
-            j++;
-        }
+        Jeu clone = jeu.clone();
+        player = clone.getPlayer(indiceJoueur);
+        player.resetBag();
+        PyramideList pyramideList = new PyramideList(min, max);
+        Thread manager = new Thread(new ConstructionThreadManager(clone,pyramideList,list,difficulte,indiceJoueur));
+        manager.start();
 
-        for(Thread thread : threads){
-            try{thread.join();}
-            catch(InterruptedException e){System.out.println("Interuption catched");System.exit(1);}
-        }
-
-        /*while(ZeBest.getProfondeur() == 0){
-            try{wait();}
-            catch(Exception e){System.out.println("Interuption catched");System.exit(1);}
-        }
-
-        for(Thread thread : threads){
-            thread.interrupt();
+        /**********************/
+        /*if(false){
+            pyramideList.finish();
         }*/
-        return ZeBest;
-    }
+        /**********************/
 
+        try{manager.join();}
+        catch(InterruptedException e){System.err.println("Interuption catched for the construction manager");System.exit(1);}
+        
+        if(pyramideList.getBest() != null) return pyramideList.getBest();
+        else return pyramideList.getPyramid(0);
+    }
+    
     public int add_central() {  /* Modifier pour savoir si il y a une penalitee */
         throw new UnsupportedOperationException();
     }
     
     public void construction(){
         throw new UnsupportedOperationException();
-        /*jeu.constructionAleatoire(jeu.getPlayer(indiceJoueur));*/
+    }
+    public void constructionAleatoire(){
+        jeu.constructionAleatoire(jeu.getPlayer(indiceJoueur));
     }
 
     public void takePenaltyCube(){

@@ -1,4 +1,5 @@
 import Model.*;
+import Model.IA.*;
 
 public class testConstruction {
     
@@ -7,6 +8,8 @@ public class testConstruction {
         jeu.initPrincipale();
         while(jeu.draw()){}
         IA ia = IA.nouvelle(jeu, 0, 1);
+        ia.construction();
+        System.out.println(jeu.getPlayer(1));
         ia.construction();
         System.out.println(jeu.getPlayer(1));
     }

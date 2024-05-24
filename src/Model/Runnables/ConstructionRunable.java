@@ -1,58 +1,36 @@
 package Model.Runnables;
 
 import Model.*;
+import Model.IA.IA;
 
 public class ConstructionRunable implements Runnable{
     Jeu jeu;
-    BestPyramide best;
-    Pyramid pyramid;
-    int index, difficulte1, difficulte2;
+    PyramideList list;
+    int difficulte, indice;
 
-    public ConstructionRunable(Jeu jeu, BestPyramide best,int index,int difficulte1){
+    ConstructionRunable(Jeu jeu, PyramideList list, int difficulte, int indice){
         this.jeu = jeu;
-        this.index = index;
-        this.best = best;
-        this.difficulte1 = difficulte1;
-        this.difficulte2 = difficulte1;
-        jeu.constructionAleatoire(jeu.getPlayer(index));
-        try{pyramid = jeu.getPlayer(index).getPyramid().clone();}
-        catch(CloneNotSupportedException e){System.err.println("Clone Pyramide defectueux dans 'ConstructionRunnable'");System.exit(1);}
+        this.list = list;
+        this.difficulte = difficulte;
+        this.indice = indice;
     }
 
-    public ConstructionRunable(Jeu jeu, int difficulte1, int difficulte2){
-        this.jeu = jeu;
-        index = 0;
-        this.best = null;
-        this.difficulte1 = difficulte1;
-        this.difficulte2 = difficulte2;
-        pyramid = null;
-    }
-    
     public void run(){
-        IA ia1 = IA.nouvelle(jeu, difficulte1,index), ia2 = IA.nouvelle(jeu, difficulte2,jeu.next_player(index)) ;           /* pas tres sur de le faire avec une ia facile */
+        IA ia1 = IA.nouvelle(jeu, difficulte,indice),ia2 = IA.nouvelle(jeu, difficulte, jeu.next_player(indice));
+        ia1.constructionAleatoire();
+        Pyramid pyramide = null;
+        try{pyramide = jeu.getPlayer(indice).getPyramid().clone();}
+        catch(CloneNotSupportedException e){System.err.println("Exception catched when creating clone for the 'ConstructionRunable'");System.exit(1);}
         int nbCoup = 0;
-        if(best == null){
-            ia1.construction();
-            ia2.construction();
-        }
-        while(!jeu.End_Game()){
+        while( !list.done() && !jeu.End_Game() ){
             if(jeu.check_loss()){}
-            else{
-                if(jeu.get_player() == index){
+            else {
+                if(jeu.get_player() == indice){
                     nbCoup++;
-                    if(ia1.add_central() == 2){ia2.takePenaltyCube();}
-                }
-                else if(ia1.add_central() == 2){ia2.takePenaltyCube();}
-                
+                    if(ia1.add_central() == 2){ia2.takePenaltyCube();} 
+                }else if(ia2.add_central() == 2){ia1.takePenaltyCube();}
             }
         }
-        if(best != null){
-            try{
-                best.set(pyramid, jeu.getPrincipale().clone(),jeu.getPlayer(index).getPyramid().clone(),nbCoup);
-                
-            }
-            catch(CloneNotSupportedException e){System.err.println("clone pas fonctionner pyramide");System.exit(1);}
-        }
-        
+        if(jeu.End_Game()){list.add(pyramide, nbCoup);}
     }
 }

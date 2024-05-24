@@ -5,7 +5,7 @@ public class BestPyramide {
     int profondeur,min,max;
     boolean done;
     
-    BestPyramide(int taille,int min, int max){
+    public BestPyramide(int taille,int min, int max){
         pyramide = null;
         profondeur = 0;
         principal = null;
@@ -16,7 +16,9 @@ public class BestPyramide {
     }
     
     public synchronized void set(Pyramid pyramid, Pyramid principal, Pyramid fin ,int profondeur){
-        if(profondeur == 0)
+        if(profondeur == 0){
+            
+        }
         if(min <= profondeur && max <= max){
             this.pyramide = pyramid;
             this.profondeur = profondeur;

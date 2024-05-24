@@ -1,6 +1,8 @@
 package Model;
 import java.util.ArrayList;
 
+import Model.Iterateur.Iterateur;
+
 public class Player {
     Pyramid pyramid;
 
@@ -13,7 +15,7 @@ public class Player {
     int size;
     boolean loss;
 
-    Player(int i){
+    public Player(int i){
         size = i;
         pyramid = new Pyramid(size);
 
@@ -198,6 +200,27 @@ public class Player {
         personalBag.add(cube);
     }
 
+
+    public void build(Pyramid pyramide){
+        Iterateur it = pyramide.iterateur("UP");
+        Iterateur personalIt = pyramid.iterateur("UP");
+        Cube cubeAjouter,cubeEnlever;
+        while(it.hasNext()){
+            cubeEnlever = personalIt.next();
+            cubeAjouter = it.next();
+            changementBag(cubeAjouter, cubeEnlever);
+            personalIt.modify(cubeAjouter);
+        }
+        personalBag = new ArrayList<>();
+    }
+
+    private void changementBag(Cube cube1,Cube cube2){
+        increment(cube1);
+        decrementBag(cube1);
+        incrementBag(cube2);
+        decrement(cube2);
+    }
+
     /*Construct method -> Puts a cube in a position after checking its content:       */
    /*If cube already existing in position -> Puts it back in the bag and replaces it */
     public void construction(int x, int y,Cube cube){
@@ -256,7 +279,7 @@ public class Player {
     
     @Override
     public String toString(){
-        String chaine = "Noir: "+ nbCubeBag[Cube.Noir.getInt()] + "     Bleu: " + nbCubeBag[Cube.Bleu.getInt()] + "     Blanc: "+ nbCubeBag[Cube.Blanc.getInt()] + "     Rouge: " + nbCubeBag[Cube.Rouge.getInt()] +"\nJaune: " + nbCubeBag[Cube.Jaune.getInt()] +"     Vert: " + nbCubeBag[Cube.Vert.getInt()] + "      Neutre: " + nbCubeBag[Cube.Neutre.getInt()] + "\n";
+        String chaine = "Noir: "+ nbCube[Cube.Noir.getInt()] + "     Bleu: " + nbCube[Cube.Bleu.getInt()] + "     Blanc: "+ nbCube[Cube.Blanc.getInt()] + "     Rouge: " + nbCube[Cube.Rouge.getInt()] +"\nJaune: " + nbCube[Cube.Jaune.getInt()] +"     Vert: " + nbCube[Cube.Vert.getInt()] + "      Neutre: " + nbCube[Cube.Neutre.getInt()] + "\n";
         chaine +="Bag: ";
         int nb = 0;
         for(Cube cube : personalBag){

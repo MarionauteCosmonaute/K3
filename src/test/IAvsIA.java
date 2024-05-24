@@ -1,5 +1,6 @@
 
 import Model.*;
+import Model.IA.IA;
 
 public class IAvsIA{
 

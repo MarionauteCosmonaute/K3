@@ -1,4 +1,5 @@
 import Model.*;
+import Model.IA.IA;
 
 public class GenerateurPyramide {
     static void drawAll(Jeu jeu){
@@ -8,11 +9,7 @@ public class GenerateurPyramide {
         Jeu jeu = new Jeu(2);
         jeu.initPrincipale();
         drawAll(jeu);
-        IA ia = IA.nouvelle(jeu,2,1);
-        BestPyramide pyramid = ia.generePyramide(1,1);
-        System.out.println(pyramid.getPrincipal());
-        //System.out.println(jeu.getPlayer(0).getPyramid());
-        System.out.println("Pyramide de profondeur " + pyramid.getProfondeur() +" generer:\n" + pyramid.getPyramid());
-        System.out.println("Pyramide a la fin de la partie:\n" + pyramid.getFin());
+        IA ia = IA.nouvelle(jeu,1,1);
+        ia.construction();
     }
 }

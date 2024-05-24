@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Iterateur.*;
+import java.util.NoSuchElementException;
 
 public class Pyramid {
     Cube[][] pyramid;
@@ -106,6 +107,16 @@ public class Pyramid {
             default:
                 throw new NullPointerException();
         }
+    }
+
+    public void fill(Cube cube){
+        Iterateur it = iterateur("UP");
+        try{
+            while(true){
+                it.next();
+                it.modify(cube);
+            }
+        }catch(NoSuchElementException e){}
     }
 
 
