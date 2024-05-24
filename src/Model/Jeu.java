@@ -596,7 +596,7 @@ public class Jeu implements Cloneable{
         }
         int x = 0;
         for(Cube c : getPlayer(i).getSide()){
-            if(c == Cube.Blanc || c == Cube.Neutre || list.get(c) != null){
+            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c)){
                 Point p = new Point(x, -1);
                 Aksel.add(p);
             }
