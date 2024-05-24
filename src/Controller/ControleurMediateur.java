@@ -84,7 +84,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			// if (jeu.End_Game())
 			// {
 			// 	FinPartie();
-			// }
+			// }	
 		}
 		else{
 			clic = true;
