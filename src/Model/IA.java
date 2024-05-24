@@ -233,10 +233,16 @@ public abstract class IA {
         return list;
     }
 
-    public BestPyramide generePyramide(int index, int p){
-        Player player = jeu.getPlayer(index);
+    public BestPyramide generePyramide(int p){
+        Player player = jeu.getPlayer(indiceJoueur);
         int size = player.getSize();
         int min,max;
+        ArrayList<Cube> list = cubePotentiel();
+        Thread[] threads = new Thread[list.size()*p];       /* Potentiel amelioration afin d'avoir un nombre fixe qui ne varie pas selon la size */
+        int j = 0;
+        Jeu cloneBase = jeu.clone();
+        cloneBase.getPlayer(jeu.next_player(indiceJoueur)).fusion();
+        player = cloneBase.getPlayer(indiceJoueur);
         switch (difficulte) {
             case 0:
                 min = 9;
@@ -257,21 +263,14 @@ public abstract class IA {
                 break;
         }
         BestPyramide ZeBest = new BestPyramide(size, min, max);
-        ArrayList<Cube> list = cubePotentiel();
-        Thread[] threads = new Thread[list.size()*p];       /* Potentiel amelioration afin d'avoir un nombre fixe qui ne varie pas selon la size */
-        int j = 0;
-        Jeu cloneBase = jeu.clone();
-        cloneBase.getPlayer(jeu.next_player(index)).fusion();
-        player = cloneBase.getPlayer(index);
         Jeu clone;
-        
         for(Cube cube : list){
             player.resetBag();
             player.construction(size-1, 0, cube);
             for (int i = 0; i < p; i++){
                 clone = cloneBase.clone();
-                clone.constructionAleatoire(clone.getPlayer(index));
-                threads[(j*p) + i] = new Thread(new ConstructionRunable(clone,ZeBest,index,difficulte));
+                clone.constructionAleatoire(clone.getPlayer(indiceJoueur));
+                threads[(j*p) + i] = new Thread(new ConstructionRunable(clone,ZeBest,indiceJoueur,difficulte));
                 threads[(j*p) + i].start();
             }
             j++;
@@ -298,7 +297,8 @@ public abstract class IA {
     }
     
     public void construction(){
-        jeu.constructionAleatoire(jeu.getPlayer(indiceJoueur));
+        throw new UnsupportedOperationException();
+        /*jeu.constructionAleatoire(jeu.getPlayer(indiceJoueur));*/
     }
 
     public void takePenaltyCube(){

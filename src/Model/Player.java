@@ -175,6 +175,10 @@ public class Player {
         return personalBag.isEmpty();
     }
 
+    public void emptyBag(){
+        personalBag = new ArrayList<>();
+    }
+
     public int getBagSize(){
         return personalBag.size();
     }
@@ -201,7 +205,6 @@ public class Player {
             incrementBag(get(x, y));
             decrement(get(x, y));
             personalBag.add(get(x, y));
-
         }
         decrementBag(cube);
         increment(cube);
@@ -253,7 +256,7 @@ public class Player {
     
     @Override
     public String toString(){
-        String chaine = "Noir: "+ noir + "     Bleu: " + bleu + "     Blanc: "+ blanc + "     Rouge: " + rouge +"\nJaune: " + jaune +"     Vert: " + vert + "      Neutre: " + neutre + "\n";
+        String chaine = "Noir: "+ nbCubeBag[Cube.Noir.getInt()] + "     Bleu: " + nbCubeBag[Cube.Bleu.getInt()] + "     Blanc: "+ nbCubeBag[Cube.Blanc.getInt()] + "     Rouge: " + nbCubeBag[Cube.Rouge.getInt()] +"\nJaune: " + nbCubeBag[Cube.Jaune.getInt()] +"     Vert: " + nbCubeBag[Cube.Vert.getInt()] + "      Neutre: " + nbCubeBag[Cube.Neutre.getInt()] + "\n";
         chaine +="Bag: ";
         int nb = 0;
         for(Cube cube : personalBag){

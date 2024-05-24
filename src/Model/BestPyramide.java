@@ -3,6 +3,7 @@ package Model;
 public class BestPyramide {
     Pyramid pyramide,principal,fin;
     int profondeur,min,max;
+    boolean done;
     
     BestPyramide(int taille,int min, int max){
         pyramide = null;
@@ -11,14 +12,17 @@ public class BestPyramide {
         fin = null;
         this.min = min;
         this.max = max;
+        done = false;
     }
     
     public synchronized void set(Pyramid pyramid, Pyramid principal, Pyramid fin ,int profondeur){
+        if(profondeur == 0)
         if(min <= profondeur && max <= max){
             this.pyramide = pyramid;
             this.profondeur = profondeur;
             this.principal = principal;
             this.fin = fin;
+            done = true;
         }
     }
 

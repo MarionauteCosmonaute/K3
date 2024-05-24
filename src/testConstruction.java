@@ -6,8 +6,8 @@ public class testConstruction {
         Jeu jeu = new Jeu(2);
         jeu.initPrincipale();
         while(jeu.draw()){}
-        IA ia = IA.nouvelle(jeu, Integer.parseInt(args[0]), 1);
+        IA ia = IA.nouvelle(jeu, 0, 1);
         ia.construction();
-        System.out.println(jeu.getPlayer(1).getPyramid());
+        System.out.println(jeu.getPlayer(1));
     }
 }

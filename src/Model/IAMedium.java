@@ -17,7 +17,7 @@ public class IAMedium extends IA {
 
     @Override
     public void construction(){
-        Pyramid pyramide = generePyramide(indiceJoueur,10).getPyramid();
+        Pyramid pyramide = generePyramide(10).getPyramid();
         Iterateur it = pyramide.iterateur("UP");
         Iterateur itIA = jeu.getPlayer(indiceJoueur).getPyramid().iterateur("UP");
         while(it.hasNext()){
