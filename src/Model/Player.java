@@ -195,6 +195,11 @@ public class Player {
         personalBag.add(cube);
     }
 
+
+    public void emptyBag(){
+        personalBag = new ArrayList<>();
+    }
+
     /*Construct method -> Puts a cube in a position after checking its content:       */
    /*If cube already existing in position -> Puts it back in the bag and replaces it */
     public void construction(int x, int y,Cube cube){

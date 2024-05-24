@@ -571,6 +571,15 @@ public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l
         }
     }
     
+    //COORD POSITION POSSIBLES POUR UN CUBE DONNEE
+    public ArrayList<Point> CubeAccessibleDestinations(Player p,int x, int y){
+        if (y==-1){
+            return destination(p.getSide(x));
+        }
+        else{
+            return destination(p.get(x, y));
+        }
+    }
 
     public ArrayList<Point> Accessible_Playable(){
         return Accessible_Playable(current_player);
