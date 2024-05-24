@@ -14,7 +14,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 	Jeu jeu;
 	//NiveauGraphique niv;
 	boolean maximized;
-	Timer t;
+	Timer timer;
 	Boolean bool = true;
 
 	InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
@@ -30,11 +30,11 @@ public class InterfaceGraphique implements Runnable, Observateur {
 	}
 
 	public void stopTimer() {
-		t.stop();
+		timer.stop();
 	}
 
 	public void startTimer() {
-		t.start();
+		timer.start();
 	}
 
 	public void basculePleinEcran() {
@@ -67,12 +67,14 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		// new FenetreNouvellePartie(frame, controle);
 
 		// Generation de toutes les fenetres
-		MenuPrincipal Mp = new MenuPrincipal(controle);
-		frame.add(Mp);
-		Mp.setVisible(true);
-		MenuNouvellePartie Mnp = new MenuNouvellePartie(controle);
+		MenuPrincipal mp = new MenuPrincipal(controle);
+		frame.add(mp);
+		mp.setVisible(true);
+		MenuNouvellePartie mnp = new MenuNouvellePartie(controle);
 		MenuPhaseConstruction pC =new MenuPhaseConstruction(controle, jeu);
-		MenuPhaseDeJeu2 PhaseDeJeu2 = new MenuPhaseDeJeu2(controle, jeu);
+		MenuPhaseDeJeu2 phaseDeJeu2 = new MenuPhaseDeJeu2(controle, jeu);
+		MenuPhaseDeJeuJVIA phaseDeJeuJVIA = new MenuPhaseDeJeuJVIA(controle,jeu);
+		timer = new Timer(5000,new AdaptateurJoueIA(controle));
 		controle.commande("MenuOnline");
 
 		// On ajoute la souris et le clavier

@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 
 
 
+
 public class ControleurMediateur implements CollecteurEvenements {
 	Jeu jeu;
 	InterfaceGraphique vue;
@@ -22,6 +23,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 	static boolean clic = false;
 	static int ligne_joueur, colonne_joueur;
 	boolean penalty;
+	boolean IAON=false;
+	IA ia;
 
 	Cube cube, cube_selectionne;
 
@@ -102,14 +105,12 @@ public class ControleurMediateur implements CollecteurEvenements {
 		}
 		if(res == 2){
 			penalty = true;
+			if (IAON && jeu.get_player() == 0){
+				ia.takePenaltyCube();
+				penalty = false;
+			}
 		}
-		// else
-		// {
-		// 	if (jeu.End_Game())
-		// 	{
-		// 		FinPartie();
-		// 	}
-		// }
+		vue.startTimer();
 	}
 
 	public void FinPartie()
@@ -190,6 +191,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			break;
 
 			case "JoueurVSJoueur":
+				IAON=false;
 			    ((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
 				changeVisible(2);
 				jeu.reset(2);
@@ -198,14 +200,28 @@ public class ControleurMediateur implements CollecteurEvenements {
 				while(jeu.draw()){} // On cree une partie a 2
 				break;
 
+			case "JoueurVSIA":
+				IAON=true;
+				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
+				changeVisible(2);
+				jeu.reset(2);
+				jeu.initPrincipale();
+				joueur_initial=jeu.get_player();
+				ia = IA.nouvelle(jeu,0,1);
+				vue.startTimer();
+				while(jeu.draw()){} // On cree une partie a 2
+				jeu.constructionAleatoire(jeu.getPlayer(1)); // a enlever quand l'IA construira la pyramide
+				if(IAON && jeu.get_player()==1){
+					jeu.avance();
+				}
+				break;
+
 			case "Valider":
 				jeu.avance();
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setValider(false);
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint();
-				// if(jeu.get_player().estIA()){
-				// jeu.avance();
-				// }
-				if (jeu.get_player() == joueur_initial) {
+				
+				if (jeu.get_player() == joueur_initial || (IAON && jeu.get_player()==1) ) {
 					changeVisible(3);
 					jeu.gameStart();
 				}
@@ -217,6 +233,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;
 
 			case "MenuP":
+				vue.stopTimer();
 				((BackgroundPanel) frame).setBackgroundPicture("res/Back.png");
 				changeVisible(0);
 				break;
@@ -228,6 +245,14 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "PDJ2":
 				changeVisible(3);
 				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
+				break;
+			case "JoueIA":
+				if (jeu.get_player()==1 && !penalty){
+					if (ia.jouer_coup() == 2){
+						penalty = true;
+					}
+					vue.stopTimer();
+				}
 				break;
 				
 			default:

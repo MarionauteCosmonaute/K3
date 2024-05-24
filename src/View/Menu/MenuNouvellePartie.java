@@ -58,6 +58,7 @@ public class MenuNouvellePartie extends Menu {
                     }).run();
                 }
             });
+            joueurVSia.addActionListener(new AdaptateurJoueurVSIA(controle));
             fileMenu.add(joueurVSjoueur); // Ajouter "Nouveau" au menu "Fichier"
             fileMenu.add(joueurVSia); // Ajouter "Ouvrir" au menu "Fichier"
             centrePanel.add(menuBar);

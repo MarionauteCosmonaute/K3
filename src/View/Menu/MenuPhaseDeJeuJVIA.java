@@ -4,6 +4,7 @@ import View.CollecteurEvenements;
 import View.Bouton;
 import View.PDJPyramideCentrale;
 import View.PDJPyramideJoueur;
+import View.PDJPyramideIA;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,7 +18,8 @@ import Patterns.Observateur;
 public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
     JButton Aide, Regles;
     PDJPyramideCentrale pdj;
-    PDJPyramideJoueur joueur1,joueur2;
+    PDJPyramideJoueur joueur1;
+    PDJPyramideIA joueur2;
 
     public MenuPhaseDeJeuJVIA(CollecteurEvenements controle, Jeu J) {
         super();
@@ -106,9 +108,8 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
 
             // Joueur Rouge
             bottomRightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-            joueur2 = (new PDJPyramideJoueur(J, bottomRightPanel, 1)); // ajoute la pyramide du joueur
-                                                                                         // 2
-            bottomRightPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur2, pdj));
+            joueur2 = (new PDJPyramideIA(J, bottomRightPanel, 1)); // ajoute la pyramide de l'IA
+            bottomRightPanel.addMouseListener(new AdaptateurSourisIA(controle, joueur2, pdj));
             bottomRightPanel.add(joueur2, BorderLayout.CENTER);
             joueur2.setVisible(true);
 
