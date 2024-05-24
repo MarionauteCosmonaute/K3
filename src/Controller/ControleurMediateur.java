@@ -21,7 +21,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	int joueur_initial;
 	static boolean clic = false;
 	static int ligne_joueur, colonne_joueur;
-	boolean penalite;
+	boolean penalty;
 
 	Cube cube, cube_selectionne;
 
@@ -29,7 +29,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		jeu = j;
 		this.musique = musique;
 		joueur_initial = j.get_player();
-		penalite = false;
+		penalty = false;
 	}
 
 	public void addMenu(Menu m) {
@@ -50,13 +50,13 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 
 	@Override
-	public void clicJoueur(int x, int y) {
+	public void clicJoueurPyramide(int x, int y) {
 		// cube_selectionne = jeu.getPlayer().get(x, y);
-		if(penalite == true){
+		if(penalty == true){
 			//tester que le cube est accessible dans la pyramide du joueur
 			if(jeu.accessible(x,y)){
 				jeu.takePenaltyCube(x, y); // y : mettre -1 si ça vient du side
-				penalite = false;
+				penalty = false;
 				// if (jeu.End_Game())
 				// {
 				// 	FinPartie();
@@ -72,24 +72,44 @@ public class ControleurMediateur implements CollecteurEvenements {
 	}
 
 	@Override
-	public void clicPyramideCentrale(int x, int y) {
-		int res;
-		if(jeu.accessible(ligne_joueur,colonne_joueur)){
-			res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
-			if(res == 1 || res == 2){
-				clic = false;
-			}
-			if(res == 2){
-				penalite = true;
-			}
-			// else
+	public void clicJoueurSide(int x) {
+		// cube_selectionne = jeu.getPlayer().get(x, y);
+		if(penalty == true){
+			//tester que le cube est accessible dans la pyramide du joueur
+			jeu.takePenaltyCube(x, -1); // y : mettre -1 si ça vient du side
+			penalty = false;
+			// if (jeu.End_Game())
 			// {
-			// 	if (jeu.End_Game())
-			// 	{
-			// 		FinPartie();
-			// 	}
+			// 	FinPartie();
 			// }
 		}
+		else{
+			clic = true;
+			ligne_joueur = x;
+			colonne_joueur = -1; //mettre -1 si ça vient du side
+		}
+		
+	}
+
+	@Override
+	public void clicPyramideCentrale(int x, int y) {
+		int res;
+
+		// if(jeu.accessible(ligne_joueur,colonne_joueur)){
+		res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
+		if(res == 1 || res == 2 || res == 3){
+			clic = false;
+		}
+		if(res == 2){
+			penalty = true;
+		}
+		// else
+		// {
+		// 	if (jeu.End_Game())
+		// 	{
+		// 		FinPartie();
+		// 	}
+		// }
 	}
 
 	public void FinPartie()
@@ -221,5 +241,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 		indice_courant = n_indice;
 		vue.addFrame(getcurMenu());
 		getcurMenu().setVisible(true);
+	}
+
+	@Override
+	public boolean penaltyPhase() {
+		return penalty;
 	}
 }

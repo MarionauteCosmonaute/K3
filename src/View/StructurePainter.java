@@ -15,6 +15,7 @@ public class StructurePainter {
     static Point points_pyramide_joueur1[][];
     static Point points_pyramide_joueur2[][];
     static Point points_pyramide_centrale[][];
+    static Point points_side[];
     static int taille_cube_joueur;
     static int taille_cube_pyramide_centrale;
 
@@ -37,6 +38,7 @@ public class StructurePainter {
             points_pyramide_joueur1 = new Point[6][6];
             points_pyramide_joueur2 = new Point[6][6];
             points_pyramide_centrale = new Point[9][9];
+            points_side  = new Point[6];
         }
     }
 
@@ -125,39 +127,41 @@ public class StructurePainter {
         Cube cube;
         int taille_side = side.size(); //a revoir pour utiliser la fonction getSideSize mais elle est dans player
 
-
         
         // y_haut = ((width *5)/6 - (taille_cube / 2) * (x + 1) + taille_cube * y - (espace * x) / 2);
+        y_haut = width/2 + 3*taille_cube_joueur;
         for(int x = 0; x < taille_side; x++){
-            // x_haut = 
+            x_haut = height / 2 - (taille_cube / 2) * 5 + taille_cube * (5-x)
+                    - (espace * 6) / 2;
             cube = side.get(x);
+            points_side[x] = (new Point(y_haut, x_haut - espace * x));
             switch (cube) {
                 case Noir:
-                    drawable.drawImage(noir, y_haut, x_haut + espace * x, taille_cube, taille_cube,
+                    drawable.drawImage(noir, y_haut, x_haut - espace * x, taille_cube, taille_cube,
                             null);
                     break;
                 case Neutre:
-                    drawable.drawImage(neutre, y_haut, x_haut + espace * x, taille_cube, taille_cube,
+                    drawable.drawImage(neutre, y_haut, x_haut - espace * x, taille_cube, taille_cube,
                             null);
                     break;
                 case Blanc:
-                    drawable.drawImage(blanc, y_haut, x_haut + espace * x, taille_cube, taille_cube,
+                    drawable.drawImage(blanc, y_haut, x_haut - espace * x, taille_cube, taille_cube,
                             null);
                     break;
                 case Vert:
-                    drawable.drawImage(vert, y_haut, x_haut + espace * x, taille_cube, taille_cube,
+                    drawable.drawImage(vert, y_haut, x_haut - espace * x, taille_cube, taille_cube,
                             null);
                     break;
                 case Jaune:
-                    drawable.drawImage(jaune, y_haut, x_haut + espace * x, taille_cube, taille_cube,
+                    drawable.drawImage(jaune, y_haut, x_haut - espace * x, taille_cube, taille_cube,
                             null);
                     break;
                 case Rouge:
-                    drawable.drawImage(rouge, y_haut, x_haut + espace * x, taille_cube, taille_cube,
+                    drawable.drawImage(rouge, y_haut, x_haut - espace * x, taille_cube, taille_cube,
                             null);
                     break;
                 case Bleu:
-                    drawable.drawImage(bleu, y_haut, x_haut + espace * x, taille_cube, taille_cube,
+                    drawable.drawImage(bleu, y_haut, x_haut - espace * x, taille_cube, taille_cube,
                             null);
                     break;
                 default:
@@ -168,6 +172,7 @@ public class StructurePainter {
 
     public static void DessineAccessible(Graphics g, int ligne, int colonne,int height, int width, Jeu jeu)
     {
+        
         Graphics2D drawable = (Graphics2D) g;
         int x_haut, y_haut;
         int taille_pyramide = jeu.getPrincipale().getSize();
@@ -183,6 +188,12 @@ public class StructurePainter {
                 y_haut = width / 2 - (taille_cube / 2) * (x + 1) + taille_cube * y - (espace * x) / 2;
                 p = new Point(taille_pyramide - 1 - x, y);
                 if(Listeaccessible.contains(p)){
+                    if(jeu.move_validity(jeu.getPlayer().get(ligne, colonne), taille_pyramide - 1 - x, y) == 2){ //
+                        drawable.setColor(Color.RED);
+                    }
+                    else{
+                        drawable.setColor(Color.BLACK);
+                    }
                     drawable.drawRect(y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube);
                     drawable.drawRect(y_haut + espace * y + 1, x_haut + espace * x + 1, taille_cube - 2, taille_cube - 2);
                 }
@@ -202,6 +213,10 @@ public class StructurePainter {
         return points_pyramide_centrale;
     }
 
+    public static Point[] PointSide(){
+        return points_side;
+    }
+
     public static int TailleCubeJoueur(){
         return taille_cube_joueur;
     }
@@ -214,10 +229,14 @@ public class StructurePainter {
         int taille_cube = Math.min(80 * height / (100 * taille_pyramide), 80 * width / (100 * taille_pyramide));
         int espace = taille_cube / 10;
         int x_haut, y_haut;
-
+        ArrayList<Point> ListePoints;
         // On dessine la "sur-brillance"
-        // ArrayList<Point> ListePoints = jeu.AccessibleCubesPlayer(num_joueur);
-        ArrayList<Point> ListePoints = jeu.Accessible_Playable(num_joueur);
+        if(jeu.getPenality()){ // tester recupération pénalité
+            ListePoints = jeu.AccessibleCubesPlayer(num_joueur); //highlight tout le side quand il y a une pénalité
+        }
+        else{
+            ListePoints = jeu.Accessible_Playable(num_joueur);
+        }
         for(Point p : ListePoints){
             // y_haut + espace * p.y, x_haut + espace * p.x
 
@@ -226,26 +245,48 @@ public class StructurePainter {
             x_haut = points_pyramide_joueur1[5-p.x][p.y].y;
             y_haut = points_pyramide_joueur1[5-p.x][p.y].x;
             */
-            
-            x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (5-p.x)
-                    - (espace * taille_pyramide) / 2;
-            y_haut = width / 2 - (taille_cube / 2) * ((5-p.x) + 1) + taille_cube * p.y - (espace * (5-p.x)) / 2;  
-            if(side){
-                y_haut -= 2*taille_cube;
+            if(p.y != -1){
+                x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (5-p.x)
+                        - (espace * taille_pyramide) / 2;
+                y_haut = width / 2 - (taille_cube / 2) * ((5-p.x) + 1) + taille_cube * p.y - (espace * (5-p.x)) / 2;  
+                if(side){
+                    y_haut -= 2*taille_cube;
+                }
+                
+                drawable.setColor(Color.YELLOW);
+
+                drawable.drawRect(y_haut + espace * p.y, x_haut + espace * (5-p.x), taille_cube, taille_cube);
+                drawable.drawRect(y_haut + espace * p.y + 1, x_haut + espace * (5-p.x) + 1, taille_cube - 2, taille_cube - 2);
+
+                
+                drawable.drawRect(y_haut + espace * p.y + 2, x_haut + espace * (5-p.x) + 2, taille_cube - 4, taille_cube - 4);
+                drawable.setColor(Color.BLACK);
+
+                drawable.drawRect(y_haut + espace * p.y + 3, x_haut + espace * (5-p.x) + 3, taille_cube - 6, taille_cube - 6);
+
+                drawable.drawRect(y_haut + espace * p.y + 4, x_haut + espace * (5-p.x) + 4, taille_cube - 8, taille_cube - 8);
+                drawable.drawRect(y_haut + espace * p.y + 5, x_haut + espace * (5-p.x) + 5, taille_cube - 10, taille_cube - 10);
             }
-            drawable.setColor(Color.YELLOW);
+            else{
+                System.out.println("penalitééééééééééééééééééééééééééééééééééééééééé");
+                y_haut = width/2 + 3*taille_cube_joueur;
+                x_haut = height / 2 - (taille_cube / 2) * 5 + taille_cube * (5-p.x)
+                    - (espace * 6) / 2;
 
-            drawable.drawRect(y_haut + espace * p.y, x_haut + espace * (5-p.x), taille_cube, taille_cube);
-            drawable.drawRect(y_haut + espace * p.y + 1, x_haut + espace * (5-p.x) + 1, taille_cube - 2, taille_cube - 2);
+                drawable.setColor(Color.YELLOW);
 
-            
-            drawable.drawRect(y_haut + espace * p.y + 2, x_haut + espace * (5-p.x) + 2, taille_cube - 4, taille_cube - 4);
-            drawable.setColor(Color.BLACK);
+                drawable.drawRect(y_haut, x_haut - espace * p.x, taille_cube, taille_cube);
+                drawable.drawRect(y_haut+1, x_haut - espace * p.x + 1, taille_cube - 2, taille_cube - 2);
 
-            drawable.drawRect(y_haut + espace * p.y + 3, x_haut + espace * (5-p.x) + 3, taille_cube - 6, taille_cube - 6);
+                
+                drawable.drawRect(y_haut+2, x_haut - espace * p.x + 2, taille_cube - 4, taille_cube - 4);
+                drawable.setColor(Color.BLACK);
 
-            drawable.drawRect(y_haut + espace * p.y + 4, x_haut + espace * (5-p.x) + 4, taille_cube - 8, taille_cube - 8);
-            drawable.drawRect(y_haut + espace * p.y + 5, x_haut + espace * (5-p.x) + 5, taille_cube - 10, taille_cube - 10);
+                drawable.drawRect(y_haut+3, x_haut - espace * p.x + 3, taille_cube - 6, taille_cube - 6);
+
+                drawable.drawRect(y_haut+4, x_haut - espace * p.x + 4, taille_cube - 8, taille_cube - 8);
+                drawable.drawRect(y_haut+5, x_haut - espace * p.x + 5, taille_cube - 10, taille_cube - 10);
+            }
         }
     }
 }

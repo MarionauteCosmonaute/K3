@@ -56,7 +56,7 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         System.out.println("width_fenetre " + width_fenetre);
         System.out.println("height_fenetre " + height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPrincipale(), false, -1);
-        if (ControleurMediateur.GetClic() && jeu.accessible(ControleurMediateur.GetLigne(), ControleurMediateur.GetColonne()))
+        if (ControleurMediateur.GetClic() && (ControleurMediateur.GetColonne() == -1 || jeu.accessible(ControleurMediateur.GetLigne(), ControleurMediateur.GetColonne())))
         {
             StructurePainter.DessineAccessible(g, ControleurMediateur.GetLigne(),ControleurMediateur.GetColonne(), height_fenetre, width_fenetre, jeu);
             // Mettre le booléen à false quand on clique sur la pyramide centrale et quand on clique sur un cube non accessible

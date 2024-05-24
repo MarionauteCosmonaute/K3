@@ -38,9 +38,20 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
                         && (e.getY() <= (points_pyramide_joueurs[x][y].getY() + taille_cube_joueur))
                         && (e.getX() >= points_pyramide_joueurs[x][y].getX())
                         && (e.getX() <= (points_pyramide_joueurs[x][y].getX() + taille_cube_joueur))) {
-                    controle.clicJoueur(taille_base_pyramide - 1 - x, y);
+                    controle.clicJoueurPyramide(taille_base_pyramide - 1 - x, y);
                     pdjCentrale.repaint();
                 }
+            }
+        }
+
+        Point points_side[] = pdj.PointSide();
+        for(int x = 0; x < pdj.tailleSide(); x++){
+            if ((e.getY() >= points_side[x].getY())
+                        && (e.getY() <= (points_side[x].getY() + taille_cube_joueur))
+                        && (e.getX() >= points_side[x].getX())
+                        && (e.getX() <= (points_side[x].getX() + taille_cube_joueur))) {
+                    controle.clicJoueurSide(x);
+                    pdjCentrale.repaint();
             }
         }
     }

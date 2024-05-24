@@ -5,7 +5,9 @@ import View.Menu.*;
 import javax.swing.JFrame;
 
 public interface CollecteurEvenements {
-    void clicJoueur(int l, int c);
+    void clicJoueurPyramide(int l, int c);
+
+    void clicJoueurSide(int x);
 
     void clicPyramideCentrale(int l, int c);
 
@@ -22,5 +24,7 @@ public interface CollecteurEvenements {
     void addMenu(Menu m);
 
     void addFenetre(JFrame j);
+
+    boolean penaltyPhase();
 
 }

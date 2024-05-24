@@ -23,6 +23,11 @@ public class Jeu extends Observable implements Cloneable{
     int current_player, size;
     boolean End,start;
     Model.Historique.Historique hist;
+    boolean penality = false;
+
+    public boolean getPenality(){
+        return penality;
+    }
 
         /*****************************/
         /* Fonction creation du jeu */
@@ -290,6 +295,10 @@ public class Jeu extends Observable implements Cloneable{
             case 1:
             case 3:
                 avance();
+                break;
+            case 2:
+                penality = true;
+                break;
             default:
                 break;
         }
@@ -355,6 +364,7 @@ public class Jeu extends Observable implements Cloneable{
         }else{
             takePenaltyCubeFromPyramid(x,y);
         }
+        penality=false;
         avance();
         metAJour();
     }
@@ -570,7 +580,7 @@ public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l
 
         for(Point e : AccessibleCubesPlayer(i)){
             Cube cube = getPlayer(i).get(e.x, e.y);
-            if(cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube)){
+            if(cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube) || list.containsKey(Cube.Neutre)){
                 Aksel.add(e);
             }
         }

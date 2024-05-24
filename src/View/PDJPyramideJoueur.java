@@ -27,6 +27,10 @@ public class PDJPyramideJoueur extends JComponent {
         return StructurePainter.PointPyramideJoueurs(joueur);
     }
 
+    public Point[] PointSide(){
+        return StructurePainter.PointSide();
+    }
+
     // Retourne la taille des cubes des joueurs
     public int TailleCubeJoueur(){
         return StructurePainter.TailleCubeJoueur();
@@ -41,6 +45,10 @@ public class PDJPyramideJoueur extends JComponent {
         return joueur;
     }
 
+    public int tailleSide(){
+        return jeu.getPlayer(joueur).getSideSize();
+    }
+
     public void paintComponent(Graphics g) {
 
         System.out.println("PaintComponent de PDJPyramideJoueur");
@@ -52,7 +60,7 @@ public class PDJPyramideJoueur extends JComponent {
         System.out.println("height_fenetre " + height_fenetre);
         // if(jeu.getPlayer(joueur).getSideSize() > 0)
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid(), jeu.getPlayer(joueur).getSideSize() > 0, joueur);
-        // StructurePainter.dessiner_side(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSide());
+        StructurePainter.dessiner_side(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSide());
         switch(joueur){
             case 0:
                 drawable.setColor(Color.BLUE);

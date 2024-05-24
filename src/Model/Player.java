@@ -153,6 +153,9 @@ public class Player {
     }
 
     public Cube get(int x, int y){
+        if(y == -1){
+            return getSide(x);
+        }
         return pyramid.get(x, y);
     }
 
