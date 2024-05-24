@@ -231,8 +231,28 @@ public class StructurePainter {
         int x_haut, y_haut;
         ArrayList<Point> ListePoints;
         // On dessine la "sur-brillance"
+        int taille_side = jeu.getPlayer().getSideSize();
         if(jeu.getPenality()){ // tester recupération pénalité
             ListePoints = jeu.AccessibleCubesPlayer(num_joueur); //highlight tout le side quand il y a une pénalité
+            for(int x = 0; x<taille_side; x++){
+                y_haut = width/2 + 3*taille_cube_joueur;
+                x_haut = height / 2 - (taille_cube / 2) * 5 + taille_cube * (5-x)
+                    - (espace * 6) / 2;
+
+                drawable.setColor(Color.YELLOW);
+
+                drawable.drawRect(y_haut, x_haut - espace * x, taille_cube, taille_cube);
+                drawable.drawRect(y_haut+1, x_haut - espace * x + 1, taille_cube - 2, taille_cube - 2);
+
+                
+                drawable.drawRect(y_haut+2, x_haut - espace * x + 2, taille_cube - 4, taille_cube - 4);
+                drawable.setColor(Color.BLACK);
+
+                drawable.drawRect(y_haut+3, x_haut - espace * x + 3, taille_cube - 6, taille_cube - 6);
+
+                drawable.drawRect(y_haut+4, x_haut - espace * x + 4, taille_cube - 8, taille_cube - 8);
+                drawable.drawRect(y_haut+5, x_haut - espace * x + 5, taille_cube - 10, taille_cube - 10);
+            }
         }
         else{
             ListePoints = jeu.Accessible_Playable(num_joueur);
