@@ -463,11 +463,11 @@ public class Jeu implements Cloneable{
     }
 
     public boolean caseDessusDroitPossible(int x,int y) {
-        return (y != principale.getSize()-x-1) && principale.get(x,y+1) == Cube.Vide && principale.get(x+1,y) == Cube.Vide;
+        return (y != principale.getSize()-x-1) && principale.get(x,y+1) != Cube.Vide && principale.get(x+1,y) == Cube.Vide;
     }
 
     public boolean caseDessusGauchePossible(int x,int y) {
-        return (y != 0) && principale.get(x,y-1) == Cube.Vide && principale.get(x+1,y-1) == Cube.Vide;
+        return (y != 0) && principale.get(x,y-1) != Cube.Vide && principale.get(x+1,y-1) == Cube.Vide;
     }
 
     public boolean caseAdjacenteVide(int x, int y){         /* renvoie vrai si les cases adjacente sont vide */
@@ -490,7 +490,6 @@ public class Jeu implements Cloneable{
 
     public boolean noPlay(){
         ArrayList<Point> c = Accessible_Playable();
-        for (Point p : c) {System.out.println("LUC" + p.getX());}
         return c.size()==0;
     }
 
@@ -608,12 +607,13 @@ public class Jeu implements Cloneable{
         }
         int x = 0;
         for(Cube c : getPlayer(i).getSide()){
-            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c)){
+            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c) || list.containsKey(Cube.Neutre)){
                 Point p = new Point(x, -1);
                 Aksel.add(p);
             }
             x++;
         }
+        System.out.println("Aksel"+Aksel.size());
         return Aksel;
     }
 
