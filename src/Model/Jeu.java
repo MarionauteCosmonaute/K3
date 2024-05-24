@@ -458,8 +458,16 @@ public class Jeu implements Cloneable{
 
 
     public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l'on peu poser un cube sur un cube de la pyramide central */
-        if( (principale.get(x, y) != Cube.Vide) && ( !caseAdjacenteVide(x, y) ) && ( principale.get(x+1, y) == Cube.Vide || ( y != 0 && principale.get(x+1, y-1) == Cube.Vide ))) {return true;}
+        if( (principale.get(x, y) != Cube.Vide) && (caseDessusDroitPossible(x,y) || caseDessusGauchePossible(x,y))) {return true;}
         return false;
+    }
+
+    public boolean caseDessusDroitPossible(int x,int y) {
+        return (y != principale.getSize()-x-1) && principale.get(x,y+1) != Cube.Vide && principale.get(x+1,y) == Cube.Vide;
+    }
+
+    public boolean caseDessusGauchePossible(int x,int y) {
+        return (y != 0) && principale.get(x,y-1) != Cube.Vide && principale.get(x+1,y-1) == Cube.Vide;
     }
 
     public boolean caseAdjacenteVide(int x, int y){         /* renvoie vrai si les cases adjacente sont vide */
@@ -468,7 +476,9 @@ public class Jeu implements Cloneable{
 
     /* Fin de partie */
     public boolean check_loss(){            /* Verifie si le joueur courrant n'a aucun coup possible, s'il ne peut rien jouer le joueur courant est le prochain joueur */
-        if(noPlay() || getPlayer().totalCube() == 0){
+        if(noPlay()){
+            // System.out.println(getPlayer().totalCube());
+             System.out.println(noPlay());
             getPlayer().playerLost();
             hist.action(7,null, new Point(current_player,-1));
             int next = next_player();
@@ -479,7 +489,8 @@ public class Jeu implements Cloneable{
     }
 
     public boolean noPlay(){
-        return Accessible_Playable().size()==0;
+        ArrayList<Point> c = Accessible_Playable();
+        return c.size()==0;
     }
 
         /**************************************** */
@@ -590,18 +601,19 @@ public class Jeu implements Cloneable{
 
         for(Point e : AccessibleCubesPlayer(i)){
             Cube cube = getPlayer(i).get(e.x, e.y);
-            if(cube == Cube.Blanc || cube == Cube.Neutre || list.get(cube) != null){
+            if(cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube) || list.containsKey(Cube.Neutre)){
                 Aksel.add(e);
             }
         }
         int x = 0;
         for(Cube c : getPlayer(i).getSide()){
-            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c)){
+            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c) || list.containsKey(Cube.Neutre)){
                 Point p = new Point(x, -1);
                 Aksel.add(p);
             }
             x++;
         }
+        System.out.println("Aksel"+Aksel.size());
         return Aksel;
     }
 
