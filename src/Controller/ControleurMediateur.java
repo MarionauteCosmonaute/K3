@@ -186,6 +186,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 			
 			case "AideConstruction":
 				jeu.constructionAleatoire(jeu.getPlayer());
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setCubeSel(false);
+				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setDessinVideFalse();
 				System.out.println(jeu.getPlayer().getPyramid());
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).repaint();
 			break;
