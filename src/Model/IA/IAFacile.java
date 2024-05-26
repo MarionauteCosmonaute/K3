@@ -2,7 +2,6 @@ package Model.IA;
 import java.util.*;
 
 import Model.Pyramid;
-import Model.PyramideList;
 
 import java.awt.Point;
 

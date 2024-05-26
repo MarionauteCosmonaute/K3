@@ -3,7 +3,6 @@ package Model;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.awt.Point;
@@ -135,6 +134,10 @@ public class Jeu implements Cloneable{
                 }
             }
         }
+    }
+    public void initTest(){
+        initPrincipale();
+        while(draw()){}
     }
         /************************************ */
         /* Fonction lier a une action de jeu */
@@ -490,13 +493,13 @@ public class Jeu implements Cloneable{
 
         for(Point e : AccessibleCubesPlayer(i)){
             Cube cube = getPlayer(i).get(e.x, e.y);
-            if(cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube)){
+            if(cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube) || list.containsKey(Cube.Neutre)){
                 Aksel.add(e);
             }
         }
         int x = 0;
         for(Cube c : getPlayer(i).getSide()){
-            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c)){
+            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c) || list.containsKey(Cube.Neutre)){
                 Point p = new Point(x, -1);
                 Aksel.add(p);
             }

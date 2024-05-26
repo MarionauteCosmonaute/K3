@@ -249,7 +249,11 @@ public abstract class IA {
             pyramideList.finish();
         }*/
         /**********************/
-
+        /*Scanner s = new Scanner(System.in);
+        s.nextLine();
+        s.close();
+        pyramideList.finish();
+        */
         try{manager.join();}
         catch(InterruptedException e){System.err.println("Interuption catched for the construction manager");System.exit(1);}
         

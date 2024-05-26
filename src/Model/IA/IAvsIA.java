@@ -1,14 +1,14 @@
 package Model.IA;
 
-import Model.GameInfo;
 import Model.Jeu;
+import Model.Info.GameInfo;
 
 public class IAvsIA {
     Jeu jeu;
     int difficulte1, difficulte2;
     boolean construction;
 
-    IAvsIA(Jeu jeu, int difficulte1, int difficulte2, boolean constructionAleatoire){
+    public IAvsIA(Jeu jeu, int difficulte1, int difficulte2, boolean constructionAleatoire){
         this.jeu = jeu;
         this.difficulte1 = difficulte1;
         this.difficulte2 = difficulte2;
@@ -58,4 +58,5 @@ public class IAvsIA {
             ia1.construction();
         }
     }
+    
 }

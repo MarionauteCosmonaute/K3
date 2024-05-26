@@ -1,4 +1,4 @@
-package Model;
+package Model.Info;
 
 public class GameInfo {
     public int winner;
@@ -7,5 +7,9 @@ public class GameInfo {
     public GameInfo(int winner, int[] played){
         this.winner = winner;
         this.played = played;
+    }
+
+    public int getWinner(){
+        return winner;
     }
 }

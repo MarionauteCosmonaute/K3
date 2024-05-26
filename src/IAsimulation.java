@@ -1,0 +1,45 @@
+
+import Model.Jeu;
+import Model.Info.*;
+import Model.Runnables.*;
+public class IAsimulation {
+
+    public static void main(String[] args) {
+        if(args.length != 3){
+            throw new IllegalArgumentException("usage: java IAsimulation <test ammount> <difficulty AI 1> <difficulty AI 2>");
+        }
+        int nbTest = Integer.parseInt(args[0]);
+        int difficulte1 = Integer.parseInt(args[1]), difficulte2 = Integer.parseInt(args[2]);
+        int nb = 0;
+        Stat stat = new Stat();
+        Thread threads[] = new Thread[4];
+        Jeu jeu;
+        for(int i = 0; i < 4; i++){
+            jeu = new Jeu(2);
+            jeu.initTest();
+            threads[i] = new Thread(new IAvsIAthread(jeu,difficulte1,difficulte2,false,stat));
+            threads[i].start();
+            nb++;
+        }
+
+        while(nb <= nbTest){
+            for(int i = 0; i < 4; i++ ){
+                try{
+                    threads[i].join(100);
+                }
+
+                catch(InterruptedException e){System.err.println(e);System.exit(1);}
+                if( !threads[i].isAlive() && nb < nbTest ){
+                    jeu = new Jeu(2);
+                    jeu.initTest();
+                    threads[i] = new Thread(new IAvsIAthread(jeu,difficulte1,difficulte2,false,stat));
+                    threads[i].start();
+                    nb++;
+                }
+            }
+        }
+        System.out.println("winrate of Player 1: " + stat.winratePlayer1());
+        System.out.println("winrate of Player 2: " + stat.winratePlayer2());        
+
+    }
+}

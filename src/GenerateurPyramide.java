@@ -11,5 +11,6 @@ public class GenerateurPyramide {
         drawAll(jeu);
         IA ia = IA.nouvelle(jeu,1,1);
         ia.construction();
+        System.out.println(jeu.getPlayer(1).getPyramid());
     }
 }

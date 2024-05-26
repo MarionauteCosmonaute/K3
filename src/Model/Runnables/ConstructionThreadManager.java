@@ -59,7 +59,7 @@ public class ConstructionThreadManager implements Runnable{
                 }
 
                 catch(InterruptedException e){System.err.println(e);System.exit(1);}
-                if(!threads[i].isAlive()){
+                if( !threads[i].isAlive() && !list.done() ){
                     threads[i] = doWork(jeu.clone());
                 }
             }
