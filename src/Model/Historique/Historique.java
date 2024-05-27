@@ -64,4 +64,25 @@ public class Historique{
         return sb.toString();
     }
 
+    public static Historique fromString(String str) {
+        Historique historique = new Historique();
+        String[] lines = str.split("\n");
+        boolean isJouer = true;
+        for (String line : lines) {
+            if (line.equals("jouer:")) {
+                isJouer = true;
+            } else if (line.equals("annule:")) {
+                isJouer = false;
+            } else {
+                Coup coup = Coup.fromString(line);
+                if (isJouer) {
+                    historique.coup_jouer.add(coup);
+                } else {
+                    historique.coup_annule.add(coup);
+                }
+            }
+        }
+        return historique;
+    }
+
 }   
