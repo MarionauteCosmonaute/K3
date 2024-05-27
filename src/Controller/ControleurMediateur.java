@@ -9,8 +9,6 @@ import java.util.Vector;
 import javax.swing.JFrame;
 
 
-
-
 public class ControleurMediateur implements CollecteurEvenements {
 	Jeu jeu;
 	InterfaceGraphique vue;
@@ -249,7 +247,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
 				break;
 			case "JoueIA":
-				if (jeu.get_player()==1 && !penalty){
+
+				if (IAON && jeu.get_player()==1 && !penalty){
 					if (ia.jouer_coup() == 2){
 						penalty = true;
 					}
