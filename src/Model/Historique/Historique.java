@@ -50,4 +50,18 @@ public class Historique{
     private boolean isEmptyRefaire(){
         return !coup_annule.empty();
     }
+
+    public String sauvegarde() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("jouer:\n");
+        for (Coup coup : coup_jouer) {
+            sb.append(coup.toString()).append("\n");
+        }
+        sb.append("annule:\n");
+        for (Coup coup : coup_annule) {
+            sb.append(coup.toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
 }   

@@ -12,4 +12,9 @@ public class Coup{
         this.source = source;
         this.dest = dest;
     }
+
+    @Override
+    public String toString() {
+        return type + " " + start.x + " " + start.y + " " + destination.x + " " + destination.y;
+    }
 }
