@@ -65,5 +65,10 @@ public class ConstructionThreadManager implements Runnable{
             }
         }
 
+        for(Thread thread : threads){
+            try{thread.join();}
+            catch(InterruptedException e){System.err.println(e);System.exit(1);}
+        }
+
     }
 }

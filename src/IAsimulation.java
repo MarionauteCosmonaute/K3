@@ -21,15 +21,16 @@ public class IAsimulation {
             threads[i].start();
             nb++;
         }
-
-        while(nb <= nbTest){
+        boolean stop = false;
+        while(!stop){
             for(int i = 0; i < 4; i++ ){
+                if(nb > nbTest) stop = true;
                 try{
                     threads[i].join(100);
                 }
 
                 catch(InterruptedException e){System.err.println(e);System.exit(1);}
-                if( !threads[i].isAlive() && nb < nbTest ){
+                if( !threads[i].isAlive() && !stop ){
                     jeu = new Jeu(2);
                     jeu.initTest();
                     threads[i] = new Thread(new IAvsIAthread(jeu,difficulte1,difficulte2,false,stat));
@@ -37,6 +38,10 @@ public class IAsimulation {
                     nb++;
                 }
             }
+        }
+        for(Thread thread : threads){
+            try{thread.join();}
+            catch(InterruptedException e){System.err.println(e);System.exit(1);}
         }
         System.out.println("winrate of Player 1: " + stat.winratePlayer1());
         System.out.println("winrate of Player 2: " + stat.winratePlayer2());        
