@@ -23,6 +23,18 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         int taille_cube_pyramide_centrale = pdjCentrale.GetTailleCubePyramideCentrale();
         Point points_pyramide_centrale[][] = pdjCentrale.GetPointPyramideCentrale();
+
+        // On gère le clique du blanc
+        if((e.getY() >= pdjCentrale.GetBlancAccessible().x)
+        && (e.getY() <= pdjCentrale.GetBlancAccessible().x + taille_cube_pyramide_centrale)
+        && (e.getX() >= pdjCentrale.GetBlancAccessible().y)
+        && (e.getX() <= (pdjCentrale.GetBlancAccessible().y + taille_cube_pyramide_centrale)))
+        {
+            controle.clicPyramideCentrale(taille_base_pyramide - 1 , -1);
+            return;
+        }
+
+        // Le clique a lieu dans la pyramide
         for (int x = 0; x < taille_base_pyramide; x++) {
             for (int y = 0; y <= x; y++) {
                 if ((e.getY() >= points_pyramide_centrale[x][y].getY())
@@ -30,7 +42,7 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
                         && (e.getX() >= points_pyramide_centrale[x][y].getX())
                         && (e.getX() <= (points_pyramide_centrale[x][y].getX() + taille_cube_pyramide_centrale))) {
                     controle.clicPyramideCentrale(taille_base_pyramide - 1 - x, y);
-                    pdjCentrale.repaint();
+                    // pdjCentrale.repaint();
                 }
             }
         }

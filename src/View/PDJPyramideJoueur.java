@@ -56,9 +56,6 @@ public class PDJPyramideJoueur extends JComponent {
         width_fenetre = parent.getWidth();
         height_fenetre = parent.getHeight();
         setSize(width_fenetre, height_fenetre);
-        System.out.println("width_fenetre " + width_fenetre);
-        System.out.println("height_fenetre " + height_fenetre);
-        // if(jeu.getPlayer(joueur).getSideSize() > 0)
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid(), jeu.getPlayer(joueur).getSideSize() > 0, joueur);
         StructurePainter.dessiner_side(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSide());
         switch(joueur){

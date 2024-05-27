@@ -46,6 +46,11 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         return StructurePainter.PointPyramideCentrale();
     }
 
+    public Point GetBlancAccessible()
+    {
+        return StructurePainter.GetBlancAccessible();
+    }
+
 
     public void paintComponent(Graphics g) {
         System.out.println("PaintComponent de PDJPyramideCentrale");
@@ -53,8 +58,6 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         width_fenetre = parent.getWidth();
         height_fenetre = parent.getHeight();
         setSize(width_fenetre, height_fenetre);
-        System.out.println("width_fenetre " + width_fenetre);
-        System.out.println("height_fenetre " + height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPrincipale(), false, -1);
         if (ControleurMediateur.GetClic() && (ControleurMediateur.GetColonne() == -1 || jeu.accessible(ControleurMediateur.GetLigne(), ControleurMediateur.GetColonne())))
         {

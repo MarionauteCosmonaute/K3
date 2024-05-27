@@ -18,6 +18,7 @@ public class StructurePainter {
     static Point points_side[];
     static int taille_cube_joueur;
     static int taille_cube_pyramide_centrale;
+    static Point blanc_accessible;
 
     public static void init() {
         if (!inititalised) {
@@ -172,7 +173,6 @@ public class StructurePainter {
 
     public static void DessineAccessible(Graphics g, int ligne, int colonne,int height, int width, Jeu jeu)
     {
-        
         Graphics2D drawable = (Graphics2D) g;
         int x_haut, y_haut;
         int taille_pyramide = jeu.getPrincipale().getSize();
@@ -180,18 +180,35 @@ public class StructurePainter {
         int espace = taille_cube / 10;
 
         ArrayList<Point> Listeaccessible = jeu.CubeAccessibleDestinations(ligne,colonne);
+
+        // On gère le cas du cube blanc
+        if (Listeaccessible.get(0).x == -1 && Listeaccessible.get(0).y == -1)
+        {
+            x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (taille_pyramide -1) - (espace * taille_pyramide) / 2;
+            y_haut = width / 2 - (taille_cube / 2) * ((taille_pyramide-1) + 1) + taille_cube * -2 - (espace * (taille_pyramide -1)) / 2;
+            drawable.drawRect(y_haut + espace * -2, x_haut + espace * (taille_pyramide -1), taille_cube, taille_cube);
+            drawable.drawRect(y_haut + espace * -2 + 1, x_haut + espace * (taille_pyramide -1) + 1, taille_cube - 2, taille_cube - 2);
+            blanc_accessible = new Point(x_haut + espace * (taille_pyramide -1), y_haut + espace * -2);
+            return;
+        }
+        
         Point p;
-        for (int x = taille_pyramide - 1; x >= 0; x--) {
-            x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * x
-                    - (espace * taille_pyramide) / 2;
-            for (int y = 0; y <= x; y++) {
+        for (int x = taille_pyramide - 1; x >= 0; x--)
+        {
+            x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * x - (espace * taille_pyramide) / 2;
+            for (int y = 0; y <= x; y++)
+            {
                 y_haut = width / 2 - (taille_cube / 2) * (x + 1) + taille_cube * y - (espace * x) / 2;
                 p = new Point(taille_pyramide - 1 - x, y);
-                if(Listeaccessible.contains(p)){
-                    if(jeu.move_validity(jeu.getPlayer().get(ligne, colonne), taille_pyramide - 1 - x, y) == 2){ //
+                if(Listeaccessible.contains(p))
+                {
+                    // if (jeu.move_validity(jeu.getPlayer().get(ligne, colonne), taille_pyramide - 1 - x, y) == 3)
+
+                    if (jeu.move_validity(jeu.getPlayer().get(ligne, colonne), taille_pyramide - 1 - x, y) == 2){ //
                         drawable.setColor(Color.RED);
                     }
-                    else{
+                    else
+                    {
                         drawable.setColor(Color.BLACK);
                     }
                     drawable.drawRect(y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube);
@@ -219,6 +236,11 @@ public class StructurePainter {
 
     public static int TailleCubeJoueur(){
         return taille_cube_joueur;
+    }
+
+    public static Point GetBlancAccessible()
+    {
+        return blanc_accessible;
     }
 
     public static void Contour_Accessible_Joueur(int num_joueur, Jeu jeu, Graphics g, int height, int width, boolean side)
@@ -288,7 +310,6 @@ public class StructurePainter {
                 drawable.drawRect(y_haut + espace * p.y + 5, x_haut + espace * (5-p.x) + 5, taille_cube - 10, taille_cube - 10);
             }
             else{
-                System.out.println("penalitééééééééééééééééééééééééééééééééééééééééé");
                 y_haut = width/2 + 3*taille_cube_joueur;
                 x_haut = height / 2 - (taille_cube / 2) * 5 + taille_cube * (5-p.x)
                     - (espace * 6) / 2;
