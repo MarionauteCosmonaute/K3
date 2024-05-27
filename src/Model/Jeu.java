@@ -164,85 +164,87 @@ public class Jeu extends Observable implements Cloneable{
 
     public void annule() {
         Coup coup = hist.annule();
-        current_player = previous_player();
-        switch (coup.type) {
-            case 1:
-                getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                break;
-
-            case 2:
-                getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                break;
-
-            case 3:
-                getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.intToCube((int) coup.dest.getX()));
-                getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
-                coup = hist.annule();
-                if (coup.type==1){
+        if(coup!=null){
+            current_player = previous_player();
+            switch (coup.type) {
+                case 1:
                     getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
                     principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                } else {
+                    break;
+
+                case 2:
                     getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
                     principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                }
-                break;
+                    break;
 
-            case 4:
-                getPlayer().addSide(Cube.intToCube((int) coup.dest.getX()));
-                getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
-                coup = hist.annule();
-                if (coup.type==1){
-                    getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                    principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                } else {
-                    getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                    principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
-                }
-                break;
+                case 3:
+                    getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                    coup = hist.annule();
+                    if (coup.type==1){
+                        getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    } else {
+                        getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    }
+                    break;
 
-            case 5:
-                getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), Cube.Blanc);
-                break;
+                case 4:
+                    getPlayer().addSide(Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                    coup = hist.annule();
+                    if (coup.type==1){
+                        getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    } else {
+                        getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    }
+                    break;
 
-            case 6:
-                getPlayer().addSide(Cube.Blanc);
-                break;
+                case 5:
+                    getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), Cube.Blanc);
+                    break;
 
-            default:
-                break;
+                case 6:
+                    getPlayer().addSide(Cube.Blanc);
+                    break;
+
+                default:
+                    break;
+            }
         }
-
         metAJour();
     }
 
     public void refais(){
         Coup coup = hist.refais();
-        switch (coup.type) {
-            case 1:
-                principale.set((int) coup.dest.getX(),(int) coup.dest.getY(), getPlayer().get((int) coup.source.getX(),(int) coup.source.getY()));
-                getPlayer().remove((int) coup.source.getX(),(int) coup.source.getY());
-                break;
+        if (coup!=null){
+            switch (coup.type) {
+                case 1:
+                    principale.set((int) coup.dest.getX(),(int) coup.dest.getY(), getPlayer().get((int) coup.source.getX(),(int) coup.source.getY()));
+                    getPlayer().remove((int) coup.source.getX(),(int) coup.source.getY());
+                    break;
 
-            case 2:
-                principale.set((int) coup.dest.getX(),(int) coup.dest.getY(), Cube.intToCube((int) coup.source.getX()));
-                getPlayer().removeCubeSide(Cube.intToCube((int) coup.source.getX()));
-                break;
+                case 2:
+                    principale.set((int) coup.dest.getX(),(int) coup.dest.getY(), Cube.intToCube((int) coup.source.getX()));
+                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.source.getX()));
+                    break;
 
-            case 5:
-                getPlayer().remove((int) coup.source.getX(),(int) coup.source.getY());
-                break;
+                case 5:
+                    getPlayer().remove((int) coup.source.getX(),(int) coup.source.getY());
+                    break;
 
-            case 6:
-                getPlayer().removeCubeSide(Cube.Blanc);
-                break;
+                case 6:
+                    getPlayer().removeCubeSide(Cube.Blanc);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+            }
+            avance();
         }
-        avance();
-
         metAJour();
     }
 
@@ -297,6 +299,7 @@ public class Jeu extends Observable implements Cloneable{
             case 1:
             case 3:
                 avance();
+                check_loss();
                 break;
             case 2:
                 penality = true;
@@ -358,6 +361,10 @@ public class Jeu extends Observable implements Cloneable{
         return false;
     }
 
+    public void playerNoLost(int joueur){
+        getPlayer(joueur).playerNoLost();
+    }
+
         /* Penalitee */
     
     public void takePenaltyCube(int x,int y){
@@ -368,6 +375,7 @@ public class Jeu extends Observable implements Cloneable{
         }
         penality=false;
         avance();
+        check_loss();
         metAJour();
     }
 
@@ -461,7 +469,7 @@ public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l
 
     /* Fin de partie */
     public boolean check_loss(){            /* Verifie si le joueur courrant n'a aucun coup possible, s'il ne peut rien jouer le joueur courant est le prochain joueur */
-        if(noPlay() || getPlayer().totalCube() == 0){
+        if(noPlay()){
             getPlayer().playerLost();
             int next = next_player();
             if(next == next_player(next)){End = true;}          /* si un joueur est eliminer et que le prochain est le meme que le prochain du prochain, le joueur est donc seul et est le vainqueur */

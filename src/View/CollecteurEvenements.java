@@ -26,5 +26,9 @@ public interface CollecteurEvenements {
     void addFenetre(JFrame j);
 
     boolean penaltyPhase();
+    
+    void clicBlanc(int x, int y);
+
+    void setIADifficulty(int i);
 
 }

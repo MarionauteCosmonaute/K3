@@ -18,8 +18,8 @@ import javax.sound.sampled.Clip;
 
 public class MenuNouvellePartie extends Menu {
     JButton joueurs3, joueurs4;
-    JMenu fileMenu;
-    JMenuItem joueurVSjoueur, joueurVSia;
+    JMenu menuPrincipal, menuIA;
+    JMenuItem joueurVSjoueur, iaFacile, iaMoyen, iaDifficile;
     public MenuNouvellePartie(CollecteurEvenements controle) {
         super();
         try {
@@ -35,12 +35,13 @@ public class MenuNouvellePartie extends Menu {
 
             // On s'occupe du bouton 2 Joueurs sous forme d'un menu déroulant
             JMenuBar menuBar = new MenuArrondi(20);
-            fileMenu = new JMenu("2 Joueurs");
-            menuBar.add(fileMenu); // Ajouter le menu "Fichier" à la barre de menu
+            menuPrincipal = new JMenu("2 Joueurs");
+            menuPrincipal.setFont(new Font("Arial", Font.BOLD, 16));
+            menuBar.add(menuPrincipal); // Ajouter le menu "Fichier" à la barre de menu
             joueurVSjoueur = new JMenuItem("Joueur VS Joueur");
             joueurVSjoueur.addActionListener(new AdaptateurJoueurVSJoueur(controle));
-            joueurVSia = new JMenuItem("Joueur VS IA");
-            joueurVSia.addActionListener(new ActionListener() {
+            menuIA = new JMenu("Joueur VS IA");
+            menuIA.addActionListener(new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -58,19 +59,42 @@ public class MenuNouvellePartie extends Menu {
                     }).run();
                 }
             });
-            joueurVSia.addActionListener(new AdaptateurJoueurVSIA(controle));
-            fileMenu.add(joueurVSjoueur); // Ajouter "Nouveau" au menu "Fichier"
-            fileMenu.add(joueurVSia); // Ajouter "Ouvrir" au menu "Fichier"
+            iaFacile = new JMenuItem("IA Facile");
+            iaFacile.addActionListener(new AdaptateurIAFacile(controle));
+            iaMoyen = new JMenuItem("IA Moyen");
+            iaMoyen.addActionListener(new AdaptateurIAMoyen(controle));
+            iaDifficile = new JMenuItem("IA Difficile");
+            iaDifficile.addActionListener(new AdaptateurIADifficile(controle));
+            menuIA.add(iaFacile);
+            menuIA.add(iaMoyen);
+            menuIA.add(iaDifficile);
+
+            menuPrincipal.add(joueurVSjoueur); // Ajouter "Nouveau" au menu "Fichier"
+            menuPrincipal.add(menuIA); // Ajouter "Ouvrir" au menu "Fichier"
             centrePanel.add(menuBar);
             centrePanel.add(Box.createVerticalStrut(10));
 
             // On s'occupe des deux boutons classiques 3 et 4 joueurs
             joueurs3 = Bouton.creerButton("3 Joueurs");
             // joueurs3.addActionListener(new Adaptateur...(controle));
+            joueurs3.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JOptionPane.showMessageDialog(content, "En cours d'implémentation :)", "En construction", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+            });
             centrePanel.add(joueurs3);
             centrePanel.add(Box.createVerticalStrut(10));
             joueurs4 = Bouton.creerButton("4 Joueurs");
             // joueurs4.addActionListener(new Adaptateur...(controle));
+            joueurs4.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JOptionPane.showMessageDialog(content, "En cours d'implémentation :)", "En construction", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+            });
             centrePanel.add(joueurs4);
             centrePanel.add(Box.createVerticalStrut(10));
             centrePanel.add(Box.createVerticalGlue());
@@ -138,16 +162,22 @@ public class MenuNouvellePartie extends Menu {
             case "FR":
                 joueurs3.setText("3 Joueurs");
                 joueurs4.setText("4 Joueurs");
-                fileMenu.setText("2 Joueurs");
+                menuPrincipal.setText("2 Joueurs");
                 joueurVSjoueur.setText("Joueur VS Joueur");
-                joueurVSia.setText("Joueur VS IA");
+                menuIA.setText("Joueur VS IA");
+                iaFacile.setText("IA Facile");
+                iaMoyen.setText("IA Moyenne");
+                iaDifficile.setText("IA Difficile");
                 break;
             case "EN":
                 joueurs3.setText("3 Players");
                 joueurs4.setText("4 Players");
-                fileMenu.setText("2 Players");
+                menuPrincipal.setText("2 Players");
                 joueurVSjoueur.setText("Player VS Player");
-                joueurVSia.setText("Player VS AI");
+                menuIA.setText("Player VS AI");
+                iaFacile.setText("AI Easy");
+                iaMoyen.setText("AI Medium");
+                iaDifficile.setText("AI Hard");
                 break;
             default:
                 break;

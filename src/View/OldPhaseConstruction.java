@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 
 public class OldPhaseConstruction {
     JPanel frame;
-    JLabel joueurLabel;
+    JLabel joueurLabel, constructLabel;
     CollecteurEvenements controle;
     Graphics2D drawable;
     Image neutre, bleu, vert, jaune, noir, blanc, rouge, vide, carre_noir_vide;
@@ -133,6 +133,10 @@ public class OldPhaseConstruction {
         panel.add(topLeftPanel, BorderLayout.WEST);
         Retour.setBorder(BorderFactory.createEmptyBorder());
         Retour.setContentAreaFilled(false);
+
+        constructLabel = new JLabel("Construisez votre pyramide !");
+        constructLabel.setFont(new Font("Default", Font.BOLD, 15));
+        panel.add(constructLabel);
 
         joueurLabel= new JLabel("Joueur "+ (jeu.get_player()+1));
         joueurLabel.setFont(new Font("Default", Font.BOLD, 20));

@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 public class Bouton {
 	public static JButton creerButton(String text) {
 		BoutonArrondi bouton = new BoutonArrondi(text, 20);
-		Font police = new Font("Arial", Font.BOLD, 14);
+		Font police = new Font("Arial", Font.BOLD, 16);
 		bouton.setFont(police);
 		bouton.setBorder(new LineBorder(Color.BLACK, 2));
 		bouton.setAlignmentX(Component.CENTER_ALIGNMENT);

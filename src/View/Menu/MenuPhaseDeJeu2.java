@@ -15,7 +15,7 @@ import Model.Jeu;
 import Patterns.Observateur;
 
 public class MenuPhaseDeJeu2 extends Menu implements Observateur {
-    JButton Aide, Regles;
+    JButton Aide, Regles, Annuler, Refaire;
     PDJPyramideCentrale pdj;
     PDJPyramideJoueur joueur1,joueur2;
 
@@ -49,17 +49,38 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             topPanel.add(topLeftPanel, BorderLayout.WEST);
             Retour.setBorder(BorderFactory.createEmptyBorder());
             Retour.setContentAreaFilled(false);
+            
+            JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+            // Bouton Annuler
+            Annuler = Bouton.creerButton("Annuler");
+            Annuler.addActionListener(new AdaptateurAnnule(controle));
+            topCenter.add(Annuler, BorderLayout.CENTER);
+
 
             // Bouton Aide
             Aide = Bouton.creerButton("Suggestion");
             // Aide.addActionListener(new AideAdaptateur(controle));
-            JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            Aide.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JOptionPane.showMessageDialog(content, "En cours d'implémentation :)", "En construction", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+            });
             topCenter.add(Aide, BorderLayout.CENTER);
 
+            // Bouton des Règles
             Regles = Bouton.Rules(content);
             topCenter.add(Regles);
             topCenter.setOpaque(false);
             topPanel.add(topCenter);
+
+            // Bouton Refaire
+            Refaire = Bouton.creerButton("Refaire");
+            Refaire.addActionListener(new AdaptateurRefais(controle));
+            topCenter.add(Refaire, BorderLayout.CENTER);
+            
 
             // Bouton du Son
             UnMute = Bouton.BoutonUnMute(controle);
@@ -137,10 +158,14 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             case "FR":
                 Aide.setText("Suggestion");
                 Regles.setText("Règles");
+                Annuler.setText("Annuler");
+                Refaire.setText("Refaire");
                 break;
             case "EN":
                 Aide.setText("Suggestion");
                 Regles.setText("Rules");
+                Annuler.setText("Undo");
+                Refaire.setText("Redo");
                 break;
             default:
                 break;

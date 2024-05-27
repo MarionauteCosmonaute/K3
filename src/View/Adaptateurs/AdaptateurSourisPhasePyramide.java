@@ -30,7 +30,8 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
         && (e.getX() >= pdjCentrale.GetBlancAccessible().y)
         && (e.getX() <= (pdjCentrale.GetBlancAccessible().y + taille_cube_pyramide_centrale)))
         {
-            controle.clicPyramideCentrale(taille_base_pyramide - 1 , -1);
+            System.out.println("Dans le if");
+            controle.clicBlanc(taille_base_pyramide - 1 , -1);
             return;
         }
 

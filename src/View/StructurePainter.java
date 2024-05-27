@@ -18,7 +18,7 @@ public class StructurePainter {
     static Point points_side[];
     static int taille_cube_joueur;
     static int taille_cube_pyramide_centrale;
-    static Point blanc_accessible;
+    static Point blanc_accessible = new Point(-10,-10);
 
     public static void init() {
         if (!inititalised) {
@@ -188,7 +188,8 @@ public class StructurePainter {
             y_haut = width / 2 - (taille_cube / 2) * ((taille_pyramide-1) + 1) + taille_cube * -2 - (espace * (taille_pyramide -1)) / 2;
             drawable.drawRect(y_haut + espace * -2, x_haut + espace * (taille_pyramide -1), taille_cube, taille_cube);
             drawable.drawRect(y_haut + espace * -2 + 1, x_haut + espace * (taille_pyramide -1) + 1, taille_cube - 2, taille_cube - 2);
-            blanc_accessible = new Point(x_haut + espace * (taille_pyramide -1), y_haut + espace * -2);
+            blanc_accessible.x = x_haut + espace * (taille_pyramide -1);
+            blanc_accessible.y = y_haut + espace * -2;
             return;
         }
         

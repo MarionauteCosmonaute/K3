@@ -132,6 +132,12 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
         cons.setDessinVideFalse();
     }
 
+    public void resetBooleans(){
+        setCubeSel(false);
+        setDessinVideFalse();
+        setEchange(0);
+    }
+
     public void paintComponent(Graphics g) {
         // System.out.println("PaintComponent de NiveauGraphique");
         cons.updateJoueurLabel();
