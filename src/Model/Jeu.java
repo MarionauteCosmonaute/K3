@@ -153,6 +153,7 @@ public class Jeu implements Cloneable{
         Coup coup = hist.annule();
 
         if (coup!=null){
+            System.out.println(coup.type);
             if(coup.type == 7){
 
                 getPlayer((int) coup.dest.getX()).playerCont();
@@ -202,6 +203,7 @@ public class Jeu implements Cloneable{
     
                     case 5:
                         getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), Cube.Blanc);
+                        System.out.println("DKHLT");
                         break;
     
                     case 6:
@@ -341,8 +343,8 @@ public class Jeu implements Cloneable{
                 if(x_central == 9){
                     principale.extend();
                 }
+                hist.action(1,new Point(x_player,y_player), new Point(x_central,y_central));
             }
-            hist.action(1,new Point(x_player,y_player), new Point(x_central,y_central));
             return valid;
         }
         return 0;
