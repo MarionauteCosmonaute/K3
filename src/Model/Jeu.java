@@ -84,6 +84,13 @@ public class Jeu implements Cloneable{
                 }
                 players[i] = new Player(playerString);
             }
+            
+            String histLine = "";
+            String part = "";
+            while ((part = s.nextLine()) != null) {
+                histLine += part + "\n";
+            }
+            hist = Historique.fromString(histLine);
             End = false;
             s.close();
         }
