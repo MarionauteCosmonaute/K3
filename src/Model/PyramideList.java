@@ -3,28 +3,26 @@ package Model;
 public class PyramideList {
     int[] profondeur;
     Pyramid[] pyramides;
-    int nb,min,max,perfectProfondeur;
+    int nb,max,perfectProfondeur;
     Pyramid perfect = null;
     boolean done = false;
 
-    public PyramideList(int min, int max){
+    public PyramideList(){
         profondeur = new int[3];
         pyramides = new Pyramid[3];
         nb = 3;
-        this.min = min;
-        this.max = max;
+        this.max = -1;
     }
 
-    public PyramideList(int min, int max,int nombre){
+    public PyramideList(int max,int nombre){
         profondeur = new int[nombre];
         pyramides = new Pyramid[nombre];
         nb = nombre;
-        this.min = min;
         this.max = max;
     }
     
     public synchronized void add(Pyramid pyramide, int profondeur){
-        if( (profondeur >= min) && (profondeur <= max) ){
+        if( (profondeur > max) ){
             perfect = pyramide;
             perfectProfondeur = profondeur;
             done = true;

@@ -189,7 +189,7 @@ public class Jeu implements Cloneable{
     // 1 -> VALID
     // 2 -> VALID WITH PENALITY
     // 3 -> PLAY WHITE
-    public int add_central(int x_central, int y_central, int x_player, int y_player){
+    public int jouer_coup(int x_central, int y_central, int x_player, int y_player){
         int valid;
         if (y_player==-1){
             valid = add_central_side(x_central, y_central, x_player);
