@@ -8,7 +8,6 @@ import javax.swing.*;
 import Controller.ControleurMediateur;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class PDJPyramideCentrale extends JComponent implements Observateur {
     int width_fenetre, height_fenetre, nb_ligne, nb_colonne;

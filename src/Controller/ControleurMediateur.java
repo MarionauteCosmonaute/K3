@@ -66,10 +66,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 				jeu.takePenaltyCube(x, y); // y : mettre -1 si ça vient du side
 				penalty = false;
 				if(jeu.getPlayer().lost()){
+					IAON=false;
 					gagnant = jeu.next_player();
 					System.out.println("cas 1 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 					int reponse = DialogueFinPartie(gagnant + 1);
-					System.out.println("La reponse wesh"+reponse);
 					switch(reponse){
 						case 0 :
 							jeu.playerNoLost(jeu.get_player());
@@ -82,10 +82,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 							break;
 					}
 				}
-				// if (jeu.End_Game())
-				// {
-				// 	FinPartie();
-				// }
 			}
 		}
 		else{
@@ -107,7 +103,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 				gagnant = jeu.next_player();
 				System.out.println("cas 2 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 				int reponse = DialogueFinPartie(gagnant + 1);
-				System.out.println("La reponse wesh"+reponse);
 				switch(reponse){
 					case 0 :
 						jeu.playerNoLost(jeu.get_player());
@@ -119,11 +114,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 						commande("MenuP");
 						break;
 				}
-			}
-			// if (jeu.End_Game())
-			// {
-			// 	FinPartie();
-			// }	
+			}	
 		}
 		else{
 			clic = true;
@@ -172,7 +163,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 				gagnant = jeu.next_player();
 				System.out.println("cas 3 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 				int reponse = DialogueFinPartie(gagnant + 1);
-				System.out.println("La reponse wesh"+reponse);
 				switch(reponse){
 					case 0 :
 						jeu.playerNoLost(jeu.get_player());
@@ -197,7 +187,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 					gagnant = jeu.next_player();
 					System.out.println("cas 4 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 					int reponse = DialogueFinPartie(gagnant + 1);
-					System.out.println("La reponse wesh"+reponse);
 					switch(reponse){
 						case 0 :
 							jeu.playerNoLost(jeu.get_player());
@@ -348,7 +337,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 						gagnant = jeu.next_player();
 						System.out.println("cas 5 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 						int reponse = DialogueFinPartie(gagnant + 1);
-						System.out.println("La reponse wesh"+reponse);
 						switch(reponse){
 							case 0 :
 								jeu.playerNoLost(jeu.get_player());
