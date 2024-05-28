@@ -262,7 +262,7 @@ public class StructurePainter {
                 x_haut = height / 2 - (taille_cube / 2) * 5 + taille_cube * (5-x)
                     - (espace * 6) / 2;
 
-                drawable.setColor(Color.YELLOW);
+                drawable.setColor(Color.ORANGE);
 
                 drawable.drawRect(y_haut, x_haut - espace * x, taille_cube, taille_cube);
                 drawable.drawRect(y_haut+1, x_haut - espace * x + 1, taille_cube - 2, taille_cube - 2);
@@ -296,7 +296,7 @@ public class StructurePainter {
                     y_haut -= 2*taille_cube;
                 }
                 
-                drawable.setColor(Color.YELLOW);
+                drawable.setColor(Color.ORANGE);
 
                 drawable.drawRect(y_haut + espace * p.y, x_haut + espace * (5-p.x), taille_cube, taille_cube);
                 drawable.drawRect(y_haut + espace * p.y + 1, x_haut + espace * (5-p.x) + 1, taille_cube - 2, taille_cube - 2);
@@ -315,7 +315,7 @@ public class StructurePainter {
                 x_haut = height / 2 - (taille_cube / 2) * 5 + taille_cube * (5-p.x)
                     - (espace * 6) / 2;
 
-                drawable.setColor(Color.YELLOW);
+                drawable.setColor(Color.ORANGE);
 
                 drawable.drawRect(y_haut, x_haut - espace * p.x, taille_cube, taille_cube);
                 drawable.drawRect(y_haut+1, x_haut - espace * p.x + 1, taille_cube - 2, taille_cube - 2);

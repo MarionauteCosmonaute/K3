@@ -90,6 +90,12 @@ public class Jeu extends Observable implements Cloneable{
                 }
                 players[i] = new Player(playerString);
             }
+            String histLine = "";
+            String part = "";
+            while ((part = s.nextLine()) != null) {
+                histLine += part + "\n";
+            }
+            hist = Historique.fromString(histLine);
             End = false;
             s.close();
             metAJour();
@@ -163,30 +169,43 @@ public class Jeu extends Observable implements Cloneable{
     }
 
     public void annule() {
+
         Coup coup = hist.annule();
-        if(coup!=null){
+
+        if (coup.type == 7) {
+
+            getPlayer((int) coup.dest.getX()).playerNoLost();
+            current_player = (int) coup.dest.getX();
+            annule();
+
+        } else {
+
             current_player = previous_player();
+
             switch (coup.type) {
                 case 1:
-                    getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                    principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
+                            principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
+                    principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
                     break;
 
                 case 2:
-                    getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                    principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    getPlayer().addSide(principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
+                    principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
                     break;
 
                 case 3:
-                    getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
+                            Cube.intToCube((int) coup.dest.getX()));
                     getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
                     coup = hist.annule();
-                    if (coup.type==1){
-                        getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    if (coup.type == 1) {
+                        getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
+                                principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
                     } else {
-                        getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                        getPlayer().addSide(principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
                     }
                     break;
 
@@ -194,17 +213,18 @@ public class Jeu extends Observable implements Cloneable{
                     getPlayer().addSide(Cube.intToCube((int) coup.dest.getX()));
                     getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
                     coup = hist.annule();
-                    if (coup.type==1){
-                        getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                    if (coup.type == 1) {
+                        getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
+                                principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
                     } else {
-                        getPlayer().addSide(principale.get((int) coup.dest.getX(),(int) coup.dest.getY()));
-                        principale.remove((int) coup.dest.getX(),(int) coup.dest.getY());
+                        getPlayer().addSide(principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
+                        principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
                     }
                     break;
 
                 case 5:
-                    getPlayer().set((int) coup.source.getX(),(int) coup.source.getY(), Cube.Blanc);
+                    getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.Blanc);
                     break;
 
                 case 6:
@@ -218,33 +238,57 @@ public class Jeu extends Observable implements Cloneable{
         metAJour();
     }
 
-    public void refais(){
+    public void refais() {
         Coup coup = hist.refais();
-        if (coup!=null){
-            switch (coup.type) {
-                case 1:
-                    principale.set((int) coup.dest.getX(),(int) coup.dest.getY(), getPlayer().get((int) coup.source.getX(),(int) coup.source.getY()));
-                    getPlayer().remove((int) coup.source.getX(),(int) coup.source.getY());
-                    break;
+        switch (coup.type) {
+            case 1:
+                principale.set((int) coup.dest.getX(), (int) coup.dest.getY(),
+                        getPlayer().get((int) coup.source.getX(), (int) coup.source.getY()));
+                getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                coup = hist.refais();
+                if (coup.type == 3) {
+                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                } else if (coup.type == 4) {
+                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                } else {
+                    hist.backOnRefais();
+                }
+                break;
 
-                case 2:
-                    principale.set((int) coup.dest.getX(),(int) coup.dest.getY(), Cube.intToCube((int) coup.source.getX()));
-                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.source.getX()));
-                    break;
+            case 2:
+                principale.set((int) coup.dest.getX(), (int) coup.dest.getY(),
+                        Cube.intToCube((int) coup.source.getX()));
+                getPlayer().removeCubeSide(Cube.intToCube((int) coup.source.getX()));
+                coup = hist.refais();
+                if (coup.type == 3) {
+                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                } else if (coup.type == 4) {
+                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                } else {
+                    hist.backOnRefais();
+                }
+                break;
 
-                case 5:
-                    getPlayer().remove((int) coup.source.getX(),(int) coup.source.getY());
-                    break;
+            case 5:
+                getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                break;
 
-                case 6:
-                    getPlayer().removeCubeSide(Cube.Blanc);
-                    break;
+            case 6:
+                getPlayer().removeCubeSide(Cube.Blanc);
+                break;
 
-                default:
-                    break;
-            }
-            avance();
+            case 7:
+                getPlayer().playerLost();
+                break;
+
+            default:
+                break;
         }
+        avance();
         metAJour();
     }
 
@@ -281,6 +325,7 @@ public class Jeu extends Observable implements Cloneable{
     public void setCubePlayer(int x, int y, Cube cube){     /* Ajoute le cube au coordonnee x y de la pyramide du joueur courant  */
         getPlayer().set(x, y, cube);
         avance();
+        metAJour();
     }
 
     /* joue un coup dans la pyramide central, si l'y du cube a jouer est egale a -1 le cube sera piochee du side */
@@ -295,6 +340,7 @@ public class Jeu extends Observable implements Cloneable{
         } else {
             valid = add_central_pyramid(x_central, y_central, x_player, y_player);
         }
+        metAJour();
         switch (valid) {
             case 1:
             case 3:
@@ -307,7 +353,7 @@ public class Jeu extends Observable implements Cloneable{
             default:
                 break;
         }
-        metAJour();
+
         return valid;    
     }
 
@@ -322,8 +368,8 @@ public class Jeu extends Observable implements Cloneable{
                 if(x_central == 9){
                     principale.extend();
                 }
+                hist.action(1,new Point(x_player,y_player), new Point(x_central,y_central));
             }
-            hist.action(1,new Point(x_player,y_player), new Point(x_central,y_central));
             return valid;
         }
         return 0;
@@ -375,8 +421,9 @@ public class Jeu extends Observable implements Cloneable{
         }
         penality=false;
         avance();
-        check_loss();
         metAJour();
+        check_loss();
+
     }
 
     public void takePenaltyCubeFromPyramid(int x,int y) {               /*Recupere le cube de la position x y du joueur courant et l'ajoute au side du joueur precedent */
@@ -471,6 +518,7 @@ public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l
     public boolean check_loss(){            /* Verifie si le joueur courrant n'a aucun coup possible, s'il ne peut rien jouer le joueur courant est le prochain joueur */
         if(noPlay()){
             getPlayer().playerLost();
+            hist.action(7,null, new Point(current_player,-1));
             int next = next_player();
             if(next == next_player(next)){End = true;}          /* si un joueur est eliminer et que le prochain est le meme que le prochain du prochain, le joueur est donc seul et est le vainqueur */
             return true;
