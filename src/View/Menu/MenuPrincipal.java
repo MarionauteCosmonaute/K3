@@ -9,8 +9,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MenuPrincipal extends Menu {
     JButton NewGame, Charger, Quit, Lan, Regles;
@@ -35,25 +33,11 @@ public class MenuPrincipal extends Menu {
 
             Charger = Bouton.creerButton("Charger partie");
             Charger.addActionListener(new AdaptateurCharger(controle));
-            /*Charger.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    JOptionPane.showMessageDialog(content, "En cours d'implémentation :)", "En construction", JOptionPane.INFORMATION_MESSAGE);
-
-                }
-            });*/
             centrePanel.add(Charger);
             centrePanel.add(Box.createVerticalStrut(10));
 
             Lan = Bouton.creerButton("En ligne");
-            //Lan.addActionListener(new AdaptateurLan(controle));
-            Lan.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    JOptionPane.showMessageDialog(content, "En cours d'implémentation :)", "En construction", JOptionPane.INFORMATION_MESSAGE);
-
-                }
-            });
+            Lan.addActionListener(new AdaptateurLan(controle));
             centrePanel.add(Lan);
             centrePanel.add(Box.createVerticalStrut(10));
 

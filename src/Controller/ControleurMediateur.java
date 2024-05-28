@@ -274,6 +274,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;
 
 			case "Lan":
+				changeVisible(5);
 				break;
 
 			case "Charger":
@@ -418,6 +419,12 @@ public class ControleurMediateur implements CollecteurEvenements {
 				jeu.sauvegarde("saves/"+ DateTimeFormatter.ofPattern("dd-MM-yyyy-hh:mm:ss").format(LocalDateTime.now()));
 				break;
 				
+			case "Host":
+				break;
+			
+			case "Join":
+				break;
+			
 			default:
 				return false;
 		}
