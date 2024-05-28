@@ -92,7 +92,9 @@ public class Jeu extends Observable implements Cloneable{
             }
             String histLine = "";
             String part = "";
-            while ((part = s.nextLine()) != null) {
+            while ((part = s.nextLine()) != null) {     // PB ici Exception in thread "AWT-EventQueue-0" java.util.NoSuchElementException: No line found
+                                                        // at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
+                                                        //at Model.Jeu.reset(Jeu.java:95)
                 histLine += part + "\n";
             }
             hist = Historique.fromString(histLine);

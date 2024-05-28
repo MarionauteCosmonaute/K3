@@ -59,6 +59,10 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
                         && (e.getY() <= (points_side[x].getY() + taille_cube_joueur))
                         && (e.getX() >= points_side[x].getX())
                         && (e.getX() <= (points_side[x].getX() + taille_cube_joueur))) {
+                    PDJPyramideJoueur.SetCube_Select_Static(true);
+                    pdj.SetX_Select(x);
+                    pdj.SetY_Select(-1);
+                    
                     controle.clicJoueurSide(x);
                     pdjCentrale.repaint();
                     pdj.repaint();

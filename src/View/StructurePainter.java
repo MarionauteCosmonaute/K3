@@ -351,13 +351,33 @@ public class StructurePainter {
             y_haut -= 2*taille_cube;
         }
 
-        if(!jeu.getPenality() && jeu.getPlayer().get(x, y)!=Cube.Vide){
+        if(!jeu.getPenality() && jeu.getPlayer().get(x, y) != Cube.Vide)
+        {
             drawable.setColor(Color.ORANGE);
-            drawable.drawRect(y_haut + espace * y, x_haut + espace * (5-x), taille_cube, taille_cube);
-            drawable.drawRect(y_haut + espace * y + 1, x_haut + espace * (5-x) + 1, taille_cube - 2, taille_cube - 2);
-            drawable.drawRect(y_haut + espace * y + 2, x_haut + espace * (5-x) + 2, taille_cube - 4, taille_cube - 4);
-            drawable.drawRect(y_haut + espace * y + 3, x_haut + espace * (5-x) + 3, taille_cube - 6, taille_cube - 6);
+            if(y == -1){
+                y_haut = width/2 + 3*taille_cube_joueur;
+                x_haut = height / 2 - (taille_cube / 2) * 5 + taille_cube * (5-x)
+                    - (espace * 6) / 2;
+
+                drawable.drawRect(y_haut, x_haut - espace * x, taille_cube, taille_cube);
+                drawable.drawRect(y_haut+1, x_haut - espace * x + 1, taille_cube - 2, taille_cube - 2);
+                drawable.drawRect(y_haut+2, x_haut - espace * x + 2, taille_cube - 4, taille_cube - 4);
+                drawable.drawRect(y_haut+3, x_haut - espace * x + 3, taille_cube - 6, taille_cube - 6);
+                return;
+
+            }
+            ArrayList<Point> accessible = jeu.Accessible_Playable();
+            for (Point p : accessible)
+            {
+                if (p.x == x && p.y == y)
+                {
+                    drawable.drawRect(y_haut + espace * y, x_haut + espace * (5-x), taille_cube, taille_cube);
+                    drawable.drawRect(y_haut + espace * y + 1, x_haut + espace * (5-x) + 1, taille_cube - 2, taille_cube - 2);
+                    drawable.drawRect(y_haut + espace * y + 2, x_haut + espace * (5-x) + 2, taille_cube - 4, taille_cube - 4);
+                    drawable.drawRect(y_haut + espace * y + 3, x_haut + espace * (5-x) + 3, taille_cube - 6, taille_cube - 6);
+                    return;
+                }
+            }
         }
-        
     }
 }
