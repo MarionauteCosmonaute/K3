@@ -331,4 +331,33 @@ public class StructurePainter {
             }
         }
     }
+
+
+    public static void DessineSelectionne(int num_joueur, Jeu jeu, Graphics2D drawable, int height, int width, int x, int y, boolean side)
+    {
+        System.out.println("StructurePainter de DessineSelectionne");
+        int taille_pyramide = jeu.getPyrPlayer(num_joueur).getSize();
+        int taille_cube = Math.min(80 * height / (100 * taille_pyramide), 80 * width / (100 * taille_pyramide));
+        int espace = taille_cube / 10;
+
+        // drawable.setColor(Color.ORANGE);
+        // drawable.drawRect(y_haut + espace * y, x_haut + espace * x, taille_cube_joueur, taille_cube_joueur);
+        // drawable.drawRect(y_haut + espace * y + 1, x_haut + espace * x + 1, taille_cube_joueur - 2, taille_cube_joueur - 2);
+
+        int x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (5-x)
+        - (espace * taille_pyramide) / 2;
+        int y_haut = width / 2 - (taille_cube / 2) * ((5-x) + 1) + taille_cube * y - (espace * (5-x)) / 2;  
+        if(side){
+            y_haut -= 2*taille_cube;
+        }
+
+        if(!jeu.getPenality() && jeu.getPlayer().get(x, y)!=Cube.Vide){
+            drawable.setColor(Color.ORANGE);
+            drawable.drawRect(y_haut + espace * y, x_haut + espace * (5-x), taille_cube, taille_cube);
+            drawable.drawRect(y_haut + espace * y + 1, x_haut + espace * (5-x) + 1, taille_cube - 2, taille_cube - 2);
+            drawable.drawRect(y_haut + espace * y + 2, x_haut + espace * (5-x) + 2, taille_cube - 4, taille_cube - 4);
+            drawable.drawRect(y_haut + espace * y + 3, x_haut + espace * (5-x) + 3, taille_cube - 6, taille_cube - 6);
+        }
+        
+    }
 }
