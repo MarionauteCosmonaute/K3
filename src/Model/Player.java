@@ -201,10 +201,11 @@ public class Player {
     public void construction(int x, int y,Cube cube){
         if(!(get(x, y) == Cube.Vide)){
             incrementBag(get(x, y));
+            decrement(get(x, y));
             personalBag.add(get(x, y));
-
         }
         decrementBag(cube);
+        increment(cube);
         personalBag.remove(cube);
         pyramid.set(x,y,cube);
     }
