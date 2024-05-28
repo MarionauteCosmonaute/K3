@@ -13,6 +13,9 @@ public class PDJPyramideJoueur extends JComponent {
     Graphics2D drawable;
     Jeu jeu;
     int joueur;
+    static boolean cube_selec;
+    int x_selec;
+    int y_selec;
 
     JPanel parent;
 
@@ -21,6 +24,7 @@ public class PDJPyramideJoueur extends JComponent {
         this.parent = parent;
         joueur = nj;
         setOpaque(false);
+        cube_selec = false;
     }
     // Retourne le tableau qui contient les coordonnées des points de la pyramide du joueur
     public Point[][] PointPyramideJoueurs(int joueur){
@@ -47,6 +51,26 @@ public class PDJPyramideJoueur extends JComponent {
 
     public int tailleSide(){
         return jeu.getPlayer(joueur).getSideSize();
+    }
+
+    // public void SetCube_Select(boolean bool)
+    // {
+    //     cube_selec = bool;
+    // }
+
+    public static void SetCube_Select_Static(boolean bool)
+    {
+        cube_selec = bool;
+    }
+
+    public void SetX_Select(int x)
+    {
+        x_selec = x;
+    }
+
+    public void SetY_Select(int y)
+    {
+        y_selec = y;
     }
 
     public void paintComponent(Graphics g) {
@@ -79,6 +103,13 @@ public class PDJPyramideJoueur extends JComponent {
         drawable.setColor(Color.BLACK);
         if(joueur == jeu.get_player()){
             StructurePainter.Contour_Accessible_Joueur(joueur, jeu, g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSideSize() > 0);
+            System.out.println("cube_select: "+ cube_selec);
+            if (cube_selec)
+            {
+                System.out.println("Chaton");
+                System.out.println("x : "+x_selec+", y : "+y_selec);
+                StructurePainter.DessineSelectionne(joueur, jeu, drawable, height_fenetre, width_fenetre, x_selec, y_selec, jeu.getPlayer(joueur).getSideSize() > 0);
+            }
         }
     }
 

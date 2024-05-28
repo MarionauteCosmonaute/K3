@@ -61,14 +61,15 @@ public class ControleurMediateur implements CollecteurEvenements {
 		// cube_selectionne = jeu.getPlayer().get(x, y);
 		if(penalty == true){
 			//tester que le cube est accessible dans la pyramide du joueur
+			PDJPyramideJoueur.SetCube_Select_Static(false);
 			if(jeu.accessible(x,y)){
 				jeu.takePenaltyCube(x, y); // y : mettre -1 si ça vient du side
 				penalty = false;
 				if(jeu.getPlayer().lost()){
+					IAON=false;
 					gagnant = jeu.next_player();
 					System.out.println("cas 1 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 					int reponse = DialogueFinPartie(gagnant + 1);
-					System.out.println("La reponse wesh"+reponse);
 					switch(reponse){
 						case 0 :
 							jeu.playerNoLost(jeu.get_player());
@@ -81,10 +82,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 							break;
 					}
 				}
-				// if (jeu.End_Game())
-				// {
-				// 	FinPartie();
-				// }
 			}
 		}
 		else{
@@ -106,7 +103,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 				gagnant = jeu.next_player();
 				System.out.println("cas 2 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 				int reponse = DialogueFinPartie(gagnant + 1);
-				System.out.println("La reponse wesh"+reponse);
 				switch(reponse){
 					case 0 :
 						jeu.playerNoLost(jeu.get_player());
@@ -118,11 +114,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 						commande("MenuP");
 						break;
 				}
-			}
-			// if (jeu.End_Game())
-			// {
-			// 	FinPartie();
-			// }	
+			}	
 		}
 		else{
 			clic = true;
@@ -133,22 +125,29 @@ public class ControleurMediateur implements CollecteurEvenements {
 	}
 
 	@Override 
-	public void clicBlanc(int x, int y)
-	{
-		Cube cube = jeu.getPlayer().getPyramid().get(ligne_joueur, colonne_joueur);
-		int test = cube.getInt();
-		if (test == 0)
-		{
-			int res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
-			if(res == 1 || res == 2 || res == 3){
-				clic = false;
-			}
-			if (IAON){
-				vue.startTimer();
-			}
-		}
-		jeu.sauvegarde(qs);
-	}
+    public void clicBlanc(int x, int y)
+    {
+        Cube cube ;
+        if (colonne_joueur==-1){
+            cube = jeu.getPlayer().getSide(ligne_joueur);
+        }else{
+            cube = jeu.getPlayer().getPyramid().get(ligne_joueur, colonne_joueur);
+        }
+        
+        int test = cube.getInt();
+        if (test == 0)
+        {
+            int res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
+            if(res == 1 || res == 2 || res == 3){
+				PDJPyramideJoueur.SetCube_Select_Static(false);
+                clic = false;
+            }
+            if (IAON){
+                vue.startTimer();
+            }
+        }
+        jeu.sauvegarde(qs);
+    }
 
 	@Override
 	public void clicPyramideCentrale(int x, int y) {
@@ -159,11 +158,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 		jeu.sauvegarde(qs);
 		if(res == 1 || res == 3){
 			clic = false;
+			PDJPyramideJoueur.SetCube_Select_Static(false);
 			if(jeu.getPlayer().lost()){
 				gagnant = jeu.next_player();
 				System.out.println("cas 3 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 				int reponse = DialogueFinPartie(gagnant + 1);
-				System.out.println("La reponse wesh"+reponse);
 				switch(reponse){
 					case 0 :
 						jeu.playerNoLost(jeu.get_player());
@@ -179,6 +178,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		}
 		if(res == 2){
 			clic = false;
+			PDJPyramideJoueur.SetCube_Select_Static(false);
 			penalty = true;
 			if (IAON && jeu.get_player() == 0){
 				ia.takePenaltyCube();
@@ -187,7 +187,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 					gagnant = jeu.next_player();
 					System.out.println("cas 4 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 					int reponse = DialogueFinPartie(gagnant + 1);
-					System.out.println("La reponse wesh"+reponse);
 					switch(reponse){
 						case 0 :
 							jeu.playerNoLost(jeu.get_player());
@@ -264,6 +263,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;
 
 			case "Lan":
+				changeVisible(5);
 				break;
 
 			case "Charger":
@@ -337,7 +337,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 						gagnant = jeu.next_player();
 						System.out.println("cas 5 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 						int reponse = DialogueFinPartie(gagnant + 1);
-						System.out.println("La reponse wesh"+reponse);
 						switch(reponse){
 							case 0 :
 								jeu.playerNoLost(jeu.get_player());
@@ -408,6 +407,12 @@ public class ControleurMediateur implements CollecteurEvenements {
 				jeu.sauvegarde("saves/"+ DateTimeFormatter.ofPattern("dd-MM-yyyy-hh:mm:ss").format(LocalDateTime.now()));
 				break;
 				
+			case "Host":
+				break;
+			
+			case "Join":
+				break;
+			
 			default:
 				return false;
 		}

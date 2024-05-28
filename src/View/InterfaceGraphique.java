@@ -56,6 +56,13 @@ public class InterfaceGraphique implements Runnable, Observateur {
 
 	public void run() {
 		frame = new BackgroundPanel();
+
+		try {
+			frame.setIconImage(ImageIO.read(new File("src/View/icone.jpg")));
+		} catch (IOException exc) {
+			System.out.println("Erreur de chargement de l'icone");
+		}
+		
 		// frame = new JFrame();
 		controle.addFenetre(frame);
 		frame.setTitle("K3");
@@ -74,8 +81,9 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		MenuPhaseConstruction pC =new MenuPhaseConstruction(controle, jeu);
 		MenuPhaseDeJeu2 phaseDeJeu2 = new MenuPhaseDeJeu2(controle, jeu);
 		MenuPhaseDeJeuJVIA phaseDeJeuJVIA = new MenuPhaseDeJeuJVIA(controle,jeu);
+		MenuOnline online =new MenuOnline(controle);
 		timer = new Timer(5000,new AdaptateurJoueIA(controle));
-		controle.commande("MenuOnline");
+		//controle.commande("MenuOnline");
 
 		// On ajoute la souris et le clavier
 

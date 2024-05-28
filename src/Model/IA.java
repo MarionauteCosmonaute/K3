@@ -70,10 +70,11 @@ public abstract class IA {
                 }
             case 1 : //IA Medium
                 cubes_access2 = j.Accessible_Playable(j.next_player()); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
-                for(Point compte : cubes_access2) { //Compte du nombre de coups jouable du j1
-                    int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),(int) compte.getX(),(int) compte.getY()).size();
-                    total_j2+= current_possibilities;
-                }
+                //for(Point compte : cubes_access2) { //Compte du nombre de coups jouable du j1
+                //    int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),(int) compte.getX(),(int) compte.getY()).size();
+                //    total_j2+= current_possibilities;
+                //}
+                total_j2 = cubes_access2.size();
 
                 total = (int)(total_j1) + (int)(j.getPlayer().totalCube()) - (int)(j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2);
                 if(bon_joueur){
