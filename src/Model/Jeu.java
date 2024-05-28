@@ -171,125 +171,132 @@ public class Jeu extends Observable implements Cloneable{
     public void annule() {
 
         Coup coup = hist.annule();
+        if (coup !=null){
+            if (coup.type == 7) {
 
-        if (coup.type == 7) {
+                getPlayer((int) coup.dest.getX()).playerNoLost();
+                current_player = (int) coup.dest.getX();
+                annule();
 
-            getPlayer((int) coup.dest.getX()).playerNoLost();
-            current_player = (int) coup.dest.getX();
-            annule();
+            } else {
 
-        } else {
+                current_player = previous_player();
 
-            current_player = previous_player();
-
-            switch (coup.type) {
-                case 1:
-                    getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
-                            principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
-                    principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
-                    break;
-
-                case 2:
-                    getPlayer().addSide(principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
-                    principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
-                    break;
-
-                case 3:
-                    getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
-                            Cube.intToCube((int) coup.dest.getX()));
-                    getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
-                    coup = hist.annule();
-                    if (coup.type == 1) {
+                switch (coup.type) {
+                    case 1:
                         getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
                                 principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
                         principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
-                    } else {
+                        break;
+
+                    case 2:
                         getPlayer().addSide(principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
                         principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
+                        break;
+
+                    case 3:
+                        getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
+                                Cube.intToCube((int) coup.dest.getX()));
+                        getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                        coup = hist.annule();
+                        if (coup.type == 1) {
+                            getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
+                                    principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
+                            principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
+                        } else {
+                            getPlayer().addSide(principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
+                            principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
+                        }
+                        break;
+
+                    case 4:
+                        getPlayer().addSide(Cube.intToCube((int) coup.dest.getX()));
+                        getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                        coup = hist.annule();
+                        if (coup.type == 1) {
+                            getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
+                                    principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
+                            principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
+                        } else {
+                            getPlayer().addSide(principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
+                            principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
+                        }
+                        break;
+
+                    case 5:
+                        getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.Blanc);
+                        break;
+
+                    case 6:
+                        getPlayer().addSide(Cube.Blanc);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        metAJour();
+        }
+    }
+
+    public void refais() {
+        Coup coup = hist.refais();
+        if (coup !=null){
+            switch (coup.type) {
+                case 1:
+                    principale.set((int) coup.dest.getX(), (int) coup.dest.getY(),
+                            getPlayer().get((int) coup.source.getX(), (int) coup.source.getY()));
+                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                    coup = hist.refais();
+                    if (coup!=null){    
+                        if (coup.type == 3) {
+                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                            getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                        } else if (coup.type == 4) {
+                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                            getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                        } else {
+                            hist.backOnRefais();
+                        }
                     }
                     break;
 
-                case 4:
-                    getPlayer().addSide(Cube.intToCube((int) coup.dest.getX()));
-                    getPlayer(previous_player()).removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
-                    coup = hist.annule();
-                    if (coup.type == 1) {
-                        getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(),
-                                principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
-                        principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
-                    } else {
-                        getPlayer().addSide(principale.get((int) coup.dest.getX(), (int) coup.dest.getY()));
-                        principale.remove((int) coup.dest.getX(), (int) coup.dest.getY());
+                case 2:
+                    principale.set((int) coup.dest.getX(), (int) coup.dest.getY(),
+                            Cube.intToCube((int) coup.source.getX()));
+                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.source.getX()));
+                    coup = hist.refais();
+                    if(coup !=null){
+                        if (coup.type == 3) {
+                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                            getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                        } else if (coup.type == 4) {
+                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                            getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                        } else {
+                            hist.backOnRefais();
+                        }
                     }
                     break;
 
                 case 5:
-                    getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.Blanc);
+                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
                     break;
 
                 case 6:
-                    getPlayer().addSide(Cube.Blanc);
+                    getPlayer().removeCubeSide(Cube.Blanc);
+                    break;
+
+                case 7:
+                    getPlayer().playerLost();
                     break;
 
                 default:
                     break;
             }
-        }
-        metAJour();
-    }
-
-    public void refais() {
-        Coup coup = hist.refais();
-        switch (coup.type) {
-            case 1:
-                principale.set((int) coup.dest.getX(), (int) coup.dest.getY(),
-                        getPlayer().get((int) coup.source.getX(), (int) coup.source.getY()));
-                getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
-                coup = hist.refais();
-                if (coup.type == 3) {
-                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
-                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
-                } else if (coup.type == 4) {
-                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
-                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
-                } else {
-                    hist.backOnRefais();
-                }
-                break;
-
-            case 2:
-                principale.set((int) coup.dest.getX(), (int) coup.dest.getY(),
-                        Cube.intToCube((int) coup.source.getX()));
-                getPlayer().removeCubeSide(Cube.intToCube((int) coup.source.getX()));
-                coup = hist.refais();
-                if (coup.type == 3) {
-                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
-                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
-                } else if (coup.type == 4) {
-                    getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
-                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
-                } else {
-                    hist.backOnRefais();
-                }
-                break;
-
-            case 5:
-                getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
-                break;
-
-            case 6:
-                getPlayer().removeCubeSide(Cube.Blanc);
-                break;
-
-            case 7:
-                getPlayer().playerLost();
-                break;
-
-            default:
-                break;
-        }
         avance();
         metAJour();
+        }
     }
 
 
