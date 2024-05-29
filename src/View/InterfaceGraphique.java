@@ -6,13 +6,15 @@ import View.Menu.*;
 import Model.Jeu;
 import Patterns.Observateur;
 import javax.swing.*;
+
+import Global.FileLoader;
+
 import java.awt.*;
 
 public class InterfaceGraphique implements Runnable, Observateur {
 	JFrame frame;
 	CollecteurEvenements controle;
 	Jeu jeu;
-	//NiveauGraphique niv;
 	boolean maximized;
 	Timer timer;
 	Boolean bool = true;
@@ -58,8 +60,8 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		frame = new BackgroundPanel();
 
 		try {
-			frame.setIconImage(ImageIO.read(new File("src/View/icone.jpg")));
-		} catch (IOException exc) {
+			frame.setIconImage(FileLoader.getImage("res/IconeV2.png"));
+		} catch (Exception e) {
 			System.out.println("Erreur de chargement de l'icone");
 		}
 		

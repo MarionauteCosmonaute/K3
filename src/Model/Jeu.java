@@ -7,6 +7,7 @@ import Model.History.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -49,7 +50,7 @@ public class Jeu extends Observable implements Cloneable{
         End = false;
         start = false;
         players = new Player[nb];
-        playerConst = new playerConst[nb];
+        playerConst = new boolean[nb];
         hist = new Historique();
 
         bag = new PawnsBag(nb);
@@ -79,6 +80,7 @@ public class Jeu extends Observable implements Cloneable{
         try{
             Scanner s = new Scanner(new FileInputStream(fileName));
             String[] chaine = s.nextLine().split(" ");
+            
             hist = new Historique();
             nbJoueur = Integer.parseInt(chaine[0]);
             bag = new PawnsBag(nbJoueur);
@@ -95,9 +97,8 @@ public class Jeu extends Observable implements Cloneable{
             }
             String histLine = "";
             String part = "";
-            while ((part = s.nextLine()) != null) {     // PB ici Exception in thread "AWT-EventQueue-0" java.util.NoSuchElementException: No line found
-                                                        // at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
-                                                        //at Model.Jeu.reset(Jeu.java:95)
+            while (s.hasNext()) {     
+                part = s.nextLine();    
                 histLine += part + "\n";
             }
             hist = Historique.fromString(histLine);
@@ -134,6 +135,7 @@ public class Jeu extends Observable implements Cloneable{
             for(int i = 0; i < nbJoueur; i++){
                 sauvegarde += players[i].sauvegarde();
             }
+            sauvegarde += hist.sauvegarde(); 
             writer.write(sauvegarde);
             writer.close();
         }
@@ -404,7 +406,7 @@ public class Jeu extends Observable implements Cloneable{
     public boolean joueBlancPyramide(int x, int y){
         if(getPlayer().get(x,y) == Cube.Blanc){
             getPlayer().remove(x, y);
-            hist.action(5,new Point(x,y), null);
+            hist.action(5,new Point(x,y), new Point(-1, -1));  //(int type, Point s, Point d)
             return true;
         }
         return false;
@@ -413,7 +415,7 @@ public class Jeu extends Observable implements Cloneable{
     public boolean joueBlancSide(int x){
         if(getPlayer().getSide(x) == Cube.Blanc){
             getPlayer().removeSide(x);
-            hist.action(6, null, null);
+            hist.action(6, new Point(x, -1), new Point(-1, -1));
             return true;
         }
         return false;
@@ -743,7 +745,7 @@ public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l
     }
 
     public void playerEndConst(int player){
-        playerConst[joueur]=false;
+        playerConst[player]=false;
     }
 
     public boolean endConstruction(int joueur){

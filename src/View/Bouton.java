@@ -118,7 +118,7 @@ public class Bouton {
 						+
 						"\n" +
 						"PENALITÉ\n" +
-						"Jouer votre pion sur deux pions de la même couleur entraîne une pénalité. Le joueur qui vous précède récupère un de vos pions accessibles au choix et le place à côté de sa propre pyramide.\n"
+						"Jouer votre pion sur deux pions de la même couleur entraîne une pénalité, elle vous sera indiquée par un carré rouge. Le joueur qui vous précède récupère un de vos pions accessibles au choix et le place à côté de sa propre pyramide.\n"
 						+
 						"Il fait partie de ses pions accessibles pour le reste de la partie et pourra être joué lors d’un prochain tour de jeu, ou récupéré par un adversaire lors d’une prochaine pénalité.\n"
 						+
@@ -147,7 +147,7 @@ public class Bouton {
 						+
 						"\n" +
 						"PENALTY\n" +
-						"Placing your pawn on 2 pawns of the same colour results in a penalty. The next player clockwise who has not yet been eliminated chooses one of your accessible pawns and places it next to their pyramid.\n"
+						"Placing your pawn on 2 pawns of the same colour results in a penalty, you can see it thanks to a red square. The next player clockwise who has not yet been eliminated chooses one of your accessible pawns and places it next to their pyramid.\n"
 						+
 						"It becomes part of their accessible pawns for the rest of the game and can be placed on K3 during a future turn, or taken by an opponent to resolve a future penalty.\n"
 						+

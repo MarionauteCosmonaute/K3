@@ -64,6 +64,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			PDJPyramideJoueur.SetCube_Select_Static(false);
 			if(jeu.accessible(x,y)){
 				jeu.takePenaltyCube(x, y); // y : mettre -1 si ça vient du side
+				jeu.sauvegarde(qs);
 				penalty = false;
 				if(jeu.getPlayer().lost()){
 					IAON=false;
@@ -270,7 +271,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
 				changeVisible(3);
 				jeu.reset(qs);
-				jeu.sauvegarde("saves/quicksave.txt");
 				break;
 
 			case "FR":
@@ -287,14 +287,15 @@ public class ControleurMediateur implements CollecteurEvenements {
 				jeu.resetBag();
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setValider(false);
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme ça
-			break;
+				break;  
 			
 			case "AideConstruction":
+				jeu.resetBag(); 
 				jeu.constructionAleatoire(jeu.getPlayer());
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().resetBooleans();
 				System.out.println(jeu.getPlayer().getPyramid());
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).repaint();
-			break;
+				break;
 
 			case "JoueurVSJoueur":
 				IAON=false;
@@ -304,7 +305,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 				jeu.initPrincipale();
 				joueur_initial=jeu.get_player();
 				while(jeu.draw()){} // On cree une partie a 2
-				jeu.sauvegarde("saves/quicksave.txt");
 				break;
 
 			case "JoueurVSIA":
@@ -332,6 +332,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				if (jeu.get_player() == joueur_initial || (IAON && jeu.get_player()==1) ) {
 					changeVisible(3);
 					jeu.gameStart();
+					jeu.sauvegarde(qs);
 					jeu.check_loss();
 					if(jeu.getPlayer().lost()){
 						gagnant = jeu.next_player();

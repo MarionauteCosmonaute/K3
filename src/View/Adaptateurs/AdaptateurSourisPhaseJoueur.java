@@ -25,8 +25,6 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // System.out.println("joueur courant : "+ pdjCentrale.GetJoueurCourant() + ",
-        // joueur adaptateur : " + pdj.NumeroJoueur());
         if (pdj.NumeroJoueur() != pdjCentrale.GetJoueurCourant()) {
             return;
         }
@@ -44,7 +42,6 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
                     PDJPyramideJoueur.SetCube_Select_Static(true);
                     pdj.SetX_Select(taille_base_pyramide - 1 - x);
                     pdj.SetY_Select(y);
-                    System.out.println("taille-1-x : "+(taille_base_pyramide - 1 - x)+"x : "+x+",y : "+y);
                     controle.clicJoueurPyramide(taille_base_pyramide - 1 - x, y);
                     pdjCentrale.repaint();
                     pdj.repaint();
