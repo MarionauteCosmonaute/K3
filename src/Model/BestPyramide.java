@@ -1,44 +1,36 @@
 package Model;
 
+//import Model.*;
+
 public class BestPyramide {
-    Pyramid pyramide,principal,fin;
-    int profondeur,min,max;
-    boolean done;
-    
-    BestPyramide(int taille,int min, int max){
-        pyramide = null;
-        profondeur = 0;
-        principal = null;
-        fin = null;
-        this.min = min;
-        this.max = max;
-        done = false;
-    }
-    
-    public synchronized void set(Pyramid pyramid, Pyramid principal, Pyramid fin ,int profondeur){
-        if(profondeur == 0)
-        if(min <= profondeur && max <= max){
-            this.pyramide = pyramid;
-            this.profondeur = profondeur;
-            this.principal = principal;
-            this.fin = fin;
-            done = true;
+    Pyramid best = null;
+    int profondeur = 0;
+    boolean done = false;
+
+    public BestPyramide(){}
+
+    public synchronized void add(Pyramid pyramide, int prof){
+        if(prof > profondeur){
+            best = pyramide;
+            profondeur = prof;
         }
     }
 
-    public Pyramid getFin(){
-        return fin;
-    }
-    public Pyramid getPyramid(){
-        return pyramide;
+    public void finish(){
+        done = true;
     }
 
-    public Pyramid getPrincipal(){
-        return principal;
+    public boolean done(){
+        return done;
     }
-    
-    public synchronized int getProfondeur(){
-        return profondeur;
+
+    public Pyramid getPyramid(){
+        return best;
     }
-    
+
+    public String toString(){
+        String chaine = "";
+        chaine += "la Pyramide:\n" + best + "\nde profondeur: " + profondeur; 
+        return chaine;
+    }
 }

@@ -2,6 +2,7 @@ package Controller;
 
 import View.*;
 import Model.*;
+import Model.IA_pack.IA;
 import View.Menu.*;
 
 import java.time.LocalDateTime;

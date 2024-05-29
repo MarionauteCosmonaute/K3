@@ -1,3 +1,4 @@
+package Model.IA_pack;
 /*package Model;
 
 import java.awt.Point;

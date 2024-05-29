@@ -1,4 +1,5 @@
-package Model;
+package Model.IA_pack;
+import Model.*;
 
 import java.util.*;
 import java.awt.Point;
@@ -7,6 +8,7 @@ import Model.Runnables.*;
 public abstract class IA {
     Jeu jeu;
     int difficulte, indiceJoueur;
+    boolean phaseConstruction;
     
     public static IA nouvelle(Jeu j,int difficulte,int indiceJoueur) {
         IA resultat = null;
@@ -32,6 +34,7 @@ public abstract class IA {
             resultat.jeu = j;
             resultat.difficulte = difficulte;
             resultat.indiceJoueur = indiceJoueur;
+            resultat.phaseConstruction = j.endConstruction((indiceJoueur+1)%2); //gameStarted pas encore implémentée dans le modèle
         }
         return resultat;
     }
@@ -70,11 +73,10 @@ public abstract class IA {
                 }
             case 1 : //IA Medium
                 cubes_access2 = j.Accessible_Playable(j.next_player()); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
-                //for(Point compte : cubes_access2) { //Compte du nombre de coups jouable du j1
-                //    int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),(int) compte.getX(),(int) compte.getY()).size();
-                //    total_j2+= current_possibilities;
-                //}
-                total_j2 = cubes_access2.size();
+                for(Point compte : cubes_access2) { //Compte du nombre de coups jouable du j1
+                    int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),(int) compte.getX(),(int) compte.getY()).size();
+                    total_j2+= current_possibilities;
+                }
 
                 total = (int)(total_j1) + (int)(j.getPlayer().totalCube()) - (int)(j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2);
                 if(bon_joueur){
@@ -171,10 +173,10 @@ public abstract class IA {
                     value= MinMaxIA(clone, 2, joueur1, -10000, +10000, 0);
                     break;
                     case 1:
-                    value = MinMaxIA(clone, 5, joueur1, -10000, +10000, 1);
+                    value = MinMaxIA(clone, 3, joueur1, -10000, +10000, 1);
                     break;
                     case 2:
-                    value = MinMaxIA(clone, 10, joueur1, -10000, +10000, 2);
+                    value = MinMaxIA(clone, 5, joueur1, -10000, +10000, 2);
                     break;
                 }
                 
@@ -234,72 +236,46 @@ public abstract class IA {
         return list;
     }
 
-    public BestPyramide generePyramide(int p){
-        Player player = jeu.getPlayer(indiceJoueur);
-        int size = player.getSize();
-        int min,max;
+    public Pyramid generePyramide(){
+        Player player;
         ArrayList<Cube> list = cubePotentiel();
-        Thread[] threads = new Thread[list.size()*p];       /* Potentiel amelioration afin d'avoir un nombre fixe qui ne varie pas selon la size */
-        int j = 0;
-        Jeu cloneBase = jeu.clone();
-        cloneBase.getPlayer(jeu.next_player(indiceJoueur)).fusion();
-        player = cloneBase.getPlayer(indiceJoueur);
-        switch (difficulte) {
-            case 0:
-                min = 9;
-                max = 12;
-                break;
-            case 1:
-                min = 12;
-                max = 15;
-                break;
-            case 2:
-                min = 15;
-                max = 30;
-                break;
+        Jeu clone = jeu.clone();
+        player = clone.getPlayer(indiceJoueur);
+        player.resetBag();
+        BestPyramide ZeBest = new BestPyramide();
+        Thread manager = new Thread(new ConstructionThreadManager(clone,ZeBest,list,difficulte,indiceJoueur));
+        manager.start();
+
+        phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
         
-            default:
-                min = 0;
-                max = 30;
+        try{Thread.sleep(1000);}        /* a changer je l'ai mis a 1 sec pour faire des tests */
+        catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
+        while(true){
+            try{Thread.sleep(100);}
+            catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
+            if(!phaseConstruction && ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */
+                ZeBest.finish();
                 break;
-        }
-        BestPyramide ZeBest = new BestPyramide(size, min, max);
-        Jeu clone;
-        for(Cube cube : list){
-            player.resetBag();
-            player.construction(size-1, 0, cube);
-            for (int i = 0; i < p; i++){
-                clone = cloneBase.clone();
-                clone.constructionAleatoire(clone.getPlayer(indiceJoueur));
-                threads[(j*p) + i] = new Thread(new ConstructionRunable(clone,ZeBest,indiceJoueur,difficulte));
-                threads[(j*p) + i].start();
             }
-            j++;
         }
-
-        for(Thread thread : threads){
-            try{thread.join();}
-            catch(InterruptedException e){System.out.println("Interuption catched");System.exit(1);}
-        }
-
-        /*while(ZeBest.getProfondeur() == 0){
-            try{wait();}
-            catch(Exception e){System.out.println("Interuption catched");System.exit(1);}
-        }
-
-        for(Thread thread : threads){
-            thread.interrupt();
-        }*/
-        return ZeBest;
+        
+        try{manager.join();}
+        catch(InterruptedException e){System.err.println("Interuption catched for the construction manager");System.exit(1);}
+        
+        //System.out.println(ZeBest);
+        
+        return ZeBest.getPyramid();
     }
-
+    
     public int jouer_coup() {  /* Modifier pour savoir si il y a une penalitee */
         throw new UnsupportedOperationException();
     }
     
     public void construction(){
         throw new UnsupportedOperationException();
-        /*jeu.constructionAleatoire(jeu.getPlayer(indiceJoueur));*/
+    }
+    public void constructionAleatoire(){
+        jeu.constructionAleatoire(jeu.getPlayer(indiceJoueur));
     }
 
     public void takePenaltyCube(){
@@ -311,6 +287,8 @@ public abstract class IA {
         }
     }
 
+    public void endConstruction(){
+        phaseConstruction = false;
+    }
     
 }
-

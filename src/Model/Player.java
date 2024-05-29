@@ -213,6 +213,25 @@ public class Player {
         personalBag.add(cube);
     }
 
+    public void build(Pyramid pyramide){
+        Iterateur it = pyramide.iterateur("UP");
+        Iterateur personalIt = pyramid.iterateur("UP");
+        Cube cubeAjouter,cubeEnlever;
+        while(it.hasNext()){
+            cubeEnlever = personalIt.next();
+            cubeAjouter = it.next();
+            changementBag(cubeAjouter, cubeEnlever);
+            personalIt.modify(cubeAjouter);
+        }
+        personalBag = new ArrayList<>();
+    }
+
+    private void changementBag(Cube cube1,Cube cube2){
+        increment(cube1);
+        decrementBag(cube1);
+        incrementBag(cube2);
+        decrement(cube2);
+    }
 
     public void emptyBag(){
         personalBag = new ArrayList<>();
