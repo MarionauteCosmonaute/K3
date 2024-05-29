@@ -2,11 +2,14 @@ package View;
 
 import Model.Jeu;
 import Model.Player;
+import Global.FileLoader;
 
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
+
+import java.io.IOException;
 
 public class PDJPyramideJoueur extends JComponent {
     int width_fenetre, height_fenetre, nb_ligne, nb_colonne, largeur_case, hauteur_case;
@@ -16,8 +19,11 @@ public class PDJPyramideJoueur extends JComponent {
     static boolean cube_selec;
     int x_selec;
     int y_selec;
+    static boolean charge;
 
     JPanel parent;
+    ImageIcon gifIcon;
+    JLabel gifLabel;
 
     public PDJPyramideJoueur(Jeu jeu, JPanel parent, int nj) {
         this.jeu = jeu;
@@ -25,6 +31,17 @@ public class PDJPyramideJoueur extends JComponent {
         joueur = nj;
         setOpaque(false);
         cube_selec = false;
+        charge = true;
+
+        try
+        {
+            gifIcon = new ImageIcon(FileLoader.getImage("res/chargement4.gif").getScaledInstance(40, 30, Image.SCALE_SMOOTH));
+            gifLabel = new JLabel(gifIcon);
+        }
+        catch (IOException e) 
+        {
+            System.exit(1);
+        }
     }
     // Retourne le tableau qui contient les coordonnées des points de la pyramide du joueur
     public Point[][] PointPyramideJoueurs(int joueur){
@@ -57,6 +74,16 @@ public class PDJPyramideJoueur extends JComponent {
     // {
     //     cube_selec = bool;
     // }
+
+    public static void AfficheGif()
+    {
+
+    }
+
+    public static void CacheGif()
+    {
+
+    }
 
     public static void SetCube_Select_Static(boolean bool)
     {
@@ -95,6 +122,12 @@ public class PDJPyramideJoueur extends JComponent {
         switch(languageCode){
             case "FR":
                 drawable.drawString("Joueur "+(joueur+1), 5, Math.min(height_fenetre/10,width_fenetre/10));
+                if ((joueur+1) == 2)
+                {
+                    System.out.println("Deesin sablier");
+                    // drawable.drawImage(gifIcon, 200, 10, 30, 30, null);
+                    // frame.getContentPane().add(gifLabel, BorderLayout.CENTER);
+                }
                 break;
             case "EN":
                 drawable.drawString("Player "+(joueur+1), 5, Math.min(height_fenetre/10,width_fenetre/10));
