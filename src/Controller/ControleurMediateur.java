@@ -59,6 +59,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 	@Override
 	public void clicJoueurPyramide(int x, int y) {
 		// cube_selectionne = jeu.getPlayer().get(x, y);
+		if(IAON && jeu.get_player() == 1 && !penalty){
+			return;
+		}
 		if(penalty == true){
 			//tester que le cube est accessible dans la pyramide du joueur
 			PDJPyramideJoueur.SetCube_Select_Static(false);
@@ -66,6 +69,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				jeu.takePenaltyCube(x, y); // y : mettre -1 si ça vient du side
 				jeu.sauvegarde(qs);
 				penalty = false;
+				
 				if(jeu.getPlayer().lost()){
 					IAON=false;
 					gagnant = jeu.next_player();
@@ -95,6 +99,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicJoueurSide(int x) {
+		if(IAON && jeu.get_player() == 1 && !penalty){
+			return;
+		}
 		// cube_selectionne = jeu.getPlayer().get(x, y);
 		if(penalty == true){
 			//tester que le cube est accessible dans la pyramide du joueur
@@ -153,7 +160,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 	@Override
 	public void clicPyramideCentrale(int x, int y) {
 		int res;
-
 		// if(jeu.accessible(ligne_joueur,colonne_joueur)){
 		res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
 		jeu.sauvegarde(qs);
@@ -175,6 +181,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 						commande("MenuP");
 						break;
 				}
+			}
+			if(IAON && jeu.get_player() == 1){
+				PDJPyramideJoueur.AfficheGif();
 			}
 		}
 		if(res == 2){
@@ -375,15 +384,18 @@ public class ControleurMediateur implements CollecteurEvenements {
 				changeVisible(3);
 				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
 				break;
+
 			case "JoueIA":
 				int res;
 				if (IAON && jeu.get_player()==1 && !penalty){
 					if ((res = ia.jouer_coup()) == 2){
 						penalty = true;
+						// PDJPyramideJoueur.CacheGif();
 					}
 					else if (res == 1 || res == 3){
 						// jeu.check_loss();
 						if(jeu.getPlayer().lost()){
+							// PDJPyramideJoueur.CacheGif();
 							gagnant = jeu.next_player();
 							System.out.println("cas 5 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 							int reponse = DialogueFinPartie(gagnant + 1);
@@ -403,6 +415,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 					vue.stopTimer();
 					jeu.sauvegarde("saves/quicksave.txt");
 				}
+				PDJPyramideJoueur.CacheGif();
 				break;
 
 			case "Save":

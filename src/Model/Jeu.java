@@ -451,7 +451,7 @@ public class Jeu extends Observable implements Cloneable{
         Cube cube = players[current_player].getSide(x);
         players[next_player()].addSide(cube);
         getPlayer().removeSide(x);
-        hist.action(4, null, new Point(cube.getInt(),-1));
+        hist.action(4, new Point(-1,-1), new Point(cube.getInt(),-1));
     }
 
     
@@ -532,7 +532,7 @@ public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l
     public boolean check_loss(){            /* Verifie si le joueur courrant n'a aucun coup possible, s'il ne peut rien jouer le joueur courant est le prochain joueur */
         if(noPlay()){
             getPlayer().playerLost();
-            hist.action(7,null, new Point(current_player,-1));
+            hist.action(7,new Point(-1,-1), new Point(current_player,-1));
             int next = next_player();
             if(next == next_player(next)){End = true;}          /* si un joueur est eliminer et que le prochain est le meme que le prochain du prochain, le joueur est donc seul et est le vainqueur */
             return true;
