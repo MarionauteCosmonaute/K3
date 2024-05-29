@@ -19,6 +19,7 @@ import java.util.Collections;
 
 public class Jeu extends Observable implements Cloneable{
     Player[] players;
+    boolean playerConst[];
     int nbJoueur;
     Pyramid principale;
     PawnsBag bag;
@@ -48,6 +49,7 @@ public class Jeu extends Observable implements Cloneable{
         End = false;
         start = false;
         players = new Player[nb];
+        playerConst = new playerConst[nb];
         hist = new Historique();
 
         bag = new PawnsBag(nb);
@@ -55,6 +57,7 @@ public class Jeu extends Observable implements Cloneable{
         for(int i = 0;i < nb; i++ ){
             size = 8-nb;
             players[i] = new Player(size);
+            playerConst[i]=true;
             if(nb!=4){
                 for(int j = 0; j < 4/nb; j++){
                     players[i].addBag(Cube.Blanc);
@@ -738,6 +741,14 @@ public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l
 
     public ArrayList<Cube> getPlayerBag(int i){
         return getPlayer(i).personalBag;
+    }
+
+    public void playerEndConst(int player){
+        playerConst[joueur]=false;
+    }
+
+    public boolean endConstruction(int joueur){
+        return playerConst[joueur];
     }
 
     public Jeu clone() {
