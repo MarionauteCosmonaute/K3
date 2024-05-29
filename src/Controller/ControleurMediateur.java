@@ -325,6 +325,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;
 
 			case "Valider":
+				jeu.playerEndConst(jeu.get_player());
 				jeu.avance();
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setValider(false);
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint();
