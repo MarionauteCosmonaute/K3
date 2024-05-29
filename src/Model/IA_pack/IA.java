@@ -34,7 +34,7 @@ public abstract class IA {
             resultat.jeu = j;
             resultat.difficulte = difficulte;
             resultat.indiceJoueur = indiceJoueur;
-            //resultat.phaseConstruction = j.construction(0 || j.getPlayer(0)); //gameStarted pas encore implémentée dans le modèle
+            resultat.phaseConstruction = j.endConstruction((indiceJoueur+1)%2); //gameStarted pas encore implémentée dans le modèle
         }
         return resultat;
     }
@@ -246,7 +246,7 @@ public abstract class IA {
         Thread manager = new Thread(new ConstructionThreadManager(clone,ZeBest,list,difficulte,indiceJoueur));
         manager.start();
 
-        //phaseConstruction = construction(0);
+        phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
         
         try{Thread.sleep(1000);}        /* a changer je l'ai mis a 1 sec pour faire des tests */
         catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
