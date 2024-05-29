@@ -31,17 +31,16 @@ public class PDJPyramideJoueur extends JComponent {
         joueur = nj;
         setOpaque(false);
         cube_selec = false;
-        charge = true;
 
-        try
-        {
-            gifIcon = new ImageIcon(FileLoader.getImage("res/chargement4.gif").getScaledInstance(40, 30, Image.SCALE_SMOOTH));
-            gifLabel = new JLabel(gifIcon);
-        }
-        catch (IOException e) 
-        {
-            System.exit(1);
-        }
+        // try
+        // {
+        //     gifIcon = new ImageIcon(FileLoader.getImage("res/chargement4.gif").getScaledInstance(40, 30, Image.SCALE_SMOOTH));
+        //     gifLabel = new JLabel(gifIcon);
+        // }
+        // catch (IOException e) 
+        // {
+        //     System.exit(1);
+        // }
     }
     // Retourne le tableau qui contient les coordonnées des points de la pyramide du joueur
     public Point[][] PointPyramideJoueurs(int joueur){
@@ -122,12 +121,12 @@ public class PDJPyramideJoueur extends JComponent {
         switch(languageCode){
             case "FR":
                 drawable.drawString("Joueur "+(joueur+1), 5, Math.min(height_fenetre/10,width_fenetre/10));
-                if ((joueur+1) == 2)
-                {
-                    System.out.println("Deesin sablier");
-                    // drawable.drawImage(gifIcon, 200, 10, 30, 30, null);
-                    // frame.getContentPane().add(gifLabel, BorderLayout.CENTER);
-                }
+                // if ((joueur+1) == 2)
+                // {
+                //     System.out.println("Deesin sablier");
+                //     // drawable.drawImage(gifIcon, 200, 10, 30, 30, null);
+                //     // frame.getContentPane().add(gifLabel, BorderLayout.CENTER);
+                // }
                 break;
             case "EN":
                 drawable.drawString("Player "+(joueur+1), 5, Math.min(height_fenetre/10,width_fenetre/10));
