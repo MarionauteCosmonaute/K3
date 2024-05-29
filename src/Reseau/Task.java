@@ -2,7 +2,6 @@ package Reseau;
 
 import Structure.*;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -12,7 +11,7 @@ import java.net.Socket;
 import Reseau.Runnables.Transfer.*;
 
 public class Task {
-    ArrayList<Fifo<Point>> file;
+    ArrayList<Fifo> file;
     
     int nbPlayer;
     Thread[] productor;
@@ -25,11 +24,11 @@ public class Task {
         consumer = new Thread[nbPlayer];
 
         for(int i = 0; i < nbPlayer; i++){
-            file.add(new Fifo<>());
+            file.add(new Fifo());
         }
     }
 
-    public Fifo<Point> get(int i){
+    public Fifo get(int i){
         return file.get(i);
     }
 

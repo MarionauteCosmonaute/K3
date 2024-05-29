@@ -9,13 +9,13 @@ import Reseau.Runnables.Transfer.Productor;
 
 import java.io.*;
 import Structure.*;
-import java.awt.Point;
+import Model.Coup;
 
 
 public class Client {
     Socket socket;
-    ArrayList<Fifo<Point>> file;
-    Fifo<Point> send;
+    ArrayList<Fifo> file;
+    Fifo send;
     Thread productor;
     Thread consumer;
     
@@ -41,8 +41,8 @@ public class Client {
 
     public void begin(){
         file = new ArrayList<>();
-        file.add(new Fifo<>());
-        send = new Fifo<>();
+        file.add(new Fifo());
+        send = new Fifo();
         try{
             Productor p = new Productor(new BufferedReader(new InputStreamReader(socket.getInputStream())), file);
             productor = new Thread(p);
@@ -57,18 +57,28 @@ public class Client {
 
     public void listen(){
         Scanner s = new Scanner(System.in);
-        String[] entree;
-        //int x,y;
+        String entree;
+        String[] split;
         while(true){
-            entree = s.nextLine().split("\\s+");
-            if(entree[0].equals("add")){
-                Point p = new Point(Integer.parseInt(entree[1]),Integer.parseInt(entree[2]));
-                send.add(p);
-                file.get(0).add(p);
+            entree = s.nextLine();
+            split = entree.split("\\s+");
+            switch (split[0]) {
+                case "add":
+                    entree = entree.replace("add ","");
+                    Coup coup = Coup.fromString(entree);
+                    send.add(coup);
+                    file.get(0).add(coup);
+                    break;
+                case "check":
+                    System.out.println(socket.isConnected());
+                    break;
+                case "show":
+                    System.out.println(file.get(0));
+                    break;
+                default:
+                    break;
             }
-            if(entree[0].equals("check")){System.out.println(socket.isConnected());}
-            if(entree[0].equals("show")){System.out.println(file.get(0));}
-            if(entree[0].equals("quit")){break;}
+            if(split[0].equals("quit")){break;}
 
         }
         s.close();
