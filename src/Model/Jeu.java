@@ -7,6 +7,7 @@ import Model.History.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -79,6 +80,7 @@ public class Jeu extends Observable implements Cloneable{
         try{
             Scanner s = new Scanner(new FileInputStream(fileName));
             String[] chaine = s.nextLine().split(" ");
+            
             hist = new Historique();
             nbJoueur = Integer.parseInt(chaine[0]);
             bag = new PawnsBag(nbJoueur);
@@ -95,10 +97,11 @@ public class Jeu extends Observable implements Cloneable{
             }
             String histLine = "";
             String part = "";
-            while ((part = s.nextLine()) != null) {     // PB ici Exception in thread "AWT-EventQueue-0" java.util.NoSuchElementException: No line found
+            while (s.hasNext()) {     // PB ici Exception in thread "AWT-EventQueue-0" java.util.NoSuchElementException: No line found
                                                         // at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
                                                         //at Model.Jeu.reset(Jeu.java:95)
-                histLine += part + "\n";
+            part = s.nextLine();    
+            histLine += part + "\n";
             }
             hist = Historique.fromString(histLine);
             End = false;
@@ -405,7 +408,7 @@ public class Jeu extends Observable implements Cloneable{
     public boolean joueBlancPyramide(int x, int y){
         if(getPlayer().get(x,y) == Cube.Blanc){
             getPlayer().remove(x, y);
-            hist.action(5,new Point(x,y), null);
+            hist.action(5,new Point(x,y), new Point(-1, -1));  //(int type, Point s, Point d)
             return true;
         }
         return false;
@@ -414,7 +417,7 @@ public class Jeu extends Observable implements Cloneable{
     public boolean joueBlancSide(int x){
         if(getPlayer().getSide(x) == Cube.Blanc){
             getPlayer().removeSide(x);
-            hist.action(6, null, null);
+            hist.action(6, new Point(x, -1), new Point(-1, -1));
             return true;
         }
         return false;

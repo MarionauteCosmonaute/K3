@@ -15,7 +15,6 @@ public class InterfaceGraphique implements Runnable, Observateur {
 	JFrame frame;
 	CollecteurEvenements controle;
 	Jeu jeu;
-	//NiveauGraphique niv;
 	boolean maximized;
 	Timer timer;
 	Boolean bool = true;
@@ -61,7 +60,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		frame = new BackgroundPanel();
 
 		try {
-			frame.setIconImage(FileLoader.getImage("src/View/icone.jpg"));
+			frame.setIconImage(FileLoader.getImage("res/IconeV2.png"));
 		} catch (Exception e) {
 			System.out.println("Erreur de chargement de l'icone");
 		}

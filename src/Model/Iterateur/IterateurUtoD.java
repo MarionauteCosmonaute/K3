@@ -18,7 +18,7 @@ public class IterateurUtoD implements Iterateur{
     }
 
     public boolean hasNext(){
-        return y < pyramide.getSize();
+        return x >= 0 && y < pyramide.getSize()-1 ;
     }
 
     public Cube next() throws NoSuchElementException{

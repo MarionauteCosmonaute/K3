@@ -4,6 +4,13 @@ import java.util.Stack;
 import java.awt.Point;
 import Model.Coup;
 
+/*
+-> on peut annuler lors d'une pénalité, il faut l'empecher car sinon mdr on perd le cube sur la pyramide centrale et revient au mauvais joueur
+-> et du coup quand on fait refaire bah il perd son cube alors qu'il ne la pas joué
+-> exception lorsqu'on joue un blanc qui est dans le side 
+            -> si blanc dans le side : source et destination null (fonction toString de coup)
+            -> si dans la pyramide, source non null mais destination null
+*/
 public class Historique {
 
     Stack<Coup> coup_jouer;
@@ -18,7 +25,7 @@ public class Historique {
         coup_jouer.add(new Coup(type, s, d));
         coup_annule = new Stack<Coup>();
     }
-
+    
     public Coup annule() {
         if (isEmptyAnnule()) {
             Coup coup = coup_jouer.pop();

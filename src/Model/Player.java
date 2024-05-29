@@ -1,5 +1,7 @@
 package Model;
 import java.util.ArrayList;
+import Model.Iterateur.Iterateur;
+import java.util.NoSuchElementException;
 
 public class Player {
     Pyramid pyramid;
@@ -29,10 +31,13 @@ public class Player {
         personalBag = new ArrayList<>();
         nbCube = new int[7];
         nbCubeBag = new int[7];
+        Cube cube;
         String[] charge = string[0].split(" ");
         for(int i = 0; i < charge.length; i++){
             if(!charge[i].equals("")){
-                personalBag.add(Cube.conversion(charge[i]));
+                cube = Cube.conversion(charge[i]);
+                personalBag.add(cube);
+                incrementBag(cube);
                                                                             /* ADD DANS LE TAB */
             }
         }
@@ -40,7 +45,9 @@ public class Player {
         charge = string[1].split(" ");
         for(int i = 0; i < charge.length; i++){
             if(!charge[i].equals("")){
-                side.add(Cube.conversion(charge[i]));
+                cube = Cube.conversion(charge[i]);
+                side.add(cube);
+                increment(cube);
                                                                             /* ADD DANS LE TAB */
             }
         }
@@ -61,6 +68,7 @@ public class Player {
         chaine += "\n";
         chaine += Boolean.toString(loss) + "\n";
         chaine += pyramid.sauvegarde();
+        countCube();
         return chaine;
     }
 
@@ -95,7 +103,13 @@ public class Player {
         }
         return nbCube[cube.getInt()];
     }
-    
+    private void countCube(){
+        Iterateur it = pyramid.iterateur("UP");
+        try{while(true){
+            increment(it.next());
+        }}
+        catch(NoSuchElementException e){}
+    }
     /**************** */
     /* Fonction  */
     public void fusion(){
