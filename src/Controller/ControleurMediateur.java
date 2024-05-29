@@ -183,9 +183,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 						break;
 				}
 			}
-			if(IAON && jeu.get_player() == 1){
-				PDJPyramideJoueur.AfficheGif();
-			}
+			// if(IAON && jeu.get_player() == 1){
+			// 	PDJPyramideJoueur.AfficheGif();
+			// }
 		}
 		if(res == 2){
 			clic = false;
@@ -416,7 +416,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 					vue.stopTimer();
 					jeu.sauvegarde("saves/quicksave.txt");
 				}
-				PDJPyramideJoueur.CacheGif();
+				// PDJPyramideJoueur.CacheGif();
 				break;
 
 			case "Save":
