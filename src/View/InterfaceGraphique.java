@@ -6,6 +6,9 @@ import View.Menu.*;
 import Model.Jeu;
 import Patterns.Observateur;
 import javax.swing.*;
+
+import Global.FileLoader;
+
 import java.awt.*;
 
 public class InterfaceGraphique implements Runnable, Observateur {
@@ -58,8 +61,8 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		frame = new BackgroundPanel();
 
 		try {
-			frame.setIconImage(ImageIO.read(new File("src/View/icone.jpg")));
-		} catch (IOException exc) {
+			frame.setIconImage(FileLoader.getImage("src/View/icone.jpg"));
+		} catch (Exception e) {
 			System.out.println("Erreur de chargement de l'icone");
 		}
 		

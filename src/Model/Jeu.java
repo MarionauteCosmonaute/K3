@@ -49,7 +49,7 @@ public class Jeu extends Observable implements Cloneable{
         End = false;
         start = false;
         players = new Player[nb];
-        playerConst = new playerConst[nb];
+        playerConst = new boolean[nb];
         hist = new Historique();
 
         bag = new PawnsBag(nb);
@@ -744,7 +744,7 @@ public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l
     }
 
     public void playerEndConst(int player){
-        playerConst[joueur]=false;
+        playerConst[player]=false;
     }
 
     public boolean endConstruction(int joueur){
