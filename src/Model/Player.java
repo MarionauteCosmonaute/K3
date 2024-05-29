@@ -1,8 +1,11 @@
 package Model;
 import java.util.ArrayList;
 
+<<<<<<< HEAD
 import Model.Iterateur.Iterateur;
 
+=======
+>>>>>>> View
 public class Player {
     Pyramid pyramid;
 
@@ -15,7 +18,11 @@ public class Player {
     int size;
     boolean loss;
 
+<<<<<<< HEAD
     public Player(int i){
+=======
+    Player(int i){
+>>>>>>> View
         size = i;
         pyramid = new Pyramid(size);
 
@@ -155,6 +162,9 @@ public class Player {
     }
 
     public Cube get(int x, int y){
+        if(y == -1){
+            return getSide(x);
+        }
         return pyramid.get(x, y);
     }
 
@@ -187,7 +197,10 @@ public class Player {
 
     public void incrementBag(Cube cube){
         if(cube != Cube.Vide){nbCubeBag[cube.getInt()]++;}
+<<<<<<< HEAD
         
+=======
+>>>>>>> View
     }
 
     public void decrementBag(Cube cube){
@@ -195,12 +208,16 @@ public class Player {
     }
 
     public void addBag(Cube cube){
+<<<<<<< HEAD
         //System.out.println(cube);
+=======
+>>>>>>> View
         incrementBag(cube);
         personalBag.add(cube);
     }
 
 
+<<<<<<< HEAD
     public void build(Pyramid pyramide){
         Iterateur it = pyramide.iterateur("UP");
         Iterateur personalIt = pyramid.iterateur("UP");
@@ -221,16 +238,29 @@ public class Player {
         decrement(cube2);
     }
 
+=======
+    public void emptyBag(){
+        personalBag = new ArrayList<>();
+    }
+
+>>>>>>> View
     /*Construct method -> Puts a cube in a position after checking its content:       */
    /*If cube already existing in position -> Puts it back in the bag and replaces it */
     public void construction(int x, int y,Cube cube){
         if(!(get(x, y) == Cube.Vide)){
             incrementBag(get(x, y));
+<<<<<<< HEAD
             decrement(get(x, y));
+=======
+>>>>>>> View
             personalBag.add(get(x, y));
+
         }
         decrementBag(cube);
+<<<<<<< HEAD
         increment(cube);
+=======
+>>>>>>> View
         personalBag.remove(cube);
         pyramid.set(x,y,cube);
     }
@@ -246,6 +276,7 @@ public class Player {
         for (int i=0; i<size; i++){
             for (int j=0; j<size; j++){
                 if(get(i,j) != Cube.Vide){
+<<<<<<< HEAD
                 try{
                     addBag(get(i,j));
                     remove(i,j);
@@ -254,6 +285,10 @@ public class Player {
                     System.err.println("le cube est en position" + i + " " +j);
                 }
             }
+=======
+                addBag(get(i,j));
+                remove(i,j);}
+>>>>>>> View
             }
         }
     }

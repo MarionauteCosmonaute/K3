@@ -1,7 +1,10 @@
 package Model;
 
 import Model.Iterateur.*;
+<<<<<<< HEAD
 import java.util.NoSuchElementException;
+=======
+>>>>>>> View
 
 public class Pyramid {
     Cube[][] pyramid;
@@ -69,7 +72,24 @@ public class Pyramid {
     public void remove(int x,int y){
         set(x,y,Cube.Vide);
     }
+<<<<<<< HEAD
     
+=======
+
+
+    public Iterateur iterateur(String start){
+        switch (start) {
+            case "UP":
+                return new IterateurUtoD(this);
+            case "DOWN":
+                return new IterateurDtoU(this);
+            default:
+                throw new NullPointerException();
+        }
+    }
+
+
+>>>>>>> View
     public String centrer(int i){
         String chaine = "";
         for(int j = 0; j < i; j++){
@@ -141,5 +161,9 @@ public class Pyramid {
         }
         return clone;
     }
+<<<<<<< HEAD
      
+=======
+    
+>>>>>>> View
 }
