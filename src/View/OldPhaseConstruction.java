@@ -105,12 +105,14 @@ public class OldPhaseConstruction {
                             title = "Règles de construction de pyramide";
                             rules = "MISE EN PLACE DE VOTRE PYRAMIDE\n" +
                             "Organisez et empilez tous vos pions en pyramide devant vous en les faisant chevaucher.\n" +
-                            "Les pions non bloqués sont les seuls accessibles, choississez bien votre agencement pour l'adapter à votre stratégie.";
+                            "Les pions non bloqués sont les seuls accessibles, choississez bien votre agencement pour l'adapter à votre stratégie.\n"+
+                            "Le premier cube accessible sera le sommet de votre pyramide";
                             break;
                         case "EN" :
                             title = "Rules to set up a pyramid";
                             rules = "SETTING UP YOUR PYRAMID\n"+
-                            "Arrange and stack all your pawns in a pyramid in front of you, making them overlap.\n";
+                            "Arrange and stack all your pawns in a pyramid in front of you, making them overlap.\n" +
+                            "The first accessible pawn will be the top of your pyramid";
                             break;
                     }
                     JOptionPane.showMessageDialog(frame, rules, title, JOptionPane.INFORMATION_MESSAGE);
@@ -497,7 +499,6 @@ public class OldPhaseConstruction {
 
             drawable.setColor(Color.BLACK);
         }
-
     }
     public void updateJoueurLabel(){
         String languageCode = Global.Config.getLanguage();

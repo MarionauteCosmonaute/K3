@@ -131,6 +131,7 @@ public class Jeu extends Observable implements Cloneable{
             for(int i = 0; i < nbJoueur; i++){
                 sauvegarde += players[i].sauvegarde();
             }
+            sauvegarde += hist.sauvegarde(); 
             writer.write(sauvegarde);
             writer.close();
         }

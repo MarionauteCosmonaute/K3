@@ -100,14 +100,56 @@ public class PDJPyramideJoueur extends JComponent {
                 drawable.drawString("Player "+(joueur+1), 5, Math.min(height_fenetre/10,width_fenetre/10));
                 break;
         }
+
         drawable.setColor(Color.BLACK);
+        drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre/10,width_fenetre/10)/3));
+        if(jeu.getPenality()){
+            if(jeu.get_player() == joueur){
+                switch(languageCode){
+                case "FR":
+                    drawable.drawString("Pénalité, votre adversaire va vous prendre un cube", 5, Math.min(height_fenetre/10,width_fenetre/10)*2);
+                    break;
+                case "EN":
+                    drawable.drawString("Penalty, your opponent will take one of your pawn", 5, Math.min(height_fenetre/10,width_fenetre/10)*2);
+                    break;
+                }
+            }else{
+                switch(languageCode){
+                case "FR":
+                    drawable.drawString("Pénalité, prenez un cube de votre adversaire", 5, Math.min(height_fenetre/10,width_fenetre/10)*2);
+                    break;
+                case "EN":
+                    drawable.drawString("Penalty, take one pawn from your opponent", 5, Math.min(height_fenetre/10,width_fenetre/10)*2);
+                    break;
+                }  
+            }
+        }else{
+            if((jeu.get_player() == joueur)){
+                switch(languageCode){
+                case "FR":
+                    drawable.drawString("A votre tour de jouer", 5, Math.min(height_fenetre/10,width_fenetre/10)*2);
+                    break;
+                case "EN":
+                    drawable.drawString("Your turn to play", 5, Math.min(height_fenetre/10,width_fenetre/10)*2);
+                    break;
+                
+                }
+            }else{
+                switch(languageCode){
+                case "FR":
+                    drawable.drawString("Au tour de votre adversaire", 5, Math.min(height_fenetre/10,width_fenetre/10)*2);
+                    break;
+                case "EN":
+                    drawable.drawString("Wait for your opponent to play", 5, Math.min(height_fenetre/10,width_fenetre/10)*2);
+                    break;
+                }             
+            }
+        
+        }
         if(joueur == jeu.get_player()){
             StructurePainter.Contour_Accessible_Joueur(joueur, jeu, g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSideSize() > 0);
-            System.out.println("cube_select: "+ cube_selec);
             if (cube_selec)
             {
-                System.out.println("Chaton");
-                System.out.println("x : "+x_selec+", y : "+y_selec);
                 StructurePainter.DessineSelectionne(joueur, jeu, drawable, height_fenetre, width_fenetre, x_selec, y_selec, jeu.getPlayer(joueur).getSideSize() > 0);
             }
         }
