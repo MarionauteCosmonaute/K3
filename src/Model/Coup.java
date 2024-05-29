@@ -15,12 +15,6 @@ public class Coup{
 
     @Override
     public String toString() {
-        if(source == null){
-            System.out.println("source = null");
-        } 
-        if(dest == null){
-            System.out.println("dest == null");
-        }
         return type + " " + source.x + " " + source.y + " " + dest.x + " " + dest.y;
     }
 
