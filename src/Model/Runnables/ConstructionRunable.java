@@ -1,16 +1,16 @@
 package Model.Runnables;
 
 import Model.*;
-import Model.IA.IA;
+import Model.IA_pack.IA;
 
 public class ConstructionRunable implements Runnable{
     Jeu jeu;
-    PyramideList list;
+    BestPyramide ZeBest;
     int difficulte, indice;
 
-    ConstructionRunable(Jeu jeu, PyramideList list, int difficulte, int indice){
+    ConstructionRunable(Jeu jeu, BestPyramide ZeBest, int difficulte, int indice){
         this.jeu = jeu;
-        this.list = list;
+        this.ZeBest = ZeBest;
         this.difficulte = difficulte;
         this.indice = indice;
     }
@@ -22,15 +22,15 @@ public class ConstructionRunable implements Runnable{
         try{pyramide = jeu.getPlayer(indice).getPyramid().clone();}
         catch(CloneNotSupportedException e){System.err.println("Exception catched when creating clone for the 'ConstructionRunable'");System.exit(1);}
         int nbCoup = 0;
-        while( !list.done() && !jeu.End_Game() ){
+        while( !ZeBest.done() && !jeu.End_Game() ){
             if(jeu.check_loss()){}
             else {
                 if(jeu.get_player() == indice){
                     nbCoup++;
-                    if(ia1.add_central() == 2){ia2.takePenaltyCube();} 
-                }else if(ia2.add_central() == 2){ia1.takePenaltyCube();}
+                    if(ia1.jouer_coup() == 2){ia2.takePenaltyCube();} 
+                }else if(ia2.jouer_coup() == 2){ia1.takePenaltyCube();}
             }
         }
-        if(jeu.End_Game()){list.add(pyramide, nbCoup);}
+        if(jeu.End_Game()){ZeBest.add(pyramide, nbCoup);}
     }
 }

@@ -1,5 +1,5 @@
 import Model.*;
-import Model.IA.*;
+import Model.IA_pack.*;
 
 public class testConstruction {
     

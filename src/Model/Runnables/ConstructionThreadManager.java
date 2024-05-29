@@ -7,23 +7,23 @@ import java.util.Random;
 
 public class ConstructionThreadManager implements Runnable{
     Jeu jeu;
-    PyramideList list;
+    BestPyramide ZeBest;
     int nbThreads = 4, difficulte, indice;
     ArrayList<Cube> potentielCube;
     
 
 
-    public ConstructionThreadManager(Jeu jeu,PyramideList list, ArrayList<Cube> potentielCube, int difficulte, int indice){
+    public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube, int difficulte, int indice){
         this.jeu = jeu;
-        this.list = list;
+        this.ZeBest = ZeBest;
         this.potentielCube = potentielCube;
         this.difficulte = difficulte;
         this.indice = indice;
     }
 
-    public ConstructionThreadManager(Jeu jeu, PyramideList list, ArrayList<Cube> potentielCube, int difficulte, int indice, int nbThreads){
+    public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube, int difficulte, int indice, int nbThreads){
         this.jeu = jeu;
-        this.list = list;
+        this.ZeBest = ZeBest;
         this.potentielCube = potentielCube;
         this.difficulte = difficulte;
         this.indice = indice;
@@ -31,14 +31,14 @@ public class ConstructionThreadManager implements Runnable{
     }
 
     public void finish(){
-        list.finish();
+        ZeBest.finish();
     }
 
     public Thread doWork(Jeu game){
         Random rand = new Random();
         Cube cube = potentielCube.get(rand.nextInt(potentielCube.size()));
-        game.getPlayer().construction(game.getPlayer().getSize()-1, 0, cube);
-        Thread thread = new Thread(new ConstructionRunable(game, list, difficulte, indice));
+        game.getPlayer(indice).construction(game.getPlayer(indice).getSize()-1, 0, cube);
+        Thread thread = new Thread(new ConstructionRunable(game, ZeBest, difficulte, indice));
         thread.start();
         return thread;
     }
@@ -51,7 +51,7 @@ public class ConstructionThreadManager implements Runnable{
             threads[i] = doWork(jeu.clone());
         }
         
-        while(!list.done()){
+        while(!ZeBest.done()){
             
             for(int i = 0; i < nbThreads; i++ ){
                 try{
@@ -59,7 +59,7 @@ public class ConstructionThreadManager implements Runnable{
                 }
 
                 catch(InterruptedException e){System.err.println(e);System.exit(1);}
-                if( !threads[i].isAlive() && !list.done() ){
+                if( !threads[i].isAlive() && !ZeBest.done() ){
                     threads[i] = doWork(jeu.clone());
                 }
             }

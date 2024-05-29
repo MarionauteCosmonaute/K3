@@ -5,7 +5,7 @@ public class PyramideList {
     Pyramid[] pyramides;
     int nb,max,perfectProfondeur;
     Pyramid perfect = null;
-    boolean done = false;
+    boolean done = false,end = false;
 
     public PyramideList(){
         profondeur = new int[3];
@@ -46,12 +46,17 @@ public class PyramideList {
         return done;
     }
 
+    public void endSearch(){
+        end = true;
+    }
+
     public void finish(){
         done = true;
     }
 
     public Pyramid getBest(){
-        return perfect;
+        if (perfect != null) return perfect;
+        else return pyramides[0];
     }
 
     public synchronized Pyramid getPyramid(int i){

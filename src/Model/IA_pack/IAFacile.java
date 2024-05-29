@@ -22,7 +22,7 @@ public class IAFacile extends IA {
     @Override
     public void construction(){ //Tout refaire en choisissant les 3 cubes les plus hauts, puis en énumérant des pyramides aléatoires et en calculant a chaque fois qu'on enleve un cube le nombre de cubes de couleur différents accessibles
                                 // On prendra a la fin la pyramide où on a le plus de cubes de couleur différente accessibles a chaque coup
-        super.phaseConstruction = true;
+        phaseConstruction = true;
         Pyramid pyramide = generePyramide();
         jeu.getPlayer(indiceJoueur).build(pyramide);
         /*int x;

@@ -10,6 +10,10 @@ public class IAsimulation {
         }
         int nbTest = Integer.parseInt(args[0]);
         int difficulte1 = Integer.parseInt(args[1]), difficulte2 = Integer.parseInt(args[2]);
+        /*int nbTest = 2;
+        int difficulte1 = 0;
+        int difficulte2 = 0;*/
+
         int nb = 0;
         Stat stat = new Stat();
         Thread threads[] = new Thread[4];

@@ -242,25 +242,29 @@ public abstract class IA {
         Jeu clone = jeu.clone();
         player = clone.getPlayer(indiceJoueur);
         player.resetBag();
-        PyramideList pyramideList = new PyramideList();
-        Thread manager = new Thread(new ConstructionThreadManager(clone,pyramideList,list,difficulte,indiceJoueur));
+        BestPyramide ZeBest = new BestPyramide();
+        Thread manager = new Thread(new ConstructionThreadManager(clone,ZeBest,list,difficulte,indiceJoueur));
         manager.start();
+
         //phaseConstruction = construction(0);
         
-        if(!phaseConstruction){
-            pyramideList.finish();
+        try{Thread.sleep(1000);}        /* a changer je l'ai mis a 1 sec pour faire des tests */
+        catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
+        while(true){
+            try{Thread.sleep(100);}
+            catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
+            if( /*!phaseConstruction &&*/ ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */
+                ZeBest.finish();
+                break;
+            }
         }
-        /**********************/
-        /*Scanner s = new Scanner(System.in);
-        s.nextLine();
-        s.close();
-        pyramideList.finish();
-        */
+        
         try{manager.join();}
         catch(InterruptedException e){System.err.println("Interuption catched for the construction manager");System.exit(1);}
         
-        if(pyramideList.getBest() != null) return pyramideList.getBest();
-        else return pyramideList.getPyramid(0);
+        //System.out.println(ZeBest);
+        
+        return ZeBest.getPyramid();
     }
     
     public int jouer_coup() {  /* Modifier pour savoir si il y a une penalitee */
@@ -283,6 +287,9 @@ public abstract class IA {
         }
     }
 
+    public void endConstruction(){
+        phaseConstruction = false;
+    }
     
 }
 

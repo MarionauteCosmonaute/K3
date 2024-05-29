@@ -2,7 +2,7 @@ package Model.Runnables;
 
 import Model.*;
 import Model.Info.*;
-import Model.IA.*;
+import Model.IA_pack.*;
 
 public class IAvsIAthread extends IAvsIA implements Runnable {
     Stat stats; 
