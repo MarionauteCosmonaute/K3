@@ -38,15 +38,7 @@ public enum Cube {
         }
         return Cube.Vide;
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-    static Cube intToCube(int s){
-=======
     public static Cube intToCube(int s){
->>>>>>> View
-=======
-    public static Cube intToCube(int s){
->>>>>>> 10f8292 (recuperation de view sur branche ia)
         switch(s){
             case 7: return Cube.Vide;  
             case 1: return Cube.Noir;

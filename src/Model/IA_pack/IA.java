@@ -33,10 +33,6 @@ public abstract class IA {
             resultat.jeu = j;
             resultat.difficulte = difficulte;
             resultat.indiceJoueur = indiceJoueur;
-<<<<<<< HEAD
-            resultat.phaseConstruction = j.endConstruction((indiceJoueur+1)%2); //gameStarted pas encore implémentée dans le modèle
-=======
->>>>>>> 10f8292 (recuperation de view sur branche ia)
         }
         return resultat;
     }
@@ -256,11 +252,7 @@ public abstract class IA {
         Thread manager = new Thread(new ConstructionThreadManager(clone,ZeBest,list,difficulte,indiceJoueur));
         manager.start();
 
-<<<<<<< HEAD
-        phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
-=======
         //phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
->>>>>>> 10f8292 (recuperation de view sur branche ia)
         
         if(aide){
             try{Thread.sleep(3000);        
