@@ -24,4 +24,11 @@ public abstract class Menu extends JPanel {
     public void updateLanguageCode() {
         System.out.println("wdym??");
     }
+
+    public void reset(){
+    }
+
+    public void setValider(boolean b){
+
+    }
 }

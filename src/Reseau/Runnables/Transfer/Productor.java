@@ -3,42 +3,44 @@ package Reseau.Runnables.Transfer;
 import java.io.BufferedReader;
 
 import Structure.Fifo;
-import java.awt.Point;
 import java.util.ArrayList;
+
+import Model.Coup;
 
 public class Productor implements Runnable{
     BufferedReader in;
-    ArrayList<Fifo<Point>> file;
+    ArrayList<Fifo> file;
+    Fifo coupJouer;
     int index;
 
-    public Productor(BufferedReader in, ArrayList<Fifo<Point>> file, int index){
-        this.in = in;
-        this.file = file;
+    public Productor(BufferedReader in, ArrayList<Fifo> file,Fifo coupJouer, int index){
+        init(in,file,coupJouer);
         this.index = index;
     }
-    public Productor(BufferedReader in, ArrayList<Fifo<Point>> file){
+    public Productor(BufferedReader in, ArrayList<Fifo> file){
+        init(in,file,coupJouer);
+        index = -1;
+    }
+
+    public void init(BufferedReader in, ArrayList<Fifo> file,Fifo coupJouer){
         this.in = in;
         this.file = file;
-        index = -1;
+        this.coupJouer = coupJouer;
     }
 
 
     @Override
     public void run(){
-        String input;
-        String[] split;
+        //String[] split;
         try{
-            while((input = in.readLine()) != null){
-                split = input.split(" ");
-                // System.out.println("on est dedans, recu: " + input + " file size: " + file.size() + "value of split: "+ split[0] + " " + split[1]);
-                Point p = new Point( Integer.parseInt(split[0]) , Integer.parseInt(split[1]) );
-                System.out.println("the point added is: " + p);
+            while (true) {
+                Coup coup = coupJouer.get();
                 for(int i = 0; i < file.size(); i++){
                     if(i != index){
-                        file.get(i).add(p);
+                        file.get(i).add(coup);
                     }
                 }
             }
-        }catch(Exception e){System.err.println(e);}
+        }catch(Exception e){e.getMessage();}
     }
 }
