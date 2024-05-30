@@ -7,7 +7,6 @@ import Model.History.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -168,11 +167,15 @@ public class Jeu extends Observable implements Cloneable{
 
     public void avance(){           /* le bon joueur est envoyer */
         current_player = next_player();
-        // if(start) check_loss();
+        if(start) check_loss();
     }
 
     public void gameStart(){
         start = true;
+    }
+    
+    public boolean gameStarted(){
+        return start;
     }
 
     public void annule() {

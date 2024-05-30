@@ -88,11 +88,6 @@ public class OldPhaseConstruction {
         reset.addActionListener(new AdaptateurReset(controle));
         centrePanel.add(reset);
 
-        valider = Bouton.creerButton("Valider");
-        valider.addActionListener(new AdaptateurValider(controle));
-        valider.setEnabled(false);
-        centrePanel.add(valider);
-
         Regles = Bouton.creerButton("Règles");
             Regles.addActionListener(new ActionListener() {
                 @Override
@@ -128,7 +123,18 @@ public class OldPhaseConstruction {
         JButton UnMute, Retour;
         JPanel panel = new JPanel(new GridLayout(1, 3));
         Retour = Bouton.BoutonRetour();
-        Retour.addActionListener(new RetourMenuPAdapeur(controle));
+        //Retour.addActionListener(new RetourMenuPAdapeur(controle));
+        Retour = Bouton.BoutonRetour();
+        Retour.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int retour = showConfirmDialog();
+                if (retour == 0) {
+                    controle.commande("MenuP");
+                }
+            }
+        });
+
         JPanel topLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topLeftPanel.add(Retour, BorderLayout.EAST);
         topLeftPanel.setOpaque(false);
@@ -150,6 +156,12 @@ public class OldPhaseConstruction {
         JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topCenter.add(Aide, BorderLayout.CENTER);
         topCenter.setOpaque(false);
+
+        valider = Bouton.creerButton("Valider");
+        valider.addActionListener(new AdaptateurValider(controle));
+        valider.setEnabled(false);
+        topCenter.add(valider);
+
         panel.add(topCenter);
 
         // Bouton du Son
@@ -521,4 +533,23 @@ public class OldPhaseConstruction {
                 break;
         }
     } 
+
+    static int showConfirmDialog() {
+        String languageCode = Global.Config.getLanguage();
+        String message = null;
+        String title = null;
+        switch (languageCode) {
+            case "FR":
+                message = "Voulez-vous vraiment quitter?";
+                title = "Quitter";
+                break;
+            case "EN":
+                message = "Are you sure you want to quit?";
+                title = "Quit";
+                break;
+            default:
+                break;
+        }
+        return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+    }
 }

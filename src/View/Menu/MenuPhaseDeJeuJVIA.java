@@ -59,6 +59,11 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             Annuler.addActionListener(new AdaptateurAnnule(controle));
             topCenter.add(Annuler, BorderLayout.CENTER);
 
+            // Bouton Refaire
+            Refaire = Bouton.creerButton("Refaire");
+            Refaire.addActionListener(new AdaptateurRefais(controle));
+            topCenter.add(Refaire, BorderLayout.CENTER);
+
             // Bouton Aide
             Aide = Bouton.creerButton("Suggestion");
             // Aide.addActionListener(new AideAdaptateur(controle));
@@ -75,11 +80,6 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             topCenter.add(Regles);
             topCenter.setOpaque(false);
             topPanel.add(topCenter);
-
-            // Bouton Refaire
-            Refaire = Bouton.creerButton("Refaire");
-            Refaire.addActionListener(new AdaptateurRefais(controle));
-            topCenter.add(Refaire, BorderLayout.CENTER);
 
             // Bouton du Son
             UnMute = Bouton.BoutonUnMute(controle);

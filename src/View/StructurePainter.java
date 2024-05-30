@@ -182,6 +182,9 @@ public class StructurePainter {
         ArrayList<Point> Listeaccessible = jeu.CubeAccessibleDestinations(ligne,colonne);
 
         // On gère le cas du cube blanc
+        if(Listeaccessible.size() == 0){
+            return; //rien à dessiner
+        }
         if (Listeaccessible.get(0).x == -1 && Listeaccessible.get(0).y == -1)
         {
             x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (taille_pyramide -1) - (espace * taille_pyramide) / 2;

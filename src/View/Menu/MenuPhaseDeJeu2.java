@@ -57,6 +57,10 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             Annuler.addActionListener(new AdaptateurAnnule(controle));
             topCenter.add(Annuler, BorderLayout.CENTER);
 
+            // Bouton Refaire
+            Refaire = Bouton.creerButton("Refaire");
+            Refaire.addActionListener(new AdaptateurRefais(controle));
+            topCenter.add(Refaire, BorderLayout.CENTER);
 
             // Bouton Aide
             Aide = Bouton.creerButton("Suggestion");
@@ -74,13 +78,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             Regles = Bouton.Rules(content);
             topCenter.add(Regles);
             topCenter.setOpaque(false);
-            topPanel.add(topCenter);
-
-            // Bouton Refaire
-            Refaire = Bouton.creerButton("Refaire");
-            Refaire.addActionListener(new AdaptateurRefais(controle));
-            topCenter.add(Refaire, BorderLayout.CENTER);
-            
+            topPanel.add(topCenter);            
 
             // Bouton du Son
             UnMute = Bouton.BoutonUnMute(controle);
@@ -169,6 +167,15 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
                 break;
             default:
                 break;
+        }
+    }
+
+    public PDJPyramideJoueur PDJpyrJoueur(int joueur){
+        if (joueur == 0){
+            return joueur1;
+        }
+        else{
+            return joueur2;
         }
     }
 

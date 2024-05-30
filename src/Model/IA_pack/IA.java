@@ -8,7 +8,6 @@ import Model.Runnables.*;
 public abstract class IA {
     Jeu jeu;
     int difficulte, indiceJoueur;
-    boolean phaseConstruction;
     
     public static IA nouvelle(Jeu j,int difficulte,int indiceJoueur) {
         IA resultat = null;
@@ -34,7 +33,6 @@ public abstract class IA {
             resultat.jeu = j;
             resultat.difficulte = difficulte;
             resultat.indiceJoueur = indiceJoueur;
-            resultat.phaseConstruction = j.endConstruction((indiceJoueur+1)%2); //gameStarted pas encore implémentée dans le modèle
         }
         return resultat;
     }
@@ -246,14 +244,14 @@ public abstract class IA {
         Thread manager = new Thread(new ConstructionThreadManager(clone,ZeBest,list,difficulte,indiceJoueur));
         manager.start();
 
-        phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
+        //phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
         
         try{Thread.sleep(1000);}        /* a changer je l'ai mis a 1 sec pour faire des tests */
         catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
         while(true){
             try{Thread.sleep(100);}
             catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
-            if(!phaseConstruction && ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */
+            if(!jeu.gameStarted() && ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */
                 ZeBest.finish();
                 break;
             }
@@ -287,8 +285,8 @@ public abstract class IA {
         }
     }
 
-    public void endConstruction(){
-        phaseConstruction = false;
-    }
+    //public void endConstruction(){
+    //    phaseConstruction = false;
+    //}
     
 }
