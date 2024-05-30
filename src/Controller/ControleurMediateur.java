@@ -375,7 +375,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "JoueurVSJoueur":
 				IAON=false;
-			    ((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
+			    ((BackgroundPanel) frame).setBackgroundPicture("res/black_wood.jpg");
 				changeVisible(2);
 				jeu.reset(2);
 				jeu.initPrincipale();
@@ -385,14 +385,16 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "JoueurVSIA":
 				IAON=true;
-				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
+				((BackgroundPanel) frame).setBackgroundPicture("res/black_wood.jpg");
 				changeVisible(2);
+				try{Thread.sleep(100);}
+				catch(Exception e){}
 				jeu.reset(2);
 				jeu.initPrincipale();
 				joueur_initial=jeu.get_player();
 				ia = IA.nouvelle(jeu,d,1);
 				while(jeu.draw()){} // On cree une partie a 2
-				//ia.construction();
+				ia.construction();
 				
 				if(jeu.get_player() == 1){
 					timer_sablier.start();
@@ -400,7 +402,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
 				}
 				vue.startTimer();
-				jeu.constructionAleatoire(jeu.getPlayer(1)); // a enlever quand l'IA construira la pyramide
+				//jeu.constructionAleatoire(jeu.getPlayer(1)); // a enlever quand l'IA construira la pyramide
 				if(IAON && jeu.get_player()==1){
 					jeu.avance();
 				}
@@ -414,6 +416,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint();
 				
 				if (jeu.get_player() == joueur_initial || (IAON && jeu.get_player()==1) ) {
+					jeu.gameStart();
 					changeVisible(3);
 					jeu.gameStart();
 					jeu.sauvegarde(qs);
@@ -459,7 +462,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "PDJ2":
 				changeVisible(3);
-				((BackgroundPanel) frame).setBackgroundPicture("res/back_wood4.png");
+				((BackgroundPanel) frame).setBackgroundPicture("res/black_wood.jpg");
 				break;
 
 			case "JoueIA":

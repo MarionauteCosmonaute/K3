@@ -167,7 +167,7 @@ public class Jeu extends Observable implements Cloneable{
 
     public void avance(){           /* le bon joueur est envoyer */
         current_player = next_player();
-        if(start) check_loss();
+        //if(start) check_loss();
     }
 
     public void gameStart(){

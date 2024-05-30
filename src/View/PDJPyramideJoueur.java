@@ -196,7 +196,7 @@ public class PDJPyramideJoueur extends JComponent {
                 break;
         }
 
-        drawable.setColor(Color.BLACK);
+        drawable.setColor(Color.WHITE);
         drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre/10,width_fenetre/10)/3));
         if(jeu.getPenality()){
             if(jeu.get_player() == joueur){

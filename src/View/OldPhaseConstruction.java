@@ -144,6 +144,7 @@ public class OldPhaseConstruction {
 
         constructLabel = new JLabel("Construisez votre pyramide !");
         constructLabel.setFont(new Font("Default", Font.BOLD, 15));
+        constructLabel.setForeground (Color.white);
         panel.add(constructLabel);
 
         joueurLabel= new JLabel("Joueur "+ (jeu.get_player()+1));
@@ -190,12 +191,16 @@ public class OldPhaseConstruction {
                 valider.setText("Valider");
                 Aide.setText("Auto-construction");
                 Regles.setText("Règles");
+                joueurLabel.setText("Joueur "+ (jeu.get_player()+1));
+                constructLabel.setText("Construisez votre pyramide !");
                 break;
             case "EN":
                 reset.setText("Reset");
                 valider.setText("Complete");
                 Aide.setText("Auto-build");
                 Regles.setText("Rules");
+                joueurLabel.setText("Player "+ (jeu.get_player()+1));
+                constructLabel.setText("Build your pyramid !");
                 break;
             default:
                 break;
@@ -379,17 +384,19 @@ public class OldPhaseConstruction {
             int x_selection = x_gauche + (emplacement % 7) * (taille_cube + espace);
             int y_selection = y_haut + (emplacement / 7) * (taille_cube + espace);
 
-            drawable.setColor(Color.BLACK);
+            drawable.setColor(Color.WHITE);
+            // drawable.setColor(Color.BLACK);
             drawable.drawRect(x_selection, y_selection, taille_cube, taille_cube);
             drawable.drawRect(x_selection + 1, y_selection + 1, taille_cube - 2, taille_cube - 2);
             drawable.drawRect(x_selection + 2, y_selection + 2, taille_cube - 4, taille_cube - 4);
 
-            drawable.setColor(Color.WHITE);
+            // drawable.setColor(Color.WHITE);
+            drawable.setColor(Color.BLACK);
 
             drawable.drawRect(x_selection + 3, y_selection + 3, taille_cube - 6, taille_cube - 6);
             drawable.drawRect(x_selection + 4, y_selection + 4, taille_cube - 8, taille_cube - 8);
             drawable.drawRect(x_selection + 5, y_selection + 5, taille_cube - 10, taille_cube - 10);
-            drawable.setColor(Color.BLACK);
+            // drawable.setColor(Color.BLACK);
         }
 
     }
@@ -435,6 +442,8 @@ public class OldPhaseConstruction {
                             taille_cube, taille_cube, null);
                     break;
                 case Vide:
+                    
+
                     drawable.drawImage(vide, debut_zone_gauche + col * (taille_cube + espace), debut_zone_haut,
                             taille_cube, taille_cube, null);
                     break;
@@ -485,7 +494,11 @@ public class OldPhaseConstruction {
                         drawable.drawImage(bleu, y_haut, x_haut, taille_cube, taille_cube, null);
                         break;
                     case Vide:
-                        drawable.drawImage(vide, y_haut, x_haut, taille_cube, taille_cube, null);
+                        drawable.setColor(Color.WHITE);
+                        drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
+                        drawable.drawRect(y_haut+1, x_haut+1, taille_cube-2, taille_cube-2);
+                        drawable.drawRect(y_haut+2, x_haut+2, taille_cube-4, taille_cube-4);
+                        // drawable.drawImage(vide, y_haut, x_haut, taille_cube, taille_cube, null);
                         break;
                     default:
                         break;

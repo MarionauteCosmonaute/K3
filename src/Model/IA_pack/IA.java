@@ -235,27 +235,46 @@ public abstract class IA {
     }
 
     public Pyramid generePyramide(){
+        return generePyramide(false);
+    }
+
+    public Pyramid generePyramide(boolean aide){
         Player player;
         ArrayList<Cube> list = cubePotentiel();
         Jeu clone = jeu.clone();
         player = clone.getPlayer(indiceJoueur);
         player.resetBag();
+
         BestPyramide ZeBest = new BestPyramide();
         Thread manager = new Thread(new ConstructionThreadManager(clone,ZeBest,list,difficulte,indiceJoueur));
         manager.start();
 
         //phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
         
-        try{Thread.sleep(1000);}        /* a changer je l'ai mis a 1 sec pour faire des tests */
-        catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
-        while(true){
-            try{Thread.sleep(100);}
-            catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
-            if(!jeu.gameStarted() && ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */
-                ZeBest.finish();
-                break;
-            }
+        if(aide){
+            try{Thread.sleep(3000);        
+                while(true){
+                Thread.sleep(100);
+                    if(ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */
+                        ZeBest.finish();
+                        break;
+                    }
+                }
+            }catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
         }
+        else{
+            try{Thread.sleep(10000);        
+                while(true){
+                Thread.sleep(100);
+                    if(!jeu.gameStarted() && ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */
+                        ZeBest.finish();
+                        break;
+                    }
+                }
+            }catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
+        }
+        
+        
         
         try{manager.join();}
         catch(InterruptedException e){System.err.println("Interuption catched for the construction manager");System.exit(1);}
