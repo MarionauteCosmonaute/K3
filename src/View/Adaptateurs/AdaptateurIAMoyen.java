@@ -1,7 +1,6 @@
 package View.Adaptateurs;
+
 import View.CollecteurEvenements;
-
-
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +14,7 @@ public class AdaptateurIAMoyen implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		control.setIADifficulty(0);
+		control.setIADifficulty(1);
 		control.commande("JoueurVSIA");
 	}
 }

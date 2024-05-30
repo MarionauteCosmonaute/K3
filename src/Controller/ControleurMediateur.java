@@ -16,12 +16,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
-
 public class ControleurMediateur implements CollecteurEvenements {
 	Jeu jeu;
-	int d=0;
+	int d = 0;
 	InterfaceGraphique vue;
-	String qs="saves/quicksave.txt";
+	String qs = "saves/quicksave.txt";
 	boolean toggleIA = false;
 	MusicPlayer musique;
 	JFrame frame = null;
@@ -31,7 +30,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	static boolean clic = false;
 	static int ligne_joueur, colonne_joueur;
 	boolean penalty;
-	boolean IAON=false;
+	boolean IAON = false;
 	IA ia;
 	int gagnant;
 	Cube cube, cube_selectionne;
@@ -45,20 +44,19 @@ public class ControleurMediateur implements CollecteurEvenements {
 		joueur_initial = j.get_player();
 		penalty = false;
 		gagnant = -1;
-		timer_sablier = new Timer(500, new ActionListener()
-			{
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// System.out.println("Tic tac");
-					// Changer l'image
-					imageIndex = compteur_image % 4;
-					compteur_image++;
-					// System.out.println("imageIndex: "+ imageIndex);
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setImageIndex(imageIndex);
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-					menuListe.get(3).repaint();
-				}
-			});
+		timer_sablier = new Timer(500, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// System.out.println("Tic tac");
+				// Changer l'image
+				imageIndex = compteur_image % 4;
+				compteur_image++;
+				// System.out.println("imageIndex: "+ imageIndex);
+				((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setImageIndex(imageIndex);
+				((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+				menuListe.get(3).repaint();
+			}
+		});
 	}
 
 	public void addMenu(Menu m) {
@@ -77,34 +75,33 @@ public class ControleurMediateur implements CollecteurEvenements {
 		this.vue = vue;
 	}
 
-
 	@Override
 	public void clicJoueurPyramide(int x, int y) {
 		// cube_selectionne = jeu.getPlayer().get(x, y);
-		if(IAON && jeu.get_player() == 1 && !penalty){
+		if (IAON && jeu.get_player() == 1 && !penalty) {
 			return;
 		}
-		if(penalty == true){
-			//tester que le cube est accessible dans la pyramide du joueur
+		if (penalty == true) {
+			// tester que le cube est accessible dans la pyramide du joueur
 			PDJPyramideJoueur.SetCube_Select_Static(false);
-			if(jeu.accessible(x,y)){
+			if (jeu.accessible(x, y)) {
 				jeu.takePenaltyCube(x, y); // y : mettre -1 si ça vient du side
 				jeu.sauvegarde(qs);
 				penalty = false;
-				
-				if(jeu.getPlayer().lost()){
+
+				if (jeu.getPlayer().lost()) {
 					timer_sablier.stop();
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
-					IAON=false;
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
+					IAON = false;
 					gagnant = jeu.next_player();
 					System.out.println("cas 1 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 					int reponse = DialogueFinPartie(gagnant + 1);
-					switch(reponse){
-						case 0 :
+					switch (reponse) {
+						case 0:
 							jeu.playerNoLost(jeu.get_player());
 							break;
-						case 1 :
+						case 1:
 							commande("MenuLocal");
 							break;
 						default:
@@ -113,101 +110,97 @@ public class ControleurMediateur implements CollecteurEvenements {
 					}
 				}
 			}
-		}
-		else{
+		} else {
 			clic = true;
 			ligne_joueur = x;
-			colonne_joueur = y; //mettre -1 si ça vient du side
+			colonne_joueur = y; // mettre -1 si ça vient du side
 		}
-		
+
 	}
 
 	@Override
 	public void clicJoueurSide(int x) {
-		if(IAON && jeu.get_player() == 1 && !penalty){
+		if (IAON && jeu.get_player() == 1 && !penalty) {
 			return;
 		}
 		// cube_selectionne = jeu.getPlayer().get(x, y);
-		if(penalty == true){
-			//tester que le cube est accessible dans la pyramide du joueur
+		if (penalty == true) {
+			// tester que le cube est accessible dans la pyramide du joueur
 			jeu.takePenaltyCube(x, -1); // y : mettre -1 si ça vient du side
 			penalty = false;
-			if(jeu.getPlayer().lost()){
+			if (jeu.getPlayer().lost()) {
 				timer_sablier.stop();
-				((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-				((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
+				((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+				((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 				gagnant = jeu.next_player();
 				System.out.println("cas 2 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 				int reponse = DialogueFinPartie(gagnant + 1);
-				switch(reponse){
-					case 0 :
+				switch (reponse) {
+					case 0:
 						jeu.playerNoLost(jeu.get_player());
 						break;
-					case 1 :
+					case 1:
 						commande("MenuLocal");
 						break;
 					default:
 						commande("MenuP");
 						break;
 				}
-			}	
-		}
-		else{
+			}
+		} else {
 			clic = true;
 			ligne_joueur = x;
-			colonne_joueur = -1; //mettre -1 si ça vient du side
+			colonne_joueur = -1; // mettre -1 si ça vient du side
 		}
-		
+
 	}
 
-	@Override 
-    public void clicBlanc(int x, int y)
-    {
-        Cube cube ;
-        if (colonne_joueur==-1){
-            cube = jeu.getPlayer().getSide(ligne_joueur);
-        }else{
-            cube = jeu.getPlayer().getPyramid().get(ligne_joueur, colonne_joueur);
-        }
-        
-        int test = cube.getInt();
-        if (test == 0)
-        {
-            int res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
-            if(res == 1 || res == 2 || res == 3){
-				if(jeu.getPlayer().lost()){
+	@Override
+	public void clicBlanc(int x, int y) {
+		Cube cube;
+		if (colonne_joueur == -1) {
+			cube = jeu.getPlayer().getSide(ligne_joueur);
+		} else {
+			cube = jeu.getPlayer().getPyramid().get(ligne_joueur, colonne_joueur);
+		}
+
+		int test = cube.getInt();
+		if (test == 0) {
+			int res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
+			if (res == 1 || res == 2 || res == 3) {
+				if (jeu.getPlayer().lost()) {
 					timer_sablier.stop();
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 					gagnant = jeu.next_player();
 					System.out.println("cas 6 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 					int reponse = DialogueFinPartie(gagnant + 1);
-					switch(reponse){
-						case 0 :
+					switch (reponse) {
+						case 0:
 							jeu.playerNoLost(jeu.get_player());
 							break;
-						case 1 :
+						case 1:
 							commande("MenuLocal");
 							break;
 						default:
 							commande("MenuP");
 							break;
 					}
-				}	
-				PDJPyramideJoueur.SetCube_Select_Static(false);
-                clic = false;
-            }
-            if (IAON){
-				if(jeu.get_player() == 1){
-					timer_sablier.start();
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
 				}
-                vue.startTimer();
-            }
-        }
-        jeu.sauvegarde(qs);
-    }
+				PDJPyramideJoueur.SetCube_Select_Static(false);
+				clic = false;
+			}
+			if (IAON) {
+				if (jeu.get_player() == 1) {
+					timer_sablier.start();
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
+				}
+				vue.startTimer();
+			}
+		}
+		jeu.sauvegarde(qs);
+	}
 
 	@Override
 	public void clicPyramideCentrale(int x, int y) {
@@ -215,21 +208,21 @@ public class ControleurMediateur implements CollecteurEvenements {
 		// if(jeu.accessible(ligne_joueur,colonne_joueur)){
 		res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
 		jeu.sauvegarde(qs);
-		if(res == 1 || res == 3){
+		if (res == 1 || res == 3) {
 			clic = false;
 			PDJPyramideJoueur.SetCube_Select_Static(false);
-			if(jeu.getPlayer().lost()){
+			if (jeu.getPlayer().lost()) {
 				timer_sablier.stop();
-				((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-				((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
+				((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+				((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 				gagnant = jeu.next_player();
 				System.out.println("cas 3 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 				int reponse = DialogueFinPartie(gagnant + 1);
-				switch(reponse){
-					case 0 :
+				switch (reponse) {
+					case 0:
 						jeu.playerNoLost(jeu.get_player());
 						break;
-					case 1 :
+					case 1:
 						commande("MenuLocal");
 						break;
 					default:
@@ -237,33 +230,33 @@ public class ControleurMediateur implements CollecteurEvenements {
 						break;
 				}
 			}
-			if(IAON && jeu.get_player() == 1){
+			if (IAON && jeu.get_player() == 1) {
 				timer_sablier.start();
-				((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-				((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
+				((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+				((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 				// System.out.println("le timer est lancé");
 				// PDJPyramideJoueur.AfficheGif();s
 			}
 		}
-		if(res == 2){
+		if (res == 2) {
 			clic = false;
 			PDJPyramideJoueur.SetCube_Select_Static(false);
 			penalty = true;
-			if (IAON && jeu.get_player() == 0){
+			if (IAON && jeu.get_player() == 0) {
 				ia.takePenaltyCube();
 				penalty = false;
-				if(jeu.getPlayer().lost()){
+				if (jeu.getPlayer().lost()) {
 					timer_sablier.stop();
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 					gagnant = jeu.next_player();
 					System.out.println("cas 4 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 					int reponse = DialogueFinPartie(gagnant + 1);
-					switch(reponse){
-						case 0 :
+					switch (reponse) {
+						case 0:
 							jeu.playerNoLost(jeu.get_player());
 							break;
-						case 1 :
+						case 1:
 							commande("MenuLocal");
 							break;
 						default:
@@ -273,36 +266,33 @@ public class ControleurMediateur implements CollecteurEvenements {
 				}
 			}
 		}
-		if (IAON){
+		if (IAON) {
 			vue.startTimer();
-			if(jeu.get_player() == 1){
+			if (jeu.get_player() == 1) {
 				timer_sablier.start();
-				((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-				((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
+				((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+				((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 			}
 		}
 	}
 
-	public void FinPartie()
-	{
+	public void FinPartie() {
 		System.out.println("Fin de la Partie!");
 	}
 
-	public static int GetLigne()
-	{
+	public static int GetLigne() {
 		return ligne_joueur;
 	}
 
-	public static int GetColonne()
-	{
+	public static int GetColonne() {
 		return colonne_joueur;
 	}
 
-	public static void SetClic(boolean bool){
+	public static void SetClic(boolean bool) {
 		clic = bool;
 	}
 
-	public static boolean GetClic(){
+	public static boolean GetClic() {
 		return clic;
 	}
 
@@ -361,50 +351,63 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "Reset":
 				jeu.resetBag();
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setValider(false);
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme ça
-				break;  
-			
+				((MenuPhaseConstruction) menuListe.get(indice_courant)).getAffichagePhaseConstruction()
+						.setValider(false);
+				((MenuPhaseConstruction) menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint(); // ça
+																													// me
+																													// paraît
+																													// bizarre
+																													// de
+																													// faire
+																													// ça
+																													// comme
+																													// ça
+				break;
+
 			case "AideConstruction":
-				jeu.resetBag(); 
+				jeu.resetBag();
 				jeu.constructionAleatoire(jeu.getPlayer());
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().resetBooleans();
+				((MenuPhaseConstruction) menuListe.get(indice_courant)).getAffichagePhaseConstruction().resetBooleans();
 				// System.out.println(jeu.getPlayer().getPyramid());
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).repaint();
+				((MenuPhaseConstruction) menuListe.get(indice_courant)).repaint();
 				break;
 
 			case "JoueurVSJoueur":
-				IAON=false;
-			    ((BackgroundPanel) frame).setBackgroundPicture("res/black_wood.jpg");
+				IAON = false;
+				((BackgroundPanel) frame).setBackgroundPicture("res/black_wood.jpg");
 				changeVisible(2);
 				jeu.reset(2);
 				jeu.initPrincipale();
-				joueur_initial=jeu.get_player();
-				while(jeu.draw()){} // On cree une partie a 2
+				joueur_initial = jeu.get_player();
+				while (jeu.draw()) {
+				} // On cree une partie a 2
 				break;
 
 			case "JoueurVSIA":
-				IAON=true;
+				IAON = true;
 				((BackgroundPanel) frame).setBackgroundPicture("res/black_wood.jpg");
 				changeVisible(2);
-				
+
 				jeu.reset(2);
 				jeu.initPrincipale();
-				joueur_initial=jeu.get_player();
-				ia = IA.nouvelle(jeu,d,1);
-				while(jeu.draw()){} // On cree une partie a 2
-				//try{Thread.sleep(100);}
-				//catch(Exception e){}
+				joueur_initial = jeu.get_player();
+
+				ia = IA.nouvelle(jeu, d, 1);
+				while (jeu.draw()) {
+				} // On cree une partie a 2
+					// try{Thread.sleep(100);}
+					// catch(Exception e){}
 				ia.construction();
-				
-				if(jeu.get_player() == 1){
+
+				if (jeu.get_player() == 1) {
 					timer_sablier.start();
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 				}
 				vue.startTimer();
-				//jeu.constructionAleatoire(jeu.getPlayer(1)); // a enlever quand l'IA construira la pyramide
-				if(IAON && jeu.get_player()==1){
+				// jeu.constructionAleatoire(jeu.getPlayer(1)); // a enlever quand l'IA
+				// construira la pyramide
+				if (IAON && jeu.get_player() == 1) {
 					jeu.avance();
 				}
 				jeu.sauvegarde("saves/quicksave.txt");
@@ -413,34 +416,35 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "Valider":
 				jeu.playerEndConst(jeu.get_player());
 				jeu.avance();
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setValider(false);
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint();
-				
-				if (jeu.get_player() == joueur_initial || (IAON && jeu.get_player()==1) ) {
+				((MenuPhaseConstruction) menuListe.get(indice_courant)).getAffichagePhaseConstruction()
+						.setValider(false);
+				((MenuPhaseConstruction) menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint();
+
+				if (jeu.get_player() == joueur_initial || (IAON && jeu.get_player() == 1)) {
 					jeu.gameStart();
 					changeVisible(3);
 					jeu.gameStart();
 					jeu.sauvegarde(qs);
 					jeu.check_loss();
-					if(jeu.getPlayer().lost()){
+					if (jeu.getPlayer().lost()) {
 						timer_sablier.stop();
-						((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-						((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
+						((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+						((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 						gagnant = jeu.next_player();
 						System.out.println("cas 5 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 						int reponse = DialogueFinPartie(gagnant + 1);
-						switch(reponse){
-							case 0 :
+						switch (reponse) {
+							case 0:
 								jeu.playerNoLost(jeu.get_player());
 								break;
-							case 1 :
+							case 1:
 								commande("MenuLocal");
 								break;
 							default:
 								commande("MenuP");
 								break;
 						}
-						
+
 					}
 				}
 				break;
@@ -468,26 +472,25 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "JoueIA":
 				int res;
-				if (IAON && jeu.get_player()==1 && !penalty){
-					if ((res = ia.jouer_coup()) == 2){
+				if (IAON && jeu.get_player() == 1 && !penalty) {
+					if ((res = ia.jouer_coup()) == 2) {
 						penalty = true;
 						// PDJPyramideJoueur.CacheGif();
-					}
-					else if (res == 1 || res == 3){
+					} else if (res == 1 || res == 3) {
 						// jeu.check_loss();
-						if(jeu.getPlayer().lost()){
+						if (jeu.getPlayer().lost()) {
 							timer_sablier.stop();
-							((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
-							((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
+							((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
+							((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 							// PDJPyramideJoueur.CacheGif();
 							gagnant = jeu.next_player();
 							System.out.println("cas 5 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 							int reponse = DialogueFinPartie(gagnant + 1);
-							switch(reponse){
-								case 0 :
+							switch (reponse) {
+								case 0:
 									jeu.playerNoLost(jeu.get_player());
 									break;
-								case 1 :
+								case 1:
 									commande("MenuLocal");
 									break;
 								default:
@@ -497,8 +500,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 						}
 					}
 					timer_sablier.stop();
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(false);
-					((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(false);
+					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 					vue.stopTimer();
 					jeu.sauvegarde("saves/quicksave.txt");
 				}
@@ -506,30 +509,30 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;
 
 			case "Save":
-				jeu.sauvegarde("saves/"+ DateTimeFormatter.ofPattern("dd-MM-yyyy-hh:mm:ss").format(LocalDateTime.now()));
+				jeu.sauvegarde(
+						"saves/" + DateTimeFormatter.ofPattern("dd-MM-yyyy-hh:mm:ss").format(LocalDateTime.now()));
 				break;
-				
+
 			case "Host":
 				break;
-			
+
 			case "Join":
 				break;
-			
+
 			default:
 				return false;
 		}
 		return true;
 	}
 
-	public void setIADifficulty(int difficulty){
-		d=difficulty;
+	public void setIADifficulty(int difficulty) {
+		d = difficulty;
 	}
 
 	public void changeVisible(int n_indice) {
 		getcurMenu().setVisible(false);
-		if(indice_courant == 2)
-		{
-			((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().resetBooleans();
+		if (indice_courant == 2) {
+			((MenuPhaseConstruction) menuListe.get(indice_courant)).getAffichagePhaseConstruction().resetBooleans();
 		}
 		indice_courant = n_indice;
 		vue.addFrame(getcurMenu());
@@ -541,28 +544,28 @@ public class ControleurMediateur implements CollecteurEvenements {
 		return penalty;
 	}
 
-	public static int DialogueFinPartie(int gagnant)
-    {
-        String languageCode = Global.Config.getLanguage();
-        String message = null;
-        String title = null;
-        String[] buttons = new String[3];
-        switch (languageCode) {
-            case "FR":
-                buttons[0] = "Continuer";
-                buttons[1] = "Rejouer";
-                buttons[2] = "Quitter";
-                message = "Le joueur "+gagnant+" a gagné";
-                title = "Fin de partie";
-                break;
-            case "EN":
-                buttons[0] = "Continue";
-                buttons[1] = "Replay";
-                buttons[2] = "Quit";
-                message = "Player "+gagnant+" won";
-                title = "Game Over";
-                break;
-        }
-        return JOptionPane.showOptionDialog(null, message, title ,JOptionPane.YES_NO_CANCEL_OPTION, 0, null, buttons, buttons[2]);
-    }
+	public static int DialogueFinPartie(int gagnant) {
+		String languageCode = Global.Config.getLanguage();
+		String message = null;
+		String title = null;
+		String[] buttons = new String[3];
+		switch (languageCode) {
+			case "FR":
+				buttons[0] = "Continuer";
+				buttons[1] = "Rejouer";
+				buttons[2] = "Quitter";
+				message = "Le joueur " + gagnant + " a gagné";
+				title = "Fin de partie";
+				break;
+			case "EN":
+				buttons[0] = "Continue";
+				buttons[1] = "Replay";
+				buttons[2] = "Quit";
+				message = "Player " + gagnant + " won";
+				title = "Game Over";
+				break;
+		}
+		return JOptionPane.showOptionDialog(null, message, title, JOptionPane.YES_NO_CANCEL_OPTION, 0, null, buttons,
+				buttons[2]);
+	}
 }
