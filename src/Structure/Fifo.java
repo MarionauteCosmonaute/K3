@@ -1,34 +1,33 @@
 package Structure;
 
-import Model.Coup;
 
-public class Fifo {
-    Maillon tete,queue;
+public class Fifo<E> {
+    Maillon<E> tete,queue;
     
     public Fifo(){
         tete = null;
         queue = null;
     }
     
-    public class Maillon {    
-        Coup element;
-        Maillon suivant;
+    public class Maillon<E> {    
+        E element;
+        Maillon<E> suivant;
     
-        public Maillon(Coup e){
+        public Maillon(E e){
             element = e;
             suivant = null; 
         }
         
-        public void suivant(Maillon m){
+        public void suivant(Maillon<E> m){
             suivant = m;
         }
-        public Coup get(){
+        public E get(){
             return element;
         }
     }
 
-    synchronized public void add(Coup e){
-        Maillon m = new Maillon(e);
+    synchronized public void add(E e){
+        Maillon<E> m = new Maillon<>(e);
         // System.out.println(e + "got added");
         if (tete == null){
             tete = m;
@@ -38,12 +37,12 @@ public class Fifo {
             queue.suivant = m;
             queue = m;
         }
-        notifyAll();
+        notify();
     }
 
-    synchronized public Coup get(){
+    synchronized public E get(){
         if(isEmpty()){try{wait();}catch(Exception e){e.getMessage();}}
-        Coup element = tete.get();
+        E element = tete.get();
         if(tete == queue){queue = null;}
         tete = tete.suivant;
         return element;
@@ -55,7 +54,7 @@ public class Fifo {
 
     @Override
     public String toString() {
-        Maillon m = tete;
+        Maillon<E> m = tete;
         String chaine = "";
         while(m != null){
             chaine += m.get()+ "\n";

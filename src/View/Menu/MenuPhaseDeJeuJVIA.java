@@ -142,6 +142,7 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             bottomRightPanel.setOpaque(false);
             setOpaque(false);
             add(content);
+            controle.addMenu(this);
             validate();
         } catch (Exception e) {
             System.exit(1);

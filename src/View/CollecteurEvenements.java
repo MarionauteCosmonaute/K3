@@ -1,5 +1,8 @@
 package View;
 
+import View.Menu.*;
+
+import javax.swing.JFrame;
 
 public interface CollecteurEvenements {
     void clicJoueurPyramide(int l, int c);
@@ -17,6 +20,10 @@ public interface CollecteurEvenements {
     boolean commande(String c);
 
     void ImporterVue(InterfaceGraphique vue);
+
+    void addMenu(Menu m);
+
+    void addFenetre(JFrame j);
 
     boolean penaltyPhase();
     

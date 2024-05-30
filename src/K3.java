@@ -1,4 +1,4 @@
-// javac --release 13 -cp src -d out src/*.java src/*/*.java
+// javac -cp src -d out src/*.java src/*/*.java
 // java -cp out K3
 
 import Model.*;
