@@ -10,9 +10,13 @@ import javax.swing.*;
 import Global.FileLoader;
 
 import java.awt.*;
+import java.util.Vector;
 
 public class InterfaceGraphique implements Runnable, Observateur {
-	JFrame frame;
+	BackgroundPanel frame;
+	Vector<Menu> menuListe = new Vector<>();
+	int current_menu=0;
+	int countMenu=0;
 	CollecteurEvenements controle;
 	Jeu jeu;
 	boolean maximized;
@@ -66,7 +70,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		}
 		
 		// frame = new JFrame();
-		controle.addFenetre(frame);
+		controle.ImporterVue(this);
 		frame.setTitle("K3");
 		frame.setSize(500, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,14 +80,20 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		// new FenetreNouvellePartie(frame, controle);
 
 		// Generation de toutes les fenetres
-		MenuPrincipal mp = new MenuPrincipal(controle);
+		MenuPrincipal mp = new MenuPrincipal(controle);//0
+		addMenu(mp);
 		frame.add(mp);
 		mp.setVisible(true);
-		MenuNouvellePartie mnp = new MenuNouvellePartie(controle);
-		MenuPhaseConstruction pC =new MenuPhaseConstruction(controle, jeu);
-		MenuPhaseDeJeu2 phaseDeJeu2 = new MenuPhaseDeJeu2(controle, jeu);
-		MenuPhaseDeJeuJVIA phaseDeJeuJVIA = new MenuPhaseDeJeuJVIA(controle,jeu);
-		MenuOnline online =new MenuOnline(controle);
+		MenuNouvellePartie mnp = new MenuNouvellePartie(controle);//1
+		addMenu(mnp);
+		MenuPhaseConstruction pC =new MenuPhaseConstruction(controle, jeu);//2
+		addMenu(pC);
+		MenuPhaseDeJeu2 phaseDeJeu2 = new MenuPhaseDeJeu2(controle, jeu);//3
+		addMenu(phaseDeJeu2);
+		MenuPhaseDeJeuJVIA phaseDeJeuJVIA = new MenuPhaseDeJeuJVIA(controle,jeu);//4
+		addMenu(phaseDeJeuJVIA);
+		MenuOnline online =new MenuOnline(controle);//5
+		addMenu(online);
 		timer = new Timer(5000,new AdaptateurJoueIA(controle));
 		//controle.commande("MenuOnline");
 
@@ -99,4 +109,61 @@ public class InterfaceGraphique implements Runnable, Observateur {
 	public void addFrame(Menu getcurMenu) {
 		frame.add(getcurMenu);
 	}
+
+	public void addMenu(Menu m) {
+		menuListe.add(m);
+		countMenu++;
+	}
+
+	public void changeVisible(int n_indice) {
+		getcurMenu().setVisible(false);
+		frame.remove(getcurMenu());
+		if(current_menu == 2)
+		{
+			((MenuPhaseConstruction)menuListe.get(current_menu)).getAffichagePhaseConstruction().resetBooleans();
+		}
+		current_menu = n_indice;
+		addFrame(getcurMenu());
+		getcurMenu().setVisible(true);
+	}
+
+	public Menu getcurMenu() {
+		return menuListe.get(current_menu);
+	}
+
+	public void setBackgroundPicture(String s){
+		frame.setBackgroundPicture(s);
+	}
+
+	public Menu getDisplayedMenu(){
+		return menuListe.get(current_menu);
+	}
+
+
+	public Menu getMenuPrincipal(){
+		return menuListe.get(0);
+	}
+	
+	public Menu getMenuNouvellePartie(){
+		return menuListe.get(1);
+	}
+
+	public Menu getMenuPhaseConstruction(){
+		return menuListe.get(2);
+	}
+
+	public Menu getMenuPhaseDeJeu2(){
+		return menuListe.get(3);
+	}
+	
+	public Menu getMenuPhaseDeJeuJVIA(){
+		return menuListe.get(4);
+	}
+
+	public Menu getMenuOnline(){
+		return menuListe.get(5);
+	}
+
+
+
 }

@@ -25,7 +25,6 @@ public class MenuPhaseConstruction extends Menu {
         content.setOpaque(false);
         pc.setOpaque(false);
         add(content);
-        controle.addMenu(this);
     }
     public AffichagePhaseConstruction getAffichagePhaseConstruction(){
         return apc;
@@ -40,4 +39,13 @@ public class MenuPhaseConstruction extends Menu {
         return cons;
     }
 
+    @Override
+    public void reset(){
+        apc.resetBooleans();
+    }
+
+    @Override
+    public void setValider(boolean b){
+        apc.setValider(b);
+    }
 }

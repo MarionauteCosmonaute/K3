@@ -2,13 +2,10 @@ package Controller;
 
 import View.*;
 import Model.*;
-import View.Menu.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Vector;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 
@@ -19,8 +16,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 	String qs="saves/quicksave.txt";
 	boolean toggleIA = false;
 	MusicPlayer musique;
-	JFrame frame = null;
-	Vector<Menu> menuListe = new Vector<>();
 	int indice_courant = 0;
 	int joueur_initial;
 	static boolean clic = false;
@@ -39,17 +34,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		gagnant = -1;
 	}
 
-	public void addMenu(Menu m) {
-		menuListe.add(m);
-	}
 
-	public void addFenetre(JFrame j) {
-		frame = j;
-	}
-
-	private Menu getcurMenu() {
-		return menuListe.get(indice_courant);
-	}
 
 	public void ImporterVue(InterfaceGraphique vue) {
 		this.vue = vue;
@@ -264,43 +249,43 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;
 
 			case "Lan":
-				changeVisible(5);
+				vue.changeVisible(5);
 				break;
 
 			case "Charger":
-				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
-				changeVisible(3);
+				
+				vue.changeVisible(3);
 				jeu.reset(qs);
 				break;
 
 			case "FR":
 				Global.Config.setLanguage("FR");
-				menuListe.get(0).updateLanguageCode();
+				vue.getMenuNouvellePartie().updateLanguageCode();
 				break;
 
 			case "EN":
 				Global.Config.setLanguage("EN");
-				menuListe.get(0).updateLanguageCode();
+				vue.getMenuNouvellePartie().updateLanguageCode();
 				break;
 
 			case "Reset":
 				jeu.resetBag();
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setValider(false);
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme ça
+				vue.getMenuPhaseConstruction().setValider(false);
+				vue.getMenuPhaseConstruction().repaint(); // ça me paraît bizarre de faire ça comme ça
 				break;  
 			
 			case "AideConstruction":
 				jeu.resetBag(); 
 				jeu.constructionAleatoire(jeu.getPlayer());
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().resetBooleans();
+				vue.getMenuPhaseConstruction().reset();
 				System.out.println(jeu.getPlayer().getPyramid());
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).repaint();
+				vue.getMenuPhaseConstruction().repaint();
 				break;
 
 			case "JoueurVSJoueur":
 				IAON=false;
-			    ((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
-				changeVisible(2);
+			    vue.setBackgroundPicture("res/background.jpg");
+				vue.changeVisible(2);
 				jeu.reset(2);
 				jeu.initPrincipale();
 				joueur_initial=jeu.get_player();
@@ -309,8 +294,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "JoueurVSIA":
 				IAON=true;
-				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
-				changeVisible(2);
+				vue.setBackgroundPicture("res/background.jpg");
+				vue.changeVisible(2);
 				jeu.reset(2);
 				jeu.initPrincipale();
 				joueur_initial=jeu.get_player();
@@ -327,11 +312,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "Valider":
 				jeu.playerEndConst(jeu.get_player());
 				jeu.avance();
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().setValider(false);
-				((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().repaint();
+				vue.getMenuPhaseConstruction().setValider(false);
+				vue.getMenuPhaseConstruction().repaint();
 				
 				if (jeu.get_player() == joueur_initial || (IAON && jeu.get_player()==1) ) {
-					changeVisible(3);
+					vue.changeVisible(3);
 					jeu.gameStart();
 					jeu.sauvegarde(qs);
 					jeu.check_loss();
@@ -362,18 +347,18 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "MenuP":
 				vue.stopTimer();
-				((BackgroundPanel) frame).setBackgroundPicture("res/Back.png");
-				changeVisible(0);
+				vue.setBackgroundPicture("res/Back.png");
+				vue.changeVisible(0);
 				break;
 
 			case "MenuLocal":
-				((BackgroundPanel) frame).setBackgroundPicture("res/Back.png");
-				changeVisible(1);
+				vue.setBackgroundPicture("res/Back.png");
+				vue.changeVisible(1);
 				break;
 
 			case "PDJ2":
-				changeVisible(3);
-				((BackgroundPanel) frame).setBackgroundPicture("res/background.jpg");
+				vue.changeVisible(3);
+				vue.setBackgroundPicture("res/background.jpg");
 				break;
 			case "JoueIA":
 				int res;
@@ -423,17 +408,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	public void setIADifficulty(int difficulty){
 		d=difficulty;
-	}
-
-	public void changeVisible(int n_indice) {
-		getcurMenu().setVisible(false);
-		if(indice_courant == 2)
-		{
-			((MenuPhaseConstruction)menuListe.get(indice_courant)).getAffichagePhaseConstruction().resetBooleans();
-		}
-		indice_courant = n_indice;
-		vue.addFrame(getcurMenu());
-		getcurMenu().setVisible(true);
 	}
 
 	@Override

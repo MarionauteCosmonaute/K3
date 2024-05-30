@@ -87,7 +87,6 @@ public class MenuOnline extends Menu{
             content.setOpaque(false);
             setOpaque(false);
             add(content);
-            controle.addMenu(this);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             System.exit(1);
         }
