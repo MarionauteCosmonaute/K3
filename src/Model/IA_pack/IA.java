@@ -55,6 +55,7 @@ public abstract class IA {
             int total = 0;
             int total_j1 = 0;
             int total_j2 = 0;
+            int total_access = cubes_access.size();
             for(Point compte : cubes_access){ //Compte du nombre de coups jouable du j1
                 int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
                 total_j1+= current_possibilities;
@@ -76,7 +77,7 @@ public abstract class IA {
                     total_j2+= current_possibilities;
                 }
 
-                total = (int)(total_j1) + (int)(j.getPlayer().totalCube()) - (int)(j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2);
+                total = (int)(total_j1) + (int)(j.getPlayer().totalCube()*100) - (int)(j.getPlayer(j.next_player()).totalCube()*100) - (int)(total_j2);
                 if(bon_joueur){
                     return total;
                 }
@@ -85,11 +86,12 @@ public abstract class IA {
                 }
             case 2 : //IA Difficile
                 cubes_access2 = j.Accessible_Playable(j.next_player()); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
+                int total_access2 = cubes_access2.size();
                 for(Point compte : cubes_access2) { //Compte du nombre de coups jouable du j1
                     int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),(int) compte.getX(),(int) compte.getY()).size();
                     total_j2+= current_possibilities;
                 }
-                total = (int)(total_j1 ) + (int)(j.getPlayer().totalCube()*2) - (int)(j.getPlayer(j.next_player()).totalCube()*2) - (int)(total_j2);
+                total = (int)(total_j1) + (int)(j.getPlayer().totalCube()+1000) + total_access+100 - (int)(j.getPlayer(j.next_player()).totalCube()+1000) - (int)(total_j2) - (total_access2+100);
                 if(bon_joueur){
                     return total; 
                 }
