@@ -118,10 +118,10 @@ public abstract class IA {
                         System.out.println();
                         System.out.println();*/
                     }
-                    if(alpha >= value){
+                    if(beta <= value){
                         return value;
                     }
-                    beta = Math.min(beta,value);
+                    alpha = Math.max(alpha,value);
                 }
             }
         }
@@ -141,10 +141,10 @@ public abstract class IA {
                     else{
                         value = Math.min(value,MinMaxIA(clone,depth-1,player_max, alpha, beta, IA));
                     }
-                    if(beta <= value){
+                    if(alpha >= value){
                         return value;
                     }
-                    alpha = Math.max(alpha,value);
+                    beta = Math.min(beta,value);
                 }
             }
         }
