@@ -377,6 +377,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 				joueur_initial=jeu.get_player();
 				ia = IA.nouvelle(jeu,d,1);
 				while(jeu.draw()){} // On cree une partie a 2
+				//try{Thread.sleep(100);}
+				//catch(Exception e){}
 				ia.construction();
 				
 				if(jeu.get_player() == 1){
