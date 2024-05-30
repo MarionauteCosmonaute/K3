@@ -244,7 +244,8 @@ public abstract class IA {
         Jeu clone = jeu.clone();
         player = clone.getPlayer(indiceJoueur);
         player.resetBag();
-
+        try{Thread.sleep(100);}
+		catch(Exception e){}
         BestPyramide ZeBest = new BestPyramide();
         Thread manager = new Thread(new ConstructionThreadManager(clone,ZeBest,list,difficulte,indiceJoueur));
         manager.start();
@@ -263,7 +264,7 @@ public abstract class IA {
             }catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
         }
         else{
-            try{Thread.sleep(10000);        
+            try{Thread.sleep(100);        
                 while(true){
                 Thread.sleep(100);
                     if(!jeu.gameStarted() && ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */

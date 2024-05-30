@@ -387,13 +387,14 @@ public class ControleurMediateur implements CollecteurEvenements {
 				IAON=true;
 				((BackgroundPanel) frame).setBackgroundPicture("res/black_wood.jpg");
 				changeVisible(2);
-				try{Thread.sleep(100);}
-				catch(Exception e){}
+				
 				jeu.reset(2);
 				jeu.initPrincipale();
 				joueur_initial=jeu.get_player();
 				ia = IA.nouvelle(jeu,d,1);
 				while(jeu.draw()){} // On cree une partie a 2
+				//try{Thread.sleep(100);}
+				//catch(Exception e){}
 				ia.construction();
 				
 				if(jeu.get_player() == 1){
