@@ -1,8 +1,12 @@
 package Model;
 import java.util.ArrayList;
+<<<<<<< HEAD
 
 <<<<<<< HEAD
+=======
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
 import Model.Iterateur.Iterateur;
+import java.util.NoSuchElementException;
 
 =======
 >>>>>>> View
@@ -19,10 +23,14 @@ public class Player {
     boolean loss;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public Player(int i){
 =======
     Player(int i){
 >>>>>>> View
+=======
+    Player(int i){
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
         size = i;
         pyramid = new Pyramid(size);
 
@@ -38,10 +46,13 @@ public class Player {
         personalBag = new ArrayList<>();
         nbCube = new int[7];
         nbCubeBag = new int[7];
+        Cube cube;
         String[] charge = string[0].split(" ");
         for(int i = 0; i < charge.length; i++){
             if(!charge[i].equals("")){
-                personalBag.add(Cube.conversion(charge[i]));
+                cube = Cube.conversion(charge[i]);
+                personalBag.add(cube);
+                incrementBag(cube);
                                                                             /* ADD DANS LE TAB */
             }
         }
@@ -49,7 +60,9 @@ public class Player {
         charge = string[1].split(" ");
         for(int i = 0; i < charge.length; i++){
             if(!charge[i].equals("")){
-                side.add(Cube.conversion(charge[i]));
+                cube = Cube.conversion(charge[i]);
+                side.add(cube);
+                increment(cube);
                                                                             /* ADD DANS LE TAB */
             }
         }
@@ -70,6 +83,7 @@ public class Player {
         chaine += "\n";
         chaine += Boolean.toString(loss) + "\n";
         chaine += pyramid.sauvegarde();
+        countCube();
         return chaine;
     }
 
@@ -81,6 +95,10 @@ public class Player {
         loss = true;
     }
     
+    public void playerNoLost(){
+        loss = false;
+    }
+
     public ArrayList<Cube> getPersonalBag(){
         return personalBag;
     }
@@ -100,7 +118,13 @@ public class Player {
         }
         return nbCube[cube.getInt()];
     }
-    
+    private void countCube(){
+        Iterateur it = pyramid.iterateur("UP");
+        try{while(true){
+            increment(it.next());
+        }}
+        catch(NoSuchElementException e){}
+    }
     /**************** */
     /* Fonction  */
     public void fusion(){
@@ -187,10 +211,6 @@ public class Player {
         return personalBag.isEmpty();
     }
 
-    public void emptyBag(){
-        personalBag = new ArrayList<>();
-    }
-
     public int getBagSize(){
         return personalBag.size();
     }
@@ -198,9 +218,12 @@ public class Player {
     public void incrementBag(Cube cube){
         if(cube != Cube.Vide){nbCubeBag[cube.getInt()]++;}
 <<<<<<< HEAD
+<<<<<<< HEAD
         
 =======
 >>>>>>> View
+=======
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
     }
 
     public void decrementBag(Cube cube){
@@ -209,15 +232,21 @@ public class Player {
 
     public void addBag(Cube cube){
 <<<<<<< HEAD
+<<<<<<< HEAD
         //System.out.println(cube);
 =======
 >>>>>>> View
+=======
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
         incrementBag(cube);
         personalBag.add(cube);
     }
 
+<<<<<<< HEAD
 
 <<<<<<< HEAD
+=======
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
     public void build(Pyramid pyramide){
         Iterateur it = pyramide.iterateur("UP");
         Iterateur personalIt = pyramid.iterateur("UP");
@@ -238,12 +267,18 @@ public class Player {
         decrement(cube2);
     }
 
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
     public void emptyBag(){
         personalBag = new ArrayList<>();
     }
 
+<<<<<<< HEAD
 >>>>>>> View
+=======
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
     /*Construct method -> Puts a cube in a position after checking its content:       */
    /*If cube already existing in position -> Puts it back in the bag and replaces it */
     public void construction(int x, int y,Cube cube){
@@ -277,6 +312,7 @@ public class Player {
             for (int j=0; j<size; j++){
                 if(get(i,j) != Cube.Vide){
 <<<<<<< HEAD
+<<<<<<< HEAD
                 try{
                     addBag(get(i,j));
                     remove(i,j);
@@ -289,6 +325,10 @@ public class Player {
                 addBag(get(i,j));
                 remove(i,j);}
 >>>>>>> View
+=======
+                addBag(get(i,j));
+                remove(i,j);}
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
             }
         }
     }
@@ -314,7 +354,7 @@ public class Player {
     
     @Override
     public String toString(){
-        String chaine = "Noir: "+ nbCube[Cube.Noir.getInt()] + "     Bleu: " + nbCube[Cube.Bleu.getInt()] + "     Blanc: "+ nbCube[Cube.Blanc.getInt()] + "     Rouge: " + nbCube[Cube.Rouge.getInt()] +"\nJaune: " + nbCube[Cube.Jaune.getInt()] +"     Vert: " + nbCube[Cube.Vert.getInt()] + "      Neutre: " + nbCube[Cube.Neutre.getInt()] + "\n";
+        String chaine = "Noir: "+ noir + "     Bleu: " + bleu + "     Blanc: "+ blanc + "     Rouge: " + rouge +"\nJaune: " + jaune +"     Vert: " + vert + "      Neutre: " + neutre + "\n";
         chaine +="Bag: ";
         int nb = 0;
         for(Cube cube : personalBag){

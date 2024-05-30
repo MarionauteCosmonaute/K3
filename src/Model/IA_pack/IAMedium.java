@@ -18,7 +18,7 @@ public class IAMedium extends IA {
 
     @Override
     public void construction(){
-        super.phaseConstruction = true;
+        
         Pyramid pyramide = generePyramide();
         jeu.getPlayer(indiceJoueur).build(pyramide);
         // PyramideList pyramideList = generePyramide(12,15);

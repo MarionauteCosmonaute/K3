@@ -1,4 +1,5 @@
-package test;
+
+
 import Model.*;
 import Model.Iterateur.*;
 
@@ -18,19 +19,18 @@ public class testIterateur {
             pyramid.set(3,i,Cube.Jaune);
         }
         pyramid.set(4, 0, Cube.Noir);
-        Iterateur it = pyramid.iterateur("UP");
-        Pyramid test = new Pyramid(5);
-        Iterateur it2 = test.iterateur("UP");
+        Iterateur it = pyramid.iterateur("DOWN");
         //it.modify(Cube.Rouge);
         try{
-            while(it.hasNext()){
-                it2.next();
-                it2.modify(it.next());
+            while(true){
+                System.out.println(it.next());
+                /*if(it.next() == Cube.Bleu){
+                    it.modify(Cube.Vide);
+                }*/
                 
             }
         }catch(Exception e){}
 
         System.out.println(pyramid);
-        System.out.println(test);
     }   
 }

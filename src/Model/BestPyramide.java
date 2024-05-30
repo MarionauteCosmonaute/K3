@@ -5,7 +5,7 @@ package Model;
 public class BestPyramide {
     Pyramid best = null;
     int profondeur = 0;
-    boolean done = false;
+    volatile boolean done = false;
 
     public BestPyramide(){}
 

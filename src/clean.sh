@@ -2,3 +2,4 @@
 
 
 rm *.class */*.class */*/*.class */*/*/*.class
+

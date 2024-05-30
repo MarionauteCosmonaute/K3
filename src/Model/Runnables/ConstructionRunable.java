@@ -1,7 +1,7 @@
 package Model.Runnables;
 
 import Model.*;
-import Model.IA_pack.IA;
+import Model.IA_pack.*;
 
 public class ConstructionRunable implements Runnable{
     Jeu jeu;

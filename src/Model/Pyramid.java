@@ -2,9 +2,12 @@ package Model;
 
 import Model.Iterateur.*;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.util.NoSuchElementException;
 =======
 >>>>>>> View
+=======
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
 
 public class Pyramid {
     Cube[][] pyramid;
@@ -73,8 +76,11 @@ public class Pyramid {
         set(x,y,Cube.Vide);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
     
 =======
+=======
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
 
 
     public Iterateur iterateur(String start){
@@ -89,7 +95,10 @@ public class Pyramid {
     }
 
 
+<<<<<<< HEAD
 >>>>>>> View
+=======
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
     public String centrer(int i){
         String chaine = "";
         for(int j = 0; j < i; j++){
@@ -118,28 +127,6 @@ public class Pyramid {
         return chaine;
     }
     
-    public Iterateur iterateur(String start){
-        switch (start) {
-            case "UP":
-                return new IterateurUtoD(this);
-            case "DOWN":
-                return new IterateurDtoU(this);
-            default:
-                throw new NullPointerException();
-        }
-    }
-
-    public void fill(Cube cube){
-        Iterateur it = iterateur("UP");
-        try{
-            while(true){
-                it.next();
-                it.modify(cube);
-            }
-        }catch(NoSuchElementException e){}
-    }
-
-
     @Override
     public String toString(){
         String chaine = "";
@@ -162,8 +149,12 @@ public class Pyramid {
         return clone;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
      
 =======
     
 >>>>>>> View
+=======
+    
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
 }

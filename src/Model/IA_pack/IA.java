@@ -8,7 +8,6 @@ import Model.Runnables.*;
 public abstract class IA {
     Jeu jeu;
     int difficulte, indiceJoueur;
-    boolean phaseConstruction;
     
     public static IA nouvelle(Jeu j,int difficulte,int indiceJoueur) {
         IA resultat = null;
@@ -34,7 +33,10 @@ public abstract class IA {
             resultat.jeu = j;
             resultat.difficulte = difficulte;
             resultat.indiceJoueur = indiceJoueur;
+<<<<<<< HEAD
             resultat.phaseConstruction = j.endConstruction((indiceJoueur+1)%2); //gameStarted pas encore implémentée dans le modèle
+=======
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
         }
         return resultat;
     }
@@ -57,6 +59,7 @@ public abstract class IA {
             int total = 0;
             int total_j1 = 0;
             int total_j2 = 0;
+            int total_access = cubes_access.size();
             for(Point compte : cubes_access){ //Compte du nombre de coups jouable du j1
                 int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(),(int) compte.getY()).size();
                 total_j1+= current_possibilities;
@@ -78,7 +81,7 @@ public abstract class IA {
                     total_j2+= current_possibilities;
                 }
 
-                total = (int)(total_j1) + (int)(j.getPlayer().totalCube()) - (int)(j.getPlayer(j.next_player()).totalCube()) - (int)(total_j2);
+                total = (int)(total_j1) + (int)(j.getPlayer().totalCube()*100) - (int)(j.getPlayer(j.next_player()).totalCube()*100) - (int)(total_j2);
                 if(bon_joueur){
                     return total;
                 }
@@ -87,11 +90,12 @@ public abstract class IA {
                 }
             case 2 : //IA Difficile
                 cubes_access2 = j.Accessible_Playable(j.next_player()); //Necessaire de pouvoir récupérer les positions accessibles du joueur adverse
+                int total_access2 = cubes_access2.size();
                 for(Point compte : cubes_access2) { //Compte du nombre de coups jouable du j1
                     int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),(int) compte.getX(),(int) compte.getY()).size();
                     total_j2+= current_possibilities;
                 }
-                total = (int)(total_j1 ) + (int)(j.getPlayer().totalCube()*2) - (int)(j.getPlayer(j.next_player()).totalCube()*2) - (int)(total_j2);
+                total = (int)(total_j1) + (int)(j.getPlayer().totalCube()+1000) + total_access+100 - (int)(j.getPlayer(j.next_player()).totalCube()+1000) - (int)(total_j2) - (total_access2+100);
                 if(bon_joueur){
                     return total; 
                 }
@@ -120,10 +124,10 @@ public abstract class IA {
                         System.out.println();
                         System.out.println();*/
                     }
-                    if(alpha >= value){
+                    if(beta <= value){
                         return value;
                     }
-                    beta = Math.min(beta,value);
+                    alpha = Math.max(alpha,value);
                 }
             }
         }
@@ -143,10 +147,10 @@ public abstract class IA {
                     else{
                         value = Math.min(value,MinMaxIA(clone,depth-1,player_max, alpha, beta, IA));
                     }
-                    if(beta <= value){
+                    if(alpha >= value){
                         return value;
                     }
-                    alpha = Math.max(alpha,value);
+                    beta = Math.min(beta,value);
                 }
             }
         }
@@ -237,27 +241,51 @@ public abstract class IA {
     }
 
     public Pyramid generePyramide(){
+        return generePyramide(false);
+    }
+
+    public Pyramid generePyramide(boolean aide){
         Player player;
         ArrayList<Cube> list = cubePotentiel();
         Jeu clone = jeu.clone();
         player = clone.getPlayer(indiceJoueur);
         player.resetBag();
+        try{Thread.sleep(100);}
+		catch(Exception e){}
         BestPyramide ZeBest = new BestPyramide();
         Thread manager = new Thread(new ConstructionThreadManager(clone,ZeBest,list,difficulte,indiceJoueur));
         manager.start();
 
+<<<<<<< HEAD
         phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
+=======
+        //phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
+>>>>>>> 10f8292 (recuperation de view sur branche ia)
         
-        try{Thread.sleep(1000);}        /* a changer je l'ai mis a 1 sec pour faire des tests */
-        catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
-        while(true){
-            try{Thread.sleep(100);}
-            catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
-            if( /*!phaseConstruction &&*/ ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */
-                ZeBest.finish();
-                break;
-            }
+        if(aide){
+            try{Thread.sleep(3000);        
+                while(true){
+                Thread.sleep(100);
+                    if(ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */
+                        ZeBest.finish();
+                        break;
+                    }
+                }
+            }catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
         }
+        else{
+            try{Thread.sleep(100);        
+                while(true){
+                Thread.sleep(100);
+                    if(!jeu.gameStarted() && ZeBest.getPyramid() != null){ /* a decommenter lorsqu'on integre a l'ihm */
+                        ZeBest.finish();
+                        break;
+                    }
+                }
+            }catch(InterruptedException e){System.err.println("interuption caught in IA in construction");System.exit(1);}
+        }
+        
+        
         
         try{manager.join();}
         catch(InterruptedException e){System.err.println("Interuption catched for the construction manager");System.exit(1);}
@@ -287,9 +315,8 @@ public abstract class IA {
         }
     }
 
-    public void endConstruction(){
-        phaseConstruction = false;
-    }
+    //public void endConstruction(){
+    //    phaseConstruction = false;
+    //}
     
 }
-

@@ -16,7 +16,7 @@ public class IADifficile extends IA {
     
     @Override
     public void construction(){
-        super.phaseConstruction = true;
+        
         Pyramid pyramide = generePyramide();
         jeu.getPlayer(indiceJoueur).build(pyramide);
         // PyramideList pyramideList = generePyramide(15,30);
