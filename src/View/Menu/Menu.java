@@ -31,4 +31,7 @@ public abstract class Menu extends JPanel {
     public void setValider(boolean b){
 
     }
+
+    public void updateSablier(boolean b){}
+
 }

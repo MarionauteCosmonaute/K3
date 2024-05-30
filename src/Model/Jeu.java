@@ -44,6 +44,10 @@ public class Jeu extends Observable implements Cloneable{
         reset(fileName);
     }
 
+    public void changeCurrentPlayer(int player){
+        current_player=player;
+    }
+
     public void reset(int nb){
         nbJoueur = nb;
         End = false;

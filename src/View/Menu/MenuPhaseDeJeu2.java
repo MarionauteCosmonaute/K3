@@ -169,15 +169,6 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
         }
     }
 
-    public PDJPyramideJoueur PDJpyrJoueur(int joueur){
-        if (joueur == 0){
-            return joueur1;
-        }
-        else{
-            return joueur2;
-        }
-    }
-
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         updateLanguageCode();

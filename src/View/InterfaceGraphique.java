@@ -35,12 +35,13 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		SwingUtilities.invokeLater(vue);
 	}
 
-	public void stopTimer() {
-		timer.stop();
-	}
 
-	public void startTimer() {
-		timer.start();
+	public void TimerIA(boolean timerIA) {
+		if (timerIA){
+			timer.start();
+		}else{
+			timer.stop();
+		}
 	}
 
 	public void basculePleinEcran() {
@@ -164,6 +165,9 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		return menuListe.get(5);
 	}
 
+	public void updateSablier(boolean b){
+		getMenuPhaseDeJeuJVIA().updateSablier(b);
+	}
 
 
 }

@@ -199,4 +199,14 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
         joueur2.repaint();
         pdj.repaint();
 	}
+
+    public void updateSablier(boolean b){
+        joueur2.setBoolSablier(b);
+        if (b){
+            joueur2.stepImageIndex();
+        }else{
+            joueur2.resetImageIndex();
+        }
+        joueur2.repaint();
+    }
 }

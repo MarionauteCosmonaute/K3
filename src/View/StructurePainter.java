@@ -189,6 +189,7 @@ public class StructurePainter {
         {
             x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (taille_pyramide -1) - (espace * taille_pyramide) / 2;
             y_haut = width / 2 - (taille_cube / 2) * ((taille_pyramide-1) + 1) + taille_cube * -2 - (espace * (taille_pyramide -1)) / 2;
+            drawable.setColor(Color.WHITE);
             drawable.drawRect(y_haut + espace * -2, x_haut + espace * (taille_pyramide -1), taille_cube, taille_cube);
             drawable.drawRect(y_haut + espace * -2 + 1, x_haut + espace * (taille_pyramide -1) + 1, taille_cube - 2, taille_cube - 2);
             blanc_accessible.x = x_haut + espace * (taille_pyramide -1);
@@ -213,7 +214,7 @@ public class StructurePainter {
                     }
                     else
                     {
-                        drawable.setColor(Color.BLACK);
+                        drawable.setColor(Color.WHITE);
                     }
                     drawable.drawRect(y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube);
                     drawable.drawRect(y_haut + espace * y + 1, x_haut + espace * x + 1, taille_cube - 2, taille_cube - 2);
