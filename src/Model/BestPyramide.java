@@ -11,6 +11,7 @@ public class BestPyramide {
 
     public synchronized void add(Pyramid pyramide, int prof){
         if(prof > profondeur){
+            System.out.println("nouvelle pyramide trouvée de profondeur:" + prof);
             best = pyramide;
             profondeur = prof;
         }
