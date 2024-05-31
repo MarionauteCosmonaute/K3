@@ -169,6 +169,14 @@ public class Jeu extends Observable implements Cloneable{
 
     /* ordre de jeu */
 
+    public boolean annuleEmpty(){
+        return hist.isEmptyAnnule();
+    }
+
+    public boolean refaisEmpty(){
+        return hist.isEmptyRefaire();
+    }
+
     public void avance(){           /* le bon joueur est envoyer */
         current_player = next_player();
         //if(start) check_loss();
@@ -309,6 +317,7 @@ public class Jeu extends Observable implements Cloneable{
                     break;
             }
         avance();
+        check_loss();
         metAJour();
         }
     }

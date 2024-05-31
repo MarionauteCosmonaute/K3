@@ -3,6 +3,7 @@ package Global;
 public class Config {
     static String lan = "FR";
     public static String IA = "Facile";
+    public static boolean isPlaying=false;
     public static String getLanguage(){
         return lan;
     }
@@ -15,4 +16,7 @@ public class Config {
         IA=S;
     }
     
+    public static void setIsPlaying(boolean b){
+        isPlaying=b;
+    }
 }

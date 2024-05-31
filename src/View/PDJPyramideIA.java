@@ -99,7 +99,6 @@ public class PDJPyramideIA extends PDJPyramideAbstaite {
         if ((jeu.get_player()) == 1 && sablier)
         {
             int taille_sablier = Math.min(80 * height_fenetre / (100 * 6), 80 * width_fenetre / (100 * 6))/2;
-            System.out.println("IMAGEINDEX "+ imageIndex);
             drawable.drawImage(images[imageIndex], width_fenetre - 2*taille_sablier, taille_sablier, taille_sablier, taille_sablier, null);
         }
 
@@ -112,16 +111,21 @@ public class PDJPyramideIA extends PDJPyramideAbstaite {
         else if (jeu.get_player() == 1){
             drawable.setColor(Color.RED);
         }
-        parent.setBorder(BorderFactory.createLineBorder(drawable.getColor(),5));
+        drawable.drawRect(0, 0, width_fenetre-1, height_fenetre-1);
+        drawable.drawRect(1, 1, width_fenetre-3, height_fenetre-3);
+        drawable.drawRect(2, 2, width_fenetre-5, height_fenetre-5);
+        drawable.drawRect(3, 3, width_fenetre-7, height_fenetre-7);
+        drawable.drawRect(4, 4, width_fenetre-9, height_fenetre-9);
+        // parent.setBorder(BorderFactory.createLineBorder(drawable.getColor(),5));
         drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre/10,width_fenetre/10)));
         String languageCode = Global.Config.getLanguage();
         switch(languageCode){
             case "FR":
-                drawable.drawString("Joueur IA 2", 5, Math.min(height_fenetre/10,width_fenetre/10));
+                drawable.drawString("IA", 5, Math.min(height_fenetre/10,width_fenetre/10));
                 break;
 
             case "EN":
-                drawable.drawString("Player AI 2", 5, Math.min(height_fenetre/10,width_fenetre/10));
+                drawable.drawString("AI", 5, Math.min(height_fenetre/10,width_fenetre/10));
                 break;
         }
         

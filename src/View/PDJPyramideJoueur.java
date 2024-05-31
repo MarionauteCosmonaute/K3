@@ -20,7 +20,7 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
     Image gifIcon1, gifIcon2, gifIcon3, gifIcon4;
     int imageIndex = 0;
     Image[] images;
-
+    Color playerColor;
     public PDJPyramideJoueur(Jeu jeu, JPanel parent, int nj) {
         this.jeu = jeu;
         this.parent = parent;
@@ -105,7 +105,14 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
                 }
                 break;
         }
-        parent.setBorder(BorderFactory.createLineBorder(drawable.getColor(),5));
+        drawable.drawRect(0, 0, width_fenetre-1, height_fenetre-1);
+        drawable.drawRect(1, 1, width_fenetre-3, height_fenetre-3);
+        drawable.drawRect(2, 2, width_fenetre-5, height_fenetre-5);
+        drawable.drawRect(3, 3, width_fenetre-7, height_fenetre-7);
+        drawable.drawRect(4, 4, width_fenetre-9, height_fenetre-9);
+        // playerColor=drawable.getColor();
+        
+        
         drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre / 10, width_fenetre / 10)));
         String languageCode = Global.Config.getLanguage();
         switch (languageCode) {
@@ -154,6 +161,10 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
                         y_selec, jeu.getPlayer(joueur).getSideSize() > 0);
             }
         }
+    }
+
+    public Color getPlayerColor(){
+        return playerColor;
     }
 
     void build(Player player) {

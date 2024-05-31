@@ -3,11 +3,10 @@ package View;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.*;
 import java.io.IOException;
 import Global.*;
 
-public class MusicPlayer extends JFrame {
+public class MusicPlayer {
     private static final String MUSIC_PATH = "res/jazz.wav";
     private boolean isPlaying = false;
     Clip audioClip;
@@ -36,6 +35,7 @@ public class MusicPlayer extends JFrame {
             playMusic();
         }
         isPlaying = !isPlaying;
+        Global.Config.setIsPlaying(isPlaying);
     }
 
 }

@@ -5,6 +5,9 @@ import Model.Cube;
 import View.Adaptateurs.*;
 
 import javax.swing.*;
+
+import Global.FileLoader;
+
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -13,6 +16,8 @@ import javax.imageio.ImageIO;
 import java.io.FileNotFoundException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class OldPhaseConstruction {
     JPanel frame;
@@ -35,8 +40,8 @@ public class OldPhaseConstruction {
     int nbJoueur;
     int taille_base_pyramide;
 
-    JButton reset, valider, Aide, Regles;
-
+    JButton reset, valider, Aide, Regles, Retour;
+    BoutonUnMute UnMute;
     public OldPhaseConstruction(JPanel frame, CollecteurEvenements controle, Jeu jeu) {
         this.frame = frame;
         this.controle = controle;
@@ -84,43 +89,44 @@ public class OldPhaseConstruction {
 
         Box boiteTexte = Box.createVerticalBox();
         JPanel centrePanel = new JPanel();
-        reset = Bouton.creerButton("Redemarrer");
+        reset = Bouton.creerButton("Réinitialiser");
         reset.addActionListener(new AdaptateurReset(controle));
+        reset.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         centrePanel.add(reset);
 
         Regles = Bouton.creerButton("Règles");
-            Regles.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    String languageCode = Global.Config.getLanguage();
-                    String rules = null;
-                    String title = null;
-                    switch (languageCode) {
-                        case "FR":
-                            title = "Règles de construction de pyramide";
-                            rules = "MISE EN PLACE DE VOTRE PYRAMIDE\n" +
-                            "Organisez et empilez tous vos pions en pyramide devant vous en les faisant chevaucher.\n" +
-                            "Les pions non bloqués sont les seuls accessibles, choississez bien votre agencement pour l'adapter à votre stratégie.\n"+
-                            "Le premier cube accessible sera le sommet de votre pyramide";
-                            break;
-                        case "EN" :
-                            title = "Rules to set up a pyramid";
-                            rules = "SETTING UP YOUR PYRAMID\n"+
-                            "Arrange and stack all your pawns in a pyramid in front of you, making them overlap.\n" +
-                            "The first accessible pawn will be the top of your pyramid";
-                            break;
-                    }
-                    JOptionPane.showMessageDialog(frame, rules, title, JOptionPane.INFORMATION_MESSAGE);
+        Regles.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String languageCode = Global.Config.getLanguage();
+                String rules = null;
+                String title = null;
+                switch (languageCode) {
+                    case "FR":
+                        title = "Règles de construction de pyramide";
+                        rules = "MISE EN PLACE DE VOTRE PYRAMIDE\n" +
+                        "Organisez et empilez tous vos pions en pyramide devant vous en les faisant chevaucher.\n" +
+                        "Les pions non bloqués sont les seuls accessibles, choississez bien votre agencement pour l'adapter à votre stratégie.\n"+
+                        "Le premier cube accessible sera le sommet de votre pyramide";
+                        break;
+                    case "EN" :
+                        title = "Rules to set up a pyramid";
+                        rules = "SETTING UP YOUR PYRAMID\n"+
+                        "Arrange and stack all your pawns in a pyramid in front of you, making them overlap.\n" +
+                        "The first accessible pawn will be the top of your pyramid";
+                        break;
                 }
+                JOptionPane.showMessageDialog(frame, rules, title, JOptionPane.INFORMATION_MESSAGE);
+            }
 
-            });
+        });
+        Regles.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         centrePanel.add(Regles);
         
         boiteTexte.add(centrePanel);
         boiteTexte.setOpaque(false);
         frame.add(boiteTexte, BorderLayout.SOUTH);
 
-        JButton UnMute, Retour;
         JPanel panel = new JPanel(new GridLayout(1, 3));
         Retour = Bouton.BoutonRetour(1);
         //Retour.addActionListener(new RetourMenuPAdapeur(controle));
@@ -133,6 +139,7 @@ public class OldPhaseConstruction {
                 }
             }
         });
+        Retour.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         JPanel topLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         topLeftPanel.add(Retour, BorderLayout.EAST);
@@ -153,19 +160,22 @@ public class OldPhaseConstruction {
         // Bouton Aide
         Aide = Bouton.creerButton("Auto-construction");
         Aide.addActionListener(new AdaptateurAideConstruction(controle));
+        Aide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topCenter.add(Aide, BorderLayout.CENTER);
         topCenter.setOpaque(false);
 
         valider = Bouton.creerButton("Valider");
         valider.addActionListener(new AdaptateurValider(controle));
+        valider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         valider.setEnabled(false);
         topCenter.add(valider);
 
         panel.add(topCenter);
 
         // Bouton du Son
-        UnMute = Bouton.BoutonUnMute(controle,1);
+        UnMute = new BoutonUnMute(controle,1);
+        UnMute.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topRightPanel.add(UnMute, BorderLayout.EAST);
         topRightPanel.setOpaque(false);
@@ -180,13 +190,29 @@ public class OldPhaseConstruction {
         centrePanel.setOpaque(false);
         panel.setOpaque(false);
         updateLanguageCode();
+
+        try {
+            SourisAdapte sourisRetour = new SourisAdapte(Retour, FileLoader.getSound("res/clic.wav"));
+            SourisAdapte sourisvalider = new SourisAdapte(valider, FileLoader.getSound("res/clic.wav"));
+            SourisAdapte sourisreset = new SourisAdapte(reset, FileLoader.getSound("res/clic.wav"));
+            SourisAdapte sourisAide = new SourisAdapte(Aide, FileLoader.getSound("res/clic.wav"));
+            SourisAdapte sourisRegles = new SourisAdapte(Regles, FileLoader.getSound("res/clic.wav"));
+            Retour.addMouseListener(sourisRetour);
+            valider.addMouseListener(sourisvalider);
+            reset.addMouseListener(sourisreset);
+            Aide.addMouseListener(sourisAide);
+            Regles.addMouseListener(sourisRegles);
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                System.exit(1);
+        }
     }
 
     public void updateLanguageCode() {
+        UnMute.repaint();
         String languageCode = Global.Config.getLanguage();
         switch (languageCode) {
             case "FR":
-                reset.setText("Redemarrer");
+                reset.setText("Réinitialiser");
                 valider.setText("Valider");
                 Aide.setText("Auto-construction");
                 Regles.setText("Règles");

@@ -30,7 +30,7 @@ public class Bouton {
 		return new JButton(iconMute);
 	}
 
-	public static JButton BoutonUnMute(CollecteurEvenements controle, int sombre) {
+	public static JButton BoutonUnMute(CollecteurEvenements controle, int sombre){
 		Image resizedImageUnMute = null;
 		Image resizedImageMute = null;
 		JButton out = new JButton();
@@ -38,15 +38,15 @@ public class Bouton {
 		try {
 			sourisUnMute = new SourisAdapte(out, FileLoader.getSound("res/clic.wav"));
 			if(sombre == 1){
-				resizedImageUnMute = Global.FileLoader.getImage("res/mute64_blanc.png").getScaledInstance(40, 30,
+				resizedImageUnMute = Global.FileLoader.getImage("res/son64_blanc.png").getScaledInstance(40, 30,
 					Image.SCALE_SMOOTH);
-				resizedImageMute = Global.FileLoader.getImage("res/son64_blanc.png").getScaledInstance(40, 30,
+				resizedImageMute = Global.FileLoader.getImage("res/mute64_blanc.png").getScaledInstance(40, 30,
 					Image.SCALE_SMOOTH);
 			}
 			else {
-				resizedImageUnMute = Global.FileLoader.getImage("res/mute64.png").getScaledInstance(40, 30,
+				resizedImageUnMute = Global.FileLoader.getImage("res/son64.png").getScaledInstance(40, 30,
 					Image.SCALE_SMOOTH);
-				resizedImageMute = Global.FileLoader.getImage("res/son64.png").getScaledInstance(40, 30,
+				resizedImageMute = Global.FileLoader.getImage("res/mute64.png").getScaledInstance(40, 30,
 					Image.SCALE_SMOOTH);
 			}
 		} catch (Exception e) {
@@ -54,23 +54,24 @@ public class Bouton {
 		}
 		ImageIcon iconUnMute = new ImageIcon(resizedImageUnMute);
 		ImageIcon iconMute = new ImageIcon(resizedImageMute);
+		if (Global.Config.isPlaying){
+			out.setIcon(iconUnMute);
+		}else{
 		out.setIcon(iconMute);
+		}
 		// Ajoute tous les listeners
 		out.addMouseListener(sourisUnMute);
 		out.addActionListener(new AdaptateurSon(controle));
 		// change image
 		out.addActionListener(new ActionListener() {
-			private boolean isMuted = true;
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (isMuted) {
+				if (Global.Config.isPlaying) {
 					out.setIcon(iconMute); // Changer en icône "son"
 				} else {
 					out.setIcon(iconUnMute); // Changer en icône "mute"
-				}
-
-				isMuted = !isMuted; // Inverser l'état
+				} // Inverser l'état
 			}
 		});
 		out.setBorder(BorderFactory.createEmptyBorder());

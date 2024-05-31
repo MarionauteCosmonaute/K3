@@ -42,6 +42,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		timer_sablier = new Timer(1000, new ActionListener()
 			{
 				@Override
+				
 				public void actionPerformed(ActionEvent e) {
 					// Changer l'image
 					vue.updateSablier(true);
@@ -65,6 +66,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 			PDJPyramideJoueur.SetCube_Select_Static(false);
 			if(jeu.accessible(x,y)){
 				jeu.takePenaltyCube(x, y); // y : mettre -1 si ça vient du side
+				metAJourAnnule();
+				metAJourRefaire();
 				jeu.sauvegarde(qs);
 				penalty = false;
 				
@@ -106,6 +109,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 		if(penalty == true){
 			//tester que le cube est accessible dans la pyramide du joueur
 			jeu.takePenaltyCube(x, -1); // y : mettre -1 si ça vient du side
+			metAJourAnnule();
+			metAJourRefaire();
 			penalty = false;
 			if(jeu.getPlayer().lost()){
 				timer_sablier.stop();
@@ -134,6 +139,42 @@ public class ControleurMediateur implements CollecteurEvenements {
 		
 	}
 
+	public void metAJourRefaire()
+	{
+		if (!jeu.refaisEmpty())
+		{
+			System.out.println("----> refaire grisé");
+			vue.getMenuPhaseDeJeu2().setRefaire(false);
+			vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
+			vue.getMenuPhaseDeJeu2().repaint();
+		}
+		else
+		{
+			System.out.println("----> refaire allumé");
+			vue.getMenuPhaseDeJeu2().setRefaire(true);
+			vue.getMenuPhaseDeJeuJVIA().setRefaire(true);
+			vue.getMenuPhaseDeJeu2().repaint();
+		}
+	}
+
+	public void metAJourAnnule()
+	{
+		if (!jeu.annuleEmpty())
+		{
+			System.out.println("----> annule grisé");
+			vue.getMenuPhaseDeJeu2().setAnnuler(false);
+			vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
+			vue.getMenuPhaseDeJeu2().repaint();
+		}
+		else
+		{
+			System.out.println("----> annule allumé");
+			vue.getMenuPhaseDeJeu2().setAnnuler(true);
+			vue.getMenuPhaseDeJeuJVIA().setAnnuler(true);
+			vue.getMenuPhaseDeJeu2().repaint();
+		}
+	}
+
 	@Override 
     public void clicBlanc(int x, int y)
     {
@@ -148,7 +189,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (test == 0)
         {
             int res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
-            if(res == 1 || res == 2 || res == 3){
+			metAJourAnnule();
+			metAJourRefaire();
+            if(res != 0){
 				if(jeu.getPlayer().lost()){
 					timer_sablier.stop();
 					vue.updateSablier(false);
@@ -171,6 +214,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 clic = false;
             }
             if (IAON){
+				
 				if(jeu.get_player() == 1){
 					timer_sablier.start();
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
@@ -187,6 +231,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 		int res;
 		// if(jeu.accessible(ligne_joueur,colonne_joueur)){
 		res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
+		// metAJourAnnule();
+		// metAJourRefaire();
 		jeu.sauvegarde(qs);
 		if(res == 1 || res == 3){
 			clic = false;
@@ -210,10 +256,21 @@ public class ControleurMediateur implements CollecteurEvenements {
 				}
 			}
 			if(IAON && jeu.get_player() == 1){
+				
+				vue.getMenuPhaseDeJeu2().setAnnuler(false);
+				vue.getMenuPhaseDeJeu2().setRefaire(false);
+				vue.getMenuPhaseDeJeu2().repaint();
 				timer_sablier.start();
+			}
+			else{
+				metAJourAnnule();
+				metAJourRefaire();
 			}
 		}
 		if(res == 2){
+			vue.getMenuPhaseDeJeu2().setAnnuler(false);
+			vue.getMenuPhaseDeJeu2().setRefaire(false);
+			vue.getMenuPhaseDeJeu2().repaint();
 			clic = false;
 			PDJPyramideJoueur.SetCube_Select_Static(false);
 			penalty = true;
@@ -226,6 +283,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 					gagnant = jeu.next_player();
 					System.out.println("cas 4 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
 					int reponse = DialogueFinPartie(gagnant + 1);
+					metAJourAnnule();
+					metAJourRefaire();
 					switch(reponse){
 						case 0 :
 							jeu.playerNoLost(jeu.get_player());
@@ -306,12 +365,33 @@ public class ControleurMediateur implements CollecteurEvenements {
 				}else{
 					jeu.annule();
 				}
-				
+				metAJourAnnule();
+				metAJourRefaire();
 				break;
+
 			case "Refaire":
 				if(!(IAON && IA_thinking)){
 					jeu.refais();
+					if(jeu.getPlayer().lost()){
+						gagnant = jeu.next_player();
+						System.out.println("cas 5 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
+						int reponse = DialogueFinPartie(gagnant + 1);
+						switch(reponse){
+							case 0 :
+								jeu.playerNoLost(jeu.get_player());
+								break;
+							case 1 :
+								commande("MenuLocal");
+								break;
+							default:
+								commande("MenuP");
+								break;
+						}
+						
+					}
 				}
+				metAJourAnnule();
+				metAJourRefaire();
 				break;
 
 			case "quit":
@@ -456,6 +536,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;
 
 			case "JoueIA":
+				System.out.println("joue IAAAAAAAAAA");
+				vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
+				vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
+				vue.getMenuPhaseDeJeuJVIA().repaint();
 				int res;
 				if (IAON && jeu.get_player()==1 && !penalty){
 					IA_thinking=true;
@@ -489,7 +573,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 					IA_thinking=false;
 					vue.TimerIA(false);
 					jeu.sauvegarde("saves/quicksave.txt");
+					System.out.println("pas tout de suite --------------");
+					
 				}
+				metAJourAnnule();
+				metAJourRefaire();
 				// PDJPyramideJoueur.CacheGif();
 				break;
 

@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+
+import Global.FileLoader;
 import View.Adaptateurs.*;
 import java.awt.*;
 
@@ -15,16 +17,17 @@ import Model.Jeu;
 import Patterns.Observateur;
 
 public class MenuPhaseDeJeu2 extends Menu implements Observateur {
-    JButton Aide, Regles, Annuler, Refaire;
+    JButton Aide, Regles,UnMute, Annuler, Refaire;
     PDJPyramideCentrale pdj;
     PDJPyramideJoueur joueur1,joueur2;
+    
 
     public MenuPhaseDeJeu2(CollecteurEvenements controle, Jeu J) {
         super();
         J.ajouteObservateur(this);
         try {
             JPanel content = new JPanel(new BorderLayout());
-            JButton UnMute, Retour;
+            JButton  Retour;
 
             // On sépare la partie qui contient les boutons retour/aide/son et la partie du
             // jeu
@@ -32,6 +35,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
 
             // Bouton Retour
             Retour = Bouton.BoutonRetour(1);
+            Retour.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Retour.addActionListener(new ActionListener() {
 
                 @Override
@@ -55,11 +59,15 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             // Bouton Annuler
             Annuler = Bouton.creerButton("Annuler");
             Annuler.addActionListener(new AdaptateurAnnule(controle));
+            Annuler.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            Annuler.setEnabled(false);
             topCenter.add(Annuler, BorderLayout.CENTER);
 
             // Bouton Refaire
             Refaire = Bouton.creerButton("Refaire");
             Refaire.addActionListener(new AdaptateurRefais(controle));
+            Refaire.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            Refaire.setEnabled(false);
             topCenter.add(Refaire, BorderLayout.CENTER);
 
             // Bouton Aide
@@ -72,16 +80,19 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
 
                 }
             });
+            Aide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             topCenter.add(Aide, BorderLayout.CENTER);
 
             // Bouton des Règles
             Regles = Bouton.Rules(content);
+            Regles.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             topCenter.add(Regles);
             topCenter.setOpaque(false);
             topPanel.add(topCenter);            
 
             // Bouton du Son
             UnMute = Bouton.BoutonUnMute(controle,1);
+            UnMute.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
             topRightPanel.setOpaque(false);
@@ -101,7 +112,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             JPanel joueursPanel = new JPanel();
             centrePanel.add(pyramidePanel);
             centrePanel.add(joueursPanel);
-            pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+            pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
             pdj = (new PDJPyramideCentrale(J, pyramidePanel)); // ajoute la pyramide centrale
             pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj));
             pyramidePanel.add(pdj);
@@ -116,7 +127,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             joueursPanel.add(bottomRightPanel);
 
             // Joueur Bleu
-            bottomLeftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
+            // bottomLeftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
             joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur
                                                                                         // 1
             bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, pdj));
@@ -124,12 +135,22 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             joueur1.setVisible(true);
 
             // Joueur Rouge
-            bottomRightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+            // bottomRightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
             joueur2 = (new PDJPyramideJoueur(J, bottomRightPanel, 1)); // ajoute la pyramide du joueur
                                                                                          // 2
             bottomRightPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur2, pdj));
             bottomRightPanel.add(joueur2, BorderLayout.CENTER);
             joueur2.setVisible(true);
+
+            // Associe le son aux boutons
+            SourisAdapte sourisAnnuler = new SourisAdapte(Annuler, FileLoader.getSound("res/clic.wav"));
+            SourisAdapte sourisRefaire = new SourisAdapte(Refaire, FileLoader.getSound("res/clic.wav"));
+            SourisAdapte sourisAide = new SourisAdapte(Aide, FileLoader.getSound("res/clic.wav"));
+            SourisAdapte sourisRegles = new SourisAdapte(Regles, FileLoader.getSound("res/clic.wav"));
+            Annuler.addMouseListener(sourisAnnuler);
+            Refaire.addMouseListener(sourisRefaire);
+            Aide.addMouseListener(sourisAide);
+            Regles.addMouseListener(sourisRegles);
 
             // Du blabla pour la classe Menu
             content.setVisible(true);
@@ -146,6 +167,16 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
         } catch (Exception e) {
             System.exit(1);
         }
+    }
+
+    public void setAnnuler(boolean b) 
+    {
+        Annuler.setEnabled(b);
+    }
+
+    public void setRefaire(boolean b) 
+    {
+        Refaire.setEnabled(b);
     }
 
     @Override
@@ -169,7 +200,8 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
         }
     }
 
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g){
+        UnMute.repaint();
         super.paintComponent(g);
         updateLanguageCode();
     }

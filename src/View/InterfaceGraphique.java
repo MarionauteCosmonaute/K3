@@ -3,6 +3,9 @@ import View.Adaptateurs.*;
 import View.Menu.Menu;
 import View.Menu.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import Model.Jeu;
 import Patterns.Observateur;
 import javax.swing.*;
@@ -20,7 +23,8 @@ public class InterfaceGraphique implements Runnable, Observateur {
 	CollecteurEvenements controle;
 	Jeu jeu;
 	boolean maximized;
-	Timer timer;
+	Timer tickIA;
+	Timer anim;
 	Boolean bool = true;
 
 	InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
@@ -38,9 +42,9 @@ public class InterfaceGraphique implements Runnable, Observateur {
 
 	public void TimerIA(boolean timerIA) {
 		if (timerIA){
-			timer.start();
+			tickIA.start();
 		}else{
-			timer.stop();
+			tickIA.stop();
 		}
 	}
 
@@ -95,7 +99,15 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		addMenu(phaseDeJeuJVIA);
 		MenuOnline online =new MenuOnline(controle);//5
 		addMenu(online);
-		timer = new Timer(5000,new AdaptateurJoueIA(controle));
+		tickIA = new Timer(5000,new AdaptateurJoueIA(controle));
+		anim=new Timer(1000,new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e){
+				getcurMenu().repaint();
+			}
+		});
+		anim.start();
 		//controle.commande("MenuOnline");
 
 		// On ajoute la souris et le clavier

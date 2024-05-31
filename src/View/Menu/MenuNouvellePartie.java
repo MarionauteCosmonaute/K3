@@ -2,6 +2,7 @@ package View.Menu;
 
 import View.CollecteurEvenements;
 import View.Bouton;
+import View.BoutonUnMute;
 import View.Adaptateurs.*;
 
 import Global.FileLoader;
@@ -18,13 +19,14 @@ import javax.sound.sampled.Clip;
 
 public class MenuNouvellePartie extends Menu {
     JButton joueurs3, joueurs4;
+    BoutonUnMute UnMute;
     JMenu menuPrincipal, menuIA;
     JMenuItem joueurVSjoueur, iaFacile, iaMoyen, iaDifficile;
     public MenuNouvellePartie(CollecteurEvenements controle) {
         super();
         try {
             JPanel content = new JPanel(new BorderLayout());
-            JButton UnMute, Retour;
+            JButton Retour;
             // Panneau central avec les boutons
             JPanel centrePanel = new JPanel();
             centrePanel.setOpaque(false);
@@ -37,10 +39,13 @@ public class MenuNouvellePartie extends Menu {
             JMenuBar menuBar = new MenuArrondi(20);
             menuPrincipal = new JMenu("2 Joueurs");
             menuPrincipal.setFont(new Font("Arial", Font.BOLD, 16));
+            menuPrincipal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             menuBar.add(menuPrincipal); // Ajouter le menu "Fichier" à la barre de menu
             joueurVSjoueur = new JMenuItem("Joueur VS Joueur");
+            joueurVSjoueur.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             joueurVSjoueur.addActionListener(new AdaptateurJoueurVSJoueur(controle));
             menuIA = new JMenu("Joueur VS IA");
+            menuIA.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             menuIA.addActionListener(new ActionListener() {
 
                 @Override
@@ -60,14 +65,20 @@ public class MenuNouvellePartie extends Menu {
                 }
             });
             iaFacile = new JMenuItem("IA Facile");
+            iaFacile.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             iaFacile.addActionListener(new AdaptateurIAFacile(controle));
             iaMoyen = new JMenuItem("IA Moyen");
+            iaMoyen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             iaMoyen.addActionListener(new AdaptateurIAMoyen(controle));
             iaDifficile = new JMenuItem("IA Difficile");
+            iaDifficile.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             iaDifficile.addActionListener(new AdaptateurIADifficile(controle));
             menuIA.add(iaFacile);
             menuIA.add(iaMoyen);
             menuIA.add(iaDifficile);
+
+            SourisAdapteMenu sourisMenuPrincipal = new SourisAdapteMenu(menuPrincipal);
+            menuPrincipal.addMouseListener(sourisMenuPrincipal);
 
             menuPrincipal.add(joueurVSjoueur); // Ajouter "Nouveau" au menu "Fichier"
             menuPrincipal.add(menuIA); // Ajouter "Ouvrir" au menu "Fichier"
@@ -77,6 +88,7 @@ public class MenuNouvellePartie extends Menu {
             // On s'occupe des deux boutons classiques 3 et 4 joueurs
             joueurs3 = Bouton.creerButton("3 Joueurs");
             // joueurs3.addActionListener(new Adaptateur...(controle));
+            joueurs3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             joueurs3.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -88,6 +100,7 @@ public class MenuNouvellePartie extends Menu {
             centrePanel.add(Box.createVerticalStrut(10));
             joueurs4 = Bouton.creerButton("4 Joueurs");
             // joueurs4.addActionListener(new Adaptateur...(controle));
+            joueurs4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             joueurs4.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -101,7 +114,7 @@ public class MenuNouvellePartie extends Menu {
             content.add(centrePanel, BorderLayout.CENTER);
 
             // On écrit le bouton du son en haut à droite
-            UnMute = Bouton.BoutonUnMute(controle,0);
+            UnMute = new BoutonUnMute(controle,0);
 
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
@@ -113,9 +126,11 @@ public class MenuNouvellePartie extends Menu {
             content.add(topPanel, BorderLayout.NORTH);
             UnMute.setBorder(BorderFactory.createEmptyBorder());
             UnMute.setContentAreaFilled(false);
+            UnMute.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
             // On s'occupe de mettre la fleche retour en haut à gauche
             Retour = Bouton.BoutonRetour(0);
+            Retour.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Retour.addActionListener(new RetourMenuPAdapeur(controle));
             JPanel topLefttPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             topLefttPanel.add(Retour, BorderLayout.EAST);
@@ -182,8 +197,9 @@ public class MenuNouvellePartie extends Menu {
                 break;
         }
     }
-
+    @Override
     public void paintComponent(Graphics g){
+        UnMute.repaint(); 
         super.paintComponent(g);
         updateLanguageCode();
     }

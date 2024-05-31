@@ -7,16 +7,21 @@ import View.*;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
+
+import org.w3c.dom.events.MouseEvent;
+
+import java.awt.event.*;
+
 import java.awt.*;
 import java.io.IOException;
 
 public class MenuPrincipal extends Menu {
     JButton NewGame, Charger, Quit, Lan, Regles;
-
+    BoutonUnMute UnMute;
     public MenuPrincipal(CollecteurEvenements controle) {
         super();
         JPanel content = new JPanel(new BorderLayout());
-        JButton FR, EN, UnMute;
+        JButton FR, EN;
         try {
             // Panneau central avec les boutons
             JPanel centrePanel = new JPanel();
@@ -28,21 +33,25 @@ public class MenuPrincipal extends Menu {
 
             NewGame = Bouton.creerButton("Nouvelle partie");
             NewGame.addActionListener(new NewGameActionListener(controle));
+            NewGame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             centrePanel.add(NewGame);
             centrePanel.add(Box.createVerticalStrut(10));
 
             Charger = Bouton.creerButton("Charger partie");
             Charger.addActionListener(new AdaptateurCharger(controle));
+            Charger.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             centrePanel.add(Charger);
             centrePanel.add(Box.createVerticalStrut(10));
 
             Lan = Bouton.creerButton("En ligne");
             Lan.addActionListener(new AdaptateurLan(controle));
+            Lan.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             centrePanel.add(Lan);
             centrePanel.add(Box.createVerticalStrut(10));
 
             Quit = Bouton.creerButton("Quitter");
             Quit.addActionListener(new AdaptateurQuit(controle));
+            Quit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             centrePanel.add(Quit);
             centrePanel.add(Box.createVerticalStrut(10));
             centrePanel.add(Box.createVerticalGlue());
@@ -58,11 +67,14 @@ public class MenuPrincipal extends Menu {
             // Créer les boutons avec les icônes d'images
             FR = new JButton(new ImageIcon(resizedImageFR));
             EN = new JButton(new ImageIcon(resizedImageEN));
-            UnMute = Bouton.BoutonUnMute(controle,0);
+            UnMute = new BoutonUnMute(controle,0);
 
             // Ajouter des écouteurs d'actions aux boutons
             FR.addActionListener(new AdaptateurFR(controle));
+            FR.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             EN.addActionListener(new AdaptateurEN(controle));
+            EN.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            UnMute.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
             // Panneau en bas à gauche pour les drapeaux
             JPanel bottomLeftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -75,6 +87,7 @@ public class MenuPrincipal extends Menu {
             JPanel bottomRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             bottomRightPanel.setOpaque(false);
             Regles = Bouton.Rules(content);
+            Regles.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             bottomRightPanel.add(Regles);
 
             // Combiner les panneaux en bas à gauche et à droite dans un seul panneau en bas
@@ -124,6 +137,7 @@ public class MenuPrincipal extends Menu {
             setOpaque(false);
             add(content);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+        // } catch (IOException e) {
             System.exit(1);
         }
     }
@@ -149,5 +163,11 @@ public class MenuPrincipal extends Menu {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void paintComponents(Graphics g){
+        UnMute.repaint();
+        super.paintComponents(g);
     }
 }

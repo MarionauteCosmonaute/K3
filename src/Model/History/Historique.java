@@ -49,11 +49,11 @@ public class Historique {
         coup_annule.add(coup);
     }
 
-    private boolean isEmptyAnnule() {
+    public boolean isEmptyAnnule() {
         return !coup_jouer.empty();
     }
 
-    private boolean isEmptyRefaire() {
+    public boolean isEmptyRefaire() {
         return !coup_annule.empty();
     }
 

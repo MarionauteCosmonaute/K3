@@ -13,10 +13,11 @@ import java.io.IOException;
 
 public class MenuOnline extends Menu{
     JButton Host, Join;
+    BoutonUnMute UnMute;
 
     public MenuOnline(CollecteurEvenements controle) {
         super();
-        JButton UnMute, Retour;
+        JButton  Retour;
         JPanel content = new JPanel(new BorderLayout());
         try {
             // Panneau central avec les boutons
@@ -40,7 +41,7 @@ public class MenuOnline extends Menu{
 
             content.add(centrePanel, BorderLayout.CENTER);
 
-            UnMute = Bouton.BoutonUnMute(controle,0);
+            UnMute = new BoutonUnMute(controle,0);
 
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
@@ -110,6 +111,7 @@ public class MenuOnline extends Menu{
     }
 
     public void paintComponent(Graphics g){
+        UnMute.repaint();
         super.paintComponent(g);
         updateLanguageCode();
     }

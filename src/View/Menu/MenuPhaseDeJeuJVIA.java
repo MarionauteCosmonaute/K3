@@ -2,6 +2,7 @@ package View.Menu;
 
 import View.CollecteurEvenements;
 import View.Bouton;
+import View.BoutonUnMute;
 import View.PDJPyramideCentrale;
 import View.PDJPyramideJoueur;
 import View.PDJPyramideIA;
@@ -20,13 +21,14 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
     PDJPyramideCentrale pdj;
     PDJPyramideJoueur joueur1;
     PDJPyramideIA joueur2;
+    BoutonUnMute UnMute;
 
     public MenuPhaseDeJeuJVIA(CollecteurEvenements controle, Jeu J) {
         super();
         J.ajouteObservateur(this);
         try {
             JPanel content = new JPanel(new BorderLayout());
-            JButton UnMute, Retour;
+            JButton  Retour;
 
             // On sépare la partie qui contient les boutons retour/aide/son et la partie du
             // jeu
@@ -57,11 +59,13 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             // Bouton Annuler
             Annuler = Bouton.creerButton("Annuler");
             Annuler.addActionListener(new AdaptateurAnnule(controle));
+            Annuler.setEnabled(false);
             topCenter.add(Annuler, BorderLayout.CENTER);
 
             // Bouton Refaire
             Refaire = Bouton.creerButton("Refaire");
             Refaire.addActionListener(new AdaptateurRefais(controle));
+            Refaire.setEnabled(false);
             topCenter.add(Refaire, BorderLayout.CENTER);
 
             // Bouton Aide
@@ -82,7 +86,7 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             topPanel.add(topCenter);
 
             // Bouton du Son
-            UnMute = Bouton.BoutonUnMute(controle,1);
+            UnMute = new BoutonUnMute(controle,1);
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
             topRightPanel.setOpaque(false);
@@ -102,7 +106,7 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             JPanel joueursPanel = new JPanel();
             centrePanel.add(pyramidePanel);
             centrePanel.add(joueursPanel);
-            pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+            pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
             pdj = (new PDJPyramideCentrale(J, pyramidePanel)); // ajoute la pyramide centrale
             pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj));
             pyramidePanel.add(pdj);
@@ -167,7 +171,18 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
         }
     }
 
+    public void setAnnuler(boolean b) 
+    {
+        Annuler.setEnabled(b);
+    }
+
+    public void setRefaire(boolean b) 
+    {
+        Refaire.setEnabled(b);
+    }
+
     public void paintComponent(Graphics g) {
+        UnMute.repaint();
         super.paintComponent(g);
         updateLanguageCode();
     }

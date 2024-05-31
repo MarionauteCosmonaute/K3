@@ -25,12 +25,13 @@ public abstract class Menu extends JPanel {
         System.out.println("wdym??");
     }
 
-    public void reset(){
-    }
+    public void reset(){}
 
-    public void setValider(boolean b){
+    public void setValider(boolean b){}
 
-    }
+    public void setAnnuler(boolean bool){}
+
+    public void setRefaire(boolean bool){}
 
     public void updateSablier(boolean b){}
 
