@@ -2,9 +2,9 @@ package Model;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Vector;
 
 import Model.History.*;
-import Model.Iterateur.Iterateur;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import Patterns.Observable;
-import java.util.Collections;
 
 public class Jeu extends Observable implements Cloneable {
     Player[] players;
@@ -157,6 +156,10 @@ public class Jeu extends Observable implements Cloneable {
 
     public void constructionAleatoire(int playerID) {
         getPlayer(playerID).constructionAleatoire();
+    }
+
+    public Player[] getAllPlayers(){
+        return players;
     }
 
     /************************************ */
@@ -798,5 +801,14 @@ public class Jeu extends Observable implements Cloneable {
             System.exit(1);
         }
         return new Jeu(2);
+    }
+
+    public int hashCode(){
+        Vector<Vector<Integer>> hash = new Vector<>();
+        for(Player player : players){
+            hash.add(player.hash());
+        }
+
+        return hash.hashCode();
     }
 }

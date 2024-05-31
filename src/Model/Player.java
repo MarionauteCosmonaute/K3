@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import Model.Iterateur.Iterateur;
 import java.util.NoSuchElementException;
+import java.util.Vector;
 
 public class Player {
     Pyramid pyramid;
@@ -338,6 +339,31 @@ public class Player {
         chaine += "\nPyramide:\n" + pyramid;
 
         return chaine;
+    }
+    private ArrayList<Cube> trieSide(){
+        ArrayList<Cube> trier = new ArrayList<>(), clone = new ArrayList<>();
+        for(Cube cube : side){
+            clone.add(cube);
+        }
+        for(Cube cube : Cube.values()){
+            
+        }
+
+
+        return trier;
+    }
+
+    public Vector<Integer> hash(){
+        Vector<Integer> vect = new Vector<>();
+        Iterateur it = getPyramid().iterateur("UP");
+        while(it.hasNext()){
+            vect.add(it.next().getInt());
+        }
+
+        for(Cube cube : trieSide()){
+            vect.add(cube.getInt());
+        }
+        return vect;
     }
 
 }

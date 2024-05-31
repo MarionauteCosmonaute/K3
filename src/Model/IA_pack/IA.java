@@ -9,6 +9,7 @@ import Model.Runnables.*;
 public abstract class IA {
     Jeu jeu;
     int difficulte, indiceJoueur;
+    HashMap<Jeu,Integer> heuristique;
 
     public static IA nouvelle(Jeu j, int difficulte, int indiceJoueur) {
         IA resultat = null;
@@ -34,11 +35,20 @@ public abstract class IA {
             resultat.jeu = j;
             resultat.difficulte = difficulte;
             resultat.indiceJoueur = indiceJoueur;
+            resultat.heuristique = new HashMap<>();
         }
         return resultat;
     }
 
+    public int saveValue(Jeu jeu,int value){
+        //heuristique.put(jeu, value);
+        return value;
+    }
+    
     public int MinMaxIA(Jeu j, int depth, int player_max, int alpha, int beta, int IA) {
+        if(heuristique.containsKey(j)){
+            return heuristique.get(j);
+        }
         int value;
         boolean bon_joueur = player_max == j.get_player();
         ArrayList<Point> cubes_access = j.Accessible_Playable();
@@ -49,9 +59,9 @@ public abstract class IA {
                                               // joueur a perdu de l'exclure du calcul
                                               // Et appeler l'IA avec les nouveaux paramètres.
             if (j.getPlayer(player_max).lost()) {
-                return -10000000;
+                return saveValue(j,-10000000);
             } else {
-                return 10000000;
+                return saveValue(j,10000000);
             }
         }
         if (depth == 0) {
@@ -69,9 +79,9 @@ public abstract class IA {
             switch (IA) {
                 case 0: // IA Facile
                     if (bon_joueur) {
-                        return j.getPlayer().totalCube() - j.getPlayer(j.next_player()).totalCube();
+                        return saveValue(j,j.getPlayer().totalCube() - j.getPlayer(j.next_player()).totalCube());
                     } else {
-                        return j.getPlayer(j.next_player()).totalCube() - j.getPlayer().totalCube();
+                        return saveValue(j,j.getPlayer(j.next_player()).totalCube() - j.getPlayer().totalCube());
                     }
                 case 1: // IA Medium
                     cubes_access2 = j.Accessible_Playable(j.next_player()); // Necessaire de pouvoir récupérer les
@@ -85,9 +95,9 @@ public abstract class IA {
                             - (int) (j.getPlayer(j.next_player()).totalCube() * 1000) - (int) (total_j2);
                     
                     if (bon_joueur) {
-                        return total;
+                        return saveValue(j,total);
                     } else {
-                        return -total;
+                        return saveValue(j,-total);
                     }
                 case 2: // IA Difficile
                     cubes_access2 = j.Accessible_Playable(j.next_player()); // Necessaire de pouvoir récupérer les
@@ -102,9 +112,9 @@ public abstract class IA {
                             - ((int) (j.getPlayer(j.next_player()).totalCube() * 10000) + (int) (total_j2)
                                     + (total_access2 * 100));
                     if (bon_joueur) {
-                    return total;
+                    return saveValue(j,total);
                     } else {
-                    return -total;
+                    return saveValue(j,-total);
                     }
             }
         }
@@ -121,7 +131,7 @@ public abstract class IA {
                     }
                     value = Math.max(value, MinMaxIA(clone, depth - 1, player_max, alpha, beta, IA));
                     if (beta <= value) {
-                        return value;
+                        return saveValue(j,value);
                     }
                     alpha = Math.max(alpha, value);
                 }
@@ -139,14 +149,14 @@ public abstract class IA {
                     }
                     value = Math.min(value, MinMaxIA(clone, depth - 1, player_max, alpha, beta, IA));
                     if (alpha >= value) {
-                        return value;
+                        return saveValue(j,value);
                     }
                     beta = Math.min(beta, value);
                 }
             }
         }
 
-        return value;
+        return saveValue(j,value);
     }
 
     public ArrayList<ArrayList<Point>> coupIA(Jeu j, int joueur1, int difficulté) {
