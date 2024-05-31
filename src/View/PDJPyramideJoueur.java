@@ -105,6 +105,7 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
                 }
                 break;
         }
+        parent.setBorder(BorderFactory.createLineBorder(drawable.getColor(),5));
         drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre / 10, width_fenetre / 10)));
         String languageCode = Global.Config.getLanguage();
         switch (languageCode) {

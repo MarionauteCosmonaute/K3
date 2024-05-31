@@ -122,9 +122,8 @@ public class OldPhaseConstruction {
 
         JButton UnMute, Retour;
         JPanel panel = new JPanel(new GridLayout(1, 3));
-        Retour = Bouton.BoutonRetour();
+        Retour = Bouton.BoutonRetour(1);
         //Retour.addActionListener(new RetourMenuPAdapeur(controle));
-        Retour = Bouton.BoutonRetour();
         Retour.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -166,7 +165,7 @@ public class OldPhaseConstruction {
         panel.add(topCenter);
 
         // Bouton du Son
-        UnMute = Bouton.BoutonUnMute(controle);
+        UnMute = Bouton.BoutonUnMute(controle,1);
         JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topRightPanel.add(UnMute, BorderLayout.EAST);
         topRightPanel.setOpaque(false);

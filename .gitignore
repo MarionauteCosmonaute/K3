@@ -25,5 +25,5 @@ hs_err_pid*
 replay_pid*
 
 #save files
-saves/*.txt
+saves/*
 

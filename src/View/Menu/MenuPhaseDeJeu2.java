@@ -31,7 +31,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             JPanel topPanel = new JPanel(new GridLayout(1, 3)); // pour les boutons
 
             // Bouton Retour
-            Retour = Bouton.BoutonRetour();
+            Retour = Bouton.BoutonRetour(1);
             Retour.addActionListener(new ActionListener() {
 
                 @Override
@@ -81,7 +81,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             topPanel.add(topCenter);            
 
             // Bouton du Son
-            UnMute = Bouton.BoutonUnMute(controle);
+            UnMute = Bouton.BoutonUnMute(controle,1);
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
             topRightPanel.setOpaque(false);

@@ -112,7 +112,7 @@ public class PDJPyramideIA extends PDJPyramideAbstaite {
         else if (jeu.get_player() == 1){
             drawable.setColor(Color.RED);
         }
-        
+        parent.setBorder(BorderFactory.createLineBorder(drawable.getColor(),5));
         drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre/10,width_fenetre/10)));
         String languageCode = Global.Config.getLanguage();
         switch(languageCode){

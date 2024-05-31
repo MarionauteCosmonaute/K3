@@ -30,17 +30,25 @@ public class Bouton {
 		return new JButton(iconMute);
 	}
 
-	public static JButton BoutonUnMute(CollecteurEvenements controle) {
+	public static JButton BoutonUnMute(CollecteurEvenements controle, int sombre) {
 		Image resizedImageUnMute = null;
 		Image resizedImageMute = null;
 		JButton out = new JButton();
 		SourisAdapte sourisUnMute = null;
 		try {
 			sourisUnMute = new SourisAdapte(out, FileLoader.getSound("res/clic.wav"));
-			resizedImageUnMute = Global.FileLoader.getImage("res/mute64.png").getScaledInstance(40, 30,
+			if(sombre == 1){
+				resizedImageUnMute = Global.FileLoader.getImage("res/mute64_blanc.png").getScaledInstance(40, 30,
 					Image.SCALE_SMOOTH);
-			resizedImageMute = Global.FileLoader.getImage("res/son64.png").getScaledInstance(40, 30,
+				resizedImageMute = Global.FileLoader.getImage("res/son64_blanc.png").getScaledInstance(40, 30,
 					Image.SCALE_SMOOTH);
+			}
+			else {
+				resizedImageUnMute = Global.FileLoader.getImage("res/mute64.png").getScaledInstance(40, 30,
+					Image.SCALE_SMOOTH);
+				resizedImageMute = Global.FileLoader.getImage("res/son64.png").getScaledInstance(40, 30,
+					Image.SCALE_SMOOTH);
+			}
 		} catch (Exception e) {
 			System.exit(1);
 		}
@@ -71,15 +79,21 @@ public class Bouton {
 		return out;
 	}
 
-	public static JButton BoutonRetour() {
+	public static JButton BoutonRetour(int sombre) {
 		JButton out = new JButton();
 		out.setFocusable(false);
 		Image resizedImageRetour = null;
 		SourisAdapte sourisRetour = null;
 		try {
 			sourisRetour = new SourisAdapte(out, FileLoader.getSound("res/clic.wav"));
-			resizedImageRetour = Global.FileLoader.getImage("res/retour.png").getScaledInstance(40, 30,
+			if(sombre == 1){
+				resizedImageRetour = Global.FileLoader.getImage("res/retour_blanc.png").getScaledInstance(40, 30,
 					Image.SCALE_SMOOTH);
+			}
+			else{
+				resizedImageRetour = Global.FileLoader.getImage("res/retour.png").getScaledInstance(40, 30,
+					Image.SCALE_SMOOTH);
+			}
 		} catch (Exception e) {
 			System.exit(1);
 		}

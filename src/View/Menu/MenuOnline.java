@@ -40,7 +40,7 @@ public class MenuOnline extends Menu{
 
             content.add(centrePanel, BorderLayout.CENTER);
 
-            UnMute = Bouton.BoutonUnMute(controle);
+            UnMute = Bouton.BoutonUnMute(controle,0);
 
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
@@ -54,7 +54,7 @@ public class MenuOnline extends Menu{
             UnMute.setContentAreaFilled(false);
 
             // On s'occupe de mettre la fleche retour en haut à gauche
-            Retour = Bouton.BoutonRetour();
+            Retour = Bouton.BoutonRetour(0);
             Retour.addActionListener(new RetourMenuPAdapeur(controle));
             JPanel topLefttPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             topLefttPanel.add(Retour, BorderLayout.EAST);

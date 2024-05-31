@@ -39,7 +39,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		joueur_initial = j.get_player();
 		penalty = false;
 		gagnant = -1;
-		timer_sablier = new Timer(500, new ActionListener()
+		timer_sablier = new Timer(1000, new ActionListener()
 			{
 				@Override
 				public void actionPerformed(ActionEvent e) {

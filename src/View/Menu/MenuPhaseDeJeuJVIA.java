@@ -33,7 +33,7 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             JPanel topPanel = new JPanel(new GridLayout(1, 3)); // pour les boutons
 
             // Bouton Retour
-            Retour = Bouton.BoutonRetour();
+            Retour = Bouton.BoutonRetour(1);
             Retour.addActionListener(new ActionListener() {
 
                 @Override
@@ -82,7 +82,7 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             topPanel.add(topCenter);
 
             // Bouton du Son
-            UnMute = Bouton.BoutonUnMute(controle);
+            UnMute = Bouton.BoutonUnMute(controle,1);
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
             topRightPanel.setOpaque(false);
@@ -117,7 +117,6 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             joueursPanel.add(bottomRightPanel);
 
             // Joueur Bleu
-            bottomLeftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
             joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur
                                                                                         // 1
             bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, pdj));
@@ -125,7 +124,6 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             joueur1.setVisible(true);
 
             // Joueur Rouge
-            bottomRightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
             joueur2 = (new PDJPyramideIA(J, bottomRightPanel, 1)); // ajoute la pyramide de l'IA
             bottomRightPanel.addMouseListener(new AdaptateurSourisIA(controle, joueur2, pdj));
             bottomRightPanel.add(joueur2, BorderLayout.CENTER);
