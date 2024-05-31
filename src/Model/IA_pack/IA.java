@@ -82,16 +82,14 @@ public abstract class IA {
                         total_j2 += current_possibilities;
                     }
 
-                    total = (int) (total_j1) + (int) (j.getPlayer().totalCube() + 1000)
-                            - (int) (j.getPlayer(j.next_player()).totalCube() + 1000) - (int) (total_j2);
-                    /*
-                     * if (bon_joueur) {
-                     * return total;
-                     * } else {
-                     * return -total;
-                     * }
-                     */
-                    return total;
+                    total = (int) (total_j1) + (int) (j.getPlayer().totalCube() * 1000)
+                            - (int) (j.getPlayer(j.next_player()).totalCube() * 1000) - (int) (total_j2);
+                    
+                    if (bon_joueur) {
+                        return total;
+                    } else {
+                        return -total;
+                    }
                 case 2: // IA Difficile
                     System.out.println("cas IA difficile");
                     cubes_access2 = j.Accessible_Playable(j.next_player()); // Necessaire de pouvoir récupérer les
@@ -102,18 +100,14 @@ public abstract class IA {
                                 (int) compte.getX(), (int) compte.getY()).size();
                         total_j2 += current_possibilities;
                     }
-                    total = (int) (total_j1) + (int) (j.getPlayer().totalCube() + 1000) + total_access + 100
-                            - ((int) (j.getPlayer(j.next_player()).totalCube() + 1000) + (int) (total_j2)
-                                    + (total_access2 + 100));
-                    /*
-                     * if (bon_joueur) {
-                     * return total;
-                     * } else {
-                     * return -total;
-                     * }
-                     */
-                    System.out.println("----------------- total cubes : " + (j.getPlayer().totalCube()));
+                    total = (int) (total_j1) + (int) (j.getPlayer().totalCube() * 10000) + total_access * 100
+                            - ((int) (j.getPlayer(j.next_player()).totalCube() * 10000) + (int) (total_j2)
+                                    + (total_access2 * 100));
+                    if (bon_joueur) {
                     return total;
+                    } else {
+                    return -total;
+                    }
             }
         }
         if (bon_joueur) {
@@ -128,7 +122,7 @@ public abstract class IA {
                         for (Point access : clone.Accessible_Playable()) {
                             Jeu clone_pen = clone.clone();
                             clone_pen.takePenaltyCube((int) access.getX(), (int) access.getY());
-                            value = Math.max(value, MinMaxIA(clone_pen, depth - 1, player_max, alpha, beta, IA));
+                            value = Math.max(value+10000, MinMaxIA(clone_pen, depth - 1, player_max, alpha, beta, IA));
                         }
                     } else {
                         // System.out.println( value + " " + depth + " " + alpha + " " + beta );
@@ -139,10 +133,10 @@ public abstract class IA {
                          * System.out.println();
                          */
                     }
-                    if (beta <= value) {
+                    if (alpha >= value) {
                         return value;
                     }
-                    alpha = Math.max(alpha, value);
+                    beta = Math.min(beta, value);
                 }
             }
         } else {
@@ -157,15 +151,16 @@ public abstract class IA {
                         for (Point access : clone.Accessible_Playable()) {
                             Jeu clone_pen = clone.clone();
                             clone_pen.takePenaltyCube((int) access.getX(), (int) access.getY());
-                            value = Math.min(value, MinMaxIA(clone_pen, depth - 1, player_max, alpha, beta, IA));
+                            value = Math.min(value-10000, MinMaxIA(clone_pen, depth - 1, player_max, alpha, beta, IA));
                         }
                     } else {
                         value = Math.min(value, MinMaxIA(clone, depth - 1, player_max, alpha, beta, IA));
                     }
-                    if (alpha >= value) {
+                    
+                    if (beta <= value) {
                         return value;
                     }
-                    beta = Math.min(beta, value);
+                    alpha = Math.max(alpha, value);
                 }
             }
         }
@@ -325,7 +320,7 @@ public abstract class IA {
     }
 
     public void constructionAleatoire() {
-        jeu.constructionAleatoire(jeu.getPlayer(indiceJoueur));
+        jeu.constructionAleatoire(indiceJoueur);
     }
 
     public void takePenaltyCube() {

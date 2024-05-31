@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import Model.History.*;
+import Model.Iterateur.Iterateur;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -154,15 +155,8 @@ public class Jeu extends Observable implements Cloneable {
         return principale.get(x, y);
     }
 
-    public void constructionAleatoire(Player player) {
-        for (int i = player.getSize() - 1; i >= 0; i--) {
-            for (int j = 0; j < player.getSize() - i; j++) {
-                if (player.getPyramid().get(i, j) == Cube.Vide && !player.bagEmpty()) {
-                    Collections.shuffle(player.getPersonalBag());
-                    player.construction(i, j, player.getPersonalBag().get(0));
-                }
-            }
-        }
+    public void constructionAleatoire(int playerID) {
+        getPlayer(playerID).constructionAleatoire();
     }
 
     /************************************ */
@@ -184,7 +178,7 @@ public class Jeu extends Observable implements Cloneable {
         return start;
     }
 
-    public void annule() {
+    /*public void annule() {
 
         Coup coup = hist.annule();
         if (coup != null) {
@@ -253,9 +247,11 @@ public class Jeu extends Observable implements Cloneable {
             }
             metAJour();
         }
-    }
+    }*/
+    public void annule(){}
 
-    public void refais() {
+    public void refais(){}
+    /*public void refais() {
         Coup coup = hist.refais();
         if (coup != null) {
             switch (coup.type) {
@@ -313,7 +309,7 @@ public class Jeu extends Observable implements Cloneable {
             avance();
             metAJour();
         }
-    }
+    }*/
 
     /** Coup **/
     /** Debut de partie **/

@@ -366,7 +366,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "AideConstruction":
 				jeu.resetBag();
-				jeu.constructionAleatoire(jeu.getPlayer());
+				jeu.constructionAleatoire(jeu.get_player());
 				((MenuPhaseConstruction) menuListe.get(indice_courant)).getAffichagePhaseConstruction().resetBooleans();
 				// System.out.println(jeu.getPlayer().getPyramid());
 				((MenuPhaseConstruction) menuListe.get(indice_courant)).repaint();

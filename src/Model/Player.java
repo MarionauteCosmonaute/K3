@@ -1,6 +1,8 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 import Model.Iterateur.Iterateur;
 import java.util.NoSuchElementException;
 
@@ -16,7 +18,7 @@ public class Player {
     int size;
     boolean loss;
 
-    Player(int i) {
+    public Player(int i) {
         size = i;
         pyramid = new Pyramid(size);
 
@@ -89,10 +91,18 @@ public class Player {
         return personalBag;
     }
 
-    public int totalCube() {
+    public int totalCube(){
+        Iterateur it = pyramid.iterateur("UP");
+        int total = 0;
+        while(it.hasNext()){if(it.next()!= Cube.Vide) total++;}
+        total+= side.size();
+        return total;
+    }
+
+    /*public int totalCube() {
         // CUBE VIDE => Total of all colours
         return ColourAmmount(Cube.Vide);
-    }
+    }*/
 
     public int ColourAmmount(Cube cube) {
         if (cube == Cube.Vide) {
@@ -123,6 +133,7 @@ public class Player {
             side.add(personalBag.remove(0));
         }
     }
+
 
     public void increment(Cube c) {
         if (c != Cube.Vide) {
@@ -211,7 +222,7 @@ public class Player {
 
     public void addBag(Cube cube) {
         incrementBag(cube);
-        personalBag.add(cube);
+        if(cube != Cube.Vide) personalBag.add(cube);
     }
 
     public void build(Pyramid pyramide) {
@@ -255,6 +266,20 @@ public class Player {
         pyramid.set(x, y, cube);
     }
 
+    public void constructionAleatoire(){
+        Iterateur it = pyramid.iterateur("UP");
+        Cube cube;
+        while(it.hasNext()){
+            if(it.next() == Cube.Vide && !personalBag.isEmpty()){
+                Collections.shuffle(personalBag);
+                cube = personalBag.remove(0);
+                decrementBag(cube);
+                increment(cube);
+                it.modify(cube);
+            }
+        }
+    }
+
     /* Swaps two cubes positions */
     public void permutation(int x, int y, int x_p, int y_p) {
         Cube cube = get(x, y);
@@ -263,15 +288,13 @@ public class Player {
     }
 
     public void resetBag() {
+        Iterateur personalIt = pyramid.iterateur("UP");
         Cube cube;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                cube = get(i, j);
-                if (cube != Cube.Vide) {
-                    addBag(cube);
-                    construction(i, j, cube);
-                }
-            }
+        while (personalIt.hasNext()) {
+            cube = personalIt.next();
+            decrement(cube);
+            addBag(cube);
+            personalIt.modify(Cube.Vide);
         }
     }
 
@@ -295,8 +318,11 @@ public class Player {
 
     @Override
     public String toString() {
-        String chaine = "Noir: " + noir + "     Bleu: " + bleu + "     Blanc: " + blanc + "     Rouge: " + rouge
-                + "\nJaune: " + jaune + "     Vert: " + vert + "      Neutre: " + neutre + "\n";
+        String chaine = "Cube en jeu\nNoir: " + nbCube[Cube.Noir.getInt()] + "     Bleu: " + nbCube[Cube.Bleu.getInt()] + "     Blanc: " + nbCube[Cube.Blanc.getInt()] + "     Rouge: " + nbCube[Cube.Rouge.getInt()]
+                + "\nJaune: " + nbCube[Cube.Jaune.getInt()] + "     Vert: " + nbCube[Cube.Vert.getInt()] + "      Neutre: " + nbCube[Cube.Neutre.getInt()] + "\n";
+        chaine += "PersonalBag\nNoir: " + nbCubeBag[Cube.Noir.getInt()] + "     Bleu: " + nbCubeBag[Cube.Bleu.getInt()] + "     Blanc: " + nbCubeBag[Cube.Blanc.getInt()] + "     Rouge: " + nbCubeBag[Cube.Rouge.getInt()]
+                + "\nJaune: " + nbCubeBag[Cube.Jaune.getInt()] + "     Vert: " + nbCubeBag[Cube.Vert.getInt()] + "      Neutre: " + nbCubeBag[Cube.Neutre.getInt()] + "\n";
+        
         chaine += "Bag: ";
         int nb = 0;
         for (Cube cube : personalBag) {
