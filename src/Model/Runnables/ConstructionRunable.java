@@ -23,14 +23,20 @@ public class ConstructionRunable implements Runnable{
         catch(CloneNotSupportedException e){System.err.println("Exception catched when creating clone for the 'ConstructionRunable'");System.exit(1);}
         int nbCoup = 0;
         while( !ZeBest.done() && !jeu.End_Game() ){
+            //System.out.println("tour de l'ia: " + jeu.get_player());
             if(jeu.check_loss()){}
             else {
                 if(jeu.get_player() == indice){
                     nbCoup++;
+                    //System.out.println("Un coup jouer en plus");
                     if(ia1.jouer_coup() == 2){ia2.takePenaltyCube();} 
                 }else if(ia2.jouer_coup() == 2){ia1.takePenaltyCube();}
             }
         }
-        if(jeu.End_Game()){ZeBest.add(pyramide, nbCoup);}
+        if(jeu.End_Game()){
+            ZeBest.add(pyramide, nbCoup);
+        }
+        
+        //System.out.println("Un thread a finis de calculer");
     }
 }

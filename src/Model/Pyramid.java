@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Vector;
+
 import Model.Iterateur.*;
 
 public class Pyramid {
@@ -126,10 +128,22 @@ public class Pyramid {
     //Fonction Clone 
     public Pyramid clone() throws CloneNotSupportedException {
         Pyramid clone = new Pyramid(size);  // Clone the basic object structure
-        for (int i = 0; i < size; i++) {
-            System.arraycopy(pyramid[i], 0, clone.pyramid[i], 0, size);
+        Iterateur it = iterateur("UP"),itClone = clone.iterateur("UP");
+        while(it.hasNext()){
+            itClone.next();
+            itClone.modify(it.next());
         }
         return clone;
+    }
+
+    public Vector<Integer> hash(){
+        Vector<Integer> vect = new Vector<>(); 
+        Iterateur it = iterateur("UP");
+        
+        while(it.hasNext()){
+            vect.add(it.next().getInt());
+        }
+        return vect;
     }
     
 }

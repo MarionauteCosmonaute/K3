@@ -5,15 +5,14 @@ import Model.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class ConstructionThreadManager implements Runnable{
+public class ConstructionThreadManager implements Runnable {
     Jeu jeu;
     BestPyramide ZeBest;
-    int nbThreads = 4, difficulte, indice;
+    int nbThreads = 2, difficulte, indice;
     ArrayList<Cube> potentielCube;
-    
 
-
-    public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube, int difficulte, int indice){
+    public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube, int difficulte,
+            int indice) {
         this.jeu = jeu;
         this.ZeBest = ZeBest;
         this.potentielCube = potentielCube;
@@ -21,7 +20,8 @@ public class ConstructionThreadManager implements Runnable{
         this.indice = indice;
     }
 
-    public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube, int difficulte, int indice, int nbThreads){
+    public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube, int difficulte,
+            int indice, int nbThreads) {
         this.jeu = jeu;
         this.ZeBest = ZeBest;
         this.potentielCube = potentielCube;
@@ -30,45 +30,60 @@ public class ConstructionThreadManager implements Runnable{
         this.nbThreads = nbThreads;
     }
 
-    public void finish(){
+    public void finish() {
         ZeBest.finish();
     }
 
-    public Thread doWork(Jeu game){
+    public Thread doWork(Jeu game) {
         Random rand = new Random();
         Cube cube = potentielCube.get(rand.nextInt(potentielCube.size()));
-        game.getPlayer(indice).construction(game.getPlayer(indice).getSize()-1, 0, cube);
+        game.getPlayer(indice).construction(game.getPlayer(indice).getSize() - 1, 0, cube);
         Thread thread = new Thread(new ConstructionRunable(game, ZeBest, difficulte, indice));
         thread.start();
+        //System.out.println("Un nouveau thread est creer");
         return thread;
     }
 
-    public void run(){
+    public void run() {
         jeu.getPlayer(jeu.next_player(indice)).fusion();
         Thread[] threads = new Thread[nbThreads];
 
-        for(int i = 0; i < nbThreads; i++){
+        for (int i = 0; i < nbThreads; i++) {
             threads[i] = doWork(jeu.clone());
         }
-        
-        while(!ZeBest.done()){
-            
-            for(int i = 0; i < nbThreads; i++ ){
-                try{
+        //boolean bool = true;
+        while (!ZeBest.done()) {
+            /*if (ZeBest.getPyramid() != null && bool) {
+                System.out.println();
+                System.out.println();
+                System.out.println("L'IA a trouver une pyramide");
+                System.out.println();
+                System.out.println();
+                bool = false;
+            }*/
+            for (int i = 0; i < nbThreads; i++) {
+                try {
                     threads[i].join(100);
                 }
 
-                catch(InterruptedException e){System.err.println(e);System.exit(1);}
-                if( !threads[i].isAlive() && !ZeBest.done() ){
+                catch (InterruptedException e) {
+                    System.err.println(e);
+                    System.exit(1);
+                }
+                if (!threads[i].isAlive() && !ZeBest.done()) {
                     threads[i] = doWork(jeu.clone());
+
                 }
             }
         }
 
-        for(Thread thread : threads){
-            try{thread.join();}
-            catch(InterruptedException e){System.err.println(e);System.exit(1);}
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                System.err.println(e);
+                System.exit(1);
+            }
         }
-
     }
 }
