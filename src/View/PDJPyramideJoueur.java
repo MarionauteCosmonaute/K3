@@ -115,8 +115,13 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
         }
         else
         {
+            System.out.println("--------------> x_select= "+x_selec);
+            if( y_selec == -1)
+            {
+                System.out.println("--------------> y_select= "+y_selec);
+                StructurePainter.dessiner_side_Moins1(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSide(), x_selec);
+            }
             StructurePainter.dessiner_pyramide_moins1(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid(),jeu.getPlayer(joueur).getSideSize() > 0, joueur, 5 - x_selec, y_selec);
-            StructurePainter.dessiner_side(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSide());
         }
 
 

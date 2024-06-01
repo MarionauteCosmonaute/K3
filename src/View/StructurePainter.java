@@ -171,6 +171,60 @@ public class StructurePainter {
         }
     }
 
+    public static void dessiner_side_Moins1(Graphics g, int height, int width, ArrayList<Cube> side, int x1) {
+        Graphics2D drawable = (Graphics2D) g;
+        int taille_cube = taille_cube_joueur;
+        int espace = taille_cube / 10;
+        int x_haut = 0, y_haut = 0;
+        Cube cube;
+        int taille_side = side.size(); //a revoir pour utiliser la fonction getSideSize mais elle est dans player
+
+        
+        // y_haut = ((width *5)/6 - (taille_cube / 2) * (x + 1) + taille_cube * y - (espace * x) / 2);
+        y_haut = width/2 + 3*taille_cube_joueur;
+        for(int x = 0; x < taille_side; x++){
+            x_haut = height / 2 - (taille_cube / 2) * 5 + taille_cube * (5-x)
+                    - (espace * 6) / 2;
+            cube = side.get(x);
+            points_side[x] = (new Point(y_haut, x_haut - espace * x));
+            if (x != x1)
+            {
+                switch (cube) {
+                    case Noir:
+                        drawable.drawImage(noir, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Neutre:
+                        drawable.drawImage(neutre, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Blanc:
+                        drawable.drawImage(blanc, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Vert:
+                        drawable.drawImage(vert, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Jaune:
+                        drawable.drawImage(jaune, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Rouge:
+                        drawable.drawImage(rouge, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Bleu:
+                        drawable.drawImage(bleu, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
     public static void dessiner_pyramide_moins1(Graphics g, int height, int width, Pyramid pyramide, boolean side, int joueur, int x1, int y1) {
         System.out.println("StructurePainter dessiner_pyramide_moins1");
         Graphics2D drawable = (Graphics2D) g;
