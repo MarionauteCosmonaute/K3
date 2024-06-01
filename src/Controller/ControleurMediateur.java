@@ -141,7 +141,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	public void metAJourRefaire()
 	{
-		if (!jeu.refaisEmpty())
+		if (jeu.refaisEmpty())
 		{
 			System.out.println("----> refaire grisé");
 			vue.getMenuPhaseDeJeu2().setRefaire(false);
@@ -159,7 +159,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	public void metAJourAnnule()
 	{
-		if (!jeu.annuleEmpty())
+		if (jeu.annuleEmpty())
 		{
 			System.out.println("----> annule grisé");
 			vue.getMenuPhaseDeJeu2().setAnnuler(false);
@@ -430,7 +430,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			
 			case "AideConstruction":
 				jeu.resetBag(); 
-				jeu.constructionAleatoire(jeu.getPlayer());
+				jeu.constructionAleatoire(jeu.get_player());
 				vue.getMenuPhaseConstruction().reset();
 				//System.out.println(jeu.getPlayer().getPyramid());
 				vue.getMenuPhaseConstruction().repaint();
@@ -458,6 +458,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				//try{Thread.sleep(100);}
 				//catch(Exception e){}
 				ia.construction();
+
 				
 				if(jeu.get_player() == 1){
 					timer_sablier.start();
@@ -489,6 +490,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 					}
 					
 					jeu.gameStart();
+					if(IAON){
+						try{ia.thread().join();}catch(Exception e){System.out.println(e);System.exit(1);}
+					}
 					jeu.sauvegarde(qs);
 					jeu.check_loss();
 					if(jeu.getPlayer().lost()){

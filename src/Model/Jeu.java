@@ -823,4 +823,16 @@ public class Jeu extends Observable implements Cloneable {
         hash.add(principale.hash());
         return hash.hashCode();
     }
+
+    public void changeCurrentPlayer(int joueur_initial) {
+        current_player=joueur_initial;
+    }
+
+    public boolean refaisEmpty() {
+        return true;
+    }
+
+    public boolean annuleEmpty() {
+        return true;
+    }
 }
