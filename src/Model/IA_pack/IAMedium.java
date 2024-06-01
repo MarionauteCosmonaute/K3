@@ -17,9 +17,8 @@ public class IAMedium extends IA {
     }*/
 
     @Override
-    public void construction() {
-
-        constructionThread = new Thread(new StartConstruction(this));
+    public void construction(boolean aide) {
+        constructionThread = new Thread(new StartConstruction(this,aide));
         constructionThread.start();
     }
 }

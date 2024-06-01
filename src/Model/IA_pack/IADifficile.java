@@ -20,9 +20,9 @@ public class IADifficile extends IA {
     }*/
 
     @Override
-    public void construction() {
+    public void construction(boolean aide) {
 
-        constructionThread = new Thread(new StartConstruction(this));
+        constructionThread = new Thread(new StartConstruction(this,aide));
         constructionThread.start();
     }
 }

@@ -242,7 +242,9 @@ public abstract class IA {
         player.resetBag();
         
         BestPyramide ZeBest = new BestPyramide();
-        Thread manager = new Thread(new ConstructionThreadManager(clone, ZeBest, list, difficulte, indiceJoueur));
+        int difficulty = difficulte;
+        if(difficulty == 2) difficulty = 1;
+        Thread manager = new Thread(new ConstructionThreadManager(clone, ZeBest, list, difficulty, indiceJoueur));
         manager.start();
 
         // phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
@@ -301,7 +303,10 @@ public abstract class IA {
         
     }
 
-    public void construction() {
+    public void construction(){
+        construction(false);
+    }
+    public void construction(boolean aide) {
         throw new UnsupportedOperationException();
     }
 
@@ -318,8 +323,11 @@ public abstract class IA {
         }
     }
 
-    public void generationPyramide() {
-        Pyramid pyramide = generePyramide();
+    public void generationPyramide(){
+        generationPyramide(false);
+    }
+    public void generationPyramide(boolean aide) {
+        Pyramid pyramide = generePyramide(aide);
         jeu.getPlayer(indiceJoueur).build(pyramide);
         heuristique = new HashMap<>();
     }

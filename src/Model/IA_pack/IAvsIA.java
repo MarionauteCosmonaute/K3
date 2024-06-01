@@ -20,7 +20,7 @@ public class IAvsIA {
         IA ia0 = IA.nouvelle(jeu,difficulte1,0);
         IA ia1 = IA.nouvelle(jeu, difficulte2, 1);
         construction(ia0,ia1);
-        
+        //System.out.println("simulation commence");
         while(!jeu.End_Game()){
             if(jeu.check_loss()){}
             else{
@@ -54,8 +54,10 @@ public class IAvsIA {
             jeu.constructionAleatoire(1);
         }
         else{
-            ia0.construction();
-            ia1.construction();
+            ia0.construction(true);
+            ia1.construction(true);
+            try{ia0.thread().join();ia1.thread().join();}
+            catch(InterruptedException e){System.err.println(e);}
         }
     }
     

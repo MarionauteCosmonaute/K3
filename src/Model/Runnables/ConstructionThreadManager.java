@@ -40,7 +40,7 @@ public class ConstructionThreadManager implements Runnable {
         game.getPlayer(indice).construction(game.getPlayer(indice).getSize() - 1, 0, cube);
         Thread thread = new Thread(new ConstructionRunable(game, ZeBest, difficulte, indice));
         thread.start();
-        System.out.println("Un nouveau thread est creer");
+        //System.out.println("Un nouveau thread est creer");
         return thread;
     }
 
@@ -51,16 +51,16 @@ public class ConstructionThreadManager implements Runnable {
         for (int i = 0; i < nbThreads; i++) {
             threads[i] = doWork(jeu.clone());
         }
-        boolean bool = true;
+        //boolean bool = true;
         while (!ZeBest.done()) {
-            if (ZeBest.getPyramid() != null && bool) {
+            /*if (ZeBest.getPyramid() != null && bool) {
                 System.out.println();
                 System.out.println();
                 System.out.println("L'IA a trouver une pyramide");
                 System.out.println();
                 System.out.println();
                 bool = false;
-            }
+            }*/
             for (int i = 0; i < nbThreads; i++) {
                 try {
                     threads[i].join(100);
