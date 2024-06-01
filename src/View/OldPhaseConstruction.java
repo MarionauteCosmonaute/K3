@@ -570,7 +570,13 @@ public class OldPhaseConstruction {
                 joueurLabel.setForeground(new Color(255,0,0));
                 break;
         }
-    } 
+    }
+    
+    // Retourne la couleur du cube de la pioche sur lequel on vient de cliquer
+    // public Cube GetCubeChope(int x, int y)
+    // {
+    //     return 
+    // }
 
     static int showConfirmDialog() {
         String languageCode = Global.Config.getLanguage();

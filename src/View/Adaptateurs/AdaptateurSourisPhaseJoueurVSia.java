@@ -128,45 +128,45 @@ public class AdaptateurSourisPhaseJoueurVSia extends MouseAdapter {
     {
        Cube cube = pdj.GetCubeChope(x, y, side);
        switch (cube) {
-        case Noir:
-            // System.out.println("cube noir");
+            case Noir:
+                // System.out.println("cube noir");
 
-            return "res/carre_noir.png";
+                return "res/carre_noir.png";
 
-        case Neutre:
-            // System.out.println("cube neutre");
+            case Neutre:
+                // System.out.println("cube neutre");
 
-            return "res/carre_bois.png";
+                return "res/carre_bois.png";
 
-        case Blanc:
-            // System.out.println("cube blanc");
+            case Blanc:
+                // System.out.println("cube blanc");
 
-            return "res/carre_vide.png";
+                return "res/carre_vide.png";
 
-        case Vert:
-            // System.out.println("cube vert");
+            case Vert:
+                // System.out.println("cube vert");
 
-            return "res/carre_vert.png";
+                return "res/carre_vert.png";
 
-        case Jaune:
-            // System.out.println("cube jaune");
+            case Jaune:
+                // System.out.println("cube jaune");
 
-            return "res/carre_jaune.png";
+                return "res/carre_jaune.png";
 
-        case Rouge:
-            // System.out.println("cube rouge");
+            case Rouge:
+                // System.out.println("cube rouge");
 
-            return "res/carre_rouge.png";
+                return "res/carre_rouge.png";
 
-        case Bleu:
-            // System.out.println("cube bleu");
+            case Bleu:
+                // System.out.println("cube bleu");
 
-            return "res/carre_bleu.png";
+                return "res/carre_bleu.png";
 
-        default:
-            // System.out.println("default");
-            return "Erreur";
-    }
+            default:
+                // System.out.println("default");
+                return "Erreur";
+        }
 
     }
 }
