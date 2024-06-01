@@ -8,7 +8,7 @@ import java.util.Random;
 public class ConstructionThreadManager implements Runnable {
     Jeu jeu;
     BestPyramide ZeBest;
-    int nbThreads = 2, difficulte, indice;
+    int nbThreads = 3, difficulte, indice;
     ArrayList<Cube> potentielCube;
 
     public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube, int difficulte,
@@ -38,7 +38,7 @@ public class ConstructionThreadManager implements Runnable {
         Random rand = new Random();
         Cube cube = potentielCube.get(rand.nextInt(potentielCube.size()));
         game.getPlayer(indice).construction(game.getPlayer(indice).getSize() - 1, 0, cube);
-        Thread thread = new Thread(new ConstructionRunable(game, ZeBest, difficulte, indice));
+        Thread thread = new Thread(new ConstructionRunable(game, ZeBest, 0, indice));
         thread.start();
         //System.out.println("Un nouveau thread est creer");
         return thread;
