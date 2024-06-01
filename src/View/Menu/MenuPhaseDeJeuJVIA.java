@@ -86,7 +86,7 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             topPanel.add(topCenter);
 
             // Bouton du Son
-            UnMute = new BoutonUnMute(controle,1);
+            UnMute = new BoutonUnMute(controle,1,content);
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
             topRightPanel.setOpaque(false);

@@ -2,6 +2,7 @@ package View.Menu;
 
 import View.CollecteurEvenements;
 import View.Bouton;
+import View.BoutonUnMute;
 import View.PDJPyramideCentrale;
 import View.PDJPyramideJoueur;
 import java.awt.event.ActionEvent;
@@ -17,7 +18,8 @@ import Model.Jeu;
 import Patterns.Observateur;
 
 public class MenuPhaseDeJeu2 extends Menu implements Observateur {
-    JButton Aide, Regles,UnMute, Annuler, Refaire;
+    JButton Aide, Regles, Annuler, Refaire;
+    BoutonUnMute UnMute;
     PDJPyramideCentrale pdj;
     PDJPyramideJoueur joueur1,joueur2;
     
@@ -91,7 +93,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             topPanel.add(topCenter);            
 
             // Bouton du Son
-            UnMute = Bouton.BoutonUnMute(controle,1);
+            UnMute = new BoutonUnMute(controle,1,content);
             UnMute.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);

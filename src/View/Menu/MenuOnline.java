@@ -41,7 +41,7 @@ public class MenuOnline extends Menu{
 
             content.add(centrePanel, BorderLayout.CENTER);
 
-            UnMute = new BoutonUnMute(controle,0);
+            UnMute = new BoutonUnMute(controle,0,content);
 
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);

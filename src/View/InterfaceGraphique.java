@@ -100,14 +100,14 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		MenuOnline online =new MenuOnline(controle);//5
 		addMenu(online);
 		tickIA = new Timer(5000,new AdaptateurJoueIA(controle));
-		anim=new Timer(1000,new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e){
-				getcurMenu().repaint();
-			}
-		});
-		anim.start();
+		// anim=new Timer(1000,new ActionListener(){
+// 
+			// @Override
+			// public void actionPerformed(ActionEvent e){
+				// getcurMenu().repaint();
+			// }
+		// });
+		//anim.start();
 		//controle.commande("MenuOnline");
 
 		// On ajoute la souris et le clavier
@@ -137,6 +137,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		}
 		current_menu = n_indice;
 		addFrame(getcurMenu());
+		getcurMenu().repaint();
 		getcurMenu().setVisible(true);
 	}
 
