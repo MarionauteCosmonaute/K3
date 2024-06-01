@@ -26,7 +26,7 @@ public class Jeu extends Observable implements Cloneable {
     int current_player, size;
     boolean End, start;
     Historique hist;
-    boolean penality = false;
+    boolean penality = false,clone = false;
 
     public boolean getPenality() {
         return penality;
@@ -48,6 +48,7 @@ public class Jeu extends Observable implements Cloneable {
         nbJoueur = nb;
         End = false;
         start = false;
+        clone = false;
         players = new Player[nb];
         playerConst = new boolean[nb];
         hist = new Historique();
@@ -73,6 +74,7 @@ public class Jeu extends Observable implements Cloneable {
         }
         Random r = new Random();
         current_player = r.nextInt(nb);
+        
         metAJour();
     }
 
@@ -80,7 +82,7 @@ public class Jeu extends Observable implements Cloneable {
         try {
             Scanner s = new Scanner(new FileInputStream(fileName));
             String[] chaine = s.nextLine().split(" ");
-
+            clone = false;
             hist = new Historique();
             nbJoueur = Integer.parseInt(chaine[0]);
             bag = new PawnsBag(nbJoueur);
@@ -160,6 +162,11 @@ public class Jeu extends Observable implements Cloneable {
 
     public Player[] getAllPlayers(){
         return players;
+    }
+
+    public void initTest(){
+        initPrincipale();
+        while(draw()){}
     }
 
     /************************************ */
@@ -248,7 +255,7 @@ public class Jeu extends Observable implements Cloneable {
                         break;
                 }
             }
-            metAJour();
+            if (!clone) metAJour();
         }
     }*/
     public void annule(){}
@@ -310,7 +317,7 @@ public class Jeu extends Observable implements Cloneable {
                     break;
             }
             avance();
-            metAJour();
+            if (!clone) metAJour();
         }
     }*/
 
@@ -348,7 +355,7 @@ public class Jeu extends Observable implements Cloneable {
                                                           */
         getPlayer().set(x, y, cube);
         avance();
-        metAJour();
+        if (!clone) metAJour();
     }
 
     /*
@@ -366,7 +373,7 @@ public class Jeu extends Observable implements Cloneable {
         } else {
             valid = add_central_pyramid(x_central, y_central, x_player, y_player);
         }
-        metAJour();
+        if (!clone) metAJour();
         switch (valid) {
             case 1:
             case 3:
@@ -397,7 +404,7 @@ public class Jeu extends Observable implements Cloneable {
                 if (x_central == 9) {
                     principale.extend();
                 }
-                hist.action(1, new Point(x_player, y_player), new Point(x_central, y_central));
+                if (!clone) hist.action(1, new Point(x_player, y_player), new Point(x_central, y_central));
             }
             return valid;
         }
@@ -412,20 +419,20 @@ public class Jeu extends Observable implements Cloneable {
         } else if (valid != 0) {
             players[current_player].removeSide(x_player);
             principale.set(x_central, y_central, cube);
-            hist.action(2, new Point(cube.getInt(), -1), new Point(x_central, y_central));
+            if (!clone) hist.action(2, new Point(cube.getInt(), -1), new Point(x_central, y_central));
         }
         return valid;
     }
 
     public void joueBlancPyramide(int x, int y) {
         getPlayer().set(x, y, Cube.Vide);
-        hist.action(5, new Point(x, y), new Point(-1, -1)); // (int type, Point s, Point d)
+        if (!clone) hist.action(5, new Point(x, y), new Point(-1, -1)); // (int type, Point s, Point d)
 
     }
 
     public void joueBlancSide(int x) {
         getPlayer().removeSide(x);
-        hist.action(6, new Point(x, -1), new Point(-1, -1));
+        if (!clone) hist.action(6, new Point(x, -1), new Point(-1, -1));
 
     }
 
@@ -443,7 +450,7 @@ public class Jeu extends Observable implements Cloneable {
         }
         penality = false;
         avance();
-        metAJour();
+        if (!clone) metAJour();
         check_loss();
 
     }
@@ -455,7 +462,7 @@ public class Jeu extends Observable implements Cloneable {
         Cube cube = players[current_player].get(x, y);
         players[next_player()].addSide(cube);
         getPlayer().set(x, y, Cube.Vide);
-        hist.action(3, new Point(x, y), new Point(cube.getInt(), -1));
+        if (!clone) hist.action(3, new Point(x, y), new Point(cube.getInt(), -1));
     }
 
     public void takePenaltyCubeFromSide(int x) { /*
@@ -465,7 +472,7 @@ public class Jeu extends Observable implements Cloneable {
         Cube cube = players[current_player].getSide(x);
         players[next_player()].addSide(cube);
         getPlayer().removeSide(x);
-        hist.action(4, new Point(-1, -1), new Point(cube.getInt(), -1));
+        if (!clone) hist.action(4, new Point(-1, -1), new Point(cube.getInt(), -1));
     }
 
     /*************/
@@ -555,7 +562,7 @@ public class Jeu extends Observable implements Cloneable {
                                    */
         if (noPlay()) {
             getPlayer().playerLost();
-            hist.action(7, new Point(-1, -1), new Point(current_player, -1));
+            if (!clone) hist.action(7, new Point(-1, -1), new Point(current_player, -1));
             int next = next_player();
             if (next == next_player(next)) {
                 End = true;
@@ -682,12 +689,13 @@ public class Jeu extends Observable implements Cloneable {
     public ArrayList<Point> Accessible_Playable() {
         return Accessible_Playable(current_player);
     }
-
+    
     public ArrayList<Point> Accessible_Playable(int i) { /*
                                                           * parmis les cube accessible les quel sont possible d'etre
                                                           * jouer, renvoie une liste de coordonee
                                                           */
         HashMap<Cube, Boolean> list = accessibleColors();
+        HashMap<Cube, Boolean> values = new HashMap<>();
         ArrayList<Point> Aksel = new ArrayList<Point>();
 
         for (Point e : AccessibleCubesPlayer(i)) {
@@ -698,9 +706,10 @@ public class Jeu extends Observable implements Cloneable {
         }
         int x = 0;
         for (Cube c : getPlayer(i).getSide()) {
-            if (c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c) || list.containsKey(Cube.Neutre)) {
+            if ( !values.containsKey(c) && (c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c) || list.containsKey(Cube.Neutre))) {
                 Point p = new Point(x, -1);
                 Aksel.add(p);
+                values.put(c,true);
             }
             x++;
         }
@@ -787,8 +796,11 @@ public class Jeu extends Observable implements Cloneable {
     public Jeu clone() {
         try {
             Jeu clone = (Jeu) super.clone(); // Clone the basic object structure
-
+            clone.clone = true;
+            clone.start = start;
+            clone.End = End;
             clone.players = new Player[nbJoueur];
+            clone.hist = null;
             for (int i = 0; i < nbJoueur; i++) {
                 clone.players[i] = players[i].clone();
             }
@@ -800,15 +812,15 @@ public class Jeu extends Observable implements Cloneable {
             System.err.println("Error Clone");
             System.exit(1);
         }
-        return new Jeu(2);
+        return null;
     }
 
     public int hashCode(){
         Vector<Vector<Integer>> hash = new Vector<>();
         for(Player player : players){
-            hash.add(player.hash());
+            hash.add(player.hash(clone));
         }
-
+        hash.add(principale.hash());
         return hash.hashCode();
     }
 }

@@ -10,6 +10,7 @@ public abstract class IA {
     Jeu jeu;
     int difficulte, indiceJoueur;
     HashMap<Jeu,Integer> heuristique;
+    Thread constructionThread;
 
     public static IA nouvelle(Jeu j, int difficulte, int indiceJoueur) {
         IA resultat = null;
@@ -41,7 +42,7 @@ public abstract class IA {
     }
 
     public int saveValue(Jeu jeu,int value){
-        //heuristique.put(jeu, value);
+        heuristique.put(jeu, value);
         return value;
     }
     
@@ -69,12 +70,19 @@ public abstract class IA {
             int total_j1 = 0;
             int total_j2 = 0;
             int total_access = cubes_access.size();
-            for (Point compte : cubes_access) { // Compte du nombre de coups jouable du j1
-                int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(), (int) compte.getY())
-                        .size();
-                total_j1 += current_possibilities;
+            ArrayList<Point> cubes_access2 = j.Accessible_Playable(j.next_player());
+            if(IA!=0){
+                for (Point compte : cubes_access) { // Compte du nombre de coups jouable du j1
+                    int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(), (int) compte.getY())
+                            .size();
+                    total_j1 += current_possibilities;
+                }
+                for (Point compte : cubes_access2) { 
+                    int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),
+                            (int) compte.getX(), (int) compte.getY()).size();
+                    total_j2 += current_possibilities;
+                }
             }
-            ArrayList<Point> cubes_access2 = new ArrayList<>();
 
             switch (IA) {
                 case 0: // IA Facile
@@ -84,13 +92,7 @@ public abstract class IA {
                         return saveValue(j,j.getPlayer(j.next_player()).totalCube() - j.getPlayer().totalCube());
                     }
                 case 1: // IA Medium
-                    cubes_access2 = j.Accessible_Playable(j.next_player()); // Necessaire de pouvoir récupérer les
-                                                                            // positions accessibles du joueur adverse
-                    for (Point compte : cubes_access2) { // Compte du nombre de coups jouable du j1
-                        int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),
-                                (int) compte.getX(), (int) compte.getY()).size();
-                        total_j2 += current_possibilities;
-                    }
+                    
                     total = (int) (total_j1) + (int) (j.getPlayer().totalCube() * 1000)
                             - (int) (j.getPlayer(j.next_player()).totalCube() * 1000) - (int) (total_j2);
                     
@@ -100,14 +102,8 @@ public abstract class IA {
                         return saveValue(j,-total);
                     }
                 case 2: // IA Difficile
-                    cubes_access2 = j.Accessible_Playable(j.next_player()); // Necessaire de pouvoir récupérer les
-                                                                            // positions accessibles du joueur adverse
                     int total_access2 = cubes_access2.size();
-                    for (Point compte : cubes_access2) { // Compte du nombre de coups jouable du j1
-                        int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),
-                                (int) compte.getX(), (int) compte.getY()).size();
-                        total_j2 += current_possibilities;
-                    }
+
                     total = (int) (total_j1) + (int) (j.getPlayer().totalCube() * 10000) + total_access * 100
                             - ((int) (j.getPlayer(j.next_player()).totalCube() * 10000) + (int) (total_j2)
                                     + (total_access2 * 100));
@@ -158,6 +154,7 @@ public abstract class IA {
 
         return saveValue(j,value);
     }
+    
 
     public ArrayList<ArrayList<Point>> coupIA(Jeu j, int joueur1, int difficulté) {
         ArrayList<ArrayList<Point>> resultat_ok = new ArrayList<>();
@@ -169,8 +166,7 @@ public abstract class IA {
                 ArrayList<Point> pos = new ArrayList<>();
                 pos.add(depart);
                 pos.add(arrivee);
-                Jeu clone = new Jeu(2);
-                clone = j.clone();
+                Jeu clone = j.clone();
                 clone.jouer_coup(arrivee.x, arrivee.y, depart.x, depart.y);
                 int value = 0;
                 switch (difficulté) {
@@ -197,9 +193,9 @@ public abstract class IA {
         return resultat_ok;
     }
 
-    public ArrayList<Point> penaltyIA(Jeu j) {
-        ArrayList<Point> resultat_ok = new ArrayList<>();
-        int max = 0;
+    public ArrayList<Point> penaltyIA(Jeu j) {      /* la penalitee doit aussi prendre en compte que l'ia n'ouvre pas a l'autre personne plus de coup */
+        ArrayList<Point> resultat_ok = new ArrayList<>();   /* Potentiellement en faisant la difference entre le nombre de coup possible a jouer entre l'ia et le joueur */
+        int max = -1;
         Point x_y_to_take = new Point();
         ArrayList<Point> cubes_access = j.Accessible_Playable();
         for (Point cubes : cubes_access) {
@@ -244,22 +240,19 @@ public abstract class IA {
         Jeu clone = jeu.clone();
         player = clone.getPlayer(indiceJoueur);
         player.resetBag();
-        try {
-            Thread.sleep(100);
-        } catch (Exception e) {
-        }
+        
         BestPyramide ZeBest = new BestPyramide();
-        Thread manager = new Thread(new ConstructionThreadManager(clone, ZeBest, list, 0, indiceJoueur));
+        Thread manager = new Thread(new ConstructionThreadManager(clone, ZeBest, list, difficulte, indiceJoueur));
         manager.start();
 
         // phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);
 
         if (aide) {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(5000);
                 while (true) {
                     Thread.sleep(100);
-                    if (ZeBest.getPyramid() != null) { /* a decommenter lorsqu'on integre a l'ihm */
+                    if (ZeBest.getPyramid() != null) {
                         ZeBest.finish();
                         break;
                     }
@@ -273,7 +266,7 @@ public abstract class IA {
                 Thread.sleep(5000);
                 while (true) {
                     Thread.sleep(100);
-                    if (!jeu.gameStarted() && ZeBest.getPyramid() != null) { /*
+                    if (jeu.gameStarted() && ZeBest.getPyramid() != null) { /*
                                                                               * a decommenter lorsqu'on integre a l'ihm
                                                                               */
                         ZeBest.finish();
@@ -298,8 +291,14 @@ public abstract class IA {
         return ZeBest.getPyramid();
     }
 
-    public int jouer_coup() { /* Modifier pour savoir si il y a une penalitee */
-        throw new UnsupportedOperationException();
+
+    public int jouer_coup() {
+        ArrayList<ArrayList<Point>> coups_possibles = coupIA(jeu, indiceJoueur, difficulte);
+        Random random = new Random();
+        ArrayList<Point> coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
+        return  jeu.jouer_coup((int) coup_a_jouer.get(1).getX(), (int) coup_a_jouer.get(1).getY(),
+                (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());            
+        
     }
 
     public void construction() {
@@ -322,6 +321,11 @@ public abstract class IA {
     public void generationPyramide() {
         Pyramid pyramide = generePyramide();
         jeu.getPlayer(indiceJoueur).build(pyramide);
+        heuristique = new HashMap<>();
+    }
+
+    public Thread thread(){
+        return constructionThread;
     }
     // public void endConstruction(){
     // phaseConstruction = false;

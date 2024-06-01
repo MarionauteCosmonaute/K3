@@ -14,6 +14,7 @@ public class Player {
 
     int[] nbCube;
     int[] nbCubeBag;
+    int[] nbCubeSide;
 
     int noir, bleu, blanc, rouge, jaune, vert, neutre;
     int size;
@@ -25,6 +26,7 @@ public class Player {
 
         nbCube = new int[7];
         nbCubeBag = new int[7];
+        nbCubeSide = new int[7];
 
         loss = false;
         side = new ArrayList<>();
@@ -131,21 +133,27 @@ public class Player {
     public void fusion() {
         int bagSize = personalBag.size();
         for (int i = 0; i < bagSize; i++) {
-            side.add(personalBag.remove(0));
+            addSide(personalBag.remove(0));
         }
     }
 
 
-    public void increment(Cube c) {
+    private void increment(Cube c) {
         if (c != Cube.Vide) {
             nbCube[c.getInt()]++;
         }
     }
+    private void incrementSide(Cube c){
+        if (c != Cube.Vide) nbCubeSide[c.getInt()]++;
+    }
 
-    public void decrement(Cube c) {
+    private void decrement(Cube c) {
         if (c != Cube.Vide) {
             nbCube[c.getInt()]--;
         }
+    }
+    private void decrementSide(Cube c){
+        if (c != Cube.Vide) nbCubeSide[c.getInt()]++;
     }
 
     public int[] compte_personal_bag() {
@@ -164,15 +172,19 @@ public class Player {
     public void addSide(Cube c) {
         side.add(c);
         increment(c);
+        incrementSide(c);
     }
 
     public void removeSide(int x) {
-        decrement(side.remove(x));
+        Cube cube = side.remove(x);
+        decrement(cube);
+        decrementSide(cube);
     }
 
     public void removeCubeSide(Cube cube) {
         side.remove(cube);
         decrement(cube);
+        decrementSide(cube);
     }
 
     public Pyramid getPyramid() {
@@ -301,10 +313,12 @@ public class Player {
 
     public Player clone() throws CloneNotSupportedException {
         Player clone = new Player(size); // Clone the basic object structure
-
+        clone.loss = loss;
         clone.pyramid = pyramid.clone();
+        clone.nbCubeSide = new int[7];
+        clone.nbCubeBag = new int[7];
         for (int i = 0; i < 7; i++) {
-            clone.nbCube[i] = nbCube[i];
+            clone.nbCube[i] = nbCube[i]-nbCubeSide[i];
         }
         clone.side = new ArrayList<>(side.size());
         for (Cube cube : side) {
@@ -340,29 +354,27 @@ public class Player {
 
         return chaine;
     }
-    private ArrayList<Cube> trieSide(){
-        ArrayList<Cube> trier = new ArrayList<>(), clone = new ArrayList<>();
-        for(Cube cube : side){
-            clone.add(cube);
-        }
-        for(Cube cube : Cube.values()){
-            
-        }
+    public void trieSide(){
+        Collections.sort(side);
+        // ArrayList<Cube> trier = new ArrayList<>();
 
-
-        return trier;
+        // for(Cube cube : Cube.values()){
+        //     for(int i = 0; i < nbCubeSide[cube.getInt()]; i++){
+        //         trier.add(cube);
+        //     }
+        // }
+        // return trier;
     }
 
-    public Vector<Integer> hash(){
+    public Vector<Integer> hash(boolean bool){
         Vector<Integer> vect = new Vector<>();
-        Iterateur it = getPyramid().iterateur("UP");
-        while(it.hasNext()){
-            vect.add(it.next().getInt());
-        }
+        vect.addAll(getPyramid().hash());
+        trieSide();
 
-        for(Cube cube : trieSide()){
+        for(Cube cube : side){
             vect.add(cube.getInt());
         }
+        
         return vect;
     }
 

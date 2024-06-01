@@ -8,7 +8,7 @@ import java.util.Random;
 public class ConstructionThreadManager implements Runnable {
     Jeu jeu;
     BestPyramide ZeBest;
-    int nbThreads = 4, difficulte, indice;
+    int nbThreads = 2, difficulte, indice;
     ArrayList<Cube> potentielCube;
 
     public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube, int difficulte,
@@ -40,6 +40,7 @@ public class ConstructionThreadManager implements Runnable {
         game.getPlayer(indice).construction(game.getPlayer(indice).getSize() - 1, 0, cube);
         Thread thread = new Thread(new ConstructionRunable(game, ZeBest, difficulte, indice));
         thread.start();
+        System.out.println("Un nouveau thread est creer");
         return thread;
     }
 
@@ -71,6 +72,7 @@ public class ConstructionThreadManager implements Runnable {
                 }
                 if (!threads[i].isAlive() && !ZeBest.done()) {
                     threads[i] = doWork(jeu.clone());
+
                 }
             }
         }

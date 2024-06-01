@@ -395,8 +395,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				ia = IA.nouvelle(jeu, d, 1);
 				while (jeu.draw()) {
 				} // On cree une partie a 2
-					// try{Thread.sleep(100);}
-					// catch(Exception e){}
+
 				ia.construction();
 
 				if (jeu.get_player() == 1) {
@@ -410,7 +409,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				if (IAON && jeu.get_player() == 1) {
 					jeu.avance();
 				}
-				jeu.sauvegarde("saves/quicksave.txt");
+				//jeu.sauvegarde("saves/quicksave.txt");
 				break;
 
 			case "Valider":
@@ -422,9 +421,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 				if (jeu.get_player() == joueur_initial || (IAON && jeu.get_player() == 1)) {
 					jeu.gameStart();
+					try{ia.thread().join();}
+					catch(InterruptedException e){System.err.println(e);}
 					changeVisible(3);
-					jeu.gameStart();
-					jeu.sauvegarde(qs);
+					//jeu.sauvegarde(qs);
 					jeu.check_loss();
 					if (jeu.getPlayer().lost()) {
 						timer_sablier.stop();
@@ -503,7 +503,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(false);
 					((MenuPhaseDeJeu2) menuListe.get(3)).PDJpyrJoueur(1).repaint();
 					vue.stopTimer();
-					jeu.sauvegarde("saves/quicksave.txt");
+					//jeu.sauvegarde("saves/quicksave.txt");
 				}
 				// PDJPyramideJoueur.CacheGif();
 				break;
