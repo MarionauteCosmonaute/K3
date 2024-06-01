@@ -171,6 +171,88 @@ public class StructurePainter {
         }
     }
 
+    public static void dessiner_pyramide_moins1(Graphics g, int height, int width, Pyramid pyramide, boolean side, int joueur, int x1, int y1) {
+        System.out.println("StructurePainter dessiner_pyramide_moins1");
+        Graphics2D drawable = (Graphics2D) g;
+        int taille_pyramide = pyramide.getSize();
+        int taille_cube = Math.min(80 * height / (100 * taille_pyramide), 80 * width / (100 * taille_pyramide));
+        int espace = taille_cube / 10;
+
+        int x_haut, y_haut;
+
+        Cube cube;
+        for (int x = taille_pyramide - 1; x >= 0; x--) {
+            x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * x
+                    - (espace * taille_pyramide) / 2;
+            for (int y = 0; y <= x; y++)
+            {
+                if (x1 != x || y1 != y)
+                {
+                    cube = pyramide.get(taille_pyramide - 1 - x, y);
+                    y_haut = (width / 2 - (taille_cube / 2) * (x + 1) + taille_cube * y - (espace * x) / 2);
+                    if(side){
+                        y_haut -= 2*taille_cube;
+                    }
+                    // On complète notre tableau de points uniquement si c'est la pyramide joueur
+                    if(taille_pyramide < 9){
+                        if(joueur == 0){
+                            points_pyramide_joueur1[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
+                        }
+                        else{
+                            points_pyramide_joueur2[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
+                        }
+                        taille_cube_joueur = taille_cube; 
+                    }
+                    else{
+                        points_pyramide_centrale[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
+                        taille_cube_pyramide_centrale = taille_cube; 
+                    }
+                    switch (cube) {
+                        case Noir:
+                            // System.out.println("cube noir");
+                            drawable.drawImage(noir, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Neutre:
+                            // System.out.println("cube neutre");
+                            drawable.drawImage(neutre, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Blanc:
+                            // System.out.println("cube blanc");
+                            drawable.drawImage(blanc, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Vert:
+                            // System.out.println("cube vert");
+                            drawable.drawImage(vert, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Jaune:
+                            // System.out.println("cube jaune");
+                            drawable.drawImage(jaune, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Rouge:
+                            // System.out.println("cube rouge");
+                            drawable.drawImage(rouge, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Bleu:
+                            // System.out.println("cube bleu");
+                            drawable.drawImage(bleu, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        default:
+                            // System.out.println("default");
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+
     public static void DessineAccessible(Graphics g, int ligne, int colonne,int height, int width, Jeu jeu)
     {
         Graphics2D drawable = (Graphics2D) g;

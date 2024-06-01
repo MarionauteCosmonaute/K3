@@ -114,7 +114,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             centrePanel.add(joueursPanel);
             pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
             pdj = (new PDJPyramideCentrale(J, pyramidePanel)); // ajoute la pyramide centrale
-            pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj));
+            // pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj));
             pyramidePanel.add(pdj);
             pdj.setVisible(true);
 
@@ -130,7 +130,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             // bottomLeftPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
             joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur
                                                                                         // 1
-            bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, pdj));
+            // bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, pdj));
             bottomLeftPanel.add(joueur1, BorderLayout.CENTER);
             joueur1.setVisible(true);
 
@@ -138,7 +138,14 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             // bottomRightPanel.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
             joueur2 = (new PDJPyramideJoueur(J, bottomRightPanel, 1)); // ajoute la pyramide du joueur
                                                                                          // 2
-            bottomRightPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur2, pdj));
+            bottomRightPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur2, joueur1, pdj));
+            bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, joueur2, pdj));
+            pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj, joueur1, joueur2));
+            // Pour partir sur de bonne base!
+            joueur1.setCursor(Cursor.getDefaultCursor());
+            joueur2.setCursor(Cursor.getDefaultCursor());
+            pdj.setCursor(Cursor.getDefaultCursor());
+
             bottomRightPanel.add(joueur2, BorderLayout.CENTER);
             joueur2.setVisible(true);
 

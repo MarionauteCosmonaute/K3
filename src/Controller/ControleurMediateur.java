@@ -57,6 +57,18 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicJoueurPyramide(int x, int y) {
+
+		// On désactive les boutons de l'historique tant que le coup n'est pas validé!
+		System.out.println("----> annule grisé");
+		vue.getMenuPhaseDeJeu2().setAnnuler(false);
+		vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
+		vue.getMenuPhaseDeJeu2().repaint();
+
+		System.out.println("----> refaire grisé");
+		vue.getMenuPhaseDeJeu2().setRefaire(false);
+		vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
+		vue.getMenuPhaseDeJeu2().repaint();
+
 		// cube_selectionne = jeu.getPlayer().get(x, y);
 		if(IAON && jeu.get_player() == 1 && !penalty){
 			return;
@@ -96,12 +108,23 @@ public class ControleurMediateur implements CollecteurEvenements {
 			clic = true;
 			ligne_joueur = x;
 			colonne_joueur = y; //mettre -1 si ça vient du side
-		}
-		
+		}		
 	}
 
 	@Override
 	public void clicJoueurSide(int x) {
+
+		// On désactive les boutons de l'historique tant que le coup n'est pas validé!
+		System.out.println("----> annule grisé");
+		vue.getMenuPhaseDeJeu2().setAnnuler(false);
+		vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
+		vue.getMenuPhaseDeJeu2().repaint();
+
+		System.out.println("----> refaire grisé");
+		vue.getMenuPhaseDeJeu2().setRefaire(false);
+		vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
+		vue.getMenuPhaseDeJeu2().repaint();
+
 		if(IAON && jeu.get_player() == 1 && !penalty){
 			return;
 		}

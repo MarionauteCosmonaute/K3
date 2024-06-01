@@ -1,5 +1,6 @@
 package View;
 
+import Model.Cube;
 import Model.Jeu;
 import Model.Player;
 
@@ -9,6 +10,7 @@ import java.util.Collections;
 
 public class PDJPyramideJoueur extends PDJPyramideAbstaite {
     int width_fenetre, height_fenetre, nb_ligne, nb_colonne, largeur_case, hauteur_case;
+    Graphics g;
     Graphics2D drawable;
     Jeu jeu;
     int joueur;
@@ -21,6 +23,9 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
     int imageIndex = 0;
     Image[] images;
     Color playerColor;
+
+    boolean dessineMoins1 = false;
+
     public PDJPyramideJoueur(Jeu jeu, JPanel parent, int nj) {
         this.jeu = jeu;
         this.parent = parent;
@@ -73,16 +78,47 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
         imageIndex = i;
     }
 
+    public void SetDessineMoins1(boolean bool)
+    {
+        dessineMoins1 = bool;
+    }
+
+    public Cube GetCubeChope(int x, int y, boolean side)
+    {
+        if(side)
+        {
+            return jeu.getPlayer(NumeroJoueur()).getSide(x);
+        }
+        else
+        {
+            return jeu.getPlayer(NumeroJoueur()).getPyramid().get(jeu.getPlayer(joueur).getPyramid().getSize() - 1 - x, y);
+        }
+    }
+
+    public boolean GetPenality()
+    {
+        return jeu.getPenality();
+    }
+
     public void paintComponent(Graphics g) {
 
-        System.out.println("PaintComponent de PDJPyramideJoueur");
+        // System.out.println("PaintComponent de PDJPyramideJoueur");
+        this.g = g;
         drawable = (Graphics2D) g;
         width_fenetre = parent.getWidth();
         height_fenetre = parent.getHeight();
         setSize(width_fenetre, height_fenetre);
-        StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid(),
-                jeu.getPlayer(joueur).getSideSize() > 0, joueur);
-        StructurePainter.dessiner_side(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSide());
+        if (!dessineMoins1)
+        {
+            StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid(),jeu.getPlayer(joueur).getSideSize() > 0, joueur);
+            StructurePainter.dessiner_side(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSide());
+        }
+        else
+        {
+            StructurePainter.dessiner_pyramide_moins1(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getPyramid(),jeu.getPlayer(joueur).getSideSize() > 0, joueur, 5 - x_selec, y_selec);
+            StructurePainter.dessiner_side(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSide());
+        }
+
 
         drawable.setColor(Color.GRAY);
         switch (joueur) {
@@ -105,6 +141,7 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
                 }
                 break;
         }
+        // Dessine le contour de chaque joueur
         drawable.drawRect(0, 0, width_fenetre-1, height_fenetre-1);
         drawable.drawRect(1, 1, width_fenetre-3, height_fenetre-3);
         drawable.drawRect(2, 2, width_fenetre-5, height_fenetre-5);
