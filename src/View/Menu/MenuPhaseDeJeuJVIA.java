@@ -130,6 +130,8 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             // Joueur Rouge
             joueur2 = (new PDJPyramideIA(J, bottomRightPanel, 1)); // ajoute la pyramide de l'IA
             bottomRightPanel.addMouseListener(new AdaptateurSourisIA(controle, joueur2, pdj));
+            bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueurVSia(controle, joueur1, joueur2, pdj));
+            pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramideVSia(controle, pdj, joueur1, joueur2));
 
             bottomRightPanel.add(joueur2, BorderLayout.CENTER);
             joueur2.setVisible(true);
