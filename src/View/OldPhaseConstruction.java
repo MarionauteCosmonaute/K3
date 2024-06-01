@@ -174,7 +174,7 @@ public class OldPhaseConstruction {
         panel.add(topCenter);
 
         // Bouton du Son
-        UnMute = new BoutonUnMute(controle,1);
+        UnMute = new BoutonUnMute(controle,1,frame);
         UnMute.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topRightPanel.add(UnMute, BorderLayout.EAST);

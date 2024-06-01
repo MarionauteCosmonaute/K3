@@ -67,7 +67,7 @@ public class MenuPrincipal extends Menu {
             // Créer les boutons avec les icônes d'images
             FR = new JButton(new ImageIcon(resizedImageFR));
             EN = new JButton(new ImageIcon(resizedImageEN));
-            UnMute = new BoutonUnMute(controle,0);
+            UnMute = new BoutonUnMute(controle,0,content);
 
             // Ajouter des écouteurs d'actions aux boutons
             FR.addActionListener(new AdaptateurFR(controle));

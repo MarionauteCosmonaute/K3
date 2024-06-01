@@ -114,7 +114,7 @@ public class MenuNouvellePartie extends Menu {
             content.add(centrePanel, BorderLayout.CENTER);
 
             // On écrit le bouton du son en haut à droite
-            UnMute = new BoutonUnMute(controle,0);
+            UnMute = new BoutonUnMute(controle,0,content);
 
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
