@@ -11,6 +11,7 @@ public abstract class IA {
     int difficulte, indiceJoueur;
     HashMap<Jeu,Integer> heuristique;
     Thread constructionThread;
+    ArrayList<Point> prochainCoup;
 
     public static IA nouvelle(Jeu j, int difficulte, int indiceJoueur) {
         IA resultat = null;
@@ -294,14 +295,7 @@ public abstract class IA {
     }
 
 
-    public int jouer_coup() {
-        ArrayList<ArrayList<Point>> coups_possibles = coupIA(jeu, indiceJoueur, difficulte);
-        Random random = new Random();
-        ArrayList<Point> coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
-        return  jeu.jouer_coup((int) coup_a_jouer.get(1).getX(), (int) coup_a_jouer.get(1).getY(),
-                (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());            
-        
-    }
+    
 
     public void construction(){
         construction(false);
@@ -335,6 +329,37 @@ public abstract class IA {
     public Thread thread(){
         return constructionThread;
     }
+    
+    public int jouer_coup() {
+        ArrayList<ArrayList<Point>> coups_possibles = coupIA(jeu, indiceJoueur, difficulte);
+        Random random = new Random();
+        ArrayList<Point> coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
+        return  jeu.jouer_coup((int) coup_a_jouer.get(1).getX(), (int) coup_a_jouer.get(1).getY(),
+                (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());            
+        
+    }
+    public int joue(){
+        if (prochainCoup == null) throw new IllegalAccessError("Pas de coup calculer encore"); 
+        int out = jeu.jouer_coup((int) prochainCoup.get(1).getX(), (int) prochainCoup.get(1).getY(),
+        (int) prochainCoup.get(0).getX(), (int) prochainCoup.get(0).getY());
+        prochainCoup = null;
+        return out;
+    }
+
+    public Thread compute(){
+        Thread thread = new Thread(new Compute(this));
+        thread.start();
+        return thread;
+    }
+    
+    public void calcul(){
+        ArrayList<ArrayList<Point>> coups_possibles = coupIA(jeu, indiceJoueur, difficulte);
+        Random random = new Random();
+        prochainCoup = coups_possibles.get(random.nextInt(coups_possibles.size())); 
+    }
+
+    
+    
     // public void endConstruction(){
     // phaseConstruction = false;
     // }
