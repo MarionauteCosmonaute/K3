@@ -99,7 +99,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		addMenu(phaseDeJeuJVIA);
 		MenuOnline online =new MenuOnline(controle);//5
 		addMenu(online);
-		tickIA = new Timer(5000,new AdaptateurJoueIA(controle));
+		tickIA = new Timer(2000,new AdaptateurJoueIA(controle));
 		// anim=new Timer(1000,new ActionListener(){
 // 
 			// @Override

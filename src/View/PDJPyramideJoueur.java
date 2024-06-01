@@ -75,7 +75,7 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
 
     public void paintComponent(Graphics g) {
 
-        System.out.println("PaintComponent de PDJPyramideJoueur");
+        //System.out.println("PaintComponent de PDJPyramideJoueur");
         drawable = (Graphics2D) g;
         width_fenetre = parent.getWidth();
         height_fenetre = parent.getHeight();

@@ -28,6 +28,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	IA ia;
 	int gagnant;
 	Cube cube, cube_selectionne;
+	Thread iaCompute;
 
 	int IA_id_player=1;
 	Timer autorestart;
@@ -143,7 +144,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	{
 		if (jeu.refaisEmpty())
 		{
-			System.out.println("----> refaire grisé");
+			// System.out.println("----> refaire grisé");
 			vue.getMenuPhaseDeJeu2().setRefaire(false);
 			vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
 			vue.getMenuPhaseDeJeu2().repaint();
@@ -161,7 +162,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 	{
 		if (jeu.annuleEmpty())
 		{
-			System.out.println("----> annule grisé");
 			vue.getMenuPhaseDeJeu2().setAnnuler(false);
 			vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
 			vue.getMenuPhaseDeJeu2().repaint();
@@ -261,6 +261,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				vue.getMenuPhaseDeJeu2().setRefaire(false);
 				vue.getMenuPhaseDeJeu2().repaint();
 				timer_sablier.start();
+				commande("IAcompute");
 			}
 			else{
 				metAJourAnnule();
@@ -539,15 +540,21 @@ public class ControleurMediateur implements CollecteurEvenements {
 				vue.setBackgroundPicture("res/black_wood.jpg");
 				break;
 
+			case "IAcompute":
+				IA_thinking=true;
+				iaCompute = ia.compute();
+				break;
 			case "JoueIA":
-				System.out.println("joue IAAAAAAAAAA");
+				//System.out.println("joue IAAAAAAAAAA");
 				vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
 				vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
 				vue.getMenuPhaseDeJeuJVIA().repaint();
 				int res;
 				if (IAON && jeu.get_player()==1 && !penalty){
-					IA_thinking=true;
-					if ((res = ia.jouer_coup()) == 2){
+					
+					try{iaCompute.join();}
+					catch(InterruptedException e){System.err.println(e);}
+					if ((res = ia.joue()) == 2){
 						penalty = true;
 						// PDJPyramideJoueur.CacheGif();
 					}

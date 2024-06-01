@@ -88,7 +88,7 @@ public class PDJPyramideIA extends PDJPyramideAbstaite {
     }
     public void paintComponent(Graphics g) {
 
-        System.out.println("PaintComponent de PDJPyramideIA");
+        //System.out.println("PaintComponent de PDJPyramideIA");
         drawable = (Graphics2D) g;
         width_fenetre = parent.getWidth();
         height_fenetre = parent.getHeight();
