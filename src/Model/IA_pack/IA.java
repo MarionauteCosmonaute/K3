@@ -171,13 +171,13 @@ public abstract class IA {
                 int value = 0;
                 switch (difficulté) {
                     case 0:
-                        value = MinMaxIA(clone, 3, joueur1, -100000000, +100000000, 0);
+                        value = MinMaxIA(clone, 4, joueur1, -100000000, +100000000, 0);
                         break;
                     case 1:
-                        value = MinMaxIA(clone, 5, joueur1, -100000000, +100000000, 1);
+                        value = MinMaxIA(clone, 6, joueur1, -100000000, +100000000, 1);
                         break;
                     case 2:
-                        value = MinMaxIA(clone, 10, joueur1, -100000000, +100000000, 2);
+                        value = MinMaxIA(clone, 11, joueur1, -100000000, +100000000, 2);
                         break;
                 }
 
@@ -242,9 +242,7 @@ public abstract class IA {
         player.resetBag();
         
         BestPyramide ZeBest = new BestPyramide();
-        int difficulty = difficulte;
-        if(difficulty == 2) difficulty = 1;
-        Thread manager = new Thread(new ConstructionThreadManager(clone, ZeBest, list, difficulty, indiceJoueur));
+        Thread manager = new Thread(new ConstructionThreadManager(clone, ZeBest, list, indiceJoueur));
         manager.start();
 
         // phaseConstruction = jeu.endConstruction((indiceJoueur+1)%2);

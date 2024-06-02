@@ -11,21 +11,19 @@ public class ConstructionThreadManager implements Runnable {
     int nbThreads = 3, difficulte, indice;
     ArrayList<Cube> potentielCube;
 
-    public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube, int difficulte,
+    public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube,
             int indice) {
         this.jeu = jeu;
         this.ZeBest = ZeBest;
         this.potentielCube = potentielCube;
-        this.difficulte = difficulte;
         this.indice = indice;
     }
 
-    public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube, int difficulte,
+    public ConstructionThreadManager(Jeu jeu, BestPyramide ZeBest, ArrayList<Cube> potentielCube,
             int indice, int nbThreads) {
         this.jeu = jeu;
         this.ZeBest = ZeBest;
         this.potentielCube = potentielCube;
-        this.difficulte = difficulte;
         this.indice = indice;
         this.nbThreads = nbThreads;
     }
@@ -51,16 +49,16 @@ public class ConstructionThreadManager implements Runnable {
         for (int i = 0; i < nbThreads; i++) {
             threads[i] = doWork(jeu.clone());
         }
-        //boolean bool = true;
+        boolean bool = true;
         while (!ZeBest.done()) {
-            /*if (ZeBest.getPyramid() != null && bool) {
+            if (ZeBest.getPyramid() != null && bool) {
                 System.out.println();
                 System.out.println();
                 System.out.println("L'IA a trouver une pyramide");
                 System.out.println();
                 System.out.println();
                 bool = false;
-            }*/
+            }
             for (int i = 0; i < nbThreads; i++) {
                 try {
                     threads[i].join(100);
