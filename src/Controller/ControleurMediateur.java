@@ -493,6 +493,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 					jeu.gameStart();
 					if(IAON){
 						try{ia.thread().join();}catch(Exception e){System.out.println(e);System.exit(1);}
+						if(joueur_initial == 1) commande("IAcompute");
 					}
 					jeu.sauvegarde(qs);
 					jeu.check_loss();
@@ -554,7 +555,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 					
 					try{iaCompute.join();}
 					catch(InterruptedException e){System.err.println(e);}
-					if ((res = ia.joue()) == 2){
+					if ((res = ia.jouer_coup()) == 2){
 						penalty = true;
 						// PDJPyramideJoueur.CacheGif();
 					}

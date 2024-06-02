@@ -339,7 +339,7 @@ public class StructurePainter {
 
     public static void DessineSelectionne(int num_joueur, Jeu jeu, Graphics2D drawable, int height, int width, int x, int y, boolean side)
     {
-        System.out.println("StructurePainter de DessineSelectionne");
+        //System.out.println("StructurePainter de DessineSelectionne");
         int taille_pyramide = jeu.getPyrPlayer(num_joueur).getSize();
         int taille_cube = Math.min(80 * height / (100 * taille_pyramide), 80 * width / (100 * taille_pyramide));
         int espace = taille_cube / 10;
