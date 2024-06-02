@@ -231,6 +231,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 		int res;
 		// if(jeu.accessible(ligne_joueur,colonne_joueur)){
 		res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
+		timer_sablier.start();
+		commande("IAcompute");
 		// metAJourAnnule();
 		// metAJourRefaire();
 		jeu.sauvegarde(qs);
@@ -260,8 +262,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				vue.getMenuPhaseDeJeu2().setAnnuler(false);
 				vue.getMenuPhaseDeJeu2().setRefaire(false);
 				vue.getMenuPhaseDeJeu2().repaint();
-				timer_sablier.start();
-				commande("IAcompute");
+				
 			}
 			else{
 				metAJourAnnule();
@@ -542,6 +543,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;
 
 			case "IAcompute":
+				//timer_sablier.start();
 				IA_thinking=true;
 				iaCompute = ia.compute();
 				break;
@@ -585,7 +587,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 					IA_thinking=false;
 					vue.TimerIA(false);
 					jeu.sauvegarde("saves/quicksave.txt");
-					System.out.println("pas tout de suite --------------");
+					//System.out.println("pas tout de suite --------------");
 					
 				}
 				metAJourAnnule();
