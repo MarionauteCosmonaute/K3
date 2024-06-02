@@ -4,7 +4,7 @@ import Reseau.*;
 public class ServTest {
 
     public static void main(String[] args) {
-        Server serv = new Server(Integer.parseInt(args[0]));
+        Server serv = new Server(3); /* Integer.parseInt(args[0]) */
         System.out.println(serv.initSockets());
         serv.initConnection();
         serv.WaitAll();

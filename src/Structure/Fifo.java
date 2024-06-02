@@ -29,7 +29,7 @@ public class Fifo {
 
     synchronized public void add(Coup e){
         Maillon m = new Maillon(e);
-        // System.out.println(e + "got added");
+        System.out.println(e + " got added");
         if (tete == null){
             tete = m;
             queue = tete;
