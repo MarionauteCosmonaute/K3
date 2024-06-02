@@ -1,11 +1,13 @@
 package View.Adaptateurs;
 
 import View.CollecteurEvenements;
+import View.Curseur;
 import View.PDJPyramideCentrale;
 import View.PDJPyramideJoueur;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -33,9 +35,12 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         pdj.SetDessineMoins1(false);
-        pdj.setCursor(Cursor.getDefaultCursor());
-        pdj2.setCursor(Cursor.getDefaultCursor());
-        pdjCentrale.setCursor(Cursor.getDefaultCursor());
+        // pdj.setCursor(Cursor.getDefaultCursor());
+        pdj.setCursor(Curseur.Gerer_Curseur_main());
+        // pdj2.setCursor(Cursor.getDefaultCursor());
+        pdj2.setCursor(Curseur.Gerer_Curseur_main());
+        // pdjCentrale.setCursor(Cursor.getDefaultCursor());
+        pdjCentrale.setCursor(Curseur.Gerer_Curseur_main());
         pdjCentrale.GetAccessible(false);
 
         if (pdj.NumeroJoueur() != pdjCentrale.GetJoueurCourant()) {
@@ -54,20 +59,29 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
                 if ((e.getY() >= points_pyramide_joueurs[x][y].getY())
                         && (e.getY() <= (points_pyramide_joueurs[x][y].getY() + taille_cube_joueur))
                         && (e.getX() >= points_pyramide_joueurs[x][y].getX())
-                        && (e.getX() <= (points_pyramide_joueurs[x][y].getX() + taille_cube_joueur)))
+                        && (e.getX() <= (points_pyramide_joueurs[x][y].getX() + taille_cube_joueur))) {
+                    
+                    ArrayList<Point> liste_accessible = pdj.GetAccessible();
+                    System.out.println("x: "+x+" y: "+y);
+                    System.out.println(liste_accessible);
+                    for (Point p: liste_accessible)
+                    {
+                        if ((p.x == taille_base_pyramide - 1 - x) && (p.y==y))
                         {
-                    // Un cube a été sélectionné on le highlight le contour        
-                    PDJPyramideJoueur.SetCube_Select_Static(true);
-                    pdj.SetX_Select(taille_base_pyramide - 1 - x);
-                    pdj.SetY_Select(y);
+                            // Un cube a été sélectionné on le highlight le contour        
+                            PDJPyramideJoueur.SetCube_Select_Static(true);
+                            pdj.SetX_Select(taille_base_pyramide - 1 - x);
+                            pdj.SetY_Select(y);
 
-                    // On informe le controleur médiateur
-                    controle.clicJoueurPyramide(taille_base_pyramide - 1 - x, y);
+                            // On informe le controleur médiateur
+                            controle.clicJoueurPyramide(taille_base_pyramide - 1 - x, y);
 
-                    Gerer_Curseur(x, y, false);
+                            Gerer_Curseur(x, y, false);
 
-                    pdjCentrale.repaint();
-                    pdj.repaint();
+                            pdjCentrale.repaint();
+                            pdj.repaint();
+                        }
+                    }       
                 }
             }
         }
@@ -78,7 +92,7 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
             if ((e.getY() >= points_side[x].getY())
                         && (e.getY() <= (points_side[x].getY() + taille_cube_joueur))
                         && (e.getX() >= points_side[x].getX())
-                        && (e.getX() <= (points_side[x].getX() + taille_cube_joueur))) {
+                        && (e.getX() <= (points_side[x].getX() + taille_cube_joueur))) { 
                     PDJPyramideJoueur.SetCube_Select_Static(true);
                     pdj.SetX_Select(x);
                     pdj.SetY_Select(-1);
@@ -130,45 +144,38 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
     {
        Cube cube = pdj.GetCubeChope(x, y, side);
        switch (cube) {
-        case Noir:
-            // System.out.println("cube noir");
+            case Noir:
+                // System.out.println("cube noir");
+                return "res/curseur_main_fermee_noir.png";
 
-            return "res/carre_noir.png";
+            case Neutre:
+                // System.out.println("cube neutre");
+                return "res/curseur_main_bois.png";
 
-        case Neutre:
-            // System.out.println("cube neutre");
+            case Blanc:
+                // System.out.println("cube blanc");
+                return "res/curseur_main_fermee_blanc.png";
 
-            return "res/carre_bois.png";
+            case Vert:
+                // System.out.println("cube vert");
+                return "res/curseur_main_fermee_vert.png";
 
-        case Blanc:
-            // System.out.println("cube blanc");
+            case Jaune:
+                // System.out.println("cube jaune");
+                return "res/curseur_main_jaune.png";
 
-            return "res/carre_vide.png";
+            case Rouge:
+                // System.out.println("cube rouge");
+                return "res/curseur_main_fermee_rouge.png";
 
-        case Vert:
-            // System.out.println("cube vert");
+            case Bleu:
+                // System.out.println("cube bleu");
+                return "res/curseur_main_bleu.png";
 
-            return "res/carre_vert.png";
-
-        case Jaune:
-            // System.out.println("cube jaune");
-
-            return "res/carre_jaune.png";
-
-        case Rouge:
-            // System.out.println("cube rouge");
-
-            return "res/carre_rouge.png";
-
-        case Bleu:
-            // System.out.println("cube bleu");
-
-            return "res/carre_bleu.png";
-
-        default:
-            // System.out.println("default");
-            return "Erreur";
-    }
+            default:
+                // System.out.println("default");
+                return "Erreur";
+        }
 
     }
 }

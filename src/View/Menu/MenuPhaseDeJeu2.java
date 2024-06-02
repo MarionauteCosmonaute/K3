@@ -1,6 +1,7 @@
 package View.Menu;
 
 import View.CollecteurEvenements;
+import View.Curseur;
 import View.Bouton;
 import View.PDJPyramideCentrale;
 import View.PDJPyramideJoueur;
@@ -142,9 +143,13 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, joueur2, pdj));
             pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj, joueur1, joueur2));
             // Pour partir sur de bonne base!
-            joueur1.setCursor(Cursor.getDefaultCursor());
-            joueur2.setCursor(Cursor.getDefaultCursor());
-            pdj.setCursor(Cursor.getDefaultCursor());
+            // joueur1.setCursor(Cursor.getDefaultCursor());
+            // joueur2.setCursor(Cursor.getDefaultCursor());
+            // pdj.setCursor(Cursor.getDefaultCursor());
+            joueur1.setCursor(Curseur.Gerer_Curseur_main());
+            joueur2.setCursor(Curseur.Gerer_Curseur_main());
+            pdj.setCursor(Curseur.Gerer_Curseur_main());
+            
 
             bottomRightPanel.add(joueur2, BorderLayout.CENTER);
             joueur2.setVisible(true);

@@ -1,6 +1,7 @@
 package View.Menu;
 
 import View.CollecteurEvenements;
+import View.Curseur;
 import View.OldPhaseConstruction;
 import View.AffichagePhaseConstruction;
 
@@ -17,7 +18,8 @@ public class MenuPhaseConstruction extends Menu {
         JPanel content = new JPanel(new BorderLayout());
         JPanel pc = new JPanel(new BorderLayout());
         OldPhaseConstruction cons = new OldPhaseConstruction(pc, controle, jeu);
-        pc.setCursor(Cursor.getDefaultCursor());
+        // pc.setCursor(Cursor.getDefaultCursor());
+        pc.setCursor(Curseur.Gerer_Curseur_main());
         apc = new AffichagePhaseConstruction(jeu, cons);
         apc.addMouseListener(new AdaptateurSouris(controle, apc));
         pc.add(apc);

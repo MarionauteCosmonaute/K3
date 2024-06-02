@@ -7,6 +7,7 @@ import Model.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
+import java.util.ArrayList;
 
 public class PDJPyramideJoueur extends PDJPyramideAbstaite {
     int width_fenetre, height_fenetre, nb_ligne, nb_colonne, largeur_case, hauteur_case;
@@ -98,6 +99,11 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
     public boolean GetPenality()
     {
         return jeu.getPenality();
+    }
+
+    public ArrayList<Point> GetAccessible()
+    {
+        return jeu.AccessibleCubesPlayer(joueur);
     }
 
     public void paintComponent(Graphics g) {

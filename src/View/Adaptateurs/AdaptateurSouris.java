@@ -1,5 +1,6 @@
 package View.Adaptateurs;
 import View.CollecteurEvenements;
+import View.Curseur;
 import View.AffichagePhaseConstruction;
 
 import java.awt.event.MouseAdapter;
@@ -46,7 +47,8 @@ public class AdaptateurSouris extends MouseAdapter {
 									x2 = x;
 									y2 = y;
 									controle.clicSourisEchange(nivGraph.getX1(), nivGraph.getY1(), x2, y2);
-									nivGraph.setCursor(Cursor.getDefaultCursor());
+									// nivGraph.setCursor(Cursor.getDefaultCursor());
+									nivGraph.setCursor(Curseur.Gerer_Curseur_main());
 									// nivGraph.GetAccessible(false
 									nivGraph.echange();
 								}
@@ -74,7 +76,8 @@ public class AdaptateurSouris extends MouseAdapter {
 					}
 				}
 			}
-			nivGraph.setCursor(Cursor.getDefaultCursor());
+			// nivGraph.setCursor(Cursor.getDefaultCursor());
+			nivGraph.setCursor(Curseur.Gerer_Curseur_main());
 			// nivGraph.GetAccessible(false);
 		} 
 		else if (e.getY() >= nivGraph.Hauteur_Fenetre() * 7 / 10) 	// Clique dans la pioche
@@ -116,7 +119,8 @@ public class AdaptateurSouris extends MouseAdapter {
 		else
 		{
 			System.out.println("-------------------> Louis: ");
-			nivGraph.setCursor(Cursor.getDefaultCursor());
+			// nivGraph.setCursor(Cursor.getDefaultCursor());
+			nivGraph.setCursor(Curseur.Gerer_Curseur_main());
 			// nivGraph.GetAccessible(false);
 		}
 	}
@@ -153,38 +157,31 @@ public class AdaptateurSouris extends MouseAdapter {
        switch (couleur) {
             case 1:
                 // System.out.println("cube noir");
-
-                return "res/carre_noir.png";
+                return "res/curseur_main_fermee_noir.png";
 
             case 6:
                 // System.out.println("cube neutre");
-
-                return "res/carre_bois.png";
+                return "res/curseur_main_bois.png";
 
             case 0:
                 // System.out.println("cube blanc");
-
-                return "res/carre_vide.png";
+                return "res/curseur_main_fermee_blanc.png";
 
             case 3:
                 // System.out.println("cube vert");
-
-                return "res/carre_vert.png";
+                return "res/curseur_main_fermee_vert.png";
 
             case 5:
                 // System.out.println("cube jaune");
 
-                return "res/carre_jaune.png";
-
+                return "res/curseur_main_jaune.png";
             case 4:
                 // System.out.println("cube rouge");
 
-                return "res/carre_rouge.png";
-
+                return "res/curseur_main_fermee_rouge.png";
             case 2:
                 // System.out.println("cube bleu");
-
-                return "res/carre_bleu.png";
+                return "res/curseur_main_bleu.png";
 
             default:
                 // System.out.println("default");
