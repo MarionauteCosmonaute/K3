@@ -9,10 +9,11 @@ import Reseau.Runnables.Transfer.Productor;
 
 import java.io.*;
 import Structure.*;
-import Model.Coup;
+import Model.*;
 
 
 public class Client {
+    Jeu jeu;
     Socket socket;
     ArrayList<Fifo> file;
     Fifo send;
@@ -39,10 +40,9 @@ public class Client {
         System.out.println(socket.getPort());
     }
 
-    public void begin(){
+    public void begin(Fifo send, Fifo recieve){
         file = new ArrayList<>();
-        file.add(new Fifo());
-        send = new Fifo();
+        file.add(recieve);
         try{
             Productor p = new Productor(new BufferedReader(new InputStreamReader(socket.getInputStream())), file);
             productor = new Thread(p);
@@ -55,6 +55,7 @@ public class Client {
         }catch(Exception e){e.getMessage();}
     }
 
+    
     public void listen(){
         Scanner s = new Scanner(System.in);
         String entree;

@@ -18,6 +18,7 @@ public class Productor implements Runnable{
     }
     public Productor(BufferedReader in, ArrayList<Fifo> file){
         index = -1;
+        init(in,file);
     }
 
     public void init(BufferedReader in, ArrayList<Fifo> file){
