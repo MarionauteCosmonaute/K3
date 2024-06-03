@@ -49,16 +49,16 @@ public class ConstructionThreadManager implements Runnable {
         for (int i = 0; i < nbThreads; i++) {
             threads[i] = doWork(jeu.clone());
         }
-        boolean bool = true;
+        //boolean bool = true;
         while (!ZeBest.done()) {
-            if (ZeBest.getPyramid() != null && bool) {
+            /*if (ZeBest.getPyramid() != null && bool) {
                 System.out.println();
                 System.out.println();
                 System.out.println("L'IA a trouver une pyramide");
                 System.out.println();
                 System.out.println();
                 bool = false;
-            }
+            }*/
             for (int i = 0; i < nbThreads; i++) {
                 try {
                     threads[i].join(100);

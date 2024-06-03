@@ -23,6 +23,7 @@ public class IAsimulation {
             jeu.initTest();
             threads[i] = new Thread(new IAvsIAthread(jeu,difficulte1,difficulte2,false,stat));
             threads[i].start();
+            System.out.println("simulation nb: " + nb);
             nb++;
         }
         boolean stop = false;
