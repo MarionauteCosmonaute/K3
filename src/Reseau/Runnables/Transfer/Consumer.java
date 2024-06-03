@@ -19,7 +19,7 @@ public class Consumer implements Runnable{
         try{
             while (true) {
                 Coup coup = file.get();
-                System.out.println(coup + " got sent");
+                //System.out.println(coup + " got sent");
                 out.println(coup);
             }
         }catch(Exception e){e.getMessage();}

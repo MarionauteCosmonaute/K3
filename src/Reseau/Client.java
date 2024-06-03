@@ -40,9 +40,13 @@ public class Client {
         System.out.println(socket.getPort());
     }
 
+    public void begin(){
+        begin(new Fifo(),new Fifo());
+    }
     public void begin(Fifo send, Fifo recieve){
         file = new ArrayList<>();
         file.add(recieve);
+        this.send = send;
         try{
             Productor p = new Productor(new BufferedReader(new InputStreamReader(socket.getInputStream())), file);
             productor = new Thread(p);
@@ -74,7 +78,7 @@ public class Client {
                     System.out.println(socket.isConnected());
                     break;
                 case "show":
-                    System.out.println(file.get(0));
+                    System.out.print(file.get(0));
                     break;
                 default:
                     break;
