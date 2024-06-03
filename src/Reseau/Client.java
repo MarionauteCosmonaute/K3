@@ -13,7 +13,7 @@ import Model.*;
 
 
 public class Client {
-    Jeu jeu;
+    
     Socket socket;
     ArrayList<Fifo> file;
     Fifo send;
@@ -36,13 +36,19 @@ public class Client {
         catch(Exception e){e.getMessage();}
     }
 
+    public int getNB(){
+        try{BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        return Integer.parseInt(in.readLine());}
+        catch(Exception e){e.getMessage();}
+        return 0;
+    }
+
     public void port(){
         System.out.println(socket.getPort());
     }
 
-    public void begin(){
-        begin(new Fifo(),new Fifo());
-    }
+    
+    
     public void begin(Fifo send, Fifo recieve){
         file = new ArrayList<>();
         file.add(recieve);
