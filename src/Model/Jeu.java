@@ -800,7 +800,7 @@ public class Jeu extends Observable implements Cloneable {
             clone.start = start;
             clone.End = End;
             clone.players = new Player[nbJoueur];
-            clone.hist = null;
+            clone.hist = new Historique();
             for (int i = 0; i < nbJoueur; i++) {
                 clone.players[i] = players[i].clone();
             }

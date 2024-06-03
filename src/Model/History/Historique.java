@@ -20,7 +20,7 @@ public class Historique {
     }
     
     public Coup annule() {
-        if (isEmptyAnnule()) {
+        if (!isEmptyAnnule()) {
             Coup coup = coup_jouer.pop();
             coup_annule.add(coup);
             return coup;
@@ -29,7 +29,7 @@ public class Historique {
     }
 
     public Coup refais() {
-        if (isEmptyRefaire()) {
+        if (!isEmptyRefaire()) {
             Coup coup = coup_annule.pop();
             coup_jouer.add(coup);
             return coup;
@@ -43,11 +43,11 @@ public class Historique {
     }
 
     public boolean isEmptyAnnule() {
-        return !coup_jouer.empty();
+        return coup_jouer.empty();
     }
 
     public boolean isEmptyRefaire() {
-        return !coup_annule.empty();
+        return coup_annule.empty();
     }
 
     public String sauvegarde() {
