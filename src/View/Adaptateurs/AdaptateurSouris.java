@@ -2,6 +2,7 @@ package View.Adaptateurs;
 import View.CollecteurEvenements;
 import View.Curseur;
 import View.AffichagePhaseConstruction;
+import Model.Cube;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,6 +16,7 @@ public class AdaptateurSouris extends MouseAdapter {
 	AffichagePhaseConstruction nivGraph;
 	int nbJoueur;
 	int taille_base_pyramide;
+	boolean cube_selectionne = false;
 
 	public AdaptateurSouris(CollecteurEvenements c, AffichagePhaseConstruction nivGraph) {
 		controle = c;
@@ -39,20 +41,29 @@ public class AdaptateurSouris extends MouseAdapter {
 								if (nivGraph.getEchange() % 2 == 0) {
 									System.out.println("-------------------> Lisa = premier clique dans la pyramide");
 									// Gerer_Curseur(); réussir à déterminer la couleur sur laquelle on a cliquée
-									nivGraph.setX1(x);
-									nivGraph.setY1(y);
-									nivGraph.echange();
+									int cube = nivGraph.getCubePyramideJoueur(x, y);
+									if(cube != 7){
+										Gerer_Curseur(cube);
+										nivGraph.setX1(x);
+										nivGraph.setY1(y);
+										nivGraph.echange();
+										nivGraph.setEchange(nivGraph.getEchange() + 1);
+										nivGraph.SetMoinsUnPyramide(true);
+									}
 								} else {
 									System.out.println("-------------------> Askel: Arrivée de Lisa! On a cliqué dans la pyramide et le deuxième clique est aussi dans la pyramide!");
 									x2 = x;
 									y2 = y;
 									controle.clicSourisEchange(nivGraph.getX1(), nivGraph.getY1(), x2, y2);
+									nivGraph.SetMoinsUnPyramide(false);
 									// nivGraph.setCursor(Cursor.getDefaultCursor());
 									nivGraph.setCursor(Curseur.Gerer_Curseur_main());
 									// nivGraph.GetAccessible(false
 									nivGraph.echange();
+									nivGraph.setEchange(nivGraph.getEchange() + 1);
+									
 								}
-								nivGraph.setEchange(nivGraph.getEchange() + 1);
+								nivGraph.repaint();
 								return;
 
 							}
@@ -68,28 +79,50 @@ public class AdaptateurSouris extends MouseAdapter {
 					if (e.getX() >= pts[x][y].getX() && e.getX() <= pts[x][y].getX() + taille_cube) {
 						if (e.getY() >= pts[x][y].getY() && e.getY() <= pts[x][y].getY() + taille_cube) {
 							System.out.println("-------------------> Judi: On a sélecctionné un cube dans la pioche et le prochain clique est dans la pyramide!");
+							nivGraph.SetMoinsUnPyramide(false);
 							// nivGraph.setCursor(Cursor.getDefaultCursor());
 							// nivGraph.GetAccessible(false);
-							controle.clicSourisPyr(x, y);
-							nivGraph.setPoint(p);
+							if(cube_selectionne){
+								controle.clicSourisPyr(x, y);
+								nivGraph.setPoint(p);
+							}
+							
 						}
 					}
 				}
 			}
+			System.out.println("-------------------> Loup-Tchak: Le clique est en dehors de la pyramide");
+			System.out.println("-------------------> Réinitialiser le cube pioché");
+			nivGraph.setEchange(0);
+			nivGraph.SetMoinsUnPioche(false);
+			nivGraph.SetMoinsUnPyramide(false);
+			cube_selectionne = false;
+			nivGraph.setDessinVideFalse();
+			nivGraph.setCubeSel(false);
+			nivGraph.repaint();
+			
 			// nivGraph.setCursor(Cursor.getDefaultCursor());
 			nivGraph.setCursor(Curseur.Gerer_Curseur_main());
 			// nivGraph.GetAccessible(false);
 		} 
 		else if (e.getY() >= nivGraph.Hauteur_Fenetre() * 7 / 10) 	// Clique dans la pioche
 		{	
+			if(nivGraph.peut_cliquer_pyramide()){
+				nivGraph.setCubeSel(false);
+			}
+			
 			int taille_cube = nivGraph.tailleCube();
 			Point pts[] = nivGraph.pointsPioche2();
 			int emp = nivGraph.getEmplacement();
 			if (nivGraph.peut_cliquer_pyramide()) { // un cube a été selectionné dans la pioche
 				if (e.getX() >= pts[emp].getX() && e.getX() <= pts[emp].getX() + taille_cube) {
 					if (e.getY() >= pts[emp].getY() && e.getY() <= pts[emp].getY() + taille_cube) {
-						System.out.println("-------------------> Natacha:");
+						System.out.println("-------------------> Natacha: deuxième clique dans la pioche");
+						
+						nivGraph.SetMoinsUnPioche(false);
+						nivGraph.setCursor(Curseur.Gerer_Curseur_main());
 						nivGraph.doubleClic();
+						nivGraph.repaint();
 						return;
 					}
 				}
@@ -108,10 +141,16 @@ public class AdaptateurSouris extends MouseAdapter {
 						nivGraph.setEchange(0);
 						couleur = nivGraph.couleur_case(i + 1, couleurs);
 
+						nivGraph.SetMoinsUnPioche(true);
+						nivGraph.SetMoinsUnPyramide(false);
 						Gerer_Curseur(couleur);
+						nivGraph.repaint();
 
 						controle.clicSourisPioche(couleur);
+						cube_selectionne = true;
 						nivGraph.modifierPioche(i);
+
+						// nivGraph.setCubeSel(false);
 					}
 				}
 			}
@@ -173,12 +212,12 @@ public class AdaptateurSouris extends MouseAdapter {
 
             case 5:
                 // System.out.println("cube jaune");
-
                 return "res/curseur_main_jaune.png";
+				
             case 4:
                 // System.out.println("cube rouge");
-
                 return "res/curseur_main_fermee_rouge.png";
+
             case 2:
                 // System.out.println("cube bleu");
                 return "res/curseur_main_bleu.png";

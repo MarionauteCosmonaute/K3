@@ -357,6 +357,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicSourisPyr(int ligne, int col) {
+		if (ligne == -1 && col == -1)
+		{
+			return;
+		}
 		jeu.construction(ligne, col, cube);
 	}
 

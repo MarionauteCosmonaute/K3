@@ -2,6 +2,7 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+
 import Model.Jeu;
 import Patterns.Observateur;
 
@@ -118,6 +119,10 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
         cons.setValider(b);
     }
 
+    public int getCubePyramideJoueur(int ligne, int colonne){
+        return cons.getCubePyramideJoueur(ligne, colonne);
+    }
+
     public void doubleClic() {
         cons.set_cube_sel(false);
         cons.setDessinVideFalse();
@@ -149,5 +154,15 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
         cons.fonction_globale(jeu, drawable, width_fenetre, height_fenetre);
 
         cons.updateLanguageCode();
+    }
+
+    public void SetMoinsUnPioche(boolean bool)
+    {
+        cons.SetMoinsUnPioche(bool);
+    }
+
+    public void SetMoinsUnPyramide(boolean bool)
+    {
+        cons.SetMoinsUnPyramide(bool);
     }
 }

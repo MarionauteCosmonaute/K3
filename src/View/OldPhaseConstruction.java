@@ -33,6 +33,8 @@ public class OldPhaseConstruction {
     int taille_cube;
     int emplacement;
     boolean dessiner_vide; //a renommer : correspond au booléen pour l'encadrement du cube selectionné dans la pioche
+    boolean moins_un_pioche = false;
+    boolean moins_un_pyramide = false;
 
     int echange;
     int x1, y1;
@@ -298,14 +300,51 @@ public class OldPhaseConstruction {
         valider.setEnabled(b);
     }
 
+    public int getCubePyramideJoueur(int ligne, int colonne){
+        switch (jeu.getPlayer().get(ligne, colonne)){
+            case Noir:
+                return 1;
+            case Bleu:
+                return 2;
+            case Vert :
+                return 3;
+            case Vide :
+                return 7;
+            case Blanc :
+                return 0;
+            case Rouge :
+                return 4;
+            case Jaune :
+                return 5;
+            case Neutre :
+                return 6;
+            default:
+                return -1;
+        }
+    }
+
     public void fonction_globale(Jeu jeu, Graphics g, int width_fenetre, int height_fenetre) {
         if (pyramidePleine()) {
             setValider(true);
         }
         taille_cube = Math.min(height_fenetre / 12, width_fenetre / 18);
-        dessiner_pyramide_joueur(g, width_fenetre, height_fenetre);
+        if(moins_un_pyramide){
+            System.out.println("cas 1");
+            dessiner_pyramide_joueur_moins_un(g, width_fenetre, height_fenetre);
+        }
+        else{
+            System.out.println("cas 2");
+            dessiner_pyramide_joueur(g, width_fenetre, height_fenetre);
+        }
         dessiner_pyramide_centrale(g, width_fenetre, height_fenetre);
-        dessiner_cubes_pioches(g, width_fenetre, height_fenetre);
+        if(moins_un_pioche){
+            System.out.println("cas -1");
+            dessiner_cubes_pioches_moins_un(g, width_fenetre, height_fenetre);
+        }
+        else{
+            System.out.println("cas -2");
+            dessiner_cubes_pioches(g, width_fenetre, height_fenetre);
+        }
     }
 
     public int max_nb(int[] tab) {
@@ -338,6 +377,16 @@ public class OldPhaseConstruction {
             }
         }
         return true;
+    }
+
+    public void SetMoinsUnPioche(boolean bool)
+    {
+        moins_un_pioche = bool;
+    }
+
+    public void SetMoinsUnPyramide(boolean bool)
+    {
+        moins_un_pyramide = bool;
     }
 
     public void dessiner_cubes_pioches(Graphics g, int width_fenetre, int height_fenetre) {
@@ -405,25 +454,80 @@ public class OldPhaseConstruction {
 
             }
         }
-        if (dessiner_vide) {
-            int x_selection = x_gauche + (emplacement % 7) * (taille_cube + espace);
-            int y_selection = y_haut + (emplacement / 7) * (taille_cube + espace);
+    }
 
-            drawable.setColor(Color.WHITE);
-            // drawable.setColor(Color.BLACK);
-            drawable.drawRect(x_selection, y_selection, taille_cube, taille_cube);
-            drawable.drawRect(x_selection + 1, y_selection + 1, taille_cube - 2, taille_cube - 2);
-            drawable.drawRect(x_selection + 2, y_selection + 2, taille_cube - 4, taille_cube - 4);
+    public void dessiner_cubes_pioches_moins_un(Graphics g, int width_fenetre, int height_fenetre) {
+        int nb_couleurs[] = jeu.compte_personal_bag();
+        // System.out.println("----------------" + nb_couleurs[0]);
+        drawable = (Graphics2D) g;
+        int espace = taille_cube / 10;
+        int debut_zone_haut = height_fenetre * 7 / 10;
+        int hauteur_utilisee = taille_cube * 3 + 2 * espace;
+        int largeur_utilisee = taille_cube * 7 + 6 * espace;
 
-            // drawable.setColor(Color.WHITE);
-            drawable.setColor(Color.BLACK);
+        int y_haut = debut_zone_haut + (height_fenetre - debut_zone_haut - hauteur_utilisee) / 2;
+        int x_gauche = (width_fenetre - largeur_utilisee) / 2;
 
-            drawable.drawRect(x_selection + 3, y_selection + 3, taille_cube - 6, taille_cube - 6);
-            drawable.drawRect(x_selection + 4, y_selection + 4, taille_cube - 8, taille_cube - 8);
-            drawable.drawRect(x_selection + 5, y_selection + 5, taille_cube - 10, taille_cube - 10);
-            // drawable.setColor(Color.BLACK);
+        int somme = 0;
+        for (int i = 0; i < 7; i++) {
+            somme += nb_couleurs[i];
         }
 
+        int coul = couleur_case(emplacement + 1, nb_couleurs);
+        nb_couleurs[coul]--;
+        somme--;
+
+        int x, y;
+        Point p;
+        int couleur;
+        int ligne, col;
+        Cube sCube;
+        for(int i = 0; i < 7; i++){
+            // System.out.println("cube " + Cube.intToCube(i) + ": " + nb_couleurs[i] );
+        }
+
+        for (int i = 0; i < somme; i++) {
+            ligne = i / 7;
+            col = i % 7;
+            if (somme >= i + 1) {
+                x = x_gauche + col * (taille_cube + espace);
+                y = y_haut + ligne * (taille_cube + espace);
+                couleur = couleur_case(i + 1, nb_couleurs);
+                p = new Point(x, y);
+                tab_pioche[i] = p;
+                sCube = Cube.intToCube(couleur);
+                switch (sCube) {
+                    case Noir:
+                        drawable.drawImage(noir, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Neutre:
+                        drawable.drawImage(neutre, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Blanc:
+                        drawable.drawImage(blanc, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Vert:
+                        drawable.drawImage(vert, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Jaune:
+                        drawable.drawImage(jaune, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Rouge:
+                        drawable.drawImage(rouge, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Bleu:
+                        drawable.drawImage(bleu, x, y, taille_cube, taille_cube, null);
+                        break;
+                    default:
+                        System.err.println("le cube Vide est dans le bag");
+                        System.exit(2);
+                }
+
+            }
+        }
+
+        nb_couleurs[coul]++;
+        somme++;
     }
 
     public void dessiner_pyramide_centrale(Graphics g, int width_fenetre, int height_fenetre) {
@@ -530,24 +634,79 @@ public class OldPhaseConstruction {
                 }
             }
         }
-        if (echange % 2 == 1) {
-            x_haut = debut_zone_haut + (taille_base_pyramide - 1 - x1) * (taille_cube + taille_cube / 10);
-            y_haut = debut_zone_gauche + x1 * (taille_cube + taille_cube / 10) / 2
-                    + (taille_cube + taille_cube / 10) * (y1);
+        // if (echange % 2 == 1) {
+        //     x_haut = debut_zone_haut + (taille_base_pyramide - 1 - x1) * (taille_cube + taille_cube / 10);
+        //     y_haut = debut_zone_gauche + x1 * (taille_cube + taille_cube / 10) / 2
+        //             + (taille_cube + taille_cube / 10) * (y1);
 
-            drawable.setColor(Color.RED);
+        //     drawable.setColor(Color.RED);
 
-            drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
-            drawable.drawRect(y_haut + 1, x_haut + 1, taille_cube - 2, taille_cube - 2);
-            drawable.drawRect(y_haut + 2, x_haut + 2, taille_cube - 4, taille_cube - 4);
+        //     drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
+        //     drawable.drawRect(y_haut + 1, x_haut + 1, taille_cube - 2, taille_cube - 2);
+        //     drawable.drawRect(y_haut + 2, x_haut + 2, taille_cube - 4, taille_cube - 4);
 
-            drawable.setColor(Color.WHITE);
+        //     drawable.setColor(Color.WHITE);
 
-            drawable.drawRect(y_haut + 3, x_haut + 3, taille_cube - 6, taille_cube - 6);
-            drawable.drawRect(y_haut + 4, x_haut + 4, taille_cube - 8, taille_cube - 8);
-            drawable.drawRect(y_haut + 5, x_haut + 5, taille_cube - 10, taille_cube - 10);
+        //     drawable.drawRect(y_haut + 3, x_haut + 3, taille_cube - 6, taille_cube - 6);
+        //     drawable.drawRect(y_haut + 4, x_haut + 4, taille_cube - 8, taille_cube - 8);
+        //     drawable.drawRect(y_haut + 5, x_haut + 5, taille_cube - 10, taille_cube - 10);
 
-            drawable.setColor(Color.BLACK);
+        //     drawable.setColor(Color.BLACK);
+        // }
+    }
+
+    public void dessiner_pyramide_joueur_moins_un(Graphics g, int width_fenetre, int height_fenetre) {
+        drawable = (Graphics2D) g;
+
+        int debut_zone_haut = height_fenetre / 10;
+        int debut_zone_gauche = width_fenetre * 1 / 5;
+        int x_haut, y_haut;
+
+        Point p;
+        Cube cube;
+        for (int x = 0; x < taille_base_pyramide; x++) {
+            for (int y = 0; y < (taille_base_pyramide - x); y++) {
+                cube = jeu.getPlayer().get(x, y);
+                if(x == x1 && y == y1){
+                    cube = Cube.Vide;
+                }
+                x_haut = debut_zone_haut + (taille_base_pyramide - 1 - x) * (taille_cube + taille_cube / 10);
+                y_haut = debut_zone_gauche + x * (taille_cube + taille_cube / 10) / 2
+                        + (taille_cube + taille_cube / 10) * (y);
+                p = new Point(y_haut, x_haut);
+                tab_pts[x][y] = p;
+                switch (cube) {
+                    case Noir:
+                        drawable.drawImage(noir, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Neutre:
+                        drawable.drawImage(neutre, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Blanc:
+                        drawable.drawImage(blanc, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Vert:
+                        drawable.drawImage(vert, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Jaune:
+                        drawable.drawImage(jaune, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Rouge:
+                        drawable.drawImage(rouge, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Bleu:
+                        drawable.drawImage(bleu, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Vide:
+                        drawable.setColor(Color.WHITE);
+                        drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
+                        drawable.drawRect(y_haut+1, x_haut+1, taille_cube-2, taille_cube-2);
+                        drawable.drawRect(y_haut+2, x_haut+2, taille_cube-4, taille_cube-4);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
     public void updateJoueurLabel(){

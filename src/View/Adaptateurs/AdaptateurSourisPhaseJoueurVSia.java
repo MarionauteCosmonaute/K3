@@ -1,6 +1,7 @@
 package View.Adaptateurs;
 
 import View.CollecteurEvenements;
+import View.Curseur;
 import View.PDJPyramideCentrale;
 import View.PDJPyramideIA;
 import View.PDJPyramideJoueur;
@@ -31,10 +32,14 @@ public class AdaptateurSourisPhaseJoueurVSia extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         pdj.SetDessineMoins1(false);
-        pdj.setCursor(Cursor.getDefaultCursor());
-        pdjIA.setCursor(Cursor.getDefaultCursor());
-        pdjCentrale.setCursor(Cursor.getDefaultCursor());
+        // pdj.setCursor(Cursor.getDefaultCursor());
+        // pdjIA.setCursor(Cursor.getDefaultCursor());
+        // pdjCentrale.setCursor(Cursor.getDefaultCursor());
+        pdj.setCursor(Curseur.Gerer_Curseur_main());
+        pdjIA.setCursor(Curseur.Gerer_Curseur_main());
+        pdjCentrale.setCursor(Curseur.Gerer_Curseur_main());
         pdjCentrale.GetAccessible(false);
+        pdjCentrale.repaint();
 
         if (pdj.NumeroJoueur() != pdjCentrale.GetJoueurCourant()) {
             // Voir si les deux repaint sont utiles
