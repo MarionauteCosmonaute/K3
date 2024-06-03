@@ -520,4 +520,36 @@ public class StructurePainter {
             }
         }
     }
+
+    public static void dessiner_dernier_coup(Jeu jeu, Graphics2D drawable, int height, int width, boolean side)
+    {
+        Point last = jeu.dernierCoup();
+        if (last == null)
+        {
+            return;
+        }
+        
+        int taille_pyramide = jeu.getPrincipale().getSize();
+        int taille_cube = Math.min(80 * height / (100 * taille_pyramide), 80 * width / (100 * taille_pyramide));
+        int espace = taille_cube / 10;
+
+        int x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (8-last.x) - (espace * taille_pyramide) / 2;
+        int y_haut = width / 2 - (taille_cube / 2) * ((8-last.x) + 1) + taille_cube * last.y - (espace * (8-last.x)) / 2;  
+        if(side)
+        {
+            y_haut -= 2*taille_cube;
+        }
+
+        drawable.setColor(Color.RED);
+        drawable.drawRect(y_haut + espace * (last.y), x_haut + espace * (8-last.x), taille_cube, taille_cube);
+        drawable.drawRect(y_haut + espace * (last.y) + 1, x_haut + espace * (8-last.x) + 1, taille_cube - 2, taille_cube - 2);
+        drawable.setColor(Color.WHITE);
+        
+        drawable.drawRect(y_haut + espace * (last.y) + 2, x_haut + espace * (8-last.x) + 2, taille_cube - 4, taille_cube - 4);
+        drawable.drawRect(y_haut + espace * (last.y) + 3, x_haut + espace * (8-last.x) + 3, taille_cube - 6, taille_cube - 6);
+        drawable.setColor(Color.RED);
+        drawable.drawRect(y_haut + espace * (last.y) + 4, x_haut + espace * (8-last.x) + 4, taille_cube - 8, taille_cube - 8);
+        drawable.drawRect(y_haut + espace * (last.y) + 5, x_haut + espace * (8-last.x) + 5, taille_cube - 10, taille_cube - 10);
+
+    }
 }

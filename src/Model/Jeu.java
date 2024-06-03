@@ -27,6 +27,7 @@ public class Jeu extends Observable implements Cloneable{
     boolean End,start;
     Historique hist;
     boolean penality = false;
+    Point dernierCoup = null;
 
     public boolean getPenality(){
         return penality;
@@ -365,6 +366,7 @@ public class Jeu extends Observable implements Cloneable{
     // 3 -> PLAY WHITE
     public int jouer_coup(int x_central, int y_central, int x_player, int y_player){
         int valid;
+        dernierCoup = new Point(x_central,y_central);
         if (y_player==-1){
             valid = add_central_side(x_central, y_central, x_player);
         } else {
@@ -782,5 +784,9 @@ public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l
             return clone;
         }catch(Exception e){System.err.println("Error Clone");System.exit(1);}
         return new Jeu(2);
+    }
+
+    public Point dernierCoup(){
+        return dernierCoup;
     }
 }

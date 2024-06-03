@@ -42,7 +42,7 @@ public class OldPhaseConstruction {
     int nbJoueur;
     int taille_base_pyramide;
 
-    JButton reset, valider, Aide, Regles, Retour;
+    JButton reset, valider, Aide, Regles, Retour, IA;
     BoutonUnMute UnMute;
     public OldPhaseConstruction(JPanel frame, CollecteurEvenements controle, Jeu jeu) {
         this.frame = frame;
@@ -150,22 +150,25 @@ public class OldPhaseConstruction {
         Retour.setBorder(BorderFactory.createEmptyBorder());
         Retour.setContentAreaFilled(false);
 
-        constructLabel = new JLabel("Construisez votre pyramide !");
-        constructLabel.setFont(new Font("Default", Font.BOLD, 15));
-        constructLabel.setForeground (Color.white);
-        panel.add(constructLabel);
-
         joueurLabel= new JLabel("Joueur "+ (jeu.get_player()+1));
         joueurLabel.setFont(new Font("Default", Font.BOLD, 20));
 		panel.add(joueurLabel);
 
         // Bouton Aide
-        Aide = Bouton.creerButton("Auto-construction");
+        Aide = Bouton.creerButton("Auto-complétion");
         Aide.addActionListener(new AdaptateurAideConstruction(controle));
         Aide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topCenter.add(Aide, BorderLayout.CENTER);
         topCenter.setOpaque(false);
+
+        // Bouton construction IA
+        IA = Bouton.creerButton("Par IA");
+        IA.addActionListener(new AdaptateurAideConstructionIA(controle));
+        IA.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        topCenter.add(IA, BorderLayout.CENTER);
+        topCenter.setOpaque(false);
+
 
         valider = Bouton.creerButton("Valider");
         valider.addActionListener(new AdaptateurValider(controle));
@@ -199,11 +202,13 @@ public class OldPhaseConstruction {
             SourisAdapte sourisreset = new SourisAdapte(reset, FileLoader.getSound("res/clic.wav"));
             SourisAdapte sourisAide = new SourisAdapte(Aide, FileLoader.getSound("res/clic.wav"));
             SourisAdapte sourisRegles = new SourisAdapte(Regles, FileLoader.getSound("res/clic.wav"));
+            SourisAdapte sourisIA = new SourisAdapte(IA, FileLoader.getSound("res/clic.wav"));
             Retour.addMouseListener(sourisRetour);
             valider.addMouseListener(sourisvalider);
             reset.addMouseListener(sourisreset);
             Aide.addMouseListener(sourisAide);
             Regles.addMouseListener(sourisRegles);
+            IA.addMouseListener(sourisIA);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 System.exit(1);
         }
@@ -216,10 +221,10 @@ public class OldPhaseConstruction {
             case "FR":
                 reset.setText("Réinitialiser");
                 valider.setText("Valider");
-                Aide.setText("Auto-construction");
+                Aide.setText("Auto-complétion");
                 Regles.setText("Règles");
                 joueurLabel.setText("Joueur "+ (jeu.get_player()+1));
-                constructLabel.setText("Construisez votre pyramide !");
+                IA.setText("Par IA");
                 break;
             case "EN":
                 reset.setText("Reset");
@@ -227,7 +232,7 @@ public class OldPhaseConstruction {
                 Aide.setText("Auto-build");
                 Regles.setText("Rules");
                 joueurLabel.setText("Player "+ (jeu.get_player()+1));
-                constructLabel.setText("Build your pyramid !");
+                IA.setText("By AI");
                 break;
             default:
                 break;
@@ -329,20 +334,16 @@ public class OldPhaseConstruction {
         }
         taille_cube = Math.min(height_fenetre / 12, width_fenetre / 18);
         if(moins_un_pyramide){
-            System.out.println("cas 1");
             dessiner_pyramide_joueur_moins_un(g, width_fenetre, height_fenetre);
         }
         else{
-            System.out.println("cas 2");
             dessiner_pyramide_joueur(g, width_fenetre, height_fenetre);
         }
         dessiner_pyramide_centrale(g, width_fenetre, height_fenetre);
         if(moins_un_pioche){
-            System.out.println("cas -1");
             dessiner_cubes_pioches_moins_un(g, width_fenetre, height_fenetre);
         }
         else{
-            System.out.println("cas -2");
             dessiner_cubes_pioches(g, width_fenetre, height_fenetre);
         }
     }
@@ -391,7 +392,6 @@ public class OldPhaseConstruction {
 
     public void dessiner_cubes_pioches(Graphics g, int width_fenetre, int height_fenetre) {
         nb_couleurs = jeu.compte_personal_bag();
-        // System.out.println("----------------" + nb_couleurs[0]);
         drawable = (Graphics2D) g;
         int espace = taille_cube / 10;
         int debut_zone_haut = height_fenetre * 7 / 10;
@@ -411,9 +411,6 @@ public class OldPhaseConstruction {
         int couleur;
         int ligne, col;
         Cube sCube;
-        for(int i = 0; i < 7; i++){
-            // System.out.println("cube " + Cube.intToCube(i) + ": " + nb_couleurs[i] );
-        }
 
         for (int i = 0; i < somme; i++) {
             ligne = i / 7;
@@ -458,7 +455,6 @@ public class OldPhaseConstruction {
 
     public void dessiner_cubes_pioches_moins_un(Graphics g, int width_fenetre, int height_fenetre) {
         int nb_couleurs[] = jeu.compte_personal_bag();
-        // System.out.println("----------------" + nb_couleurs[0]);
         drawable = (Graphics2D) g;
         int espace = taille_cube / 10;
         int debut_zone_haut = height_fenetre * 7 / 10;
@@ -482,9 +478,6 @@ public class OldPhaseConstruction {
         int couleur;
         int ligne, col;
         Cube sCube;
-        for(int i = 0; i < 7; i++){
-            // System.out.println("cube " + Cube.intToCube(i) + ": " + nb_couleurs[i] );
-        }
 
         for (int i = 0; i < somme; i++) {
             ligne = i / 7;
@@ -579,6 +572,17 @@ public class OldPhaseConstruction {
                 default:
                     break;
             }
+        }
+        drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre / 35, width_fenetre / 35)));
+        String languageCode = Global.Config.getLanguage();
+        switch (languageCode) {
+            case "FR":
+                drawable.drawString("Construisez votre pyramide !", debut_zone_gauche, Math.min(height_fenetre/2 , width_fenetre/2 ));
+                break;
+
+            case "EN":
+                drawable.drawString("Build your pyramid !", debut_zone_gauche, Math.min(height_fenetre/2 , width_fenetre/2 ));
+                break;
         }
     }
 

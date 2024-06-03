@@ -17,6 +17,7 @@ public class AdaptateurSouris extends MouseAdapter {
 	int nbJoueur;
 	int taille_base_pyramide;
 	boolean cube_selectionne = false;
+	boolean clic_dans_pyramide = false;
 
 	public AdaptateurSouris(CollecteurEvenements c, AffichagePhaseConstruction nivGraph) {
 		controle = c;
@@ -27,7 +28,7 @@ public class AdaptateurSouris extends MouseAdapter {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
+		
 		// Clique dans la pyramide
 		if (e.getY() < nivGraph.Hauteur_Fenetre() * 7 / 10) {
 			int x2, y2;
@@ -39,8 +40,8 @@ public class AdaptateurSouris extends MouseAdapter {
 						if (e.getX() >= pts[x][y].getX() && e.getX() <= pts[x][y].getX() + taille_cube) {
 							if (e.getY() >= pts[x][y].getY() && e.getY() <= pts[x][y].getY() + taille_cube) {
 								if (nivGraph.getEchange() % 2 == 0) {
-									System.out.println("-------------------> Lisa = premier clique dans la pyramide");
 									// Gerer_Curseur(); réussir à déterminer la couleur sur laquelle on a cliquée
+									clic_dans_pyramide = true;
 									int cube = nivGraph.getCubePyramideJoueur(x, y);
 									if(cube != 7){
 										Gerer_Curseur(cube);
@@ -51,7 +52,6 @@ public class AdaptateurSouris extends MouseAdapter {
 										nivGraph.SetMoinsUnPyramide(true);
 									}
 								} else {
-									System.out.println("-------------------> Askel: Arrivée de Lisa! On a cliqué dans la pyramide et le deuxième clique est aussi dans la pyramide!");
 									x2 = x;
 									y2 = y;
 									controle.clicSourisEchange(nivGraph.getX1(), nivGraph.getY1(), x2, y2);
@@ -70,6 +70,7 @@ public class AdaptateurSouris extends MouseAdapter {
 						}
 					}
 				}
+
 			}
 			int taille_cube = nivGraph.tailleCube();
 			Point pts[][] = nivGraph.pointsPyr();
@@ -78,7 +79,6 @@ public class AdaptateurSouris extends MouseAdapter {
 				for (int y = 0; y < (taille_base_pyramide - x); y++) {
 					if (e.getX() >= pts[x][y].getX() && e.getX() <= pts[x][y].getX() + taille_cube) {
 						if (e.getY() >= pts[x][y].getY() && e.getY() <= pts[x][y].getY() + taille_cube) {
-							System.out.println("-------------------> Judi: On a sélecctionné un cube dans la pioche et le prochain clique est dans la pyramide!");
 							nivGraph.SetMoinsUnPyramide(false);
 							// nivGraph.setCursor(Cursor.getDefaultCursor());
 							// nivGraph.GetAccessible(false);
@@ -91,8 +91,6 @@ public class AdaptateurSouris extends MouseAdapter {
 					}
 				}
 			}
-			System.out.println("-------------------> Loup-Tchak: Le clique est en dehors de la pyramide");
-			System.out.println("-------------------> Réinitialiser le cube pioché");
 			nivGraph.setEchange(0);
 			nivGraph.SetMoinsUnPioche(false);
 			nivGraph.SetMoinsUnPyramide(false);
@@ -108,7 +106,11 @@ public class AdaptateurSouris extends MouseAdapter {
 		else if (e.getY() >= nivGraph.Hauteur_Fenetre() * 7 / 10) 	// Clique dans la pioche
 		{	
 			if(nivGraph.peut_cliquer_pyramide()){
+				nivGraph.setCursor(Curseur.Gerer_Curseur_main());
+				nivGraph.SetMoinsUnPioche(false);
 				nivGraph.setCubeSel(false);
+				nivGraph.repaint();
+				return;
 			}
 			
 			int taille_cube = nivGraph.tailleCube();
@@ -117,7 +119,6 @@ public class AdaptateurSouris extends MouseAdapter {
 			if (nivGraph.peut_cliquer_pyramide()) { // un cube a été selectionné dans la pioche
 				if (e.getX() >= pts[emp].getX() && e.getX() <= pts[emp].getX() + taille_cube) {
 					if (e.getY() >= pts[emp].getY() && e.getY() <= pts[emp].getY() + taille_cube) {
-						System.out.println("-------------------> Natacha: deuxième clique dans la pioche");
 						
 						nivGraph.SetMoinsUnPioche(false);
 						nivGraph.setCursor(Curseur.Gerer_Curseur_main());
@@ -137,7 +138,6 @@ public class AdaptateurSouris extends MouseAdapter {
 			for (int i = 0; i < somme; i++) {
 				if (e.getX() >= pts[i].getX() && e.getX() <= pts[i].getX() + taille_cube) {
 					if (e.getY() >= pts[i].getY() && e.getY() <= pts[i].getY() + taille_cube) {
-						System.out.println("-------------------> Ryan: Premier clique dans la pioche");
 						nivGraph.setEchange(0);
 						couleur = nivGraph.couleur_case(i + 1, couleurs);
 
@@ -154,21 +154,31 @@ public class AdaptateurSouris extends MouseAdapter {
 					}
 				}
 			}
+			if(clic_dans_pyramide){
+				nivGraph.setEchange(0);
+				nivGraph.SetMoinsUnPioche(false);
+				nivGraph.SetMoinsUnPyramide(false);
+				cube_selectionne = false;
+				nivGraph.setDessinVideFalse();
+				nivGraph.setCubeSel(false);
+				nivGraph.setCursor(Curseur.Gerer_Curseur_main());
+				clic_dans_pyramide = false;
+				nivGraph.repaint();
+			}
 		}
 		else
 		{
-			System.out.println("-------------------> Louis: ");
 			// nivGraph.setCursor(Cursor.getDefaultCursor());
 			nivGraph.setCursor(Curseur.Gerer_Curseur_main());
 			// nivGraph.GetAccessible(false);
 		}
+		
 	}
 
 	public void Gerer_Curseur(int couleur)
     {
         try
         {
-            System.out.println("Changment de curseur!");
             // Charger l'image de la banane
             String curseur = Cube_Chope(couleur);
             if (curseur != "Erreur")

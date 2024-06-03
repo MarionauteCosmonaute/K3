@@ -141,6 +141,11 @@ public class AffichagePhaseConstruction extends JComponent implements Observateu
         setCubeSel(false);
         setDessinVideFalse();
         setEchange(0);
+        /////////////
+        SetMoinsUnPioche(false);
+        SetMoinsUnPyramide(false);
+        setCursor(Curseur.Gerer_Curseur_main());
+        
     }
 
     public void paintComponent(Graphics g) {

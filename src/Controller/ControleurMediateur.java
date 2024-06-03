@@ -435,31 +435,40 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "Charger":
 				reset();
+				vue.setBackgroundPicture("res/black_wood.jpg");
 				vue.changeVisible(3);
 				jeu.reset(qs);
 				break;
 
 			case "FR":
 				Global.Config.setLanguage("FR");
-				vue.getMenuNouvellePartie().updateLanguageCode();
+				vue.getMenuPrincipal().updateLanguageCode();
 				break;
 
 			case "EN":
 				Global.Config.setLanguage("EN");
-				vue.getMenuNouvellePartie().updateLanguageCode();
+				vue.getMenuPrincipal().updateLanguageCode();
 				break;
 
 			case "Reset":
 				jeu.resetBag();
 				vue.getMenuPhaseConstruction().setValider(false);
+				vue.getMenuPhaseConstruction().reset();
 				vue.getMenuPhaseConstruction().repaint(); // ça me paraît normal de faire ça comme ça
 				break;  
 			
 			case "AideConstruction":
-				jeu.resetBag(); 
+				//jeu.resetBag(); 
 				jeu.constructionAleatoire(jeu.getPlayer());
 				vue.getMenuPhaseConstruction().reset();
 				//System.out.println(jeu.getPlayer().getPyramid());
+				vue.getMenuPhaseConstruction().repaint();
+				break;
+
+			case "AideConstructionIA":
+				jeu.resetBag(); 
+				jeu.constructionAleatoire(jeu.getPlayer());
+				vue.getMenuPhaseConstruction().reset();
 				vue.getMenuPhaseConstruction().repaint();
 				break;
 
