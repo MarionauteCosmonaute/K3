@@ -8,9 +8,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
-import org.w3c.dom.events.MouseEvent;
-
-import java.awt.event.*;
+// import org.w3c.dom.events.MouseEvent;
+// import java.awt.event.*;
 
 import java.awt.*;
 import java.io.IOException;
@@ -169,5 +168,6 @@ public class MenuPrincipal extends Menu {
     public void paintComponents(Graphics g){
         UnMute.repaint();
         super.paintComponents(g);
+        updateLanguageCode();
     }
 }

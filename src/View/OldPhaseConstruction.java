@@ -40,7 +40,7 @@ public class OldPhaseConstruction {
     int nbJoueur;
     int taille_base_pyramide;
 
-    JButton reset, valider, Aide, Regles, Retour;
+    JButton reset, valider, Aide, Regles, Retour, IA;
     BoutonUnMute UnMute;
     public OldPhaseConstruction(JPanel frame, CollecteurEvenements controle, Jeu jeu) {
         this.frame = frame;
@@ -165,6 +165,13 @@ public class OldPhaseConstruction {
         topCenter.add(Aide, BorderLayout.CENTER);
         topCenter.setOpaque(false);
 
+        // Bouton construction IA
+        IA = Bouton.creerButton("Construction par IA");
+        IA.addActionListener(new AdaptateurAideConstructionIA(controle));
+        IA.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        topCenter.add(IA, BorderLayout.CENTER);
+        topCenter.setOpaque(false);
+
         valider = Bouton.creerButton("Valider");
         valider.addActionListener(new AdaptateurValider(controle));
         valider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -218,6 +225,7 @@ public class OldPhaseConstruction {
                 Regles.setText("Règles");
                 joueurLabel.setText("Joueur "+ (jeu.get_player()+1));
                 constructLabel.setText("Construisez votre pyramide !");
+                IA.setText("Construction par IA");
                 break;
             case "EN":
                 reset.setText("Reset");
@@ -226,6 +234,7 @@ public class OldPhaseConstruction {
                 Regles.setText("Rules");
                 joueurLabel.setText("Player "+ (jeu.get_player()+1));
                 constructLabel.setText("Build your pyramid !");
+                IA.setText("Build by AI");
                 break;
             default:
                 break;

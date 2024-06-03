@@ -3,8 +3,8 @@ import View.Adaptateurs.*;
 import View.Menu.Menu;
 import View.Menu.*;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+// import java.awt.event.ActionEvent;
+// import java.awt.event.ActionListener;
 
 import Model.Jeu;
 import Patterns.Observateur;

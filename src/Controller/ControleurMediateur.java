@@ -40,7 +40,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		joueur_initial = j.get_player();
 		penalty = false;
 		gagnant = -1;
-		timer_sablier = new Timer(1000, new ActionListener()
+		timer_sablier = new Timer(500, new ActionListener()
 			{
 				@Override
 				
@@ -103,6 +103,19 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicJoueurSide(int x) {
+
+		// On désactive les boutons de l'historique tant que le coup n'est pas validé!
+		System.out.println("----> annule grisé");
+		vue.getMenuPhaseDeJeu2().setAnnuler(false);
+		vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
+		// vue.getMenuPhaseDeJeu2().repaint();
+
+		System.out.println("----> refaire grisé");
+		vue.getMenuPhaseDeJeu2().setRefaire(false);
+		vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
+		vue.getMenuPhaseDeJeu2().repaint();
+		vue.getMenuPhaseDeJeuJVIA().repaint();
+
 		if(IAON && jeu.get_player() == 1 && !penalty){
 			return;
 		}
@@ -148,6 +161,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			vue.getMenuPhaseDeJeu2().setRefaire(false);
 			vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
 			vue.getMenuPhaseDeJeu2().repaint();
+			vue.getMenuPhaseDeJeuJVIA().repaint();
 		}
 		else
 		{
@@ -155,6 +169,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			vue.getMenuPhaseDeJeu2().setRefaire(true);
 			vue.getMenuPhaseDeJeuJVIA().setRefaire(true);
 			vue.getMenuPhaseDeJeu2().repaint();
+			vue.getMenuPhaseDeJeuJVIA().repaint();
 		}
 	}
 
@@ -165,6 +180,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			vue.getMenuPhaseDeJeu2().setAnnuler(false);
 			vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
 			vue.getMenuPhaseDeJeu2().repaint();
+			vue.getMenuPhaseDeJeuJVIA().repaint();
 		}
 		else
 		{
@@ -172,6 +188,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			vue.getMenuPhaseDeJeu2().setAnnuler(true);
 			vue.getMenuPhaseDeJeuJVIA().setAnnuler(true);
 			vue.getMenuPhaseDeJeu2().repaint();
+			vue.getMenuPhaseDeJeuJVIA().repaint();
 		}
 	}
 
@@ -216,6 +233,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             if (IAON){
 				
 				if(jeu.get_player() == 1){
+					vue.updateSablier(true);
 					timer_sablier.start();
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
@@ -231,8 +249,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 		int res;
 		// if(jeu.accessible(ligne_joueur,colonne_joueur)){
 		res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
-		timer_sablier.start();
-		commande("IAcompute");
+		vue.updateSablier(true);
+		if(IAON){
+			timer_sablier.start();
+			commande("IAcompute");
+		}
 		// metAJourAnnule();
 		// metAJourRefaire();
 		jeu.sauvegarde(qs);
@@ -261,8 +282,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 				
 				vue.getMenuPhaseDeJeu2().setAnnuler(false);
 				vue.getMenuPhaseDeJeu2().setRefaire(false);
-				vue.getMenuPhaseDeJeu2().repaint();
-				
+				vue.getMenuPhaseDeJeu2().repaint();	
+				vue.getMenuPhaseDeJeuJVIA().repaint();
 			}
 			else{
 				metAJourAnnule();
@@ -273,6 +294,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			vue.getMenuPhaseDeJeu2().setAnnuler(false);
 			vue.getMenuPhaseDeJeu2().setRefaire(false);
 			vue.getMenuPhaseDeJeu2().repaint();
+			vue.getMenuPhaseDeJeuJVIA().repaint();
 			clic = false;
 			PDJPyramideJoueur.SetCube_Select_Static(false);
 			penalty = true;
@@ -304,6 +326,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		if (IAON){
 			vue.TimerIA(true);
 			if(jeu.get_player() == 1){
+				vue.updateSablier(true);
 				timer_sablier.start();
 				//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
 				//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
@@ -410,18 +433,19 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "Charger":
 				reset();
+				vue.setBackgroundPicture("res/black_wood.jpg");
 				vue.changeVisible(3);
 				jeu.reset(qs);
 				break;
 
 			case "FR":
 				Global.Config.setLanguage("FR");
-				vue.getMenuNouvellePartie().updateLanguageCode();
+				vue.getMenuPrincipal().updateLanguageCode();
 				break;
 
 			case "EN":
 				Global.Config.setLanguage("EN");
-				vue.getMenuNouvellePartie().updateLanguageCode();
+				vue.getMenuPrincipal().updateLanguageCode();
 				break;
 
 			case "Reset":
@@ -434,7 +458,12 @@ public class ControleurMediateur implements CollecteurEvenements {
 				jeu.resetBag(); 
 				jeu.constructionAleatoire(jeu.get_player());
 				vue.getMenuPhaseConstruction().reset();
-				//System.out.println(jeu.getPlayer().getPyramid());
+				vue.getMenuPhaseConstruction().repaint();
+				break;
+
+			case "AideConstructionIA":
+				jeu.constructionAleatoire(jeu.get_player());
+				vue.getMenuPhaseConstruction().reset();
 				vue.getMenuPhaseConstruction().repaint();
 				break;
 
@@ -463,6 +492,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 				
 				if(jeu.get_player() == 1){
+					vue.updateSablier(true);
 					timer_sablier.start();
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
