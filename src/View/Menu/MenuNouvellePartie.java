@@ -114,7 +114,7 @@ public class MenuNouvellePartie extends Menu {
             content.add(centrePanel, BorderLayout.CENTER);
 
             // On écrit le bouton du son en haut à droite
-            UnMute = new BoutonUnMute(controle,0,content);
+            UnMute = new BoutonUnMute(controle,1,content);
 
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
@@ -129,7 +129,7 @@ public class MenuNouvellePartie extends Menu {
             UnMute.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
             // On s'occupe de mettre la fleche retour en haut à gauche
-            Retour = Bouton.BoutonRetour(0);
+            Retour = Bouton.BoutonRetour(1);
             Retour.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Retour.addActionListener(new RetourMenuPAdapeur(controle));
             JPanel topLefttPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));

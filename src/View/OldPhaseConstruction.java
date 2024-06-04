@@ -49,19 +49,19 @@ public class OldPhaseConstruction {
         this.controle = controle;
         this.jeu = jeu;
         try {
-            InputStream in = new FileInputStream("res/carre_bois.png");
+            InputStream in = new FileInputStream("res/neutre2.png");
             neutre = ImageIO.read(in);
-            in = new FileInputStream("res/carre_bleu.png");
+            in = new FileInputStream("res/bleu.png");
             bleu = ImageIO.read(in);
-            in = new FileInputStream("res/carre_vert.png");
+            in = new FileInputStream("res/vert.png");
             vert = ImageIO.read(in);
-            in = new FileInputStream("res/carre_jaune.png");
+            in = new FileInputStream("res/jaune.png");
             jaune = ImageIO.read(in);
-            in = new FileInputStream("res/carre_noir.png");
+            in = new FileInputStream("res/violet.png");
             noir = ImageIO.read(in);
-            in = new FileInputStream("res/carre_blanc.png");
+            in = new FileInputStream("res/ange.png");
             blanc = ImageIO.read(in);
-            in = new FileInputStream("res/carre_rouge.png");
+            in = new FileInputStream("res/rouge.png");
             rouge = ImageIO.read(in);
             in = new FileInputStream("res/carre_vide.png");
             vide = ImageIO.read(in);
@@ -150,8 +150,6 @@ public class OldPhaseConstruction {
 
         joueurLabel= new JLabel("Joueur "+ (jeu.get_player()+1));
         joueurLabel.setFont(new Font("Default", Font.BOLD, 20));
-        // joueurLabel.setBackground(Color.WHITE);
-        // joueurLabel.setOpaque(true);
 		panel.add(joueurLabel);
 
         // Bouton Aide
@@ -231,7 +229,6 @@ public class OldPhaseConstruction {
                 Aide.setText("Auto-complétion");
                 Regles.setText("Règles");
                 joueurLabel.setText("Joueur "+ (jeu.get_player()+1));
-                constructLabel.setText("Construisez votre pyramide !");
                 IA.setText("Construction par IA");
                 break;
             case "EN":
@@ -240,7 +237,6 @@ public class OldPhaseConstruction {
                 Aide.setText("Auto-build");
                 Regles.setText("Rules");
                 joueurLabel.setText("Player "+ (jeu.get_player()+1));
-                constructLabel.setText("Build your pyramid !");
                 IA.setText("Build by AI");
                 break;
             default:

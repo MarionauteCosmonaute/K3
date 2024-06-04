@@ -438,8 +438,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "Charger":
 				reset();
-				vue.setBackgroundPicture("res/black_wood.jpg");
-				vue.setBackgroundPicture("res/black_wood.jpg");
+				vue.setBackgroundPicture("res/Fond bleu avec cubes transparents.png");
 				vue.changeVisible(3);
 				jeu.reset(qs);
 				break;
@@ -447,12 +446,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "FR":
 				Global.Config.setLanguage("FR");
 				vue.getMenuPrincipal().updateLanguageCode();
-				vue.getMenuPrincipal().updateLanguageCode();
 				break;
 
 			case "EN":
 				Global.Config.setLanguage("EN");
-				vue.getMenuPrincipal().updateLanguageCode();
 				vue.getMenuPrincipal().updateLanguageCode();
 				break;
 
@@ -478,7 +475,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "JoueurVSJoueur":
 				IAON=false;
-			    vue.setBackgroundPicture("res/black_wood.jpg");
+			    vue.setBackgroundPicture("res/Fond bleu avec cubes transparents.png");
 				vue.changeVisible(2);
 				jeu.reset(2);
 				jeu.initPrincipale();
@@ -488,7 +485,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "JoueurVSIA":
 				IAON=true;
-				vue.setBackgroundPicture("res/black_wood.jpg");
+				vue.setBackgroundPicture("res/Fond bleu avec cubes transparents.png");
 				vue.changeVisible(2);
 				jeu.reset(2);
 				jeu.initPrincipale();
@@ -566,19 +563,19 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "MenuP":
 				vue.TimerIA(false);//on stoppe le timer de l'ia 
-				vue.setBackgroundPicture("res/Back.png");
+				vue.setBackgroundPicture("res/MenuPrincipal.png");
 				vue.changeVisible(0);
 				break;
 
 			case "MenuLocal":
 				reset();
-				vue.setBackgroundPicture("res/Back.png");
+				vue.setBackgroundPicture("res/MenuPrincipal.png");
 				vue.changeVisible(1);
 				break;
 
 			case "PDJ2":
 				vue.changeVisible(3);
-				vue.setBackgroundPicture("res/black_wood.jpg");
+				vue.setBackgroundPicture("res/Fond bleu avec cubes transparents.png");
 				break;
 
 			case "IAcompute":
@@ -675,7 +672,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case "EN":
                 buttons[0] = "Continue";
-                buttons[1] = "Replay";
+                buttons[1] = "Play again";
                 buttons[2] = "Quit";
                 message = "Player "+gagnant+" won";
                 title = "Game Over";

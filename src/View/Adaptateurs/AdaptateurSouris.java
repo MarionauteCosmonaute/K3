@@ -41,7 +41,6 @@ public class AdaptateurSouris extends MouseAdapter {
 						if (e.getX() >= pts[x][y].getX() && e.getX() <= pts[x][y].getX() + taille_cube) {
 							if (e.getY() >= pts[x][y].getY() && e.getY() <= pts[x][y].getY() + taille_cube) {
 								if (nivGraph.getEchange() % 2 == 0) {
-									System.out.println("if");
 									// Gerer_Curseur(); réussir à déterminer la couleur sur laquelle on a cliquée
 									clic_dans_pyramide = true;
 									int cube = nivGraph.getCubePyramideJoueur(x, y);
@@ -52,10 +51,10 @@ public class AdaptateurSouris extends MouseAdapter {
 										nivGraph.echange();
 										nivGraph.setEchange(nivGraph.getEchange() + 1);
 										nivGraph.SetMoinsUnPyramide(true);
+										nivGraph.repaint();
 									}
 								} else {
 
-									System.out.println("else");
 									x2 = x;
 									y2 = y;
 									controle.clicSourisEchange(nivGraph.getX1(), nivGraph.getY1(), x2, y2);
@@ -63,9 +62,10 @@ public class AdaptateurSouris extends MouseAdapter {
 									nivGraph.setCursor(Curseur.Gerer_Curseur_main());
 									nivGraph.echange();
 									nivGraph.setEchange(nivGraph.getEchange() + 1);
+									nivGraph.repaint();
 									
 								}
-								nivGraph.repaint();
+								
 								return;
 
 							}
@@ -127,7 +127,6 @@ public class AdaptateurSouris extends MouseAdapter {
 						controle.clicSourisPioche(couleur);
 						cube_selectionne = true;
 						nivGraph.modifierPioche(i);
-						System.out.println("repaint");
 						nivGraph.repaint();
 
 						// nivGraph.setCubeSel(false);
@@ -175,6 +174,7 @@ public class AdaptateurSouris extends MouseAdapter {
 		nivGraph.setDessinVideFalse();
 		nivGraph.setCubeSel(false);
 		nivGraph.setCursor(Curseur.Gerer_Curseur_main());
+		nivGraph.repaint();
 		clic_dans_pyramide = false;
 	}
 
@@ -183,31 +183,31 @@ public class AdaptateurSouris extends MouseAdapter {
        switch (couleur) {
             case 1:
                 // System.out.println("cube noir");
-                return "res/curseur_main_fermee_noir.png";
+                return "res/violet.png";
 
             case 6:
                 // System.out.println("cube neutre");
-                return "res/curseur_main_bois.png";
+                return "res/neutre2.png";
 
             case 0:
                 // System.out.println("cube blanc");
-                return "res/curseur_main_fermee_blanc.png";
+                return "res/ange.png";
 
             case 3:
                 // System.out.println("cube vert");
-                return "res/curseur_main_fermee_vert.png";
+                return "res/vert.png";
 
             case 5:
                 // System.out.println("cube jaune");
-                return "res/curseur_main_jaune.png";
+                return "res/jaune.png";
 				
             case 4:
                 // System.out.println("cube rouge");
-                return "res/curseur_main_fermee_rouge.png";
+                return "res/rouge.png";
 
             case 2:
                 // System.out.println("cube bleu");
-                return "res/curseur_main_bleu.png";
+                return "res/bleu.png";
 
             default:
                 // System.out.println("default");

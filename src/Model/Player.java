@@ -37,6 +37,7 @@ public class Player {
         personalBag = new ArrayList<>();
         nbCube = new int[7];
         nbCubeBag = new int[7];
+        nbCubeSide = new int[7];
         Cube cube;
         String[] charge = string[0].split(" ");
         for (int i = 0; i < charge.length; i++) {
@@ -154,7 +155,7 @@ public class Player {
         }
     }
     private void decrementSide(Cube c){
-        if (c != Cube.Vide) nbCubeSide[c.getInt()]++;
+        if (c != Cube.Vide) nbCubeSide[c.getInt()]--;
     }
 
     public int[] compte_personal_bag() {

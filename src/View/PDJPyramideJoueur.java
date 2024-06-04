@@ -152,10 +152,10 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
             case 0:
                 if (jeu.getPenality()) {
                     if (jeu.get_player() == 1) {
-                        drawable.setColor(Color.BLUE);
+                        drawable.setColor(new Color(51,153,255));
                     }
                 } else if (jeu.get_player() == 0) {
-                    drawable.setColor(Color.BLUE);
+                    drawable.setColor(new Color(51,153,255));
                 }
                 break;
             case 1:

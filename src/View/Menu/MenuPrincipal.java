@@ -67,14 +67,14 @@ public class MenuPrincipal extends Menu {
 
             // On récupère les images
             // Redimensionner les images à 20x20 pixels
-            Image resizedImageFR = FileLoader.getImage("res/Francev2.jpg").getScaledInstance(40, 30,
+            Image resizedImageFR = FileLoader.getImage("res/Drapeau FR.png").getScaledInstance(40, 30,
                     Image.SCALE_SMOOTH);
-            Image resizedImageEN = FileLoader.getImage("res/anglais.png").getScaledInstance(40, 30, Image.SCALE_SMOOTH);
+            Image resizedImageEN = FileLoader.getImage("res/Drapeau ANG.png").getScaledInstance(40, 30, Image.SCALE_SMOOTH);
 
             // Créer les boutons avec les icônes d'images
             FR = new JButton(new ImageIcon(resizedImageFR));
             EN = new JButton(new ImageIcon(resizedImageEN));
-            UnMute = new BoutonUnMute(controle,0,content);
+            UnMute = new BoutonUnMute(controle,1,content);
 
             // Ajouter des écouteurs d'actions aux boutons
             FR.addActionListener(new AdaptateurFR(controle));

@@ -23,14 +23,13 @@ public class StructurePainter {
     public static void init() {
         if (!inititalised) {
             try {
-                neutre = FileLoader.getImage("res/carre_bois.png");
-                bleu = FileLoader.getImage("res/carre_bleu.png");
-                vert = FileLoader.getImage("res/carre_vert.png");
-                jaune = FileLoader.getImage("res/carre_jaune.png");
-                noir = FileLoader.getImage("res/carre_noir.png");
-                blanc = FileLoader.getImage("res/carre_blanc.png");
-                rouge = FileLoader.getImage("res/carre_rouge.png");
-                access = FileLoader.getImage("res/carre_noir_vide.png");
+                neutre = FileLoader.getImage("res/neutre2.png");
+                bleu = FileLoader.getImage("res/bleu.png");
+                vert = FileLoader.getImage("res/vert.png");
+                jaune = FileLoader.getImage("res/jaune.png");
+                noir = FileLoader.getImage("res/violet.png");
+                blanc = FileLoader.getImage("res/ange.png");
+                rouge = FileLoader.getImage("res/rouge.png");
                 vide = FileLoader.getImage("res/carre_vide.png");
                 inititalised = true;
             } catch (Exception e) {

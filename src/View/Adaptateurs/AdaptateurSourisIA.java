@@ -32,11 +32,14 @@ public class AdaptateurSourisIA extends MouseAdapter {
 
         // pdj.setCursor(Cursor.getDefaultCursor());
         pdj.setCursor(Curseur.Gerer_Curseur_main());
+        pdj.repaint();
         // pdj2.setCursor(Cursor.getDefaultCursor());
         pdjJoueur.setCursor(Curseur.Gerer_Curseur_main());
+        pdjJoueur.repaint();
         // pdjCentrale.setCursor(Cursor.getDefaultCursor());
         pdjCentrale.setCursor(Curseur.Gerer_Curseur_main());
         pdjCentrale.GetAccessible(false);
+        pdjCentrale.repaint();
 
         // System.out.println("joueur courant : "+ pdjCentrale.GetJoueurCourant() + ",
         // joueur adaptateur : " + pdj.NumeroJoueur());

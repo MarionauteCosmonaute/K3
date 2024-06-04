@@ -24,7 +24,7 @@ public class BackgroundPanel extends JFrame {
         public ImageBackgroundPanel() {
             // Charger l'image en arrière-plan
             try {
-                backgroundImage = Global.FileLoader.getImage("res/Back.png");
+                backgroundImage = Global.FileLoader.getImage("res/MenuPrincipal.png");
             } catch (Exception e) {
                 System.exit(1);
             }

@@ -37,11 +37,14 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
         pdj.SetDessineMoins1(false);
         // pdj.setCursor(Cursor.getDefaultCursor());
         pdj.setCursor(Curseur.Gerer_Curseur_main());
+        pdj.repaint();
         // pdj2.setCursor(Cursor.getDefaultCursor());
         pdj2.setCursor(Curseur.Gerer_Curseur_main());
+        pdj2.repaint();
         // pdjCentrale.setCursor(Cursor.getDefaultCursor());
         pdjCentrale.setCursor(Curseur.Gerer_Curseur_main());
         pdjCentrale.GetAccessible(false);
+        pdjCentrale.repaint();
 
         if (pdj.NumeroJoueur() != pdjCentrale.GetJoueurCourant()) {
             pdj.repaint();
@@ -62,8 +65,6 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
                         && (e.getX() <= (points_pyramide_joueurs[x][y].getX() + taille_cube_joueur))) {
                     
                     ArrayList<Point> liste_accessible = pdj.GetAccessible();
-                    System.out.println("x: "+x+" y: "+y);
-                    System.out.println(liste_accessible);
                     for (Point p: liste_accessible)
                     {
                         if ((p.x == taille_base_pyramide - 1 - x) && (p.y==y))
@@ -146,31 +147,31 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
        switch (cube) {
             case Noir:
                 // System.out.println("cube noir");
-                return "res/curseur_main_fermee_noir.png";
+                return "res/violet.png";
 
             case Neutre:
                 // System.out.println("cube neutre");
-                return "res/curseur_main_bois.png";
+                return "res/neutre2.png";
 
             case Blanc:
                 // System.out.println("cube blanc");
-                return "res/curseur_main_fermee_blanc.png";
+                return "res/ange.png";
 
             case Vert:
                 // System.out.println("cube vert");
-                return "res/curseur_main_fermee_vert.png";
+                return "res/vert.png";
 
             case Jaune:
                 // System.out.println("cube jaune");
-                return "res/curseur_main_jaune.png";
+                return "res/jaune.png";
 
             case Rouge:
                 // System.out.println("cube rouge");
-                return "res/curseur_main_fermee_rouge.png";
+                return "res/rouge.png";
 
             case Bleu:
                 // System.out.println("cube bleu");
-                return "res/curseur_main_bleu.png";
+                return "res/bleu.png";
 
             default:
                 // System.out.println("default");

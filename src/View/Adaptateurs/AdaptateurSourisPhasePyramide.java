@@ -54,6 +54,7 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
         // pdjCentrale.setCursor(Cursor.getDefaultCursor());
         pdjCentrale.setCursor(Curseur.Gerer_Curseur_main());
         pdjCentrale.GetAccessible(false);
+        pdjCentrale.repaint();
 
         // pdj1.setCursor(Cursor.getDefaultCursor());
         pdj1.setCursor(Curseur.Gerer_Curseur_main());
@@ -75,6 +76,7 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
             System.out.println("Dans le if");
             if(jeu.move_validity(cube, taille_base_pyramide - 1, -1) != 0){
                 controle.clicBlanc(taille_base_pyramide - 1 , -1);
+                pdjCentrale.repaint();
             }
             else{
                 PDJPyramideJoueur.SetCube_Select_Static(false);
@@ -91,14 +93,15 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
                         && (e.getX() >= points_pyramide_centrale[x][y].getX())
                         && (e.getX() <= (points_pyramide_centrale[x][y].getX() + taille_cube_pyramide_centrale))) {
                             if(jeu.move_validity(cube, taille_base_pyramide - 1 - x, y) != 0){
+                                System.out.println("repaint cube posé!");
                                 controle.clicPyramideCentrale(taille_base_pyramide - 1 - x, y);
+                                pdjCentrale.repaint();
                             }
                             else{
                                 PDJPyramideJoueur.SetCube_Select_Static(false);
                                 pdjCentrale.repaint();
                             }
                             return;
-                    // pdjCentrale.repaint();
                 }
             }
         }
