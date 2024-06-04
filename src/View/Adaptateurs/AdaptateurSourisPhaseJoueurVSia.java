@@ -66,7 +66,14 @@ public class AdaptateurSourisPhaseJoueurVSia extends MouseAdapter {
                         && (e.getX() <= (points_pyramide_joueurs[x][y].getX() + taille_cube_joueur)))
                         {
 
-                    ArrayList<Point> liste_accessible = pdj.GetAccessible();
+                    // ArrayList<Point> liste_accessible = pdj.GetAccessible();
+                    ArrayList<Point> liste_accessible;
+                    if(pdj.GetPenality()){
+                        liste_accessible = pdj.GetAccessible();
+                    }
+                    else{
+                        liste_accessible = pdj.accessiblesJouables();
+                    }
                     for (Point p: liste_accessible)
                     {
                         if ((p.x == taille_base_pyramide - 1 - x) && (p.y==y))
