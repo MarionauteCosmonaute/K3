@@ -226,7 +226,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		vue.updateSablier(true);
 		if(IAON){
 			timer_sablier.start();
-			if (res!=2) commande("IAcompute");
+			if(res != 2) commande("IAcompute");
 		}
 		// metAJourAnnule();
 		// metAJourRefaire();
@@ -273,6 +273,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			penalty = true;
 			if (IAON && jeu.get_player() == 0){
 				ia.takePenaltyCube();
+				commande("IAcompute");
 				penalty = false;
 				if(jeu.getPlayer().lost()){
 					timer_sablier.stop();
@@ -444,16 +445,16 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;  
 			
 			case "AideConstruction":
-				jeu.resetBag(); 
 				jeu.constructionAleatoire(jeu.get_player());
 				vue.getMenuPhaseConstruction().reset();
 				vue.getMenuPhaseConstruction().repaint();
 				break;
 
 			case "AideConstructionIA":
-				jeu.constructionAleatoire(jeu.get_player());
-				vue.getMenuPhaseConstruction().reset();
-				vue.getMenuPhaseConstruction().repaint();
+				jeu.resetBag();
+				IA iaJouer = IA.nouvelle(jeu, 1, jeu.get_player());
+				iaJouer.generationPyramide(true);
+				vue.getDisplayedMenu().repaint();
 				break;
 
 			case "JoueurVSJoueur":

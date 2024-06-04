@@ -53,7 +53,7 @@ public abstract class IA {
         }
         int value;
         boolean bon_joueur = player_max == j.get_player();
-        ArrayList<Point> cubes_access = j.Accessible_Playable();
+        ArrayList<Point> cubes_access = j.Accessible_Playable_IA();
 
         if (j.check_loss() || j.End_Game()) { // Condition de défaite de tous les autres joueurs en même temps à
                                               // implémenter
@@ -71,7 +71,7 @@ public abstract class IA {
             int total_j1 = 0;
             int total_j2 = 0;
             int total_access = cubes_access.size();
-            ArrayList<Point> cubes_access2 = j.Accessible_Playable(j.next_player());
+            ArrayList<Point> cubes_access2 = j.Accessible_Playable_IA(j.next_player());
             if(IA!=0){
                 for (Point compte : cubes_access) { // Compte du nombre de coups jouable du j1
                     int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(), (int) compte.getY())
@@ -160,7 +160,7 @@ public abstract class IA {
     public ArrayList<ArrayList<Point>> coupIA(Jeu j, int joueur1, int difficulté) {
         ArrayList<ArrayList<Point>> resultat_ok = new ArrayList<>();
         int value_max = -1000000000/* (int) Double.NEGATIVE_INFINITY */;
-        ArrayList<Point> cubes_access = j.Accessible_Playable();
+        ArrayList<Point> cubes_access = j.Accessible_Playable_IA();
         for (Point depart : cubes_access) {
             ArrayList<Point> coups_jouables = j.CubeAccessibleDestinations((int) depart.getX(), (int) depart.getY());
             for (Point arrivee : coups_jouables) {
@@ -198,7 +198,7 @@ public abstract class IA {
         ArrayList<Point> resultat_ok = new ArrayList<>();   /* Potentiellement en faisant la difference entre le nombre de coup possible a jouer entre l'ia et le joueur */
         int max = -1;
         Point x_y_to_take = new Point();
-        ArrayList<Point> cubes_access = j.Accessible_Playable();
+        ArrayList<Point> cubes_access = j.Accessible_Playable_IA();
         for (Point cubes : cubes_access) {
             if(j.getPlayer().get(cubes.x,cubes.y) == Cube.Blanc) {              /* A corriger quel cube blanc a prendre */
                 resultat_ok.clear();
@@ -252,7 +252,7 @@ public abstract class IA {
 
         if (aide) {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(3000);
                 while (true) {
                     Thread.sleep(100);
                     if (ZeBest.getPyramid() != null) {
@@ -338,13 +338,6 @@ public abstract class IA {
                 (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());            
         
     }
-    public int joue(){
-        if (prochainCoup == null) throw new IllegalAccessError("Pas de coup calculer encore"); 
-        int out = jeu.jouer_coup((int) prochainCoup.get(1).getX(), (int) prochainCoup.get(1).getY(),
-        (int) prochainCoup.get(0).getX(), (int) prochainCoup.get(0).getY());
-        prochainCoup = null;
-        return out;
-    }
 
     public Thread compute(){
         Thread thread = new Thread(new Compute(this));
@@ -353,9 +346,7 @@ public abstract class IA {
     }
     
     public void calcul(){
-        ArrayList<ArrayList<Point>> coups_possibles = coupIA(jeu, indiceJoueur, difficulte);
-        Random random = new Random();
-        prochainCoup = coups_possibles.get(random.nextInt(coups_possibles.size())); 
+        coupIA(jeu, indiceJoueur, difficulte);
     }
 
     

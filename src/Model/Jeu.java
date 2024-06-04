@@ -28,6 +28,7 @@ public class Jeu extends Observable implements Cloneable {
     boolean End, start;
     Historique hist;
     boolean penality = false,clone = false;
+    int blancJouer;
 
     public boolean getPenality() {
         return penality;
@@ -161,6 +162,7 @@ public class Jeu extends Observable implements Cloneable {
         getPlayer(playerID).constructionAleatoire();
     }
 
+
     public Player[] getAllPlayers(){
         return players;
     }
@@ -246,10 +248,12 @@ public class Jeu extends Observable implements Cloneable {
 
                     case 5:
                         getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.Blanc);
+                        blancJouer--;
                         break;
 
                     case 6:
                         getPlayer().addSide(Cube.Blanc);
+                        blancJouer--;
                         break;
 
                     default:
@@ -369,6 +373,7 @@ public class Jeu extends Observable implements Cloneable {
             int valid = move_validity(cube, x_central, y_central);
             if (valid == 3) {
                 joueBlancPyramide(x_player, y_player);
+                blancJouer++;
             } else if (valid != 0) {
                 players[current_player].set(x_player, y_player, Cube.Vide);
                 principale.set(x_central, y_central, cube);
@@ -660,8 +665,35 @@ public class Jeu extends Observable implements Cloneable {
     public ArrayList<Point> Accessible_Playable() {
         return Accessible_Playable(current_player);
     }
+    public ArrayList<Point> Accessible_Playable_IA() {
+        return Accessible_Playable_IA(current_player);
+    }
     
     public ArrayList<Point> Accessible_Playable(int i) { /*
+                                                          * parmis les cube accessible les quel sont possible d'etre
+                                                          * jouer, renvoie une liste de coordonee
+                                                          */
+        HashMap<Cube, Boolean> list = accessibleColors();
+        ArrayList<Point> Aksel = new ArrayList<Point>();
+
+        for (Point e : AccessibleCubesPlayer(i)) {
+            Cube cube = getPlayer(i).get(e.x, e.y);
+            if (cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube) || list.containsKey(Cube.Neutre)) {
+                Aksel.add(e);
+            }
+        }
+        int x = 0;
+        for (Cube c : getPlayer(i).getSide()) {
+            if ( (c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c) || list.containsKey(Cube.Neutre))) {
+                Point p = new Point(x, -1);
+                Aksel.add(p);
+            }
+            x++;
+        }
+        return Aksel;
+    }
+
+    public ArrayList<Point> Accessible_Playable_IA(int i) { /*
                                                           * parmis les cube accessible les quel sont possible d'etre
                                                           * jouer, renvoie une liste de coordonee
                                                           */
@@ -728,6 +760,9 @@ public class Jeu extends Observable implements Cloneable {
     /* Recuperation de donnee */
     /*********************** */
 
+    public int blancJouer(){
+        return blancJouer;
+    }
     public int get_player() {
         return current_player;
     }

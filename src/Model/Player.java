@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Vector;
 
 public class Player {
-    Pyramid pyramid;
+    Pyramid pyramid,autoCompletion;
 
     ArrayList<Cube> side, personalBag;
 
@@ -131,6 +131,7 @@ public class Player {
     /**************** */
     /* Fonction */
     public void fusion() {
+        resetBag();
         int bagSize = personalBag.size();
         for (int i = 0; i < bagSize; i++) {
             addSide(personalBag.remove(0));
@@ -292,6 +293,7 @@ public class Player {
             }
         }
     }
+
 
     /* Swaps two cubes positions */
     public void permutation(int x, int y, int x_p, int y_p) {
