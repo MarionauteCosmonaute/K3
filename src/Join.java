@@ -13,7 +13,7 @@ public class Join {
         String[] entree;
         int x_c,y_c,x_j,y_j;
         while(!jeu.End_Game()){
-            System.out.println("joueur courant est: " + jeu.get_player());
+            //System.out.println("joueur courant est: " + jeu.get_player());
             if(jeu.get_player() == 1){
                 System.out.println(jeu);
                 entree = s.nextLine().split("\\s+");
@@ -23,10 +23,10 @@ public class Join {
                 y_j = Integer.parseInt(entree[3]);
                 jeu.jouer_coup(x_c,y_c,x_j,y_j);
             }
-            else{
+            /*else{
                 try{Thread.sleep(3000);}
                 catch(Exception e){}
-            }
+            }*/
         }
 
         s.close();

@@ -65,14 +65,14 @@ public class Server {
     private void transferPyraAndBag(){
         try{
             String pyra = in[0].readLine();
-            System.out.println(pyra + " La pyramide milleu viens d'etre recu");
+            //System.out.println(pyra + " La pyramide milleu viens d'etre recu");
             for (int i = 1; i < nbClient; i++){
                 String bag = in[0].readLine();
-                System.out.println(bag + " Le bag" + i +" viens d'etre recu");
+                //System.out.println(bag + " Le bag" + i +" viens d'etre recu");
                 out[i].println(pyra);
-                System.out.println(pyra + " La pyramide milleu viens d'etre envoyer");
+                //System.out.println(pyra + " La pyramide milleu viens d'etre envoyer");
                 out[i].println(bag);
-                System.out.println(bag + " Le bag" + i + " viens d'etre envoyer");
+                //System.out.println(bag + " Le bag" + i + " viens d'etre envoyer");
             }
         }
         catch(IOException e){System.err.println("Excetption in PrincipaleTransfer:\n" + e);}
@@ -84,7 +84,7 @@ public class Server {
             for(int i = 0; i < nbClient; i++){
                 
                 string[i] = in[i].readLine();
-                System.out.println("Pyramid received: " + string[i]);
+                //System.out.println("Pyramid received: " + string[i]);
             }
             
             System.out.println("toute les pyramide sont recus");
@@ -93,7 +93,7 @@ public class Server {
                 for(int j = 0; j < nbClient; j++){
                     if(i != j){
                         out[i].println(string[j]);
-                        System.out.println("Pyramid sent: " + string[j]);
+                        //System.out.println("Pyramid sent: " + string[j]);
                     }
                 }
                 

@@ -94,11 +94,11 @@ public class JeuOnline extends Jeu {
     @Override
     public void takePenaltyCube(int x, int y){
         super.takePenaltyCube(x,y);
-        send.add(new Coup(3,new Point(-1,-1),new Point(x,y)));
+        send.add(new Coup(3, new Point(x,y), new Point(-1,-1)));
     }
     
-    @Override
-    public void playAction(Coup c){
+    
+    public void doAction(Coup c){
         switch(c.type){
             case 3:
             case 4:

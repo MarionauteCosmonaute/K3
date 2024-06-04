@@ -17,7 +17,7 @@ public class Action implements Runnable{
     public void run(){
         while(true){
             Coup coup = play.get();
-            jeu.playAction(coup);
+            jeu.doAction(coup);
         }
 
     }
