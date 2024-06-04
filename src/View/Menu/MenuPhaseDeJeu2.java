@@ -34,11 +34,10 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
 
             // On sépare la partie qui contient les boutons retour/aide/son et la partie du
             // jeu
-            JPanel topPanel = new JPanel(new GridLayout(1, 7)); // pour les boutons
+            JPanel topPanel = new JPanel(new GridLayout(1, 6)); // pour les boutons
 
             // Bouton Retour
             Retour = Bouton.BoutonRetour(1);
-            Retour.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Retour.addActionListener(new ActionListener() {
 
                 @Override
@@ -56,28 +55,39 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             topPanel.add(topLeftPanel, BorderLayout.WEST);
             Retour.setBorder(BorderFactory.createEmptyBorder());
             Retour.setContentAreaFilled(false);
+
+            JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+            // Bouton Annuler
+            Image resizedImageFR = FileLoader.getImage("res/Drapeau FR.png").getScaledInstance(40, 30, Image.SCALE_SMOOTH);
+            Annuler = new JButton(new ImageIcon(resizedImageFR));
+            Annuler.setBorder(BorderFactory.createEmptyBorder());
+            Annuler.setContentAreaFilled(false);
+            //Annuler = Bouton.creerButton("Annuler");
+            Annuler.addActionListener(new AdaptateurAnnule(controle));
+            Annuler.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            Annuler.setEnabled(false);
+            topCenter.add(Annuler, BorderLayout.CENTER);
+
+            // Bouton Refaire
+            Image resizedImageEN = FileLoader.getImage("res/Drapeau ANG.png").getScaledInstance(40, 30, Image.SCALE_SMOOTH);
+            Refaire = new JButton(new ImageIcon(resizedImageEN));
+            //Refaire = Bouton.creerButton("Refaire");
+            Refaire.setBorder(BorderFactory.createEmptyBorder());
+            Refaire.setContentAreaFilled(false);
+            Refaire.addActionListener(new AdaptateurRefais(controle));
+            Refaire.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            Refaire.setEnabled(false);
+            topCenter.add(Refaire, BorderLayout.CENTER);
             
-            //JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            topCenter.setOpaque(false);
+            topPanel.add(topCenter);
             
-            //Bouton Dernier Coup
+            // Bouton Dernier Coup
             last_coup = Bouton.creerButton("Dernier Coup");
             last_coup.addActionListener(new AdaptateurDernierCoup(controle));
             last_coup.setEnabled(false);
             topPanel.add(last_coup, BorderLayout.CENTER);
-
-            // Bouton Annuler
-            Annuler = Bouton.creerButton("Annuler");
-            Annuler.addActionListener(new AdaptateurAnnule(controle));
-            Annuler.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            Annuler.setEnabled(false);
-            topPanel.add(Annuler, BorderLayout.CENTER);
-
-            // Bouton Refaire
-            Refaire = Bouton.creerButton("Refaire");
-            Refaire.addActionListener(new AdaptateurRefais(controle));
-            Refaire.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            Refaire.setEnabled(false);
-            topPanel.add(Refaire, BorderLayout.CENTER);
 
             // Bouton Aide
             Aide = Bouton.creerButton("Suggestion");
@@ -89,19 +99,13 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
 
                 }
             });
-            Aide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             topPanel.add(Aide, BorderLayout.CENTER);
 
-            // Bouton des Règles
             Regles = Bouton.Rules(content);
-            Regles.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             topPanel.add(Regles);
-            //topCenter.setOpaque(false);
-            //topPanel.add(topCenter);            
 
             // Bouton du Son
             UnMute = new BoutonUnMute(controle,1,content);
-            UnMute.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
             topRightPanel.setOpaque(false);
@@ -219,16 +223,16 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             case "FR":
                 Aide.setText("Suggestion");
                 Regles.setText("Règles");
-                Annuler.setText("Annuler");
+                //Annuler.setText("Annuler");
                 last_coup.setText("Dernier Coup");
-                Refaire.setText("Refaire");
+                //Refaire.setText("Refaire");
                 break;
             case "EN":
                 Aide.setText("Suggestion");
                 Regles.setText("Rules");
-                Annuler.setText("Undo");
+                //Annuler.setText("Undo");
                 last_coup.setText("Last Played");
-                Refaire.setText("Redo");
+                //Refaire.setText("Redo");
                 break;
             default:
                 break;

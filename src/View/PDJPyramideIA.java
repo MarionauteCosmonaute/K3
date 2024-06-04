@@ -95,7 +95,6 @@ public class PDJPyramideIA extends PDJPyramideAbstaite {
         setSize(width_fenetre, height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(1).getPyramid(), jeu.getPlayer(1).getSideSize() > 0, 1);
         StructurePainter.dessiner_side(g, height_fenetre, width_fenetre, jeu.getPlayer(1).getSide());
-        System.out.println("Test sablier "+ sablier);
         if ((jeu.get_player()) == 1 && sablier)
         {
             drawable.setColor(Color.WHITE);
