@@ -15,11 +15,13 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
     Jeu jeu;
     JPanel parent;
     boolean accessible = true;
+    boolean dernier_coup = false;
 
     public PDJPyramideCentrale(Jeu jeu, JPanel parent) {
         this.jeu = jeu;
         this.parent = parent;
         setOpaque(false);
+        
     }
 
     @Override
@@ -60,6 +62,14 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
        accessible = bool;
     }
 
+    public void setDernierCoup(boolean bool){
+        dernier_coup = bool;
+        repaint();
+    }
+
+    public boolean getDernierCoup(){
+        return dernier_coup;
+    }
 
     public void paintComponent(Graphics g) {
         //System.out.println("PaintComponent de PDJPyramideCentrale");
@@ -68,7 +78,12 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         height_fenetre = parent.getHeight();
         setSize(width_fenetre, height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPrincipale(), false, -1);
-        StructurePainter.dessiner_dernier_coup(jeu, drawable, height_fenetre, width_fenetre, false);
+        if(dernier_coup)
+        {
+            StructurePainter.dessiner_dernier_coup(jeu, drawable, height_fenetre, width_fenetre, false);
+        }
+        
+
         if (ControleurMediateur.GetClic() && (ControleurMediateur.GetColonne() == -1 || jeu.accessible(ControleurMediateur.GetLigne(), ControleurMediateur.GetColonne())))
         {
             if (accessible)

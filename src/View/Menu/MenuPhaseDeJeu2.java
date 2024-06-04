@@ -19,7 +19,7 @@ import Model.Jeu;
 import Patterns.Observateur;
 
 public class MenuPhaseDeJeu2 extends Menu implements Observateur {
-    JButton Aide, Regles, Annuler, Refaire;
+    JButton Aide, Regles, Annuler, Refaire, last_coup;
     BoutonUnMute UnMute;
     PDJPyramideCentrale pdj;
     PDJPyramideJoueur joueur1,joueur2;
@@ -58,6 +58,12 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             Retour.setContentAreaFilled(false);
             
             JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            
+            //Bouton Dernier Coup
+            last_coup = Bouton.creerButton("Dernier Coup");
+            last_coup.addActionListener(new AdaptateurDernierCoup(controle));
+            last_coup.setEnabled(false);
+            topCenter.add(last_coup, BorderLayout.CENTER);
 
             // Bouton Annuler
             Annuler = Bouton.creerButton("Annuler");
@@ -193,6 +199,19 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
         Refaire.setEnabled(b);
     }
 
+    public void setLastCoup(boolean bool){
+        last_coup.setEnabled(bool);
+    }
+
+    public void setDernierCoup(boolean bool){
+        pdj.setDernierCoup(bool);      
+    }
+
+    public boolean getDernierCoup(){
+        return pdj.getDernierCoup();      
+    }
+   
+
     @Override
     public void updateLanguageCode() {
         String languageCode = Global.Config.getLanguage();
@@ -201,12 +220,14 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
                 Aide.setText("Suggestion");
                 Regles.setText("Règles");
                 Annuler.setText("Annuler");
+                last_coup.setText("Dernier Coup");
                 Refaire.setText("Refaire");
                 break;
             case "EN":
                 Aide.setText("Suggestion");
                 Regles.setText("Rules");
                 Annuler.setText("Undo");
+                last_coup.setText("Last Played");
                 Refaire.setText("Redo");
                 break;
             default:

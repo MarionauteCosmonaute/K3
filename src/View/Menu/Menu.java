@@ -33,6 +33,12 @@ public abstract class Menu extends JPanel {
 
     public void setRefaire(boolean bool){}
 
+    public void setLastCoup(boolean bool){}
+
+    public void setDernierCoup(boolean bool){}
+
+    public boolean getDernierCoup(){return false;}
+
     public void updateSablier(boolean b){}
 
 }

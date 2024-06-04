@@ -180,6 +180,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	@Override 
     public void clicBlanc(int x, int y)
     {
+		vue.getMenuPhaseDeJeuJVIA().setLastCoup(true);
         Cube cube ;
         if (colonne_joueur==-1){
             cube = jeu.getPlayer().getSide(ligne_joueur);
@@ -195,6 +196,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			metAJourRefaire();
             if(res != 0){
 				if(jeu.getPlayer().lost()){
+					// PDJPyramideJoueur.SetPremierCoup(true);
 					timer_sablier.stop();
 					vue.updateSablier(false);
 					gagnant = jeu.next_player();
@@ -220,6 +222,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				if(jeu.get_player() == 1){
 					vue.updateSablier(true);
 					timer_sablier.start();
+					// PDJPyramideJoueur.SetPremierCoup(true);
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
 				}
@@ -232,6 +235,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	@Override
 	public void clicPyramideCentrale(int x, int y) {
 		int res;
+		vue.getMenuPhaseDeJeuJVIA().setLastCoup(true);
 		// if(jeu.accessible(ligne_joueur,colonne_joueur)){
 		res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
 		vue.updateSablier(true);
@@ -244,6 +248,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		jeu.sauvegarde(qs);
 		if(res == 1 || res == 3){
 			clic = false;
+			PDJPyramideJoueur.SetPremierCoup(true);
 			PDJPyramideJoueur.SetCube_Select_Static(false);
 			if(jeu.getPlayer().lost()){
 				timer_sablier.stop();
@@ -275,6 +280,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			}
 		}
 		if(res == 2){
+			PDJPyramideJoueur.SetPremierCoup(true);
 			vue.getMenuPhaseDeJeu2().setAnnuler(false);
 			vue.getMenuPhaseDeJeu2().setRefaire(false);
 			vue.getMenuPhaseDeJeu2().repaint();
@@ -365,6 +371,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	public boolean commande(String c) {
 		switch (c) {
 			case "Annuler":
+				vue.getMenuPhaseDeJeuJVIA().setLastCoup(false);
 				if(IAON && !IA_thinking){
 					IAON=false;
 					jeu.annule();
@@ -387,6 +394,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 				break;
 
 			case "Refaire":
+				vue.getMenuPhaseDeJeuJVIA().setLastCoup(false);
 				if(!(IAON && IA_thinking)){
 					jeu.refais();
 					autorestart =new Timer(5000, new ActionListener() {
@@ -422,6 +430,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 				}
 				metAJourAnnule();
 				metAJourRefaire();
+				break;
+			case "DernierCoupJoué":
+				vue.getMenuPhaseDeJeuJVIA().setDernierCoup(!vue.getMenuPhaseDeJeuJVIA().getDernierCoup());
 				break;
 
 			case "quit":
@@ -595,9 +606,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 					catch(InterruptedException e){System.err.println(e);}
 					if ((res = ia.jouer_coup()) == 2){
 						penalty = true;
+						PDJPyramideJoueur.SetPremierCoup(true);
 						// PDJPyramideJoueur.CacheGif();
 					}
 					else if (res == 1 || res == 3){
+						PDJPyramideJoueur.SetPremierCoup(true);
 						// jeu.check_loss();
 						if(jeu.getPlayer().lost()){
 							timer_sablier.stop();

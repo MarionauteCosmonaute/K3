@@ -25,7 +25,7 @@ public class SourisAdapte extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent e) {
         // Changer la couleur du bouton
-        bouton.setBackground(Color.YELLOW);
+        bouton.setBackground(Color.PINK);
         bouton.setForeground(Color.BLACK);
 
         // Jouer le son dans un thread séparé
@@ -43,6 +43,13 @@ public class SourisAdapte extends MouseAdapter {
 
     @Override
     public void mouseExited(MouseEvent e) {
+        // Restaurer l'état d'origine du bouton
+        bouton.setBackground(originalBackgroundColor);
+        bouton.setForeground(originalForegroundColor);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
         // Restaurer l'état d'origine du bouton
         bouton.setBackground(originalBackgroundColor);
         bouton.setForeground(originalForegroundColor);

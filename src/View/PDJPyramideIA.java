@@ -95,9 +95,10 @@ public class PDJPyramideIA extends PDJPyramideAbstaite {
         setSize(width_fenetre, height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPlayer(1).getPyramid(), jeu.getPlayer(1).getSideSize() > 0, 1);
         StructurePainter.dessiner_side(g, height_fenetre, width_fenetre, jeu.getPlayer(1).getSide());
-
+        System.out.println("Test sablier "+ sablier);
         if ((jeu.get_player()) == 1 && sablier)
         {
+            drawable.setColor(Color.WHITE);
             int taille_sablier = Math.min(80 * height_fenetre / (100 * 6), 80 * width_fenetre / (100 * 6))/2;
             drawable.drawImage(images[imageIndex], width_fenetre - 2*taille_sablier, taille_sablier, taille_sablier, taille_sablier, null);
         }

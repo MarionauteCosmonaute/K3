@@ -3,14 +3,14 @@ package View.Adaptateurs;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Color;
-import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 public class SourisAdapteMenu extends MouseAdapter {
     private Color originalBackgroundColor;
     private Color originalForegroundColor;
-    private JMenu menu;
+    private JMenuBar menu;
 
-    public SourisAdapteMenu(JMenu menu) {
+    public SourisAdapteMenu(JMenuBar menu) {
         this.menu = menu;
         // Sauvegarder l'état d'origine du bouton
         this.originalBackgroundColor = menu.getBackground();
@@ -21,20 +21,8 @@ public class SourisAdapteMenu extends MouseAdapter {
     @Override
     public void mouseEntered(MouseEvent e) {
         // Changer la couleur du bouton
-        menu.setBackground(Color.YELLOW);
+        menu.setBackground(Color.PINK);
         menu.setForeground(Color.BLACK);
-
-        // Jouer le son dans un thread séparé
-        // Thread t = new Thread() {
-        //     public void run() {
-        //         if (audioClip != null && !audioClip.isRunning()) {
-        //             audioClip.setFramePosition(0); // Repositionner le clip au début
-        //             audioClip.start(); // Jouer le son
-        //         }
-        //     }
-
-        // };
-        // t.start();
     }
 
     @Override

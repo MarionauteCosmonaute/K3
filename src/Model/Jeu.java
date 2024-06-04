@@ -52,6 +52,7 @@ public class Jeu extends Observable implements Cloneable {
         End = false;
         start = false;
         clone = false;
+        dernierCoup = null;
         players = new Player[nb];
         playerConst = new boolean[nb];
         hist = new Historique();

@@ -43,6 +43,7 @@ public class StructurePainter {
     }
 
     public static void dessiner_pyramide(Graphics g, int height, int width, Pyramid pyramide, boolean side, int joueur) {
+
         // System.out.println("dessinerPyramide de PDJPyramideCentrale");
         Graphics2D drawable = (Graphics2D) g;
         int taille_pyramide = pyramide.getSize();
@@ -50,6 +51,11 @@ public class StructurePainter {
         int espace = taille_cube / 10;
 
         int x_haut, y_haut;
+
+        x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (taille_pyramide -1) - (espace * taille_pyramide) / 2;
+        y_haut = width / 2 - (taille_cube / 2) * ((taille_pyramide-1) + 1) + taille_cube * -2 - (espace * (taille_pyramide -1)) / 2;
+        blanc_accessible.x = x_haut + espace * (taille_pyramide -1);
+        blanc_accessible.y = y_haut + espace * -2;
 
         Cube cube;
         for (int x = taille_pyramide - 1; x >= 0; x--) {
@@ -327,8 +333,8 @@ public class StructurePainter {
             drawable.setColor(Color.WHITE);
             drawable.drawRect(y_haut + espace * -2, x_haut + espace * (taille_pyramide -1), taille_cube, taille_cube);
             drawable.drawRect(y_haut + espace * -2 + 1, x_haut + espace * (taille_pyramide -1) + 1, taille_cube - 2, taille_cube - 2);
-            blanc_accessible.x = x_haut + espace * (taille_pyramide -1);
-            blanc_accessible.y = y_haut + espace * -2;
+            // blanc_accessible.x = x_haut + espace * (taille_pyramide -1);
+            // blanc_accessible.y = y_haut + espace * -2;
             return;
         }
         
@@ -537,6 +543,7 @@ public class StructurePainter {
             System.out.println("blanc!");
             int x = GetBlancAccessible().x;
             int y = GetBlancAccessible().y;
+            System.out.println("x : "+x +", y : "+y);
 
             drawable.setColor(Color.RED);
             drawable.drawRect(y, x, taille_cube, taille_cube);

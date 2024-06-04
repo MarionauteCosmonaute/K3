@@ -37,6 +37,7 @@ public class MenuNouvellePartie extends Menu {
 
             // On s'occupe du bouton 2 Joueurs sous forme d'un menu déroulant
             JMenuBar menuBar = new MenuArrondi(20);
+            //menuBar.setOpaque(false);
             menuPrincipal = new JMenu("2 Joueurs");
             menuPrincipal.setFont(new Font("Arial", Font.BOLD, 16));
             menuPrincipal.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -77,8 +78,8 @@ public class MenuNouvellePartie extends Menu {
             menuIA.add(iaMoyen);
             menuIA.add(iaDifficile);
 
-            SourisAdapteMenu sourisMenuPrincipal = new SourisAdapteMenu(menuPrincipal);
-            menuPrincipal.addMouseListener(sourisMenuPrincipal);
+            //SourisAdapteMenu sourisMenuPrincipal = new SourisAdapteMenu(menuPrincipal);
+            //menuPrincipal.addMouseListener(sourisMenuPrincipal);
 
             menuPrincipal.add(joueurVSjoueur); // Ajouter "Nouveau" au menu "Fichier"
             menuPrincipal.add(menuIA); // Ajouter "Ouvrir" au menu "Fichier"
@@ -153,9 +154,11 @@ public class MenuNouvellePartie extends Menu {
 
             // On ajoute le son pour chaque bouto
             SourisAdapte sourisRetour = new SourisAdapte(Retour, FileLoader.getSound("res/clic.wav"));
+            SourisAdapteMenu souris2Joueur = new SourisAdapteMenu(menuBar);
             SourisAdapte souris3Joueur = new SourisAdapte(joueurs3, FileLoader.getSound("res/clic.wav"));
             SourisAdapte souris4Joueur = new SourisAdapte(joueurs4, FileLoader.getSound("res/clic.wav"));
             Retour.addMouseListener(sourisRetour);
+            menuBar.addMouseListener(souris2Joueur);
             joueurs3.addMouseListener(souris3Joueur);
             joueurs4.addMouseListener(souris4Joueur);
 

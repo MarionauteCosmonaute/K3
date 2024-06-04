@@ -18,7 +18,7 @@ import Model.Jeu;
 import Patterns.Observateur;
 
 public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
-    JButton Aide, Regles, Annuler, Refaire;
+    JButton Aide, Regles, Annuler, Refaire, last_coup;
     PDJPyramideCentrale pdj;
     PDJPyramideJoueur joueur1;
     PDJPyramideIA joueur2;
@@ -56,6 +56,12 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             Retour.setContentAreaFilled(false);
 
             JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+            // Bouton Dernier Coup
+            last_coup = Bouton.creerButton("Dernier Coup");
+            last_coup.addActionListener(new AdaptateurDernierCoup(controle));
+            last_coup.setEnabled(false);
+            topCenter.add(last_coup, BorderLayout.CENTER);
 
             // Bouton Annuler
             Annuler = Bouton.creerButton("Annuler");
@@ -165,12 +171,14 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
                 Aide.setText("Suggestion");
                 Regles.setText("Règles");
                 Annuler.setText("Annuler");
+                last_coup.setText("Dernier Coup");
                 Refaire.setText("Refaire");
                 break;
             case "EN":
                 Aide.setText("Suggestion");
                 Regles.setText("Rules");
                 Annuler.setText("Undo");
+                last_coup.setText("Last Played");
                 Refaire.setText("Redo");
                 break;
             default:
@@ -186,6 +194,18 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
     public void setRefaire(boolean b) 
     {
         Refaire.setEnabled(b);
+    }
+
+    public void setLastCoup(boolean bool){
+        last_coup.setEnabled(bool);
+    }
+
+    public void setDernierCoup(boolean bool){
+        pdj.setDernierCoup(bool);      
+    }
+
+    public boolean getDernierCoup(){
+        return pdj.getDernierCoup();      
     }
 
     public void paintComponent(Graphics g) {

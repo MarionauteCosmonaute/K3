@@ -26,6 +26,7 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
     Color playerColor;
 
     boolean dessineMoins1 = false;
+    static boolean premier_coup = false;
 
     public PDJPyramideJoueur(Jeu jeu, JPanel parent, int nj) {
         this.jeu = jeu;
@@ -118,6 +119,11 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
         return jeu.AccessibleCubesPlayer(joueur);
     }
 
+    public static void SetPremierCoup(boolean bool)
+    {
+        premier_coup = bool;
+    }
+
     public void paintComponent(Graphics g) {
 
         // System.out.println("PaintComponent de PDJPyramideJoueur");
@@ -191,6 +197,20 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
 
         drawable.setColor(Color.WHITE);
         drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre / 10, width_fenetre / 10) / 3));
+        if(!premier_coup && jeu.get_player() == joueur){
+            switch (languageCode) {
+                case "FR":
+                    drawable.drawString("C'est à vous de commencer", 5,
+                            Math.min(height_fenetre / 10, width_fenetre / 10) * 2);
+                    break;
+                case "EN":
+                    drawable.drawString("Your turn to play", 5,
+                            Math.min(height_fenetre / 10, width_fenetre / 10) * 2);
+                    break;
+            }
+            
+        }
+
         if (jeu.getPenality()) {
             if (jeu.get_player() == joueur) {
                 switch (languageCode) {
