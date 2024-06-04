@@ -1,6 +1,7 @@
 package View.Adaptateurs;
 
 import View.CollecteurEvenements;
+import View.Curseur;
 import View.PDJPyramideCentrale;
 import View.PDJPyramideJoueur;
 import View.PDJPyramideIA;
@@ -45,10 +46,10 @@ public class AdaptateurSourisPhasePyramideVSia extends MouseAdapter {
 
         // Le clique a lieu on remet le curseur normal
         // 4) Si dans la pyramide centrale, on clique sur un emplacement ACCESSIBLE on remet le curseur normal et on continue
-        pdjCentrale.setCursor(Cursor.getDefaultCursor());
+        pdj.setCursor(Curseur.Gerer_Curseur_main());
         pdjCentrale.GetAccessible(false);
 
-        pdj.setCursor(Cursor.getDefaultCursor());
+        pdjCentrale.setCursor(Curseur.Gerer_Curseur_main());
         pdj.SetDessineMoins1(false);
         pdj.repaint();
 

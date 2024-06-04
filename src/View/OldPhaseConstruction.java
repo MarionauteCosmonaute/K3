@@ -127,7 +127,7 @@ public class OldPhaseConstruction {
 
 
 
-        JPanel panel = new JPanel(new GridLayout(1, 3));
+        JPanel panel = new JPanel(new GridLayout(1, 7));
         Retour = Bouton.BoutonRetour(1);
         //Retour.addActionListener(new RetourMenuPAdapeur(controle));
         Retour.addActionListener(new ActionListener() {
@@ -156,32 +156,34 @@ public class OldPhaseConstruction {
         Aide = Bouton.creerButton("Auto-complétion");
         Aide.addActionListener(new AdaptateurAideConstruction(controle));
         Aide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        topCenter.add(Aide, BorderLayout.CENTER);
-        topCenter.setOpaque(false);
+        //JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        //topCenter.add(Aide, BorderLayout.CENTER);
+        //topCenter.setOpaque(false);
+        panel.add(Aide);
 
         // Bouton construction IA
         IA = Bouton.creerButton("Construction par IA");
         IA.addActionListener(new AdaptateurAideConstructionIA(controle));
         IA.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        topCenter.add(IA, BorderLayout.CENTER);
-        topCenter.setOpaque(false);
+       // topCenter.add(IA, BorderLayout.CENTER);
+        //topCenter.setOpaque(false);
+        panel.add(IA);
 
         reset = Bouton.creerButton("Réinitialiser");
         reset.addActionListener(new AdaptateurReset(controle));
         reset.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        topCenter.add(reset, BorderLayout.CENTER);
-        topCenter.setOpaque(false);
-
-        
+        //topCenter.add(reset, BorderLayout.CENTER);
+        //topCenter.setOpaque(false);
+        panel.add(reset);
 
         valider = Bouton.creerButton("Valider");
         valider.addActionListener(new AdaptateurValider(controle));
         valider.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         valider.setEnabled(false);
-        topCenter.add(valider);
+        //topCenter.add(valider);
+        panel.add(valider);
 
-        panel.add(topCenter);
+        //panel.add(topCenter);
 
         // Bouton du Son
         UnMute = new BoutonUnMute(controle,1,frame);

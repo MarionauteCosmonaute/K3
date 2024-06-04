@@ -47,8 +47,9 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
         pdjCentrale.repaint();
 
         if (pdj.NumeroJoueur() != pdjCentrale.GetJoueurCourant()) {
-            pdj.repaint();
+            
             pdj2.SetDessineMoins1(false);
+            pdj.repaint();
             pdj2.repaint();
             return;
         }

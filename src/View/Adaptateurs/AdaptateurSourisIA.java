@@ -44,6 +44,9 @@ public class AdaptateurSourisIA extends MouseAdapter {
         // System.out.println("joueur courant : "+ pdjCentrale.GetJoueurCourant() + ",
         // joueur adaptateur : " + pdj.NumeroJoueur());
         if (pdj.NumeroJoueur() != pdjCentrale.GetJoueurCourant()) {
+            pdjJoueur.SetDessineMoins1(false);
+            pdjJoueur.repaint();
+            pdj.repaint();
             return;
         }
         int taille_cube_joueur = pdj.TailleCubeJoueur();
