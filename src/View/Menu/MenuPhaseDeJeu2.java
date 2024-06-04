@@ -34,7 +34,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
 
             // On sépare la partie qui contient les boutons retour/aide/son et la partie du
             // jeu
-            JPanel topPanel = new JPanel(new GridLayout(1, 3)); // pour les boutons
+            JPanel topPanel = new JPanel(new GridLayout(1, 7)); // pour les boutons
 
             // Bouton Retour
             Retour = Bouton.BoutonRetour(1);
@@ -57,27 +57,27 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             Retour.setBorder(BorderFactory.createEmptyBorder());
             Retour.setContentAreaFilled(false);
             
-            JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            //JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
             
             //Bouton Dernier Coup
             last_coup = Bouton.creerButton("Dernier Coup");
             last_coup.addActionListener(new AdaptateurDernierCoup(controle));
             last_coup.setEnabled(false);
-            topCenter.add(last_coup, BorderLayout.CENTER);
+            topPanel.add(last_coup, BorderLayout.CENTER);
 
             // Bouton Annuler
             Annuler = Bouton.creerButton("Annuler");
             Annuler.addActionListener(new AdaptateurAnnule(controle));
             Annuler.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Annuler.setEnabled(false);
-            topCenter.add(Annuler, BorderLayout.CENTER);
+            topPanel.add(Annuler, BorderLayout.CENTER);
 
             // Bouton Refaire
             Refaire = Bouton.creerButton("Refaire");
             Refaire.addActionListener(new AdaptateurRefais(controle));
             Refaire.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Refaire.setEnabled(false);
-            topCenter.add(Refaire, BorderLayout.CENTER);
+            topPanel.add(Refaire, BorderLayout.CENTER);
 
             // Bouton Aide
             Aide = Bouton.creerButton("Suggestion");
@@ -90,14 +90,14 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
                 }
             });
             Aide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            topCenter.add(Aide, BorderLayout.CENTER);
+            topPanel.add(Aide, BorderLayout.CENTER);
 
             // Bouton des Règles
             Regles = Bouton.Rules(content);
             Regles.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            topCenter.add(Regles);
-            topCenter.setOpaque(false);
-            topPanel.add(topCenter);            
+            topPanel.add(Regles);
+            //topCenter.setOpaque(false);
+            //topPanel.add(topCenter);            
 
             // Bouton du Son
             UnMute = new BoutonUnMute(controle,1,content);
