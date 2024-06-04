@@ -17,6 +17,9 @@ public class Server {
     ServerSocket connectionSsocket;
     int connectionPort;
     Thread connectionThread;
+
+    BufferedReader[] in;
+    PrintWriter[] out;
     
 
     public Server(int nbClient){
@@ -25,6 +28,9 @@ public class Server {
         Sockets = new Socket[nbClient];
         threads = new Thread[nbClient];
         this.nbClient = nbClient;
+
+        in = new BufferedReader[nbClient];
+        out = new PrintWriter[nbClient];
     }
 
     public int initSockets(){
@@ -58,13 +64,15 @@ public class Server {
 
     private void transferPyraAndBag(){
         try{
-            BufferedReader in = new BufferedReader(new InputStreamReader(Sockets[0].getInputStream()));
-            String pyra = in.readLine();
+            String pyra = in[0].readLine();
+            System.out.println(pyra + " La pyramide milleu viens d'etre recu");
             for (int i = 1; i < nbClient; i++){
-                String bag = in.readLine();
-                PrintWriter out = new PrintWriter(Sockets[i].getOutputStream(),true);
-                out.println(pyra);
-                out.println(bag);
+                String bag = in[0].readLine();
+                System.out.println(bag + " Le bag" + i +" viens d'etre recu");
+                out[i].println(pyra);
+                System.out.println(pyra + " La pyramide milleu viens d'etre envoyer");
+                out[i].println(bag);
+                System.out.println(bag + " Le bag" + i + " viens d'etre envoyer");
             }
         }
         catch(IOException e){System.err.println("Excetption in PrincipaleTransfer:\n" + e);}
@@ -74,32 +82,21 @@ public class Server {
         try{
             String[] string = new String[nbClient];
             for(int i = 0; i < nbClient; i++){
-                BufferedReader in = new BufferedReader(new InputStreamReader(Sockets[i].getInputStream()));
-                string[i] = in.readLine();
+                
+                string[i] = in[i].readLine();
+                System.out.println("Pyramid received: " + string[i]);
             }
+            
+            System.out.println("toute les pyramide sont recus");
+            
             for(int i = 0; i < nbClient; i++){
                 for(int j = 0; j < nbClient; j++){
-                    if(i!=j){
-                        PrintWriter out = new PrintWriter(Sockets[j].getOutputStream(),true);
-                        out.println(string[i]);
+                    if(i != j){
+                        out[i].println(string[j]);
+                        System.out.println("Pyramid sent: " + string[j]);
                     }
-                    
                 }
                 
-            }
-            for(int i = 0; i < nbClient; i++){
-                System.out.println("Waiting");
-                BufferedReader in = new BufferedReader(new InputStreamReader(Sockets[i].getInputStream()));
-                string[i] = in.readLine();
-                System.out.println("Pyramide recu: " + string);
-                for (int j = 0; j < nbClient; j++){
-                    if(j!=i){
-                        System.out.println("Pyramide envoyer a la socket du joueur " + j + " a la socket: " + Sockets[j]);
-
-                        PrintWriter out = new PrintWriter(Sockets[j].getOutputStream(),true);
-                        out.println(string);
-                    }
-                }
             }
         }
         catch(IOException e){System.err.println("Excetption in PyramidTransfer:\n" + e);}
@@ -112,6 +109,8 @@ public class Server {
     }
 
     public void begin(){            /* We'll have to change the nbClient depending on if not everyone connected */
+        in = null;
+        out = null;
         Task task = new Task(nbClient);
         task.init(Sockets);
     }
@@ -126,10 +125,13 @@ public class Server {
             catch(Exception e){}
         }
         System.out.println("all got connected");
-        try{for(int i = 0; i < nbClient; i++){
-            PrintWriter out = new PrintWriter(Sockets[i].getOutputStream(),true);
-            out.println("ok");
-        }}
+        try{
+            for(int i = 0; i < nbClient; i++){
+                out[i] = new PrintWriter(Sockets[i].getOutputStream(),true);
+                in[i] = new BufferedReader(new InputStreamReader(Sockets[i].getInputStream()));
+                out[i].println("ok");
+            }
+        }
         catch(Exception e){}
     }
 

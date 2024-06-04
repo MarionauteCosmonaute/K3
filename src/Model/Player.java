@@ -387,6 +387,7 @@ public class Player {
         Iterateur it = pyramid.iterateur("UP");
         int i = 0;
         while(it.hasNext()){
+            it.next();
             it.modify(Cube.conversion(split[i++]));
         }
         personalBag = new ArrayList<>();

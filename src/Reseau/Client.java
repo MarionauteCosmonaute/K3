@@ -17,9 +17,10 @@ public class Client {
     Socket socket;
     ArrayList<Fifo> file;
     Fifo send;
-    Thread productor;
-    Thread consumer;
+    Thread productor, consumer;
     int ID;
+    BufferedReader in;
+    PrintWriter out;
     
     public Client(String Connection){
         try{
@@ -28,33 +29,33 @@ public class Client {
             int port = Integer.parseInt(split[1]);
             socket = new Socket(host,port);
             System.out.println("connected to the Transfer server");
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            port = Integer.parseInt(in.readLine());
+            BufferedReader inConnection = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            port = Integer.parseInt(inConnection.readLine());
             socket.close();
             socket = new Socket(host,port);
             System.out.println("connected to the Game server");
+            out = new PrintWriter(socket.getOutputStream(),true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            //System.out.println(in);
         }
         catch(Exception e){e.getMessage();}
     }
 
     public void writeLine(String string){
-        try{PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
-            out.println(string);
-        }
-        catch(IOException e){System.err.println(e);} 
+        out.println(string);
+        System.out.println(string + " a ete envoyer");
     }
 
     public String readLine(){
-        try{BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            return in.readLine();
+        try{
+            String string = in.readLine();
+            System.out.println(string + " viens d'etre recus");
+            return string;
         }
         catch(IOException e){e.getMessage();}
         return null;
     }
     
-
-    
-
     public void port(){
         System.out.println(socket.getPort());
     }

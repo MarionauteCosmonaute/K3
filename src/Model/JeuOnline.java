@@ -7,7 +7,6 @@ import Structure.Fifo;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import javax.swing.text.StyledEditorKit;
 
 import Model.Runnables.Action;
 
@@ -49,14 +48,13 @@ public class JeuOnline extends Jeu {
         String string;
         string = getPlayer(ID).getPyramid().convertLine();
         connection.writeLine(string);
-        System.out.println("Pyramide perso envoyee");
+        System.out.println("Pyramide perso envoyee: " + string);
         for(int i = 0; i < nbJoueur; i++){
             if(i != ID){
                 System.out.println("attente de pyramide");
                 string = connection.readLine();
-                System.out.println(string);
                 getPlayer(i).build(string);
-                System.out.println("Pyramide n" + i + " recu");
+                System.out.println("Pyramide n " + i + " recu");
             }
         }
     }
