@@ -90,6 +90,14 @@ public class Player {
         loss = false;
     }
 
+    public String stringPersonalBag(){
+        String string="";
+        for(Cube cube : personalBag){
+            string += Cube.conversionString(cube);
+        }
+        return string;
+    }
+
     public ArrayList<Cube> getPersonalBag() {
         return personalBag;
     }
@@ -233,6 +241,10 @@ public class Player {
         }
     }
 
+    public void addBag(String cube){
+        addBag(Cube.conversion(cube));
+    }
+
     public void addBag(Cube cube) {
         incrementBag(cube);
         if(cube != Cube.Vide) personalBag.add(cube);
@@ -356,14 +368,6 @@ public class Player {
     }
     public void trieSide(){
         Collections.sort(side);
-        // ArrayList<Cube> trier = new ArrayList<>();
-
-        // for(Cube cube : Cube.values()){
-        //     for(int i = 0; i < nbCubeSide[cube.getInt()]; i++){
-        //         trier.add(cube);
-        //     }
-        // }
-        // return trier;
     }
 
     public Vector<Integer> hash(boolean bool){
@@ -378,4 +382,13 @@ public class Player {
         return vect;
     }
 
+    public void build(String string){
+        String[] split = string.split(" ");
+        Iterateur it = pyramid.iterateur("UP");
+        int i = 0;
+        while(it.hasNext()){
+            it.modify(Cube.conversion(split[i++]));
+        }
+        personalBag = new ArrayList<>();
+    }
 }

@@ -112,6 +112,7 @@ public class Pyramid {
         return chaine;
     }
     
+
     @Override
     public String toString(){
         String chaine = "";
@@ -144,6 +145,15 @@ public class Pyramid {
             vect.add(it.next().getInt());
         }
         return vect;
+    }
+
+    public String convertLine(){
+        String string = "";
+        Iterateur it = iterateur("UP");
+        while(it.hasNext()){
+            string += Cube.conversionString(it.next());
+        }
+        return string;
     }
     
 }

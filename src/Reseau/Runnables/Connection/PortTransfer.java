@@ -19,6 +19,7 @@ public class PortTransfer implements Runnable{
             try{
                 socket = ssocket.accept();
                 PrintWriter out = new PrintWriter(socket.getOutputStream(),true); 
+                /*Potentiellement ajouter le ID */
                 out.println(ports[i]);
                 socket.close();
             }

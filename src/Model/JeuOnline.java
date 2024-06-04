@@ -5,20 +5,84 @@ import Reseau.Client;
 import Structure.Fifo;
 
 import java.awt.Point;
+import java.util.ArrayList;
+
+import javax.swing.text.StyledEditorKit;
+
+import Model.Runnables.Action;
 
 
 public class JeuOnline extends Jeu {
     Client connection;
     Fifo send, receive;
+    Thread playThread;
+    boolean owner;
+    int ID;
 
-    public JeuOnline(String Connection){
+    public JeuOnline(String Connection, boolean owner){
         super(2);
         this.connection = new Client(Connection);
-        reset(connection.getNB());
+        connection.readLine();
+        System.out.println("Connected");
+        if(owner){
+            ID = 0;
+            initTest();
+            connection.writeLine(stringPrincipale());
+
+            for(int i = 1; i < nbJoueur ; i++){
+                connection.writeLine(getPlayer(i).stringPersonalBag());
+            }
+
+        }
+        else{
+            ID=1;
+            initPrincipale(centre());
+            getPlayer(ID).emptyBag();
+            initPlayerBag(ID);
+        }
         send = new Fifo();
         receive = new Fifo();
-        connection.begin(send,receive);
+        
+    }
 
+    public void doneConstruction(){
+        String string;
+        string = getPlayer(ID).getPyramid().convertLine();
+        connection.writeLine(string);
+        System.out.println("Pyramide perso envoyee");
+        for(int i = 0; i < nbJoueur; i++){
+            if(i != ID){
+                System.out.println("attente de pyramide");
+                string = connection.readLine();
+                System.out.println(string);
+                getPlayer(i).build(string);
+                System.out.println("Pyramide n" + i + " recu");
+            }
+        }
+    }
+
+
+    @Override
+    public void gameStart() {
+        super.gameStart();
+        connection.begin(send,receive);
+        playThread = new Thread(new Action(this, receive));
+    }
+    
+    private ArrayList<Cube> centre(){
+        ArrayList<Cube> list = new ArrayList<>();
+        String[] stringList = connection.readLine().split(" ");
+        for(int i = 0; i < stringList.length; i++){
+            list.add(Cube.conversion(stringList[i]));
+        }
+        return list;
+    }
+
+    private void initPlayerBag(int player){
+        String[] stringList = connection.readLine().split(" ");
+        for(int i = 0; i < stringList.length; i++){
+            getPlayer(player).addBag(stringList[i]);
+        }
     }
     
     @Override

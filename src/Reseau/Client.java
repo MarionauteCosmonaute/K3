@@ -19,6 +19,7 @@ public class Client {
     Fifo send;
     Thread productor;
     Thread consumer;
+    int ID;
     
     public Client(String Connection){
         try{
@@ -36,19 +37,28 @@ public class Client {
         catch(Exception e){e.getMessage();}
     }
 
-    public int getNB(){
-        try{BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        return Integer.parseInt(in.readLine());}
-        catch(Exception e){e.getMessage();}
-        return 0;
+    public void writeLine(String string){
+        try{PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
+            out.println(string);
+        }
+        catch(IOException e){System.err.println(e);} 
     }
+
+    public String readLine(){
+        try{BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            return in.readLine();
+        }
+        catch(IOException e){e.getMessage();}
+        return null;
+    }
+    
+
+    
 
     public void port(){
         System.out.println(socket.getPort());
     }
 
-    
-    
     public void begin(Fifo send, Fifo recieve){
         file = new ArrayList<>();
         file.add(recieve);

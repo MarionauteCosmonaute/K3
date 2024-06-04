@@ -2,6 +2,7 @@ package Model;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.Vector;
 
 import Model.History.*;
@@ -168,6 +169,14 @@ public class Jeu extends Observable implements Cloneable {
         initPrincipale();
         while(draw()){}
     }
+
+    public String stringPrincipale(){
+        String string = "";
+        for (int i = 0; i < 9; i++){
+            string += Cube.conversionString(principale.get(0, i));
+        }
+        return string;
+    } 
 
     /************************************ */
     /* Fonction lier a une action de jeu */
@@ -579,6 +588,21 @@ public class Jeu extends Observable implements Cloneable {
         return Accessible_Playable().size() == 0;
     }
 
+    public void playAction(Coup c){
+        switch(c.type){
+            case 3:
+            case 4:
+                takePenaltyCube(c.source.x, c.source.y);
+            break;
+            case 7:
+                
+            break;
+            default:
+                jouer_coup(c.dest.x,c.dest.y,c.source.x,c.source.y);
+            break;
+        }
+    }
+
     /**************************************** */
     /* Fonction lier aux informations du jeu */
     /************************************* */
@@ -834,5 +858,14 @@ public class Jeu extends Observable implements Cloneable {
 
     public boolean annuleEmpty() {
         return true;
+    }
+
+    public String toString(){
+        String string = "";
+        string += principale;
+        for(Player player : players){
+            string += player;
+        }
+        return string;
     }
 }
