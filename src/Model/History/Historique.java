@@ -88,4 +88,15 @@ public class Historique {
         return Redo;
     }
 
+    public Point getDernierCoup() {
+        Coup c=Undo.peek();
+        if (c.type==3 || c.type==4){
+            Coup temp=Undo.pop();
+            c=Undo.peek();
+            Undo.push(temp);
+        }
+
+        return c.dest;
+    }
+
 }

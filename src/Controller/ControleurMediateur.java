@@ -483,7 +483,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "AideConstructionIA":
 				jeu.resetBag();
-				IA iaJouer = IA.nouvelle(jeu, 1, jeu.get_player());
+				IA iaJouer = IA.nouvelle(jeu, 0, jeu.get_player());
 				iaJouer.generationPyramide(true);
 				vue.getDisplayedMenu().repaint();
 				break;

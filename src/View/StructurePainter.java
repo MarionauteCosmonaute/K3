@@ -528,7 +528,7 @@ public class StructurePainter {
 
     public static void dessiner_dernier_coup(Jeu jeu, Graphics2D drawable, int height, int width, boolean side)
     {
-        Point last = jeu.dernierCoup();
+        Point last = jeu.getDernierCoup();
         // if (last == null || (!PDJPyramideJoueur.getCube_Select_Static()))
         if(last == null)
         {

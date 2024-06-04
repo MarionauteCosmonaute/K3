@@ -254,7 +254,7 @@ public abstract class IA {
             try {
                 Thread.sleep(3000);
                 while (true) {
-                    Thread.sleep(100);
+                    //Thread.sleep(100);
                     if (ZeBest.getPyramid() != null) {
                         ZeBest.finish();
                         break;
