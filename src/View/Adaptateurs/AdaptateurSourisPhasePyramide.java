@@ -29,6 +29,10 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
         int taille_cube_pyramide_centrale = pdjCentrale.GetTailleCubePyramideCentrale();
         Point points_pyramide_centrale[][] = pdjCentrale.GetPointPyramideCentrale();
 
+        if(!PDJPyramideJoueur.getCube_Select_Static()){
+			System.out.println("return");
+			return;
+		}
         // Le clique a lieu on remet le curseur normal
         // 4) Si dans la pyramide centrale, on clique sur un emplacement ACCESSIBLE on remet le curseur normal et on continue
 

@@ -90,11 +90,7 @@ public class OldPhaseConstruction {
         echange = 0;
 
         Box boiteTexte = Box.createVerticalBox();
-        JPanel centrePanel = new JPanel();
-        reset = Bouton.creerButton("Réinitialiser");
-        reset.addActionListener(new AdaptateurReset(controle));
-        reset.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        centrePanel.add(reset);
+        JPanel centrePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         Regles = Bouton.creerButton("Règles");
         Regles.addActionListener(new ActionListener() {
@@ -129,6 +125,8 @@ public class OldPhaseConstruction {
         boiteTexte.setOpaque(false);
         frame.add(boiteTexte, BorderLayout.SOUTH);
 
+
+
         JPanel panel = new JPanel(new GridLayout(1, 3));
         Retour = Bouton.BoutonRetour(1);
         //Retour.addActionListener(new RetourMenuPAdapeur(controle));
@@ -152,6 +150,8 @@ public class OldPhaseConstruction {
 
         joueurLabel= new JLabel("Joueur "+ (jeu.get_player()+1));
         joueurLabel.setFont(new Font("Default", Font.BOLD, 20));
+        // joueurLabel.setBackground(Color.WHITE);
+        // joueurLabel.setOpaque(true);
 		panel.add(joueurLabel);
 
         // Bouton Aide
@@ -169,6 +169,11 @@ public class OldPhaseConstruction {
         topCenter.add(IA, BorderLayout.CENTER);
         topCenter.setOpaque(false);
 
+        reset = Bouton.creerButton("Réinitialiser");
+        reset.addActionListener(new AdaptateurReset(controle));
+        reset.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        topCenter.add(reset, BorderLayout.CENTER);
+        topCenter.setOpaque(false);
 
         valider = Bouton.creerButton("Valider");
         valider.addActionListener(new AdaptateurValider(controle));
@@ -574,14 +579,15 @@ public class OldPhaseConstruction {
             }
         }
         drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre / 35, width_fenetre / 35)));
+        drawable.setColor(Color.WHITE);
         String languageCode = Global.Config.getLanguage();
         switch (languageCode) {
             case "FR":
-                drawable.drawString("Construisez votre pyramide !", debut_zone_gauche, Math.min(height_fenetre/2 , width_fenetre/2 ));
+                drawable.drawString("Pyramide de jeu", debut_zone_gauche, Math.min(height_fenetre/3 , width_fenetre/3 ));
                 break;
 
             case "EN":
-                drawable.drawString("Build your pyramid !", debut_zone_gauche, Math.min(height_fenetre/2 , width_fenetre/2 ));
+                drawable.drawString("Central pyramid", debut_zone_gauche, Math.min(height_fenetre/3 , width_fenetre/3 ));
                 break;
         }
     }
@@ -637,6 +643,18 @@ public class OldPhaseConstruction {
                         break;
                 }
             }
+        }
+        drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre / 35, width_fenetre / 35)));
+        String languageCode = Global.Config.getLanguage();
+        drawable.setColor(Color.WHITE);
+        switch (languageCode) {
+            case "FR":
+                drawable.drawString("Construisez votre pyramide !", debut_zone_gauche+taille_cube/2, Math.min(height_fenetre*19/28 , width_fenetre*19/28 ));
+                break;
+
+            case "EN":
+                drawable.drawString("Build your pyramid !", debut_zone_gauche+taille_cube/2, Math.min(height_fenetre*19/28 , width_fenetre*19/28 ));
+                break;
         }
         // if (echange % 2 == 1) {
         //     x_haut = debut_zone_haut + (taille_base_pyramide - 1 - x1) * (taille_cube + taille_cube / 10);
@@ -727,7 +745,7 @@ public class OldPhaseConstruction {
         joueurLabel.setText(text + (jeu.get_player()+1));
         switch(jeu.get_player()){
             case 0:
-                joueurLabel.setForeground(new Color(0,0,255));
+                joueurLabel.setForeground(new Color(51,153,255));
                 break;
             case 1:
                 joueurLabel.setForeground(new Color(255,0,0));

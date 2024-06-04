@@ -67,6 +67,10 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
         cube_selec = bool;
     }
 
+    public static boolean getCube_Select_Static() {
+        return cube_selec;
+    }
+
     public void SetX_Select(int x) {
         x_selec = x;
     }
