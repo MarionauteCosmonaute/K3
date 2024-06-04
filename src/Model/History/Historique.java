@@ -89,14 +89,15 @@ public class Historique {
     }
 
     public Point getDernierCoup() {
-        Coup c=Undo.peek();
-        if (c.type==3 || c.type==4){
-            Coup temp=Undo.pop();
-            c=Undo.peek();
-            Undo.push(temp);
-        }
+        if (!isEmptyAnnule()){
+            Coup c=Undo.peek();
+            if (c.type==3 || c.type==4){
+                Coup temp=Undo.pop();
+                c=Undo.peek();
+                Undo.push(temp);
+            }
 
-        return c.dest;
+            return c.dest;}else return null;
     }
 
 }
