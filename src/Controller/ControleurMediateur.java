@@ -436,7 +436,14 @@ public class ControleurMediateur implements CollecteurEvenements {
 				metAJourRefaire();
 				break;
 			case "DernierCoupJoué":
-				vue.getMenuPhaseDeJeuJVIA().setDernierCoup(!vue.getMenuPhaseDeJeuJVIA().getDernierCoup());
+				System.out.println("dernier coup :"+vue.getMenuPhaseDeJeuJVIA().getDernierCoup());
+				if(IAON){
+					vue.getMenuPhaseDeJeuJVIA().setDernierCoup(!vue.getMenuPhaseDeJeuJVIA().getDernierCoup());
+				}
+				else{
+					vue.getMenuPhaseDeJeu2().setDernierCoup(!vue.getMenuPhaseDeJeu2().getDernierCoup());
+
+				}
 				break;
 
 			case "quit":
