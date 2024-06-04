@@ -640,6 +640,20 @@ public class Jeu extends Observable implements Cloneable {
         return list;
     }
 
+    public int destinationSansPen(Point point){
+        return destinationSansPen(getPlayer(),point);
+    }
+
+    public int destinationSansPen(Player player, Point p){
+        int coup = 0;
+        ArrayList<Point> list = CubeAccessibleDestinations(player,p.x,p.y);
+        Cube cube = player.get(p.x,p.y);
+        for(Point point : list){
+            if (move_validity(cube, point.x,point.y) != 2) coup++;
+        }
+        return coup;
+    }
+
     public ArrayList<Point> CubeAccessibleDestinationBag(int index) {
         return destination(getPlayer().getPersonalBag().get(index));
     }
