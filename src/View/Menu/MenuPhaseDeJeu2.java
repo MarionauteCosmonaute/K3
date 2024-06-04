@@ -115,7 +115,7 @@ public class MenuPhaseDeJeu2 extends Menu implements Observateur {
             JPanel joueursPanel = new JPanel();
             centrePanel.add(pyramidePanel);
             centrePanel.add(joueursPanel);
-            pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+            //pyramidePanel.setBorder(BorderFactory.createLineBorder(new Color(255,204,255), 5));
             pdj = (new PDJPyramideCentrale(J, pyramidePanel)); // ajoute la pyramide centrale
             // pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj));
             pyramidePanel.add(pdj);
