@@ -27,6 +27,7 @@ public class JeuOnline extends Jeu {
             ID = 0;
             initTest();
             connection.writeLine(stringPrincipale());
+            connection.writeLine(""+current_player);
 
             for(int i = 1; i < nbJoueur ; i++){
                 connection.writeLine(getPlayer(i).stringPersonalBag());
@@ -36,6 +37,7 @@ public class JeuOnline extends Jeu {
         else{
             ID=1;
             initPrincipale(centre());
+            current_player = Integer.parseInt(connection.readLine());
             getPlayer(ID).emptyBag();
             initPlayerBag(ID);
         }

@@ -65,11 +65,13 @@ public class Server {
     private void transferPyraAndBag(){
         try{
             String pyra = in[0].readLine();
+            String initplayer = in[0].readLine();
             //System.out.println(pyra + " La pyramide milleu viens d'etre recu");
             for (int i = 1; i < nbClient; i++){
                 String bag = in[0].readLine();
                 //System.out.println(bag + " Le bag" + i +" viens d'etre recu");
                 out[i].println(pyra);
+                out[i].println(initplayer);
                 //System.out.println(pyra + " La pyramide milleu viens d'etre envoyer");
                 out[i].println(bag);
                 //System.out.println(bag + " Le bag" + i + " viens d'etre envoyer");
