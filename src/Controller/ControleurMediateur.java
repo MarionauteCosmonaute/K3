@@ -181,6 +181,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void clicBlanc(int x, int y)
     {
 		vue.getMenuPhaseDeJeuJVIA().setLastCoup(true);
+		vue.getMenuPhaseDeJeu2().setLastCoup(true);
         Cube cube ;
         if (colonne_joueur==-1){
             cube = jeu.getPlayer().getSide(ligne_joueur);
@@ -236,6 +237,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 	public void clicPyramideCentrale(int x, int y) {
 		int res;
 		vue.getMenuPhaseDeJeuJVIA().setLastCoup(true);
+		vue.getMenuPhaseDeJeu2().setLastCoup(true);
 		// if(jeu.accessible(ligne_joueur,colonne_joueur)){
 		res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
 		vue.updateSablier(true);
@@ -372,6 +374,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		switch (c) {
 			case "Annuler":
 				vue.getMenuPhaseDeJeuJVIA().setLastCoup(false);
+				vue.getMenuPhaseDeJeu2().setLastCoup(false);
 				if(IAON && !IA_thinking){
 					IAON=false;
 					jeu.annule();
@@ -395,6 +398,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "Refaire":
 				vue.getMenuPhaseDeJeuJVIA().setLastCoup(false);
+				vue.getMenuPhaseDeJeu2().setLastCoup(false);
 				if(!(IAON && IA_thinking)){
 					jeu.refais();
 					autorestart =new Timer(5000, new ActionListener() {

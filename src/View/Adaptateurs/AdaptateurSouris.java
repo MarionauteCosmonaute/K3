@@ -1,14 +1,11 @@
 package View.Adaptateurs;
 import View.CollecteurEvenements;
 import View.Curseur;
-import View.PDJPyramideJoueur;
 import View.AffichagePhaseConstruction;
-import Model.Cube;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.ImageIcon;
+import Global.FileLoader;
 
 import java.awt.*;
 
@@ -146,21 +143,21 @@ public class AdaptateurSouris extends MouseAdapter {
             String curseur = Cube_Chope(couleur);
             if (curseur != "Erreur")
             {
-                ImageIcon bananaIcon = new ImageIcon(curseur); // Remplacez "banana_cursor.png" par le chemin de votre image de curseur
                 // Redimensionner l'image de la banane à 50x50 pixels
                 int taille_cube_pyramide_centrale = nivGraph.tailleCube();
-                Image scaledBananaImage = bananaIcon.getImage().getScaledInstance(taille_cube_pyramide_centrale, taille_cube_pyramide_centrale, Image.SCALE_SMOOTH);
+                Image scaledBananaImage = FileLoader.getImage(curseur).getScaledInstance(taille_cube_pyramide_centrale, 
+																	taille_cube_pyramide_centrale, Image.SCALE_SMOOTH);
                 // Convertir l'image redimensionnée de la banane en curseur
-                Cursor bananaCursor = Toolkit.getDefaultToolkit().createCustomCursor(scaledBananaImage, new Point(taille_cube_pyramide_centrale/2,taille_cube_pyramide_centrale/2), "banana cursor");
-
+                Cursor bananaCursor = Toolkit.getDefaultToolkit().createCustomCursor(scaledBananaImage, 
+										new Point(taille_cube_pyramide_centrale/2,taille_cube_pyramide_centrale/2), "banana cursor");
                 nivGraph.setCursor(bananaCursor);
                 // nivGraph.GetAccessible(true);
                 // nivGraph.SetDessineMoins1(true);
             }
         }
-        catch (Exception execption) 
+        catch (Exception e) 
         {
-            System.out.println(execption);
+            e.printStackTrace();
         }
     }
 
