@@ -1,9 +1,9 @@
 package View.Adaptateurs;
 
 import View.CollecteurEvenements;
-import View.Curseur;
 import View.PDJPyramideCentrale;
 import View.PDJPyramideJoueur;
+import View.PDJPyramideIA;
 
 import Model.Jeu;
 import Model.Cube;
@@ -12,20 +12,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.*;
 
-public class AdaptateurSourisPhasePyramide extends MouseAdapter {
+public class AdaptateurSourisPhasePyramideVSia extends MouseAdapter {
     CollecteurEvenements controle;
     int taille_base_pyramide;
     PDJPyramideCentrale pdjCentrale;
-    PDJPyramideJoueur pdj1, pdj2;
+    PDJPyramideJoueur pdj;
+    PDJPyramideIA pdjIA;
     Jeu jeu;
 
-    public AdaptateurSourisPhasePyramide(CollecteurEvenements c, PDJPyramideCentrale pdjCentrale, PDJPyramideJoueur pdj1, PDJPyramideJoueur pdj2 ) {
+    public AdaptateurSourisPhasePyramideVSia(CollecteurEvenements c, PDJPyramideCentrale pdjCentrale, PDJPyramideJoueur pdj, PDJPyramideIA pdjIA) {
         controle = c;
         // nbJoueur = pdjCentrale.NombreDeJoueur();
         taille_base_pyramide = pdjCentrale.GetTaillePyramide();
         this.pdjCentrale = pdjCentrale;
-        this.pdj1 = pdj1;
-        this.pdj2 = pdj2;
+        this.pdj = pdj;
+        this.pdjIA = pdjIA;
         jeu = pdjCentrale.getJeu();
     }
 
@@ -34,36 +35,25 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
         int taille_cube_pyramide_centrale = pdjCentrale.GetTailleCubePyramideCentrale();
         Point points_pyramide_centrale[][] = pdjCentrale.GetPointPyramideCentrale();
 
-        if(!PDJPyramideJoueur.getCube_Select_Static()){
+        if(!PDJPyramideJoueur.getCube_Select_Static() || jeu.get_player() == 1){
 			System.out.println("return");
 			return;
 		}
 
         // on récupère le cube selectionné pour pouvoir ensuite tester que le coup est valide
-        Cube cube;
-        if(jeu.get_player() == 0){
-            cube = jeu.getPlayer().get(pdj1.getX_Select(), pdj1.getY_Select());
-        }
-        else{
-            cube = jeu.getPlayer().get(pdj2.getX_Select(), pdj2.getY_Select());
-        }
-        
+        Cube cube = jeu.getPlayer().get(pdj.getX_Select(), pdj.getY_Select());
+
         // Le clique a lieu on remet le curseur normal
         // 4) Si dans la pyramide centrale, on clique sur un emplacement ACCESSIBLE on remet le curseur normal et on continue
-
-        // pdjCentrale.setCursor(Cursor.getDefaultCursor());
-        pdjCentrale.setCursor(Curseur.Gerer_Curseur_main());
+        pdjCentrale.setCursor(Cursor.getDefaultCursor());
         pdjCentrale.GetAccessible(false);
 
-        // pdj1.setCursor(Cursor.getDefaultCursor());
-        pdj1.setCursor(Curseur.Gerer_Curseur_main());
-        pdj1.SetDessineMoins1(false);
-        pdj1.repaint();
+        pdj.setCursor(Cursor.getDefaultCursor());
+        pdj.SetDessineMoins1(false);
+        pdj.repaint();
 
-        // pdj2.setCursor(Cursor.getDefaultCursor());
-        pdj2.setCursor(Curseur.Gerer_Curseur_main());
-        pdj2.SetDessineMoins1(false);
-        pdj2.repaint();
+        pdjIA.setCursor(Cursor.getDefaultCursor());
+        pdjIA.repaint();
 
 
         // On gère le clique du blanc
@@ -90,14 +80,14 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
                         && (e.getY() <= (points_pyramide_centrale[x][y].getY() + taille_cube_pyramide_centrale))
                         && (e.getX() >= points_pyramide_centrale[x][y].getX())
                         && (e.getX() <= (points_pyramide_centrale[x][y].getX() + taille_cube_pyramide_centrale))) {
-                            if(jeu.move_validity(cube, taille_base_pyramide - 1 - x, y) != 0){
-                                controle.clicPyramideCentrale(taille_base_pyramide - 1 - x, y);
-                            }
-                            else{
-                                PDJPyramideJoueur.SetCube_Select_Static(false);
-                                pdjCentrale.repaint();
-                            }
-                            return;
+                    if(jeu.move_validity(cube, taille_base_pyramide - 1 - x, y) != 0){
+                        controle.clicPyramideCentrale(taille_base_pyramide - 1 - x, y);
+                    }
+                    else{
+                        PDJPyramideJoueur.SetCube_Select_Static(false);
+                        pdjCentrale.repaint();
+                    }
+                    return;
                     // pdjCentrale.repaint();
                 }
             }

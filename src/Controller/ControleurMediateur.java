@@ -58,6 +58,18 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicJoueurPyramide(int x, int y) {
+
+		// On désactive les boutons de l'historique tant que le coup n'est pas validé!
+		System.out.println("----> annule grisé");
+		vue.getMenuPhaseDeJeu2().setAnnuler(false);
+		vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
+		vue.getMenuPhaseDeJeu2().repaint();
+
+		System.out.println("----> refaire grisé");
+		vue.getMenuPhaseDeJeu2().setRefaire(false);
+		vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
+		vue.getMenuPhaseDeJeu2().repaint();
+
 		// cube_selectionne = jeu.getPlayer().get(x, y);
 		if(IAON && jeu.get_player() == 1 && !penalty){
 			return;
@@ -97,8 +109,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			clic = true;
 			ligne_joueur = x;
 			colonne_joueur = y; //mettre -1 si ça vient du side
-		}
-		
+		}		
 	}
 
 	@Override
@@ -108,7 +119,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		System.out.println("----> annule grisé");
 		vue.getMenuPhaseDeJeu2().setAnnuler(false);
 		vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
-		// vue.getMenuPhaseDeJeu2().repaint();
+		vue.getMenuPhaseDeJeu2().repaint();
 
 		System.out.println("----> refaire grisé");
 		vue.getMenuPhaseDeJeu2().setRefaire(false);
@@ -179,7 +190,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         int test = cube.getInt();
         if (test == 0)
         {
-            int res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
+            int res = jeu.jouer_coup(-1, -1, ligne_joueur, colonne_joueur);
 			metAJourAnnule();
 			metAJourRefaire();
             if(res != 0){
@@ -333,6 +344,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicSourisPyr(int ligne, int col) {
+		if (ligne == -1 && col == -1)
+		{
+			return;
+		}
 		jeu.construction(ligne, col, cube);
 	}
 
@@ -424,6 +439,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "Charger":
 				reset();
 				vue.setBackgroundPicture("res/black_wood.jpg");
+				vue.setBackgroundPicture("res/black_wood.jpg");
 				vue.changeVisible(3);
 				jeu.reset(qs);
 				break;
@@ -431,16 +447,19 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "FR":
 				Global.Config.setLanguage("FR");
 				vue.getMenuPrincipal().updateLanguageCode();
+				vue.getMenuPrincipal().updateLanguageCode();
 				break;
 
 			case "EN":
 				Global.Config.setLanguage("EN");
+				vue.getMenuPrincipal().updateLanguageCode();
 				vue.getMenuPrincipal().updateLanguageCode();
 				break;
 
 			case "Reset":
 				jeu.resetBag();
 				vue.getMenuPhaseConstruction().setValider(false);
+				vue.getMenuPhaseConstruction().reset();
 				vue.getMenuPhaseConstruction().repaint(); // ça me paraît normal de faire ça comme ça
 				break;  
 			

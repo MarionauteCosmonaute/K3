@@ -171,6 +171,142 @@ public class StructurePainter {
         }
     }
 
+    public static void dessiner_side_Moins1(Graphics g, int height, int width, ArrayList<Cube> side, int x1) {
+        Graphics2D drawable = (Graphics2D) g;
+        int taille_cube = taille_cube_joueur;
+        int espace = taille_cube / 10;
+        int x_haut = 0, y_haut = 0;
+        Cube cube;
+        int taille_side = side.size(); //a revoir pour utiliser la fonction getSideSize mais elle est dans player
+
+        
+        // y_haut = ((width *5)/6 - (taille_cube / 2) * (x + 1) + taille_cube * y - (espace * x) / 2);
+        y_haut = width/2 + 3*taille_cube_joueur;
+        for(int x = 0; x < taille_side; x++){
+            x_haut = height / 2 - (taille_cube / 2) * 5 + taille_cube * (5-x)
+                    - (espace * 6) / 2;
+            cube = side.get(x);
+            points_side[x] = (new Point(y_haut, x_haut - espace * x));
+            if (x != x1)
+            {
+                switch (cube) {
+                    case Noir:
+                        drawable.drawImage(noir, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Neutre:
+                        drawable.drawImage(neutre, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Blanc:
+                        drawable.drawImage(blanc, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Vert:
+                        drawable.drawImage(vert, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Jaune:
+                        drawable.drawImage(jaune, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Rouge:
+                        drawable.drawImage(rouge, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    case Bleu:
+                        drawable.drawImage(bleu, y_haut, x_haut - espace * x, taille_cube, taille_cube,
+                                null);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    public static void dessiner_pyramide_moins1(Graphics g, int height, int width, Pyramid pyramide, boolean side, int joueur, int x1, int y1) {
+        System.out.println("StructurePainter dessiner_pyramide_moins1");
+        Graphics2D drawable = (Graphics2D) g;
+        int taille_pyramide = pyramide.getSize();
+        int taille_cube = Math.min(80 * height / (100 * taille_pyramide), 80 * width / (100 * taille_pyramide));
+        int espace = taille_cube / 10;
+
+        int x_haut, y_haut;
+
+        Cube cube;
+        for (int x = taille_pyramide - 1; x >= 0; x--) {
+            x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * x
+                    - (espace * taille_pyramide) / 2;
+            for (int y = 0; y <= x; y++)
+            {
+                if (x1 != x || y1 != y)
+                {
+                    cube = pyramide.get(taille_pyramide - 1 - x, y);
+                    y_haut = (width / 2 - (taille_cube / 2) * (x + 1) + taille_cube * y - (espace * x) / 2);
+                    if(side){
+                        y_haut -= 2*taille_cube;
+                    }
+                    // On complète notre tableau de points uniquement si c'est la pyramide joueur
+                    if(taille_pyramide < 9){
+                        if(joueur == 0){
+                            points_pyramide_joueur1[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
+                        }
+                        else{
+                            points_pyramide_joueur2[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
+                        }
+                        taille_cube_joueur = taille_cube; 
+                    }
+                    else{
+                        points_pyramide_centrale[x][y] = new Point(y_haut + espace * y, x_haut + espace * x);
+                        taille_cube_pyramide_centrale = taille_cube; 
+                    }
+                    switch (cube) {
+                        case Noir:
+                            // System.out.println("cube noir");
+                            drawable.drawImage(noir, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Neutre:
+                            // System.out.println("cube neutre");
+                            drawable.drawImage(neutre, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Blanc:
+                            // System.out.println("cube blanc");
+                            drawable.drawImage(blanc, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Vert:
+                            // System.out.println("cube vert");
+                            drawable.drawImage(vert, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Jaune:
+                            // System.out.println("cube jaune");
+                            drawable.drawImage(jaune, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Rouge:
+                            // System.out.println("cube rouge");
+                            drawable.drawImage(rouge, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        case Bleu:
+                            // System.out.println("cube bleu");
+                            drawable.drawImage(bleu, y_haut + espace * y, x_haut + espace * x, taille_cube, taille_cube,
+                                    null);
+                            break;
+                        default:
+                            // System.out.println("default");
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+
     public static void DessineAccessible(Graphics g, int ligne, int colonne,int height, int width, Jeu jeu)
     {
         Graphics2D drawable = (Graphics2D) g;
@@ -383,5 +519,55 @@ public class StructurePainter {
                 }
             }
         }
+    }
+
+    public static void dessiner_dernier_coup(Jeu jeu, Graphics2D drawable, int height, int width, boolean side)
+    {
+        Point last = jeu.dernierCoup();
+        // if (last == null || (!PDJPyramideJoueur.getCube_Select_Static()))
+        if(last == null)
+        {
+            return;
+        }
+
+        int taille_pyramide = jeu.getPrincipale().getSize();
+        int taille_cube = Math.min(80 * height / (100 * taille_pyramide), 80 * width / (100 * taille_pyramide));
+        int espace = taille_cube / 10;
+
+        if(last.x == -1 && last.y == -1){
+            System.out.println("blanc!");
+            int x = GetBlancAccessible().x;
+            int y = GetBlancAccessible().y;
+
+            drawable.setColor(Color.RED);
+            drawable.drawRect(y, x, taille_cube, taille_cube);
+            drawable.drawRect(y + 1, x + 1, taille_cube - 2, taille_cube - 2);
+            drawable.setColor(Color.WHITE);
+            drawable.drawRect(y + 2, x + 2, taille_cube - 4, taille_cube - 4);
+            drawable.drawRect(y + 3, x + 3, taille_cube - 6, taille_cube - 6);
+            drawable.setColor(Color.RED);
+            drawable.drawRect(y + 4, x + 4, taille_cube - 8, taille_cube - 8);
+            drawable.drawRect(y + 5, x + 5, taille_cube - 10, taille_cube - 10);
+            return;
+
+        }
+
+        int x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (8-last.x) - (espace * taille_pyramide) / 2;
+        int y_haut = width / 2 - (taille_cube / 2) * ((8-last.x) + 1) + taille_cube * last.y - (espace * (8-last.x)) / 2;  
+        if(side)
+        {
+            y_haut -= 2*taille_cube;
+        }
+
+        drawable.setColor(Color.RED);
+        drawable.drawRect(y_haut + espace * (last.y), x_haut + espace * (8-last.x), taille_cube, taille_cube);
+        drawable.drawRect(y_haut + espace * (last.y) + 1, x_haut + espace * (8-last.x) + 1, taille_cube - 2, taille_cube - 2);
+        drawable.setColor(Color.WHITE);
+        drawable.drawRect(y_haut + espace * (last.y) + 2, x_haut + espace * (8-last.x) + 2, taille_cube - 4, taille_cube - 4);
+        drawable.drawRect(y_haut + espace * (last.y) + 3, x_haut + espace * (8-last.x) + 3, taille_cube - 6, taille_cube - 6);
+        drawable.setColor(Color.RED);
+        drawable.drawRect(y_haut + espace * (last.y) + 4, x_haut + espace * (8-last.x) + 4, taille_cube - 8, taille_cube - 8);
+        drawable.drawRect(y_haut + espace * (last.y) + 5, x_haut + espace * (8-last.x) + 5, taille_cube - 10, taille_cube - 10);
+
     }
 }

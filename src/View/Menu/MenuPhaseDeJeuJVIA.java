@@ -1,6 +1,7 @@
 package View.Menu;
 
 import View.CollecteurEvenements;
+import View.Curseur;
 import View.Bouton;
 import View.BoutonUnMute;
 import View.PDJPyramideCentrale;
@@ -108,7 +109,7 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             centrePanel.add(joueursPanel);
             pyramidePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
             pdj = (new PDJPyramideCentrale(J, pyramidePanel)); // ajoute la pyramide centrale
-            pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj));
+            // pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj));
             pyramidePanel.add(pdj);
             pdj.setVisible(true);
 
@@ -123,13 +124,19 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             // Joueur Bleu
             joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur
                                                                                         // 1
-            bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, pdj));
+            // bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, pdj));
             bottomLeftPanel.add(joueur1, BorderLayout.CENTER);
             joueur1.setVisible(true);
 
             // Joueur Rouge
             joueur2 = (new PDJPyramideIA(J, bottomRightPanel, 1)); // ajoute la pyramide de l'IA
-            bottomRightPanel.addMouseListener(new AdaptateurSourisIA(controle, joueur2, pdj));
+            bottomRightPanel.addMouseListener(new AdaptateurSourisIA(controle, joueur2, joueur1, pdj));
+            bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueurVSia(controle, joueur1, joueur2, pdj));
+            pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramideVSia(controle, pdj, joueur1, joueur2));
+            joueur1.setCursor(Curseur.Gerer_Curseur_main());
+            joueur2.setCursor(Curseur.Gerer_Curseur_main());
+            pdj.setCursor(Curseur.Gerer_Curseur_main());
+
             bottomRightPanel.add(joueur2, BorderLayout.CENTER);
             joueur2.setVisible(true);
 

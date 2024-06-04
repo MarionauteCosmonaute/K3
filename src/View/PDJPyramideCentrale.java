@@ -14,6 +14,7 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
     Graphics2D drawable;
     Jeu jeu;
     JPanel parent;
+    boolean accessible = true;
 
     public PDJPyramideCentrale(Jeu jeu, JPanel parent) {
         this.jeu = jeu;
@@ -24,6 +25,10 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
     @Override
     public void miseAJour() {
         repaint();
+    }
+
+    public Jeu getJeu(){
+        return jeu;
     }
 
     public int GetJoueurCourant()
@@ -50,6 +55,11 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         return StructurePainter.GetBlancAccessible();
     }
 
+    public void GetAccessible(boolean bool)
+    {
+       accessible = bool;
+    }
+
 
     public void paintComponent(Graphics g) {
         //System.out.println("PaintComponent de PDJPyramideCentrale");
@@ -58,11 +68,14 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         height_fenetre = parent.getHeight();
         setSize(width_fenetre, height_fenetre);
         StructurePainter.dessiner_pyramide(g, height_fenetre, width_fenetre, jeu.getPrincipale(), false, -1);
+        StructurePainter.dessiner_dernier_coup(jeu, drawable, height_fenetre, width_fenetre, false);
         if (ControleurMediateur.GetClic() && (ControleurMediateur.GetColonne() == -1 || jeu.accessible(ControleurMediateur.GetLigne(), ControleurMediateur.GetColonne())))
         {
-            //System.out.println("dans pdj centrale : ligne : "+ ControleurMediateur.GetLigne() + ", colonne : "+ ControleurMediateur.GetColonne());
-            StructurePainter.DessineAccessible(g, ControleurMediateur.GetLigne(),ControleurMediateur.GetColonne(), height_fenetre, width_fenetre, jeu);
-            // Mettre le booléen à false quand on clique sur la pyramide centrale et quand on clique sur un cube non accessible
+            if (accessible)
+            {
+                System.out.println("dans pdj centrale : ligne : "+ ControleurMediateur.GetLigne() + ", colonne : "+ ControleurMediateur.GetColonne());
+                StructurePainter.DessineAccessible(g, ControleurMediateur.GetLigne(),ControleurMediateur.GetColonne(), height_fenetre, width_fenetre, jeu);
+            }
         }
         else
         {

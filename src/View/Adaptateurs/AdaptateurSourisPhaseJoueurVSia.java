@@ -3,30 +3,27 @@ package View.Adaptateurs;
 import View.CollecteurEvenements;
 import View.Curseur;
 import View.PDJPyramideCentrale;
+import View.PDJPyramideIA;
 import View.PDJPyramideJoueur;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-
-import javax.swing.ImageIcon;
-
 import Model.Cube;
 
+import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.*;
 
-public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
+public class AdaptateurSourisPhaseJoueurVSia extends MouseAdapter {
     CollecteurEvenements controle;
     int nbJoueur;
     int taille_base_pyramide;
     PDJPyramideJoueur pdj;
-    PDJPyramideJoueur pdj2;
+    PDJPyramideIA pdjIA;
     PDJPyramideCentrale pdjCentrale;
 
-    public AdaptateurSourisPhaseJoueur(CollecteurEvenements c, PDJPyramideJoueur pdj, PDJPyramideJoueur pdj2, PDJPyramideCentrale pdjCentrale) {
+    public AdaptateurSourisPhaseJoueurVSia(CollecteurEvenements c, PDJPyramideJoueur pdj, PDJPyramideIA pdjIA, PDJPyramideCentrale pdjCentrale) {
         controle = c;
         this.pdj = pdj;
-        this.pdj2 = pdj2;
+        this.pdjIA = pdjIA;
         nbJoueur = pdj.NombreDeJoueur();
         taille_base_pyramide = 8 - nbJoueur;
         this.pdjCentrale = pdjCentrale;
@@ -36,17 +33,18 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         pdj.SetDessineMoins1(false);
         // pdj.setCursor(Cursor.getDefaultCursor());
-        pdj.setCursor(Curseur.Gerer_Curseur_main());
-        // pdj2.setCursor(Cursor.getDefaultCursor());
-        pdj2.setCursor(Curseur.Gerer_Curseur_main());
+        // pdjIA.setCursor(Cursor.getDefaultCursor());
         // pdjCentrale.setCursor(Cursor.getDefaultCursor());
+        pdj.setCursor(Curseur.Gerer_Curseur_main());
+        pdjIA.setCursor(Curseur.Gerer_Curseur_main());
         pdjCentrale.setCursor(Curseur.Gerer_Curseur_main());
         pdjCentrale.GetAccessible(false);
+        pdjCentrale.repaint();
 
         if (pdj.NumeroJoueur() != pdjCentrale.GetJoueurCourant()) {
+            // Voir si les deux repaint sont utiles
             pdj.repaint();
-            pdj2.SetDessineMoins1(false);
-            pdj2.repaint();
+            pdjIA.repaint();
             return;
         }
 
@@ -59,29 +57,20 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
                 if ((e.getY() >= points_pyramide_joueurs[x][y].getY())
                         && (e.getY() <= (points_pyramide_joueurs[x][y].getY() + taille_cube_joueur))
                         && (e.getX() >= points_pyramide_joueurs[x][y].getX())
-                        && (e.getX() <= (points_pyramide_joueurs[x][y].getX() + taille_cube_joueur))) {
-                    
-                    ArrayList<Point> liste_accessible = pdj.GetAccessible();
-                    System.out.println("x: "+x+" y: "+y);
-                    System.out.println(liste_accessible);
-                    for (Point p: liste_accessible)
-                    {
-                        if ((p.x == taille_base_pyramide - 1 - x) && (p.y==y))
+                        && (e.getX() <= (points_pyramide_joueurs[x][y].getX() + taille_cube_joueur)))
                         {
-                            // Un cube a été sélectionné on le highlight le contour        
-                            PDJPyramideJoueur.SetCube_Select_Static(true);
-                            pdj.SetX_Select(taille_base_pyramide - 1 - x);
-                            pdj.SetY_Select(y);
+                    // Un cube a été sélectionné on le highlight le contour        
+                    PDJPyramideJoueur.SetCube_Select_Static(true);
+                    pdj.SetX_Select(taille_base_pyramide - 1 - x);
+                    pdj.SetY_Select(y);
 
-                            // On informe le controleur médiateur
-                            controle.clicJoueurPyramide(taille_base_pyramide - 1 - x, y);
+                    // On informe le controleur médiateur
+                    controle.clicJoueurPyramide(taille_base_pyramide - 1 - x, y);
 
-                            Gerer_Curseur(x, y, false);
+                    Gerer_Curseur(x, y, false);
 
-                            pdjCentrale.repaint();
-                            pdj.repaint();
-                        }
-                    }       
+                    pdjCentrale.repaint();
+                    pdj.repaint();
                 }
             }
         }
@@ -92,7 +81,7 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
             if ((e.getY() >= points_side[x].getY())
                         && (e.getY() <= (points_side[x].getY() + taille_cube_joueur))
                         && (e.getX() >= points_side[x].getX())
-                        && (e.getX() <= (points_side[x].getX() + taille_cube_joueur))) { 
+                        && (e.getX() <= (points_side[x].getX() + taille_cube_joueur))) {
                     PDJPyramideJoueur.SetCube_Select_Static(true);
                     pdj.SetX_Select(x);
                     pdj.SetY_Select(-1);
@@ -128,7 +117,7 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
                 Cursor bananaCursor = Toolkit.getDefaultToolkit().createCustomCursor(scaledBananaImage, new Point(taille_cube_pyramide_centrale/2,taille_cube_pyramide_centrale/2), "banana cursor");
 
                 pdj.setCursor(bananaCursor);
-                pdj2.setCursor(bananaCursor);
+                pdjIA.setCursor(bananaCursor);
                 pdjCentrale.setCursor(bananaCursor);
                 pdjCentrale.GetAccessible(true);
                 pdj.SetDessineMoins1(true);
@@ -146,31 +135,38 @@ public class AdaptateurSourisPhaseJoueur extends MouseAdapter {
        switch (cube) {
             case Noir:
                 // System.out.println("cube noir");
-                return "res/curseur_main_fermee_noir.png";
+
+                return "res/carre_noir.png";
 
             case Neutre:
                 // System.out.println("cube neutre");
-                return "res/curseur_main_bois.png";
+
+                return "res/carre_bois.png";
 
             case Blanc:
                 // System.out.println("cube blanc");
-                return "res/curseur_main_fermee_blanc.png";
+
+                return "res/carre_vide.png";
 
             case Vert:
                 // System.out.println("cube vert");
-                return "res/curseur_main_fermee_vert.png";
+
+                return "res/carre_vert.png";
 
             case Jaune:
                 // System.out.println("cube jaune");
-                return "res/curseur_main_jaune.png";
+
+                return "res/carre_jaune.png";
 
             case Rouge:
                 // System.out.println("cube rouge");
-                return "res/curseur_main_fermee_rouge.png";
+
+                return "res/carre_rouge.png";
 
             case Bleu:
                 // System.out.println("cube bleu");
-                return "res/curseur_main_bleu.png";
+
+                return "res/carre_bleu.png";
 
             default:
                 // System.out.println("default");
