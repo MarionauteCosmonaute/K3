@@ -124,6 +124,10 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
         premier_coup = bool;
     }
 
+    public ArrayList<Point> accessiblesJouables(){
+        return jeu.Accessible_Playable();
+    }
+
     public void paintComponent(Graphics g) {
 
         // System.out.println("PaintComponent de PDJPyramideJoueur");
