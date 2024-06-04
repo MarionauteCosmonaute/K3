@@ -179,10 +179,10 @@ public abstract class IA {
                         value = MinMaxIA(clone, 2, joueur1, -100000000, +100000000, 0);
                         break;
                     case 1:
-                        value = MinMaxIA(clone, 5, joueur1, -100000000, +100000000, 1);
+                        value = MinMaxIA(clone, 4, joueur1, -100000000, +100000000, 1);
                         break;
                     case 2:
-                        value = MinMaxIA(clone, 8, joueur1, -100000000, +100000000, 2);
+                        value = MinMaxIA(clone, 6, joueur1, -100000000, +100000000, 2);
                         break;
                 }
 
@@ -299,11 +299,11 @@ public abstract class IA {
 
     public int jouer_coup() {
         ArrayList<ArrayList<Point>> coups_possibles = coupIA(jeu, indiceJoueur, difficulte);
-        Random random = new Random();
+        if(coups_possibles.size()!=0){Random random = new Random();
         ArrayList<Point> coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
         return  jeu.jouer_coup((int) coup_a_jouer.get(1).getX(), (int) coup_a_jouer.get(1).getY(),
-                (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());            
-        
+                (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());            }
+        return 0;
     }
 
     public void construction(){
