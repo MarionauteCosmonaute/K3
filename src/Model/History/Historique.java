@@ -6,23 +6,23 @@ import Model.Coup;
 
 public class Historique {
 
-    Stack<Coup> coup_jouer;
-    Stack<Coup> coup_annule;
+    Stack<Coup> Undo;
+    Stack<Coup> Redo;
 
     public Historique() {
-        coup_jouer = new Stack<>();
-        coup_annule = new Stack<>();
+        Undo = new Stack<>();
+        Redo = new Stack<>();
     }
 
     public void action(int type, Point s, Point d) {
-        coup_jouer.add(new Coup(type, s, d));
-        coup_annule = new Stack<Coup>();
+        Undo.add(new Coup(type, s, d));
+        Redo = new Stack<Coup>();
     }
     
     public Coup annule() {
         if (!isEmptyAnnule()) {
-            Coup coup = coup_jouer.pop();
-            coup_annule.add(coup);
+            Coup coup = Undo.pop();
+            Redo.add(coup);
             return coup;
         }
         return null;
@@ -30,34 +30,34 @@ public class Historique {
 
     public Coup refais() {
         if (!isEmptyRefaire()) {
-            Coup coup = coup_annule.pop();
-            coup_jouer.add(coup);
+            Coup coup = Redo.pop();
+//            Undo.add(coup);// On empile auto en traitant le coup
             return coup;
         }
         return null;
     }
 
     public void backOnRefais() {
-        Coup coup = coup_jouer.pop();
-        coup_annule.add(coup);
+        Coup coup = Undo.pop();
+        Redo.add(coup);
     }
 
     public boolean isEmptyAnnule() {
-        return coup_jouer.empty();
+        return Undo.empty();
     }
 
     public boolean isEmptyRefaire() {
-        return coup_annule.empty();
+        return Redo.empty();
     }
 
     public String sauvegarde() {
         StringBuilder sb = new StringBuilder();
         sb.append("jouer:\n");
-        for (Coup coup : coup_jouer) {
+        for (Coup coup : Undo) {
             sb.append(coup.toString()).append("\n");
         }
         sb.append("annule:\n");
-        for (Coup coup : coup_annule) {
+        for (Coup coup : Redo) {
             sb.append(coup.toString()).append("\n");
         }
         return sb.toString();
@@ -75,13 +75,17 @@ public class Historique {
             } else {
                 Coup coup = Coup.fromString(line);
                 if (isJouer) {
-                    historique.coup_jouer.add(coup);
+                    historique.Undo.add(coup);
                 } else {
-                    historique.coup_annule.add(coup);
+                    historique.Redo.add(coup);
                 }
             }
         }
         return historique;
+    }
+
+    public Stack<Coup> getRefais(){
+        return Redo;
     }
 
 }

@@ -2,6 +2,7 @@ package Model;
 
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.Vector;
 
 import Model.History.*;
@@ -188,7 +189,7 @@ public class Jeu extends Observable implements Cloneable {
         return start;
     }
 
-    /*public void annule() {
+    public void annule() {
 
         Coup coup = hist.annule();
         if (coup != null) {
@@ -257,71 +258,41 @@ public class Jeu extends Observable implements Cloneable {
             }
             if (!clone) metAJour();
         }
-    }*/
-    public void annule(){}
+    }
 
-    public void refais(){}
-    /*public void refais() {
+    public void refais() {
         Coup coup = hist.refais();
         if (coup != null) {
-            switch (coup.type) {
-                case 1:
-                    principale.set((int) coup.dest.getX(), (int) coup.dest.getY(),
-                            getPlayer().get((int) coup.source.getX(), (int) coup.source.getY()));
-                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
-                    coup = hist.refais();
-                    if (coup != null) {
-                        if (coup.type == 3) {
-                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
-                            getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
-                        } else if (coup.type == 4) {
-                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
-                            getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
-                        } else {
-                            hist.backOnRefais();
-                        }
-                    }
-                    break;
-
-                case 2:
-                    principale.set((int) coup.dest.getX(), (int) coup.dest.getY(),
-                            Cube.intToCube((int) coup.source.getX()));
-                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.source.getX()));
-                    coup = hist.refais();
-                    if (coup != null) {
-                        if (coup.type == 3) {
-                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
-                            getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
-                        } else if (coup.type == 4) {
-                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
-                            getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
-                        } else {
-                            hist.backOnRefais();
-                        }
-                    }
-                    break;
-
-                case 5:
-                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
-                    break;
-
-                case 6:
-                    getPlayer().removeCubeSide(Cube.Blanc);
-                    break;
-
-                case 7:
-                    getPlayer().playerLost();
-                    break;
-
-                default:
-                    break;
-            }
-            avance();
-            if (!clone) metAJour();
+            playAction(coup,true);
         }
-    }*/
+    }
 
     /** Coup **/
+
+    public void playAction(Coup c, boolean keepHistory){
+        Stack<Coup> save=new Stack<>();
+        if(keepHistory){
+            while(!hist.isEmptyRefaire()){
+                save.add(hist.getRefais().pop());
+            }
+        }
+        switch(c.type){
+            case 3:
+            case 4:
+                takePenaltyCube(c.source.x, c.source.y);
+            break;
+            case 7:
+                
+            break;
+            default:
+                jouer_coup(c.dest.x,c.dest.y,c.source.x,c.source.y);
+            break;
+        }
+
+        while(!save.empty()){
+            hist.getRefais().add(save.pop());
+        }
+    }
     /** Debut de partie **/
 
     public boolean draw() {
@@ -472,7 +443,7 @@ public class Jeu extends Observable implements Cloneable {
         Cube cube = players[current_player].getSide(x);
         players[next_player()].addSide(cube);
         getPlayer().removeSide(x);
-        if (!clone) hist.action(4, new Point(-1, -1), new Point(cube.getInt(), -1));
+        if (!clone) hist.action(4, new Point(x, -1), new Point(cube.getInt(), -1));
     }
 
     /*************/
@@ -829,10 +800,10 @@ public class Jeu extends Observable implements Cloneable {
     }
 
     public boolean refaisEmpty() {
-        return true;
+        return hist.isEmptyRefaire();
     }
 
     public boolean annuleEmpty() {
-        return true;
+        return hist.isEmptyAnnule();
     }
 }
