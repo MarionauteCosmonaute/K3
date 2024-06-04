@@ -48,13 +48,13 @@ public class JeuOnline extends Jeu {
         String string;
         string = getPlayer(ID).getPyramid().convertLine();
         connection.writeLine(string);
-        System.out.println("Pyramide perso envoyee: " + string);
+        //System.out.println("Pyramide perso envoyee: " + string);
         for(int i = 0; i < nbJoueur; i++){
             if(i != ID){
-                System.out.println("attente de pyramide");
+                //System.out.println("attente de pyramide");
                 string = connection.readLine();
                 getPlayer(i).build(string);
-                System.out.println("Pyramide n " + i + " recu");
+                //System.out.println("Pyramide n " + i + " recu");
             }
         }
     }
@@ -65,6 +65,7 @@ public class JeuOnline extends Jeu {
         super.gameStart();
         connection.begin(send,receive);
         playThread = new Thread(new Action(this, receive));
+        playThread.start();
     }
     
     private ArrayList<Cube> centre(){
@@ -86,14 +87,30 @@ public class JeuOnline extends Jeu {
     @Override
     public int jouer_coup(int x_central, int y_central, int x_player, int y_player){
         int value = super.jouer_coup(x_central, y_central, x_player, y_player);
-        send.add(new Coup(0,new Point(x_central,y_central),new Point(x_player,y_player)));
+        send.add(new Coup(1,new Point(x_player,y_player),new Point(x_central,y_central)));
         return value;
     }
 
     @Override
     public void takePenaltyCube(int x, int y){
         super.takePenaltyCube(x,y);
-        send.add(new Coup(0,new Point(x,y),new Point(-1,-1)));
+        send.add(new Coup(3,new Point(-1,-1),new Point(x,y)));
+    }
+    
+    @Override
+    public void playAction(Coup c){
+        switch(c.type){
+            case 3:
+            case 4:
+                super.takePenaltyCube(c.source.x, c.source.y);
+            break;
+            case 7:
+                
+            break;
+            default:
+                super.jouer_coup(c.dest.x,c.dest.y,c.source.x,c.source.y);
+            break;
+        }
     }
 
 }

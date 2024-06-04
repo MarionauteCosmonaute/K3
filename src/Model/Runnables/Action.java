@@ -2,13 +2,13 @@ package Model.Runnables;
 
 import Structure.Fifo;
 import  Model.Coup;
-import  Model.Jeu;
+import Model.JeuOnline;
 
 public class Action implements Runnable{
-    Jeu jeu;
+    JeuOnline jeu;
     Fifo play;
 
-    public Action(Jeu jeu,Fifo play){
+    public Action(JeuOnline jeu,Fifo play){
         this.play = play;
         this.jeu = jeu;
     }

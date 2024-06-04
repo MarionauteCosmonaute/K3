@@ -43,13 +43,13 @@ public class Client {
 
     public void writeLine(String string){
         out.println(string);
-        System.out.println(string + " a ete envoyer");
+        //System.out.println(string + " a ete envoyer");
     }
 
     public String readLine(){
         try{
             String string = in.readLine();
-            System.out.println(string + " viens d'etre recus");
+            //System.out.println(string + " viens d'etre recus");
             return string;
         }
         catch(IOException e){e.getMessage();}
