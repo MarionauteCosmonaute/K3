@@ -4,6 +4,18 @@ import Model.Info.*;
 import Model.Runnables.*;
 public class IAsimulation {
 
+    static String diffString(int diff){
+        switch (diff) {
+            case 0:
+                return "Facile";
+            case 1:
+                return "Medium";
+            case 2: 
+                return "Difficile";
+            }
+        return null;
+    }
+
     public static void main(String[] args) {
         if(args.length != 3){
             throw new IllegalArgumentException("usage: java IAsimulation <test ammount> <difficulty AI 1> <difficulty AI 2>");
@@ -14,7 +26,7 @@ public class IAsimulation {
         int difficulte1 = 0;
         int difficulte2 = 0;*/
 
-        int nb = 0,nbThreads = 5;
+        int nb = 0,nbThreads = 2;
         Stat stat = new Stat();
         Thread threads[] = new Thread[nbThreads];
         Jeu jeu;
@@ -50,6 +62,7 @@ public class IAsimulation {
             catch(InterruptedException e){System.err.println(e);System.exit(1);}
         }
         
+        System.out.println("Difficultee joueur 1: " + diffString(difficulte1) + "   Difficultee joueur 2: " + diffString(difficulte2) );
         System.out.println("winrate of Player 1: " + stat.winratePlayer1());
         System.out.println("winrate of Player 2: " + stat.winratePlayer2());        
 

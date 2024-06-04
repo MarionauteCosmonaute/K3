@@ -691,11 +691,10 @@ public class Jeu extends Observable implements Cloneable {
     }
     
     public ArrayList<Point> Accessible_Playable(int i) { /*
-                                                          * parmis les cube accessible les quel sont possible d'etre
-                                                          * jouer, renvoie une liste de coordonee
-                                                          */
+        * parmis les cube accessible les quel sont possible d'etre
+        * jouer, renvoie une liste de coordonee
+        */
         HashMap<Cube, Boolean> list = accessibleColors();
-        HashMap<Cube, Boolean> values = new HashMap<>();
         ArrayList<Point> Aksel = new ArrayList<Point>();
 
         for (Point e : AccessibleCubesPlayer(i)) {
@@ -706,14 +705,27 @@ public class Jeu extends Observable implements Cloneable {
         }
         int x = 0;
         for (Cube c : getPlayer(i).getSide()) {
-            if ( !values.containsKey(c) && (c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c) || list.containsKey(Cube.Neutre))) {
+            if ( (c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c) || list.containsKey(Cube.Neutre))) {
                 Point p = new Point(x, -1);
                 Aksel.add(p);
-                values.put(c,true);
             }
             x++;
         }
         return Aksel;
+    }
+
+    public int destinationSansPen(Point point){
+        return destinationSansPen(getPlayer(), point);
+    }
+
+    public int destinationSansPen(Player player, Point p){
+        int coup = 0;
+        ArrayList<Point> list = CubeAccessibleDestinations(player,p.x,p.y);
+        Cube cube = player.get(p.x,p.y);
+        for(Point point : list){
+            if (move_validity(cube, point.x,point.y) != 2) coup++;
+        }
+        return coup;
     }
 
     public HashMap<Cube, Boolean> accessibleColors() { /*

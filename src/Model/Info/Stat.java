@@ -4,7 +4,9 @@ public class Stat {
     int toatalGames, winsPlayer1, winsPlayer2;
 
     public Stat(){
-        toatalGames = winsPlayer1 = winsPlayer2 = 0;
+        toatalGames = 0;
+        winsPlayer1 = 0;
+        winsPlayer2 = 0;
     }
 
     public float winratePlayer1(){

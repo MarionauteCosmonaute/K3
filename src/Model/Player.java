@@ -131,6 +131,7 @@ public class Player {
     /**************** */
     /* Fonction */
     public void fusion() {
+        resetBag();
         int bagSize = personalBag.size();
         for (int i = 0; i < bagSize; i++) {
             addSide(personalBag.remove(0));
@@ -153,7 +154,7 @@ public class Player {
         }
     }
     private void decrementSide(Cube c){
-        if (c != Cube.Vide) nbCubeSide[c.getInt()]++;
+        if (c != Cube.Vide) nbCubeSide[c.getInt()]--;
     }
 
     public int[] compte_personal_bag() {

@@ -70,16 +70,16 @@ public abstract class IA {
             int total_j1 = 0;
             int total_j2 = 0;
             int total_access = cubes_access.size();
+            int total_access2;
             ArrayList<Point> cubes_access2 = j.Accessible_Playable(j.next_player());
             if(IA!=0){
                 for (Point compte : cubes_access) { // Compte du nombre de coups jouable du j1
-                    int current_possibilities = j.CubeAccessibleDestinations((int) compte.getX(), (int) compte.getY())
-                            .size();
+                    int current_possibilities = j.destinationSansPen(compte);
                     total_j1 += current_possibilities;
                 }
                 for (Point compte : cubes_access2) { 
-                    int current_possibilities = j.CubeAccessibleDestinations(j.getPlayer(j.next_player()),
-                            (int) compte.getX(), (int) compte.getY()).size();
+                    int current_possibilities = j.destinationSansPen(j.getPlayer(j.next_player()),
+                            compte);
                     total_j2 += current_possibilities;
                 }
             }
@@ -92,9 +92,12 @@ public abstract class IA {
                         return saveValue(j,j.getPlayer(j.next_player()).totalCube() - j.getPlayer().totalCube());
                     }
                 case 1: // IA Medium
+
+                    total_access2 = cubes_access2.size();
+
+                    total = total_access + (int) (j.getPlayer().totalCube() * 1000)
+                    - (int) (j.getPlayer(j.next_player()).totalCube() * 1000) - total_access2;
                     
-                    total = (int) (total_j1) + (int) (j.getPlayer().totalCube() * 1000)
-                            - (int) (j.getPlayer(j.next_player()).totalCube() * 1000) - (int) (total_j2);
                     
                     if (bon_joueur) {
                         return saveValue(j,total);
@@ -102,11 +105,13 @@ public abstract class IA {
                         return saveValue(j,-total);
                     }
                 case 2: // IA Difficile
-                    int total_access2 = cubes_access2.size();
+                    
+                    total_access2 = cubes_access2.size();
+                    total = (int) (j.getPlayer().totalCube() * 10000) + total_access * 100 + total_j1
+                        - ((int) (j.getPlayer(j.next_player()).totalCube() * 10000)
+                                + (total_access2 * 100) + total_j2);
 
-                    total = (int) (total_j1) + (int) (j.getPlayer().totalCube() * 10000) + total_access * 100
-                            - ((int) (j.getPlayer(j.next_player()).totalCube() * 10000) + (int) (total_j2)
-                                    + (total_access2 * 100));
+                   
                     if (bon_joueur) {
                     return saveValue(j,total);
                     } else {
@@ -171,13 +176,13 @@ public abstract class IA {
                 int value = 0;
                 switch (difficulté) {
                     case 0:
-                        value = MinMaxIA(clone, 4, joueur1, -100000000, +100000000, 0);
+                        value = MinMaxIA(clone, 2, joueur1, -100000000, +100000000, 0);
                         break;
                     case 1:
-                        value = MinMaxIA(clone, 6, joueur1, -100000000, +100000000, 1);
+                        value = MinMaxIA(clone, 5, joueur1, -100000000, +100000000, 1);
                         break;
                     case 2:
-                        value = MinMaxIA(clone, 11, joueur1, -100000000, +100000000, 2);
+                        value = MinMaxIA(clone, 8, joueur1, -100000000, +100000000, 2);
                         break;
                 }
 
