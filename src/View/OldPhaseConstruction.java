@@ -33,6 +33,8 @@ public class OldPhaseConstruction {
     int taille_cube;
     int emplacement;
     boolean dessiner_vide; //a renommer : correspond au booléen pour l'encadrement du cube selectionné dans la pioche
+    boolean moins_un_pioche = false;
+    boolean moins_un_pyramide = false;
 
     int echange;
     int x1, y1;
@@ -47,19 +49,19 @@ public class OldPhaseConstruction {
         this.controle = controle;
         this.jeu = jeu;
         try {
-            InputStream in = new FileInputStream("res/carre_bois.png");
+            InputStream in = new FileInputStream("res/neutre2.png");
             neutre = ImageIO.read(in);
-            in = new FileInputStream("res/carre_bleu.png");
+            in = new FileInputStream("res/bleu.png");
             bleu = ImageIO.read(in);
-            in = new FileInputStream("res/carre_vert.png");
+            in = new FileInputStream("res/vert.png");
             vert = ImageIO.read(in);
-            in = new FileInputStream("res/carre_jaune.png");
+            in = new FileInputStream("res/jaune.png");
             jaune = ImageIO.read(in);
-            in = new FileInputStream("res/carre_noir.png");
+            in = new FileInputStream("res/violet.png");
             noir = ImageIO.read(in);
-            in = new FileInputStream("res/carre_blanc.png");
+            in = new FileInputStream("res/ange.png");
             blanc = ImageIO.read(in);
-            in = new FileInputStream("res/carre_rouge.png");
+            in = new FileInputStream("res/rouge.png");
             rouge = ImageIO.read(in);
             in = new FileInputStream("res/carre_vide.png");
             vide = ImageIO.read(in);
@@ -88,11 +90,7 @@ public class OldPhaseConstruction {
         echange = 0;
 
         Box boiteTexte = Box.createVerticalBox();
-        JPanel centrePanel = new JPanel();
-        reset = Bouton.creerButton("Réinitialiser");
-        reset.addActionListener(new AdaptateurReset(controle));
-        reset.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        centrePanel.add(reset);
+        JPanel centrePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         Regles = Bouton.creerButton("Règles");
         Regles.addActionListener(new ActionListener() {
@@ -127,6 +125,8 @@ public class OldPhaseConstruction {
         boiteTexte.setOpaque(false);
         frame.add(boiteTexte, BorderLayout.SOUTH);
 
+
+
         JPanel panel = new JPanel(new GridLayout(1, 3));
         Retour = Bouton.BoutonRetour(1);
         //Retour.addActionListener(new RetourMenuPAdapeur(controle));
@@ -148,17 +148,14 @@ public class OldPhaseConstruction {
         Retour.setBorder(BorderFactory.createEmptyBorder());
         Retour.setContentAreaFilled(false);
 
-        constructLabel = new JLabel("Construisez votre pyramide !");
-        constructLabel.setFont(new Font("Default", Font.BOLD, 15));
-        constructLabel.setForeground (Color.white);
-        panel.add(constructLabel);
-
         joueurLabel= new JLabel("Joueur "+ (jeu.get_player()+1));
         joueurLabel.setFont(new Font("Default", Font.BOLD, 20));
+        // joueurLabel.setBackground(Color.WHITE);
+        // joueurLabel.setOpaque(true);
 		panel.add(joueurLabel);
 
         // Bouton Aide
-        Aide = Bouton.creerButton("Auto-construction");
+        Aide = Bouton.creerButton("Auto-complétion");
         Aide.addActionListener(new AdaptateurAideConstruction(controle));
         Aide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -166,10 +163,16 @@ public class OldPhaseConstruction {
         topCenter.setOpaque(false);
 
         // Bouton construction IA
-        IA = Bouton.creerButton("Construction par IA");
+        IA = Bouton.creerButton("Par IA");
         IA.addActionListener(new AdaptateurAideConstructionIA(controle));
         IA.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         topCenter.add(IA, BorderLayout.CENTER);
+        topCenter.setOpaque(false);
+
+        reset = Bouton.creerButton("Réinitialiser");
+        reset.addActionListener(new AdaptateurReset(controle));
+        reset.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        topCenter.add(reset, BorderLayout.CENTER);
         topCenter.setOpaque(false);
 
         valider = Bouton.creerButton("Valider");
@@ -181,7 +184,7 @@ public class OldPhaseConstruction {
         panel.add(topCenter);
 
         // Bouton du Son
-        UnMute = new BoutonUnMute(controle,1,frame);
+        UnMute = new BoutonUnMute(controle,1);
         UnMute.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topRightPanel.add(UnMute, BorderLayout.EAST);
@@ -204,11 +207,13 @@ public class OldPhaseConstruction {
             SourisAdapte sourisreset = new SourisAdapte(reset, FileLoader.getSound("res/clic.wav"));
             SourisAdapte sourisAide = new SourisAdapte(Aide, FileLoader.getSound("res/clic.wav"));
             SourisAdapte sourisRegles = new SourisAdapte(Regles, FileLoader.getSound("res/clic.wav"));
+            SourisAdapte sourisIA = new SourisAdapte(IA, FileLoader.getSound("res/clic.wav"));
             Retour.addMouseListener(sourisRetour);
             valider.addMouseListener(sourisvalider);
             reset.addMouseListener(sourisreset);
             Aide.addMouseListener(sourisAide);
             Regles.addMouseListener(sourisRegles);
+            IA.addMouseListener(sourisIA);
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
                 System.exit(1);
         }
@@ -221,11 +226,10 @@ public class OldPhaseConstruction {
             case "FR":
                 reset.setText("Réinitialiser");
                 valider.setText("Valider");
-                Aide.setText("Auto-construction");
+                Aide.setText("Auto-complétion");
                 Regles.setText("Règles");
                 joueurLabel.setText("Joueur "+ (jeu.get_player()+1));
-                constructLabel.setText("Construisez votre pyramide !");
-                IA.setText("Construction par IA");
+                IA.setText("Par IA");
                 break;
             case "EN":
                 reset.setText("Reset");
@@ -233,8 +237,7 @@ public class OldPhaseConstruction {
                 Aide.setText("Auto-build");
                 Regles.setText("Rules");
                 joueurLabel.setText("Player "+ (jeu.get_player()+1));
-                constructLabel.setText("Build your pyramid !");
-                IA.setText("Build by AI");
+                IA.setText("By AI");
                 break;
             default:
                 break;
@@ -307,14 +310,47 @@ public class OldPhaseConstruction {
         valider.setEnabled(b);
     }
 
+    public int getCubePyramideJoueur(int ligne, int colonne){
+        switch (jeu.getPlayer().get(ligne, colonne)){
+            case Noir:
+                return 1;
+            case Bleu:
+                return 2;
+            case Vert :
+                return 3;
+            case Vide :
+                return 7;
+            case Blanc :
+                return 0;
+            case Rouge :
+                return 4;
+            case Jaune :
+                return 5;
+            case Neutre :
+                return 6;
+            default:
+                return -1;
+        }
+    }
+
     public void fonction_globale(Jeu jeu, Graphics g, int width_fenetre, int height_fenetre) {
         if (pyramidePleine()) {
             setValider(true);
         }
         taille_cube = Math.min(height_fenetre / 12, width_fenetre / 18);
-        dessiner_pyramide_joueur(g, width_fenetre, height_fenetre);
+        if(moins_un_pyramide){
+            dessiner_pyramide_joueur_moins_un(g, width_fenetre, height_fenetre);
+        }
+        else{
+            dessiner_pyramide_joueur(g, width_fenetre, height_fenetre);
+        }
         dessiner_pyramide_centrale(g, width_fenetre, height_fenetre);
-        dessiner_cubes_pioches(g, width_fenetre, height_fenetre);
+        if(moins_un_pioche){
+            dessiner_cubes_pioches_moins_un(g, width_fenetre, height_fenetre);
+        }
+        else{
+            dessiner_cubes_pioches(g, width_fenetre, height_fenetre);
+        }
     }
 
     public int max_nb(int[] tab) {
@@ -349,9 +385,18 @@ public class OldPhaseConstruction {
         return true;
     }
 
+    public void SetMoinsUnPioche(boolean bool)
+    {
+        moins_un_pioche = bool;
+    }
+
+    public void SetMoinsUnPyramide(boolean bool)
+    {
+        moins_un_pyramide = bool;
+    }
+
     public void dessiner_cubes_pioches(Graphics g, int width_fenetre, int height_fenetre) {
         nb_couleurs = jeu.compte_personal_bag();
-        // System.out.println("----------------" + nb_couleurs[0]);
         drawable = (Graphics2D) g;
         int espace = taille_cube / 10;
         int debut_zone_haut = height_fenetre * 7 / 10;
@@ -371,9 +416,6 @@ public class OldPhaseConstruction {
         int couleur;
         int ligne, col;
         Cube sCube;
-        for(int i = 0; i < 7; i++){
-            // System.out.println("cube " + Cube.intToCube(i) + ": " + nb_couleurs[i] );
-        }
 
         for (int i = 0; i < somme; i++) {
             ligne = i / 7;
@@ -414,25 +456,76 @@ public class OldPhaseConstruction {
 
             }
         }
-        if (dessiner_vide) {
-            int x_selection = x_gauche + (emplacement % 7) * (taille_cube + espace);
-            int y_selection = y_haut + (emplacement / 7) * (taille_cube + espace);
+    }
 
-            drawable.setColor(Color.WHITE);
-            // drawable.setColor(Color.BLACK);
-            drawable.drawRect(x_selection, y_selection, taille_cube, taille_cube);
-            drawable.drawRect(x_selection + 1, y_selection + 1, taille_cube - 2, taille_cube - 2);
-            drawable.drawRect(x_selection + 2, y_selection + 2, taille_cube - 4, taille_cube - 4);
+    public void dessiner_cubes_pioches_moins_un(Graphics g, int width_fenetre, int height_fenetre) {
+        int nb_couleurs[] = jeu.compte_personal_bag();
+        drawable = (Graphics2D) g;
+        int espace = taille_cube / 10;
+        int debut_zone_haut = height_fenetre * 7 / 10;
+        int hauteur_utilisee = taille_cube * 3 + 2 * espace;
+        int largeur_utilisee = taille_cube * 7 + 6 * espace;
 
-            // drawable.setColor(Color.WHITE);
-            drawable.setColor(Color.BLACK);
+        int y_haut = debut_zone_haut + (height_fenetre - debut_zone_haut - hauteur_utilisee) / 2;
+        int x_gauche = (width_fenetre - largeur_utilisee) / 2;
 
-            drawable.drawRect(x_selection + 3, y_selection + 3, taille_cube - 6, taille_cube - 6);
-            drawable.drawRect(x_selection + 4, y_selection + 4, taille_cube - 8, taille_cube - 8);
-            drawable.drawRect(x_selection + 5, y_selection + 5, taille_cube - 10, taille_cube - 10);
-            // drawable.setColor(Color.BLACK);
+        int somme = 0;
+        for (int i = 0; i < 7; i++) {
+            somme += nb_couleurs[i];
         }
 
+        int coul = couleur_case(emplacement + 1, nb_couleurs);
+        nb_couleurs[coul]--;
+        somme--;
+
+        int x, y;
+        Point p;
+        int couleur;
+        int ligne, col;
+        Cube sCube;
+
+        for (int i = 0; i < somme; i++) {
+            ligne = i / 7;
+            col = i % 7;
+            if (somme >= i + 1) {
+                x = x_gauche + col * (taille_cube + espace);
+                y = y_haut + ligne * (taille_cube + espace);
+                couleur = couleur_case(i + 1, nb_couleurs);
+                p = new Point(x, y);
+                tab_pioche[i] = p;
+                sCube = Cube.intToCube(couleur);
+                switch (sCube) {
+                    case Noir:
+                        drawable.drawImage(noir, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Neutre:
+                        drawable.drawImage(neutre, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Blanc:
+                        drawable.drawImage(blanc, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Vert:
+                        drawable.drawImage(vert, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Jaune:
+                        drawable.drawImage(jaune, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Rouge:
+                        drawable.drawImage(rouge, x, y, taille_cube, taille_cube, null);
+                        break;
+                    case Bleu:
+                        drawable.drawImage(bleu, x, y, taille_cube, taille_cube, null);
+                        break;
+                    default:
+                        System.err.println("le cube Vide est dans le bag");
+                        System.exit(2);
+                }
+
+            }
+        }
+
+        nb_couleurs[coul]++;
+        somme++;
     }
 
     public void dessiner_pyramide_centrale(Graphics g, int width_fenetre, int height_fenetre) {
@@ -484,6 +577,18 @@ public class OldPhaseConstruction {
                 default:
                     break;
             }
+        }
+        drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre / 35, width_fenetre / 35)));
+        drawable.setColor(Color.WHITE);
+        String languageCode = Global.Config.getLanguage();
+        switch (languageCode) {
+            case "FR":
+                drawable.drawString("Pyramide de jeu", debut_zone_gauche, Math.min(height_fenetre/3 , width_fenetre/3 ));
+                break;
+
+            case "EN":
+                drawable.drawString("Central pyramid", debut_zone_gauche, Math.min(height_fenetre/3 , width_fenetre/3 ));
+                break;
         }
     }
 
@@ -539,24 +644,91 @@ public class OldPhaseConstruction {
                 }
             }
         }
-        if (echange % 2 == 1) {
-            x_haut = debut_zone_haut + (taille_base_pyramide - 1 - x1) * (taille_cube + taille_cube / 10);
-            y_haut = debut_zone_gauche + x1 * (taille_cube + taille_cube / 10) / 2
-                    + (taille_cube + taille_cube / 10) * (y1);
+        drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre / 35, width_fenetre / 35)));
+        String languageCode = Global.Config.getLanguage();
+        drawable.setColor(Color.WHITE);
+        switch (languageCode) {
+            case "FR":
+                drawable.drawString("Construisez votre pyramide !", debut_zone_gauche+taille_cube/2, Math.min(height_fenetre*19/28 , width_fenetre*19/28 ));
+                break;
 
-            drawable.setColor(Color.RED);
+            case "EN":
+                drawable.drawString("Build your pyramid !", debut_zone_gauche+taille_cube/2, Math.min(height_fenetre*19/28 , width_fenetre*19/28 ));
+                break;
+        }
+        // if (echange % 2 == 1) {
+        //     x_haut = debut_zone_haut + (taille_base_pyramide - 1 - x1) * (taille_cube + taille_cube / 10);
+        //     y_haut = debut_zone_gauche + x1 * (taille_cube + taille_cube / 10) / 2
+        //             + (taille_cube + taille_cube / 10) * (y1);
 
-            drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
-            drawable.drawRect(y_haut + 1, x_haut + 1, taille_cube - 2, taille_cube - 2);
-            drawable.drawRect(y_haut + 2, x_haut + 2, taille_cube - 4, taille_cube - 4);
+        //     drawable.setColor(Color.RED);
 
-            drawable.setColor(Color.WHITE);
+        //     drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
+        //     drawable.drawRect(y_haut + 1, x_haut + 1, taille_cube - 2, taille_cube - 2);
+        //     drawable.drawRect(y_haut + 2, x_haut + 2, taille_cube - 4, taille_cube - 4);
 
-            drawable.drawRect(y_haut + 3, x_haut + 3, taille_cube - 6, taille_cube - 6);
-            drawable.drawRect(y_haut + 4, x_haut + 4, taille_cube - 8, taille_cube - 8);
-            drawable.drawRect(y_haut + 5, x_haut + 5, taille_cube - 10, taille_cube - 10);
+        //     drawable.setColor(Color.WHITE);
 
-            drawable.setColor(Color.BLACK);
+        //     drawable.drawRect(y_haut + 3, x_haut + 3, taille_cube - 6, taille_cube - 6);
+        //     drawable.drawRect(y_haut + 4, x_haut + 4, taille_cube - 8, taille_cube - 8);
+        //     drawable.drawRect(y_haut + 5, x_haut + 5, taille_cube - 10, taille_cube - 10);
+
+        //     drawable.setColor(Color.BLACK);
+        // }
+    }
+
+    public void dessiner_pyramide_joueur_moins_un(Graphics g, int width_fenetre, int height_fenetre) {
+        drawable = (Graphics2D) g;
+
+        int debut_zone_haut = height_fenetre / 10;
+        int debut_zone_gauche = width_fenetre * 1 / 5;
+        int x_haut, y_haut;
+
+        Point p;
+        Cube cube;
+        for (int x = 0; x < taille_base_pyramide; x++) {
+            for (int y = 0; y < (taille_base_pyramide - x); y++) {
+                cube = jeu.getPlayer().get(x, y);
+                if(x == x1 && y == y1){
+                    cube = Cube.Vide;
+                }
+                x_haut = debut_zone_haut + (taille_base_pyramide - 1 - x) * (taille_cube + taille_cube / 10);
+                y_haut = debut_zone_gauche + x * (taille_cube + taille_cube / 10) / 2
+                        + (taille_cube + taille_cube / 10) * (y);
+                p = new Point(y_haut, x_haut);
+                tab_pts[x][y] = p;
+                switch (cube) {
+                    case Noir:
+                        drawable.drawImage(noir, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Neutre:
+                        drawable.drawImage(neutre, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Blanc:
+                        drawable.drawImage(blanc, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Vert:
+                        drawable.drawImage(vert, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Jaune:
+                        drawable.drawImage(jaune, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Rouge:
+                        drawable.drawImage(rouge, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Bleu:
+                        drawable.drawImage(bleu, y_haut, x_haut, taille_cube, taille_cube, null);
+                        break;
+                    case Vide:
+                        drawable.setColor(Color.WHITE);
+                        drawable.drawRect(y_haut, x_haut, taille_cube, taille_cube);
+                        drawable.drawRect(y_haut+1, x_haut+1, taille_cube-2, taille_cube-2);
+                        drawable.drawRect(y_haut+2, x_haut+2, taille_cube-4, taille_cube-4);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
     public void updateJoueurLabel(){
@@ -573,13 +745,19 @@ public class OldPhaseConstruction {
         joueurLabel.setText(text + (jeu.get_player()+1));
         switch(jeu.get_player()){
             case 0:
-                joueurLabel.setForeground(new Color(0,0,255));
+                joueurLabel.setForeground(new Color(51,153,255));
                 break;
             case 1:
                 joueurLabel.setForeground(new Color(255,0,0));
                 break;
         }
-    } 
+    }
+    
+    // Retourne la couleur du cube de la pioche sur lequel on vient de cliquer
+    // public Cube GetCubeChope(int x, int y)
+    // {
+    //     return 
+    // }
 
     static int showConfirmDialog() {
         String languageCode = Global.Config.getLanguage();

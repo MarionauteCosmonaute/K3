@@ -10,7 +10,7 @@ public class SourisAdapte extends MouseAdapter {
     private Color originalBackgroundColor;
     private Color originalForegroundColor;
     private JButton bouton;
-    //private Clip audioClip;
+    private Clip audioClip;
 
     public SourisAdapte(JButton bouton, Clip audio) {
         this.bouton = bouton;
@@ -19,7 +19,7 @@ public class SourisAdapte extends MouseAdapter {
         this.originalForegroundColor = bouton.getForeground();
 
         // Charger le fichier audio
-        //audioClip = audio;
+        audioClip = audio;
     }
 
     @Override

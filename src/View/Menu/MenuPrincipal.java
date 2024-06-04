@@ -3,19 +3,16 @@ package View.Menu;
 import Global.FileLoader;
 import View.Adaptateurs.*;
 import View.*;
-
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
-
-// import org.w3c.dom.events.MouseEvent;
-// import java.awt.event.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.*;
 import java.io.IOException;
 
 public class MenuPrincipal extends Menu {
-    JButton NewGame, Charger, Quit, Lan, Regles;
+    JButton NewGame, Charger, Quit, Lan, Regles, Tuto;
     BoutonUnMute UnMute;
     public MenuPrincipal(CollecteurEvenements controle) {
         super();
@@ -48,6 +45,17 @@ public class MenuPrincipal extends Menu {
             centrePanel.add(Lan);
             centrePanel.add(Box.createVerticalStrut(10));
 
+            Tuto = Bouton.creerButton("Tutoriel");
+            Tuto.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            Tuto.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    showTutoPopup();
+                }
+            });
+            centrePanel.add(Tuto);
+            centrePanel.add(Box.createVerticalStrut(10));
+
             Quit = Bouton.creerButton("Quitter");
             Quit.addActionListener(new AdaptateurQuit(controle));
             Quit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -59,14 +67,14 @@ public class MenuPrincipal extends Menu {
 
             // On récupère les images
             // Redimensionner les images à 20x20 pixels
-            Image resizedImageFR = FileLoader.getImage("res/Francev2.jpg").getScaledInstance(40, 30,
+            Image resizedImageFR = FileLoader.getImage("res/Drapeau FR.png").getScaledInstance(40, 30,
                     Image.SCALE_SMOOTH);
-            Image resizedImageEN = FileLoader.getImage("res/anglais.png").getScaledInstance(40, 30, Image.SCALE_SMOOTH);
+            Image resizedImageEN = FileLoader.getImage("res/Drapeau ANG.png").getScaledInstance(40, 30, Image.SCALE_SMOOTH);
 
             // Créer les boutons avec les icônes d'images
             FR = new JButton(new ImageIcon(resizedImageFR));
             EN = new JButton(new ImageIcon(resizedImageEN));
-            UnMute = new BoutonUnMute(controle,0,content);
+            UnMute = new BoutonUnMute(controle,1);
 
             // Ajouter des écouteurs d'actions aux boutons
             FR.addActionListener(new AdaptateurFR(controle));
@@ -116,6 +124,7 @@ public class MenuPrincipal extends Menu {
             SourisAdapte sourisRegles = new SourisAdapte(Regles, FileLoader.getSound("res/clic.wav"));
             SourisAdapte sourisFr = new SourisAdapte(FR, FileLoader.getSound("res/clic.wav"));
             SourisAdapte sourisEn = new SourisAdapte(EN, FileLoader.getSound("res/clic.wav"));
+            SourisAdapte sourisTuto = new SourisAdapte(Tuto, FileLoader.getSound("res/clic.wav"));
             NewGame.addMouseListener(sourisNewGame);
             Charger.addMouseListener(sourisCharger);
             Lan.addMouseListener(sourisLan);
@@ -123,6 +132,7 @@ public class MenuPrincipal extends Menu {
             Regles.addMouseListener(sourisRegles);
             FR.addMouseListener(sourisFr);
             EN.addMouseListener(sourisEn);
+            Tuto.addMouseListener(sourisTuto);
 
             FR.setBorder(BorderFactory.createEmptyBorder());
             FR.setContentAreaFilled(false);
@@ -141,6 +151,52 @@ public class MenuPrincipal extends Menu {
         }
     }
 
+    private void showTutoPopup() {   
+        // Créer une boîte de dialogue pour afficher le tutoriel
+        JDialog tutoDialog = new JDialog((Frame) null, "Tuto", true);
+        tutoDialog.setLayout(new BorderLayout());
+
+        // Ajouter des images au tutoriel
+        JPanel imagePanel = new JPanel();
+        imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
+
+        // Ajouter des images au panel
+        for (String imagePath : new String[]{"res/Tuto1.png", "res/Tuto2.png", "res/Tuto_blanc.png", "res/Tuto_cube.png", "res/Tuto_penalite.png", "res/Tuto2_penalite.png", "res/Tuto_bois.png", "res/Tuto_finPartie.png"}) {
+            ImageIcon imageIcon = new ImageIcon(imagePath);
+            JLabel imageLabel = new JLabel(imageIcon);
+            imagePanel.add(imageLabel);
+        }
+
+        // Ajouter une zone de défilement si nécessaire
+        JScrollPane scrollPane = new JScrollPane(imagePanel);
+        scrollPane.setPreferredSize(new Dimension(1500, 1000));
+
+        // Bouton de fermeture
+        JButton closeButton = new JButton("Fermer");
+        closeButton.addActionListener(e -> tutoDialog.dispose());
+
+        String languageCode = Global.Config.getLanguage();
+        switch (languageCode) {
+            case "FR":
+                closeButton.setText("Fermer");
+                break;
+            case "EN":
+                closeButton.setText("Close");
+                break;
+            default:
+                break;
+        }
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(closeButton);
+
+        tutoDialog.add(scrollPane, BorderLayout.CENTER);
+        tutoDialog.add(buttonPanel, BorderLayout.SOUTH);
+        tutoDialog.pack();
+        tutoDialog.setLocationRelativeTo(null); // Centrer la boîte de dialogue
+        tutoDialog.setVisible(true);
+    }
+
     @Override
     public void updateLanguageCode() {
         String languageCode = Global.Config.getLanguage();
@@ -151,6 +207,7 @@ public class MenuPrincipal extends Menu {
                 Lan.setText("En ligne");
                 Quit.setText("Quitter");
                 Regles.setText("Règles");
+                Tuto.setText("Tutoriel");
                 break;
             case "EN":
                 NewGame.setText("New game");
@@ -158,6 +215,7 @@ public class MenuPrincipal extends Menu {
                 Lan.setText("Online");
                 Quit.setText("Quit");
                 Regles.setText("Rules");
+                Tuto.setText("Tutorial");
                 break;
             default:
                 break;
@@ -168,6 +226,5 @@ public class MenuPrincipal extends Menu {
     public void paintComponents(Graphics g){
         UnMute.repaint();
         super.paintComponents(g);
-        updateLanguageCode();
     }
 }

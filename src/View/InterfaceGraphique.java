@@ -3,8 +3,8 @@ import View.Adaptateurs.*;
 import View.Menu.Menu;
 import View.Menu.*;
 
-// import java.awt.event.ActionEvent;
-// import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import Model.Jeu;
 import Patterns.Observateur;
@@ -99,15 +99,15 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		addMenu(phaseDeJeuJVIA);
 		MenuOnline online =new MenuOnline(controle);//5
 		addMenu(online);
-		tickIA = new Timer(2000,new AdaptateurJoueIA(controle));
-		// anim=new Timer(1000,new ActionListener(){
-// 
-			// @Override
-			// public void actionPerformed(ActionEvent e){
-				// getcurMenu().repaint();
-			// }
-		// });
-		//anim.start();
+		tickIA = new Timer(5000,new AdaptateurJoueIA(controle));
+		anim=new Timer(1000,new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e){
+				getcurMenu().repaint();
+			}
+		});
+		anim.start();
 		//controle.commande("MenuOnline");
 
 		// On ajoute la souris et le clavier
@@ -137,7 +137,6 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		}
 		current_menu = n_indice;
 		addFrame(getcurMenu());
-		getcurMenu().repaint();
 		getcurMenu().setVisible(true);
 	}
 

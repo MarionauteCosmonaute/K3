@@ -1,20 +1,20 @@
-package Reseau;
+// package Reseau;
 
-public class Commande {
-    String[] command;
+// public class Commande {
+//     String[] command;
 
-    Commande(String command){
-        this.command = command.split(" ");
-    }
+//     Commande(String command){
+//         this.command = command.split(" ");
+//     }
 
-    public void translate(){
-        switch (command[0]) {
-            case "1":
+//     public void translate(){
+//         switch (command[0]) {
+//             case "1":
                 
-                break;
+//                 break;
         
-            default:
-                throw new IllegalArgumentException("Invalid command: " + command[0]);
-        }
-    }
-}
+//             default:
+//                 throw new IllegalArgumentException("Invalid command: " + command[0]);
+//         }
+//     }
+// }

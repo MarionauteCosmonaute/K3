@@ -4,7 +4,6 @@ import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 
 import Global.FileLoader;
 import View.Adaptateurs.AdaptateurSon;
@@ -15,7 +14,7 @@ public class BoutonUnMute extends JButton{
 	Image resizedImageMute = null;
     ImageIcon iconUnMute =null;
     ImageIcon iconMute=null; 
-	public BoutonUnMute(CollecteurEvenements controle, int sombre, JPanel parent){
+	public BoutonUnMute(CollecteurEvenements controle, int sombre){
 		SourisAdapte sourisUnMute = null;
 		try {
 			sourisUnMute = new SourisAdapte(this, FileLoader.getSound("res/clic.wav"));
@@ -43,7 +42,7 @@ public class BoutonUnMute extends JButton{
 		}
 		// Ajoute tous les listeners
 		addMouseListener(sourisUnMute);
-		addActionListener(new AdaptateurSon(controle,parent));
+		addActionListener(new AdaptateurSon(controle));
 		// change image
 		setBorder(BorderFactory.createEmptyBorder());
 		setContentAreaFilled(false);

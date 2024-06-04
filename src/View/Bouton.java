@@ -1,15 +1,16 @@
 package View;
 
+import Global.FileLoader;
 import View.Adaptateurs.*;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.*;
+import java.io.IOException;
 import javax.swing.border.LineBorder;
 
-import Global.FileLoader;
 
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class Bouton {
 	public static JButton creerButton(String text) {
@@ -18,7 +19,25 @@ public class Bouton {
 		bouton.setFont(police);
 		bouton.setBorder(new LineBorder(Color.BLACK, 2));
 		bouton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		bouton.setFocusable(false);		
+		return bouton;
+	}
+
+	public static JButton creerButtonImage(String text) {
+		JButton bouton = new JButton();
+		Image resizedImage = null;
+		try {
+			resizedImage = FileLoader.getImage(text).getScaledInstance(500, 300, Image.SCALE_SMOOTH);
+		 } catch (IOException e) {
+            System.exit(1);
+        }
+		//bouton.setOpaque(false);
+		//bouton.setFocusPainted(false);
+		bouton.setIcon(new ImageIcon(resizedImage));
+		bouton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		bouton.setFocusable(false);
+		bouton.setBorder(BorderFactory.createEmptyBorder());
+		bouton.setContentAreaFilled(false);
 		return bouton;
 	}
 
@@ -30,55 +49,55 @@ public class Bouton {
 		return new JButton(iconMute);
 	}
 
-	//public static JButton BoutonUnMute(CollecteurEvenements controle, int sombre){
-	//	Image resizedImageUnMute = null;
-	//	Image resizedImageMute = null;
-	//	JButton out = new JButton();
-	//	SourisAdapte sourisUnMute = null;
-	//	try {
-	//		sourisUnMute = new SourisAdapte(out, FileLoader.getSound("res/clic.wav"));
-	//		if(sombre == 1){
-	//			resizedImageUnMute = Global.FileLoader.getImage("res/son64_blanc.png").getScaledInstance(40, 30,
-	//				Image.SCALE_SMOOTH);
-	//			resizedImageMute = Global.FileLoader.getImage("res/mute64_blanc.png").getScaledInstance(40, 30,
-	//				Image.SCALE_SMOOTH);
-	//		}
-	//		else {
-	//			resizedImageUnMute = Global.FileLoader.getImage("res/son64.png").getScaledInstance(40, 30,
-	//				Image.SCALE_SMOOTH);
-	//			resizedImageMute = Global.FileLoader.getImage("res/mute64.png").getScaledInstance(40, 30,
-	//				Image.SCALE_SMOOTH);
-	//		}
-	//	} catch (Exception e) {
-	//		System.exit(1);
-	//	}
-	//	ImageIcon iconUnMute = new ImageIcon(resizedImageUnMute);
-	//	ImageIcon iconMute = new ImageIcon(resizedImageMute);
-	//	if (Global.Config.isPlaying){
-	//		out.setIcon(iconUnMute);
-	//	}else{
-	//	out.setIcon(iconMute);
-	//	}
-	//	// Ajoute tous les listeners
-	//	out.addMouseListener(sourisUnMute);
-	//	out.addActionListener(new AdaptateurSon(controle));
-	//	// change image
-	//	out.addActionListener(new ActionListener() {
-//
-	//		@Override
-	//		public void actionPerformed(ActionEvent e) {
-	//			if (Global.Config.isPlaying) {
-	//				out.setIcon(iconMute); // Changer en icône "son"
-	//			} else {
-	//				out.setIcon(iconUnMute); // Changer en icône "mute"
-	//			} // Inverser l'état
-	//		}
-	//	});
-	//	out.setBorder(BorderFactory.createEmptyBorder());
-	//	out.setContentAreaFilled(false);
-	//	out.setFocusable(false);
-	//	return out;
-	//}
+	public static JButton BoutonUnMute(CollecteurEvenements controle, int sombre){
+		Image resizedImageUnMute = null;
+		Image resizedImageMute = null;
+		JButton out = new JButton();
+		SourisAdapte sourisUnMute = null;
+		try {
+			sourisUnMute = new SourisAdapte(out, FileLoader.getSound("res/clic.wav"));
+			if(sombre == 1){
+				resizedImageUnMute = Global.FileLoader.getImage("res/son64_blanc.png").getScaledInstance(40, 30,
+					Image.SCALE_SMOOTH);
+				resizedImageMute = Global.FileLoader.getImage("res/mute64_blanc.png").getScaledInstance(40, 30,
+					Image.SCALE_SMOOTH);
+			}
+			else {
+				resizedImageUnMute = Global.FileLoader.getImage("res/son64.png").getScaledInstance(40, 30,
+					Image.SCALE_SMOOTH);
+				resizedImageMute = Global.FileLoader.getImage("res/mute64.png").getScaledInstance(40, 30,
+					Image.SCALE_SMOOTH);
+			}
+		} catch (Exception e) {
+			System.exit(1);
+		}
+		ImageIcon iconUnMute = new ImageIcon(resizedImageUnMute);
+		ImageIcon iconMute = new ImageIcon(resizedImageMute);
+		if (Global.Config.isPlaying){
+			out.setIcon(iconUnMute);
+		}else{
+		out.setIcon(iconMute);
+		}
+		// Ajoute tous les listeners
+		out.addMouseListener(sourisUnMute);
+		out.addActionListener(new AdaptateurSon(controle));
+		// change image
+		out.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Global.Config.isPlaying) {
+					out.setIcon(iconMute); // Changer en icône "son"
+				} else {
+					out.setIcon(iconUnMute); // Changer en icône "mute"
+				} // Inverser l'état
+			}
+		});
+		out.setBorder(BorderFactory.createEmptyBorder());
+		out.setContentAreaFilled(false);
+		out.setFocusable(false);
+		return out;
+	}
 
 	public static JButton BoutonRetour(int sombre) {
 		JButton out = new JButton();

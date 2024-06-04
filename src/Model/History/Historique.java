@@ -4,60 +4,67 @@ import java.util.Stack;
 import java.awt.Point;
 import Model.Coup;
 
+/*
+-> on peut annuler lors d'une pénalité, il faut l'empecher car sinon mdr on perd le cube sur la pyramide centrale et revient au mauvais joueur
+-> et du coup quand on fait refaire bah il perd son cube alors qu'il ne la pas joué
+-> exception lorsqu'on joue un blanc qui est dans le side 
+            -> si blanc dans le side : source et destination null (fonction toString de coup)
+            -> si dans la pyramide, source non null mais destination null
+*/
 public class Historique {
 
-    Stack<Coup> Undo;
-    Stack<Coup> Redo;
+    Stack<Coup> coup_jouer;
+    Stack<Coup> coup_annule;
 
     public Historique() {
-        Undo = new Stack<>();
-        Redo = new Stack<>();
+        coup_jouer = new Stack<>();
+        coup_annule = new Stack<>();
     }
 
     public void action(int type, Point s, Point d) {
-        Undo.add(new Coup(type, s, d));
-        Redo = new Stack<Coup>();
+        coup_jouer.add(new Coup(type, s, d));
+        coup_annule = new Stack<Coup>();
     }
     
     public Coup annule() {
-        if (!isEmptyAnnule()) {
-            Coup coup = Undo.pop();
-            Redo.add(coup);
+        if (isEmptyAnnule()) {
+            Coup coup = coup_jouer.pop();
+            coup_annule.add(coup);
             return coup;
         }
         return null;
     }
 
     public Coup refais() {
-        if (!isEmptyRefaire()) {
-            Coup coup = Redo.pop();
-//            Undo.add(coup);// On empile auto en traitant le coup
+        if (isEmptyRefaire()) {
+            Coup coup = coup_annule.pop();
+            coup_jouer.add(coup);
             return coup;
         }
         return null;
     }
 
     public void backOnRefais() {
-        Coup coup = Undo.pop();
-        Redo.add(coup);
+        Coup coup = coup_jouer.pop();
+        coup_annule.add(coup);
     }
 
     public boolean isEmptyAnnule() {
-        return Undo.empty();
+        return !coup_jouer.empty();
     }
 
     public boolean isEmptyRefaire() {
-        return Redo.empty();
+        return !coup_annule.empty();
     }
 
     public String sauvegarde() {
         StringBuilder sb = new StringBuilder();
         sb.append("jouer:\n");
-        for (Coup coup : Undo) {
+        for (Coup coup : coup_jouer) {
             sb.append(coup.toString()).append("\n");
         }
         sb.append("annule:\n");
-        for (Coup coup : Redo) {
+        for (Coup coup : coup_annule) {
             sb.append(coup.toString()).append("\n");
         }
         return sb.toString();
@@ -75,17 +82,13 @@ public class Historique {
             } else {
                 Coup coup = Coup.fromString(line);
                 if (isJouer) {
-                    historique.Undo.add(coup);
+                    historique.coup_jouer.add(coup);
                 } else {
-                    historique.Redo.add(coup);
+                    historique.coup_annule.add(coup);
                 }
             }
         }
         return historique;
-    }
-
-    public Stack<Coup> getRefais(){
-        return Redo;
     }
 
 }

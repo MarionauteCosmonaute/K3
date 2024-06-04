@@ -28,7 +28,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 	IA ia;
 	int gagnant;
 	Cube cube, cube_selectionne;
-	Thread iaCompute;
 
 	int IA_id_player=1;
 	Timer autorestart;
@@ -40,7 +39,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 		joueur_initial = j.get_player();
 		penalty = false;
 		gagnant = -1;
-		timer_sablier = new Timer(500, new ActionListener()
+		timer_sablier = new Timer(1000, new ActionListener()
 			{
 				@Override
 				
@@ -58,6 +57,18 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicJoueurPyramide(int x, int y) {
+
+		// On désactive les boutons de l'historique tant que le coup n'est pas validé!
+		System.out.println("----> annule grisé");
+		vue.getMenuPhaseDeJeu2().setAnnuler(false);
+		vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
+		vue.getMenuPhaseDeJeu2().repaint();
+
+		System.out.println("----> refaire grisé");
+		vue.getMenuPhaseDeJeu2().setRefaire(false);
+		vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
+		vue.getMenuPhaseDeJeu2().repaint();
+
 		// cube_selectionne = jeu.getPlayer().get(x, y);
 		if(IAON && jeu.get_player() == 1 && !penalty){
 			return;
@@ -97,8 +108,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 			clic = true;
 			ligne_joueur = x;
 			colonne_joueur = y; //mettre -1 si ça vient du side
-		}
-		
+		}		
 	}
 
 	@Override
@@ -108,13 +118,12 @@ public class ControleurMediateur implements CollecteurEvenements {
 		System.out.println("----> annule grisé");
 		vue.getMenuPhaseDeJeu2().setAnnuler(false);
 		vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
-		// vue.getMenuPhaseDeJeu2().repaint();
+		vue.getMenuPhaseDeJeu2().repaint();
 
 		System.out.println("----> refaire grisé");
 		vue.getMenuPhaseDeJeu2().setRefaire(false);
 		vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
 		vue.getMenuPhaseDeJeu2().repaint();
-		vue.getMenuPhaseDeJeuJVIA().repaint();
 
 		if(IAON && jeu.get_player() == 1 && !penalty){
 			return;
@@ -155,15 +164,38 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	public void metAJourRefaire()
 	{
-			// System.out.println("----> refaire grisé");
-		vue.getDisplayedMenu().setRefaire(!jeu.refaisEmpty());
-		vue.getDisplayedMenu().repaint();
+		if (!jeu.refaisEmpty())
+		{
+			System.out.println("----> refaire grisé");
+			vue.getMenuPhaseDeJeu2().setRefaire(false);
+			vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
+			vue.getMenuPhaseDeJeu2().repaint();
+		}
+		else
+		{
+			System.out.println("----> refaire allumé");
+			vue.getMenuPhaseDeJeu2().setRefaire(true);
+			vue.getMenuPhaseDeJeuJVIA().setRefaire(true);
+			vue.getMenuPhaseDeJeu2().repaint();
+		}
 	}
 
 	public void metAJourAnnule()
 	{
-		vue.getDisplayedMenu().setAnnuler(!jeu.annuleEmpty());
-		vue.getDisplayedMenu().repaint();
+		if (!jeu.annuleEmpty())
+		{
+			System.out.println("----> annule grisé");
+			vue.getMenuPhaseDeJeu2().setAnnuler(false);
+			vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
+			vue.getMenuPhaseDeJeu2().repaint();
+		}
+		else
+		{
+			System.out.println("----> annule allumé");
+			vue.getMenuPhaseDeJeu2().setAnnuler(true);
+			vue.getMenuPhaseDeJeuJVIA().setAnnuler(true);
+			vue.getMenuPhaseDeJeu2().repaint();
+		}
 	}
 
 	@Override 
@@ -207,7 +239,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             if (IAON){
 				
 				if(jeu.get_player() == 1){
-					vue.updateSablier(true);
 					timer_sablier.start();
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
@@ -223,11 +254,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 		int res;
 		// if(jeu.accessible(ligne_joueur,colonne_joueur)){
 		res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
-		vue.updateSablier(true);
-		if(IAON){
-			timer_sablier.start();
-			if(res != 2) commande("IAcompute");
-		}
 		// metAJourAnnule();
 		// metAJourRefaire();
 		jeu.sauvegarde(qs);
@@ -256,7 +282,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 				
 				vue.getMenuPhaseDeJeu2().setAnnuler(false);
 				vue.getMenuPhaseDeJeu2().setRefaire(false);
-				vue.getMenuPhaseDeJeuJVIA().repaint();
+				vue.getMenuPhaseDeJeu2().repaint();
+				timer_sablier.start();
 			}
 			else{
 				metAJourAnnule();
@@ -267,13 +294,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 			vue.getMenuPhaseDeJeu2().setAnnuler(false);
 			vue.getMenuPhaseDeJeu2().setRefaire(false);
 			vue.getMenuPhaseDeJeu2().repaint();
-			vue.getMenuPhaseDeJeuJVIA().repaint();
 			clic = false;
 			PDJPyramideJoueur.SetCube_Select_Static(false);
 			penalty = true;
 			if (IAON && jeu.get_player() == 0){
 				ia.takePenaltyCube();
-				commande("IAcompute");
 				penalty = false;
 				if(jeu.getPlayer().lost()){
 					timer_sablier.stop();
@@ -300,7 +325,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 		if (IAON){
 			vue.TimerIA(true);
 			if(jeu.get_player() == 1){
-				vue.updateSablier(true);
 				timer_sablier.start();
 				//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
 				//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
@@ -333,6 +357,10 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clicSourisPyr(int ligne, int col) {
+		if (ligne == -1 && col == -1)
+		{
+			return;
+		}
 		jeu.construction(ligne, col, cube);
 	}
 
@@ -357,9 +385,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 						@Override
 						public void actionPerformed(ActionEvent e){
 							IAON=true;
-							vue.TimerIA(true);
-							vue.updateSablier(true);
-							timer_sablier.start();
 							autorestart.stop();
 						}
 					});
@@ -374,19 +399,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "Refaire":
 				if(!(IAON && IA_thinking)){
 					jeu.refais();
-					autorestart =new Timer(5000, new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e){
-							IAON=true;
-							vue.TimerIA(true);
-							vue.updateSablier(true);
-							timer_sablier.start();
-							autorestart.stop();
-						}
-					});
-					autorestart.start();
-
-
 					if(jeu.getPlayer().lost()){
 						gagnant = jeu.next_player();
 						System.out.println("cas 5 : Le joueur " + (jeu.get_player() + 1) + " a perdu");
@@ -423,7 +435,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "Charger":
 				reset();
-				vue.setBackgroundPicture("res/black_wood.jpg");
+				vue.setBackgroundPicture("res/Fond bleu avec cubes transparents.png");
 				vue.changeVisible(3);
 				jeu.reset(qs);
 				break;
@@ -441,25 +453,28 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "Reset":
 				jeu.resetBag();
 				vue.getMenuPhaseConstruction().setValider(false);
+				vue.getMenuPhaseConstruction().reset();
 				vue.getMenuPhaseConstruction().repaint(); // ça me paraît normal de faire ça comme ça
 				break;  
 			
 			case "AideConstruction":
-				jeu.constructionAleatoire(jeu.get_player());
+				//jeu.resetBag(); 
+				jeu.constructionAleatoire(jeu.getPlayer());
 				vue.getMenuPhaseConstruction().reset();
+				//System.out.println(jeu.getPlayer().getPyramid());
 				vue.getMenuPhaseConstruction().repaint();
 				break;
 
 			case "AideConstructionIA":
-				jeu.resetBag();
-				IA iaJouer = IA.nouvelle(jeu, 1, jeu.get_player());
-				iaJouer.generationPyramide(true);
-				vue.getDisplayedMenu().repaint();
+				jeu.resetBag(); 
+				jeu.constructionAleatoire(jeu.getPlayer());
+				vue.getMenuPhaseConstruction().reset();
+				vue.getMenuPhaseConstruction().repaint();
 				break;
 
 			case "JoueurVSJoueur":
 				IAON=false;
-			    vue.setBackgroundPicture("res/black_wood.jpg");
+			    vue.setBackgroundPicture("res/Fond bleu avec cubes transparents.png");
 				vue.changeVisible(2);
 				jeu.reset(2);
 				jeu.initPrincipale();
@@ -469,7 +484,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "JoueurVSIA":
 				IAON=true;
-				vue.setBackgroundPicture("res/black_wood.jpg");
+				vue.setBackgroundPicture("res/Fond bleu avec cubes transparents.png");
 				vue.changeVisible(2);
 				jeu.reset(2);
 				jeu.initPrincipale();
@@ -479,10 +494,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 				//try{Thread.sleep(100);}
 				//catch(Exception e){}
 				ia.construction();
-
 				
 				if(jeu.get_player() == 1){
-					vue.updateSablier(true);
 					timer_sablier.start();
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).setBoolSablier(true);
 					//((MenuPhaseDeJeu2)menuListe.get(3)).PDJpyrJoueur(1).repaint();
@@ -512,10 +525,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 					}
 					
 					jeu.gameStart();
-					if(IAON){
-						try{ia.thread().join();}catch(Exception e){System.out.println(e);System.exit(1);}
-						if(joueur_initial == 1) commande("IAcompute");
-					}
 					jeu.sauvegarde(qs);
 					jeu.check_loss();
 					if(jeu.getPlayer().lost()){
@@ -547,36 +556,29 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 			case "MenuP":
 				vue.TimerIA(false);//on stoppe le timer de l'ia 
-				vue.setBackgroundPicture("res/Back.png");
+				vue.setBackgroundPicture("res/MenuPrincipal.png");
 				vue.changeVisible(0);
 				break;
 
 			case "MenuLocal":
 				reset();
-				vue.setBackgroundPicture("res/Back.png");
+				vue.setBackgroundPicture("res/MenuPrincipal.png");
 				vue.changeVisible(1);
 				break;
 
 			case "PDJ2":
 				vue.changeVisible(3);
-				vue.setBackgroundPicture("res/black_wood.jpg");
+				vue.setBackgroundPicture("res/Fond bleu avec cubes transparents.png");
 				break;
 
-			case "IAcompute":
-				//timer_sablier.start();
-				IA_thinking=true;
-				iaCompute = ia.compute();
-				break;
 			case "JoueIA":
-				//System.out.println("joue IAAAAAAAAAA");
+				System.out.println("joue IAAAAAAAAAA");
 				vue.getMenuPhaseDeJeuJVIA().setAnnuler(false);
 				vue.getMenuPhaseDeJeuJVIA().setRefaire(false);
 				vue.getMenuPhaseDeJeuJVIA().repaint();
 				int res;
 				if (IAON && jeu.get_player()==1 && !penalty){
-					
-					try{iaCompute.join();}
-					catch(InterruptedException e){System.err.println(e);}
+					IA_thinking=true;
 					if ((res = ia.jouer_coup()) == 2){
 						penalty = true;
 						// PDJPyramideJoueur.CacheGif();
@@ -607,7 +609,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 					IA_thinking=false;
 					vue.TimerIA(false);
 					jeu.sauvegarde("saves/quicksave.txt");
-					//System.out.println("pas tout de suite --------------");
+					System.out.println("pas tout de suite --------------");
 					
 				}
 				metAJourAnnule();

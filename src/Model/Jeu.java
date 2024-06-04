@@ -2,8 +2,6 @@ package Model;
 
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Stack;
-import java.util.Vector;
 
 import Model.History.*;
 
@@ -17,184 +15,186 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import Patterns.Observable;
+import java.util.Collections;
 
-public class Jeu extends Observable implements Cloneable {
+public class Jeu extends Observable implements Cloneable{
     Player[] players;
     boolean playerConst[];
     int nbJoueur;
     Pyramid principale;
     PawnsBag bag;
     int current_player, size;
-    boolean End, start;
+    boolean End,start;
     Historique hist;
-    boolean penality = false,clone = false;
-    int blancJouer;
+    boolean penality = false;
+    Point dernierCoup = null;
 
-    public boolean getPenality() {
+    public boolean getPenality(){
         return penality;
     }
 
-    /*****************************/
-    /* Fonction creation du jeu */
-    /***************************/
+        /*****************************/
+        /* Fonction creation du jeu */
+        /***************************/
 
-    public Jeu(int nb) { /* creation de l'objet jeu ainsi que les joueurs */
+    public Jeu(int nb){             /* creation de l'objet jeu ainsi que les joueurs */
         reset(nb);
     }
 
-    public Jeu(String fileName) {
+    public Jeu(String fileName){
         reset(fileName);
     }
 
-    public void reset(int nb) {
+    public void changeCurrentPlayer(int player){
+        current_player=player;
+    }
+
+    public void reset(int nb){
         nbJoueur = nb;
         End = false;
         start = false;
-        clone = false;
         players = new Player[nb];
         playerConst = new boolean[nb];
         hist = new Historique();
 
         bag = new PawnsBag(nb);
         principale = new Pyramid(9);
-        for (int i = 0; i < nb; i++) {
-            size = 8 - nb;
+        for(int i = 0;i < nb; i++ ){
+            size = 8-nb;
             players[i] = new Player(size);
-            playerConst[i] = true;
-            if (nb != 4) {
-                for (int j = 0; j < 4 / nb; j++) {
+            playerConst[i]=true;
+            if(nb!=4){
+                for(int j = 0; j < 4/nb; j++){
                     players[i].addBag(Cube.Blanc);
                     players[i].addBag(Cube.Neutre);
                 }
-                if (nb == 3) {
-                    players[i].addBag(Cube.Neutre);
-                }
-            } else {
+                if(nb == 3){players[i].addBag(Cube.Neutre);}
+            }
+            else{
                 players[i].addSide(Cube.Blanc);
                 players[i].addBag(Cube.Neutre);
             }
         }
         Random r = new Random();
         current_player = r.nextInt(nb);
-        
         metAJour();
     }
 
-    public void reset(String fileName) {
-        try {
+    public void reset(String fileName){
+        try{
             Scanner s = new Scanner(new FileInputStream(fileName));
             String[] chaine = s.nextLine().split(" ");
-            clone = false;
+            
             hist = new Historique();
             nbJoueur = Integer.parseInt(chaine[0]);
             bag = new PawnsBag(nbJoueur);
-            size = 8 - nbJoueur;
+            size = 8-nbJoueur;
             current_player = Integer.parseInt(chaine[1]);
             principale = new Pyramid(s.nextLine());
             players = new Player[nbJoueur];
             String[] playerString = new String[4];
-            for (int i = 0; i < nbJoueur; i++) {
-                for (int j = 0; j < 4; j++) {
+            for(int i = 0; i < nbJoueur; i++){
+                for(int j = 0; j < 4; j++){
                     playerString[j] = s.nextLine();
                 }
                 players[i] = new Player(playerString);
             }
             String histLine = "";
             String part = "";
-            while (s.hasNext()) {
-                part = s.nextLine();
+            while (s.hasNext()) {     
+                part = s.nextLine();    
                 histLine += part + "\n";
             }
             hist = Historique.fromString(histLine);
             End = false;
             s.close();
             metAJour();
-        } catch (FileNotFoundException e) {
-            System.err.println(e);
-            System.exit(2);
         }
+        catch(FileNotFoundException e){System.err.println(e);System.exit(2);}
     }
 
-    // Tirage de la base de la pyramide central
-    public void initPrincipale() { /* base central aleatoire */
+    //Tirage de la base de la pyramide central 
+    public void initPrincipale(){       /* base central aleatoire */
         int y = 0;
-        for (Cube cube : bag.init_center()) {
+        for( Cube cube : bag.init_center()){
             principale.set(0, y, cube);
             y++;
         }
     }
 
-    public void initPrincipale(ArrayList<Cube> bag) { /* base central deja instancier */
+    public void initPrincipale(ArrayList<Cube> bag){        /*base central deja instancier */
         int y = 0;
-        for (Cube cube : bag) {
+        for( Cube cube : bag ){
             principale.set(0, y, cube);
             y++;
         }
     }
 
-    public void sauvegarde(String fileName) {
-        try {
+    public void sauvegarde(String fileName){
+        try{
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
             String sauvegarde = "";
             sauvegarde += nbJoueur + " " + current_player + "\n";
-            sauvegarde += principale.sauvegarde();
-            for (int i = 0; i < nbJoueur; i++) {
+            sauvegarde+= principale.sauvegarde();
+            for(int i = 0; i < nbJoueur; i++){
                 sauvegarde += players[i].sauvegarde();
             }
-            sauvegarde += hist.sauvegarde();
+            sauvegarde += hist.sauvegarde(); 
             writer.write(sauvegarde);
             writer.close();
-        } catch (IOException e) {
-            System.err.println(e);
-            System.exit(2);
         }
+        catch(IOException e){System.err.println(e);System.exit(2);}
     }
 
-    public Pyramid getPricipale() {
+    public Pyramid getPricipale(){
         return principale;
     }
 
-    public Cube getCubePrincipale(int x, int y) {
-        return principale.get(x, y);
-    }
-
-    public void constructionAleatoire(int playerID) {
-        getPlayer(playerID).constructionAleatoire();
+    public Cube getCubePrincipale(int x,int y){
+        return principale.get(x,y);
     }
 
 
-    public Player[] getAllPlayers(){
-        return players;
+    public void constructionAleatoire(Player player){
+        for(int i = player.getSize()-1; i >= 0; i--){
+            for(int j = 0; j < player.getSize()-i; j++){
+                if(player.getPyramid().get(i, j) == Cube.Vide && !player.bagEmpty()){
+                    Collections.shuffle(player.getPersonalBag());
+                    player.construction(i, j, player.getPersonalBag().get(0));}
+            }
+        }
     }
-
-    public void initTest(){
-        initPrincipale();
-        while(draw()){}
-    }
-
-    /************************************ */
-    /* Fonction lier a une action de jeu */
-    /********************************** */
+        /************************************ */
+        /* Fonction lier a une action de jeu */
+        /********************************** */
 
     /* ordre de jeu */
 
-    public void avance() { /* le bon joueur est envoyer */
-        current_player = next_player();
-        // if(start) check_loss();
+    public boolean annuleEmpty(){
+        return hist.isEmptyAnnule();
     }
 
-    public void gameStart() {
+    public boolean refaisEmpty(){
+        return hist.isEmptyRefaire();
+    }
+
+    public void avance(){           /* le bon joueur est envoyer */
+        current_player = next_player();
+        //if(start) check_loss();
+    }
+
+    public void gameStart(){
         start = true;
     }
-
-    public boolean gameStarted() {
+    
+    public boolean gameStarted(){
         return start;
     }
 
     public void annule() {
 
         Coup coup = hist.annule();
-        if (coup != null) {
+        if (coup !=null){
             if (coup.type == 7) {
 
                 getPlayer((int) coup.dest.getX()).playerNoLost();
@@ -248,60 +248,88 @@ public class Jeu extends Observable implements Cloneable {
 
                     case 5:
                         getPlayer().set((int) coup.source.getX(), (int) coup.source.getY(), Cube.Blanc);
-                        blancJouer--;
                         break;
 
                     case 6:
                         getPlayer().addSide(Cube.Blanc);
-                        blancJouer--;
                         break;
 
                     default:
                         break;
                 }
             }
-            if (!clone) metAJour();
+        metAJour();
         }
     }
 
     public void refais() {
         Coup coup = hist.refais();
-        if (coup != null) {
-            playAction(coup,true);
+        if (coup !=null){
+            switch (coup.type) {
+                case 1:
+                    principale.set((int) coup.dest.getX(), (int) coup.dest.getY(),
+                            getPlayer().get((int) coup.source.getX(), (int) coup.source.getY()));
+                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                    coup = hist.refais();
+                    if (coup!=null){    
+                        if (coup.type == 3) {
+                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                            getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                        } else if (coup.type == 4) {
+                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                            getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                        } else {
+                            hist.backOnRefais();
+                        }
+                    }
+                    break;
+
+                case 2:
+                    principale.set((int) coup.dest.getX(), (int) coup.dest.getY(),
+                            Cube.intToCube((int) coup.source.getX()));
+                    getPlayer().removeCubeSide(Cube.intToCube((int) coup.source.getX()));
+                    coup = hist.refais();
+                    if(coup !=null){
+                        if (coup.type == 3) {
+                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                            getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                        } else if (coup.type == 4) {
+                            getPlayer(previous_player()).addSide(Cube.intToCube((int) coup.dest.getX()));
+                            getPlayer().removeCubeSide(Cube.intToCube((int) coup.dest.getX()));
+                        } else {
+                            hist.backOnRefais();
+                        }
+                    }
+                    break;
+
+                case 5:
+                    getPlayer().remove((int) coup.source.getX(), (int) coup.source.getY());
+                    break;
+
+                case 6:
+                    getPlayer().removeCubeSide(Cube.Blanc);
+                    break;
+
+                case 7:
+                    getPlayer().playerLost();
+                    break;
+
+                default:
+                    break;
+            }
+        avance();
+        check_loss();
+        metAJour();
         }
     }
+
 
     /** Coup **/
-
-    public void playAction(Coup c, boolean keepHistory){
-        Stack<Coup> save=new Stack<>();
-        if(keepHistory){
-            while(!hist.isEmptyRefaire()){
-                save.add(hist.getRefais().pop());
-            }
-        }
-        switch(c.type){
-            case 3:
-            case 4:
-                takePenaltyCube(c.source.x, c.source.y);
-            break;
-            case 7:
-                
-            break;
-            default:
-                jouer_coup(c.dest.x,c.dest.y,c.source.x,c.source.y);
-            break;
-        }
-
-        while(!save.empty()){
-            hist.getRefais().add(save.pop());
-        }
-    }
     /** Debut de partie **/
 
-    public boolean draw() {
-        if (bag.getSize() > 2) {
-            for (Cube c : bag.draw()) {
+    public boolean draw(){
+        if(bag.getSize() > 2){
+            for(Cube c : bag.draw()){
                 players[current_player].addBag(c);
             }
             avance();
@@ -310,45 +338,41 @@ public class Jeu extends Observable implements Cloneable {
         return false;
     }
 
-    public void construction(int x, int y, Cube cube) {
+    public void construction(int x, int y, Cube cube){
         getPlayer().construction(x, y, cube);
     }
 
-    /* Swaps two cubes positions */
-    public void permutation(int x, int y, int x_p, int y_p) {
+    /*Swaps two cubes positions*/
+    public void permutation(int x, int y, int x_p, int y_p){
         getPlayer().permutation(x, y, x_p, y_p);
     }
 
-    public void resetBag() {
+    public void resetBag(){
         getPlayer().resetBag();
     }
 
+
     /** Jouer **/
-    public void setCubePlayer(int x, int y, Cube cube) { /*
-                                                          * Ajoute le cube au coordonnee x y de la pyramide du joueur
-                                                          * courant
-                                                          */
+    public void setCubePlayer(int x, int y, Cube cube){     /* Ajoute le cube au coordonnee x y de la pyramide du joueur courant  */
         getPlayer().set(x, y, cube);
         avance();
-        if (!clone) metAJour();
+        metAJour();
     }
 
-    /*
-     * joue un coup dans la pyramide central, si l'y du cube a jouer est egale a -1
-     * le cube sera piochee du side
-     */
+    /* joue un coup dans la pyramide central, si l'y du cube a jouer est egale a -1 le cube sera piochee du side */
     // 0 -> NOT VALID
     // 1 -> VALID
     // 2 -> VALID WITH PENALITY
     // 3 -> PLAY WHITE
-    public int jouer_coup(int x_central, int y_central, int x_player, int y_player) {
+    public int jouer_coup(int x_central, int y_central, int x_player, int y_player){
         int valid;
-        if (y_player == -1) {
+        dernierCoup = new Point(x_central,y_central);
+        if (y_player==-1){
             valid = add_central_side(x_central, y_central, x_player);
         } else {
             valid = add_central_pyramid(x_central, y_central, x_player, y_player);
         }
-        if (!clone) metAJour();
+        metAJour();
         switch (valid) {
             case 1:
             case 3:
@@ -362,229 +386,211 @@ public class Jeu extends Observable implements Cloneable {
                 break;
         }
 
-        return valid;
+        return valid;    
     }
 
-    public int add_central_pyramid(int x_central, int y_central, int x_player, int y_player) { /*
-                                                                                                * meme valeur renvoyer
-                                                                                                */
-        if (accessible(x_player, y_player)) {
+    public int add_central_pyramid(int x_central, int y_central, int x_player, int y_player){   /* meme valeur renvoyer */
+        if(accessible(x_player, y_player)){
             Cube cube = players[current_player].get(x_player, y_player);
             int valid = move_validity(cube, x_central, y_central);
-            if (valid == 3) {
-                joueBlancPyramide(x_player, y_player);
-                blancJouer++;
-            } else if (valid != 0) {
+            if(valid == 3){joueBlancPyramide(x_player, y_player);}
+            else if(valid != 0){
                 players[current_player].set(x_player, y_player, Cube.Vide);
                 principale.set(x_central, y_central, cube);
-                if (x_central == 9) {
+                if(x_central == 9){
                     principale.extend();
                 }
-                if (!clone) hist.action(1, new Point(x_player, y_player), new Point(x_central, y_central));
+                hist.action(1,new Point(x_player,y_player), new Point(x_central,y_central));
             }
             return valid;
         }
         return 0;
     }
 
-    public int add_central_side(int x_central, int y_central, int x_player) { /* meme valeur renvoyer */
+    public int add_central_side(int x_central, int y_central, int x_player){        /* meme valeur renvoyer */
         Cube cube = players[current_player].getSide(x_player);
         int valid = move_validity(cube, x_central, y_central);
-        if (valid == 3) {
+        if(valid == 3) {
             joueBlancSide(x_player);
-        } else if (valid != 0) {
+        }
+        else if(valid != 0){
             players[current_player].removeSide(x_player);
             principale.set(x_central, y_central, cube);
-            if (!clone) hist.action(2, new Point(cube.getInt(), -1), new Point(x_central, y_central));
+            hist.action(2, new Point(cube.getInt(),-1),new Point(x_central,y_central));
         }
         return valid;
     }
 
-    public void joueBlancPyramide(int x, int y) {
-        getPlayer().set(x, y, Cube.Vide);
-        if (!clone) hist.action(5, new Point(x, y), new Point(-1, -1)); // (int type, Point s, Point d)
-
+    public boolean joueBlancPyramide(int x, int y){
+        if(getPlayer().get(x,y) == Cube.Blanc){
+            getPlayer().remove(x, y);
+            hist.action(5,new Point(x,y), new Point(-1, -1));  //(int type, Point s, Point d)
+            return true;
+        }
+        return false;
     }
 
-    public void joueBlancSide(int x) {
-        getPlayer().removeSide(x);
-        if (!clone) hist.action(6, new Point(x, -1), new Point(-1, -1));
-
+    public boolean joueBlancSide(int x){
+        if(getPlayer().getSide(x) == Cube.Blanc){
+            getPlayer().removeSide(x);
+            hist.action(6, new Point(x, -1), new Point(-1, -1));
+            return true;
+        }
+        return false;
     }
 
-    public void playerNoLost(int joueur) {
+    public void playerNoLost(int joueur){
         getPlayer(joueur).playerNoLost();
     }
 
-    /* Penalitee */
-
-    public void takePenaltyCube(int x, int y) {
-        if (y == -1) {
+        /* Penalitee */
+    
+    public void takePenaltyCube(int x,int y){
+        if (y==-1){
             takePenaltyCubeFromSide(x);
-        } else {
-            takePenaltyCubeFromPyramid(x, y);
+        }else{
+            takePenaltyCubeFromPyramid(x,y);
         }
-        penality = false;
+        penality=false;
         avance();
-        if (!clone) metAJour();
+        metAJour();
         check_loss();
 
     }
 
-    public void takePenaltyCubeFromPyramid(int x, int y) { /*
-                                                            * Recupere le cube de la position x y du joueur courant et
-                                                            * l'ajoute au side du joueur precedent
-                                                            */
-        Cube cube = players[current_player].get(x, y);
+    public void takePenaltyCubeFromPyramid(int x,int y) {               /*Recupere le cube de la position x y du joueur courant et l'ajoute au side du joueur precedent */
+        Cube cube  = players[current_player].get(x,y);
         players[next_player()].addSide(cube);
-        getPlayer().set(x, y, Cube.Vide);
-        if (!clone) hist.action(3, new Point(x, y), new Point(cube.getInt(), -1));
+        getPlayer().remove(x,y);
+        hist.action(3,new Point(x,y), new Point(cube.getInt(),-1));
     }
 
-    public void takePenaltyCubeFromSide(int x) { /*
-                                                  * Recupere le cube de la position x dans la liste de cotee du joueur
-                                                  * courant et l'ajoute au side du joueur precedent
-                                                  */
+    public void takePenaltyCubeFromSide(int x) {            /* Recupere le cube de la position x dans la liste de cotee du joueur courant et l'ajoute au side du joueur precedent */
         Cube cube = players[current_player].getSide(x);
         players[next_player()].addSide(cube);
         getPlayer().removeSide(x);
-        if (!clone) hist.action(4, new Point(x, -1), new Point(cube.getInt(), -1));
+        hist.action(4, new Point(-1,-1), new Point(cube.getInt(),-1));
     }
+
+    
 
     /*************/
 
-    /*************************** */
-    /* Fonction de verification */
-    /************************* */
+        /*************************** */
+        /* Fonction de verification */
+        /************************* */
 
     /* Penalitee */
 
-    public boolean check_penality(int x, int y) {
-        return principale.get(x - 1, y) == principale.get(x - 1, y + 1);
+    public boolean check_penality(int x, int y) {  
+        return principale.get(x-1, y) == principale.get(x-1, y+1);
     }
 
-    public boolean check_under(int x, int y) {
-        return !(principale.get(x - 1, y) == Cube.Vide) && !(principale.get(x - 1, y + 1) == Cube.Vide);
+    public boolean check_under(int x, int y){
+        return !(principale.get(x-1, y) == Cube.Vide) && !(principale.get(x-1, y+1) == Cube.Vide);
     }
 
-    public boolean sameColor(Cube c1, Cube c2) {
+    public boolean sameColor(Cube c1,Cube c2){
         return (c1 == c2) || (c1 == Cube.Neutre) || (c2 == Cube.Neutre);
     }
 
-    // MOVE VALIDITY :
+
+    //MOVE VALIDITY :
     // 0 -> NOT VALID
     // 1 -> VALID
     // 2 -> VALID WITH PENALITY
     // 3 -> PLAY WHITE
-    public int move_validity(Cube cube, int x, int y) { /* bonne validitee renvoyee */
-        if (cube == Cube.Blanc)
-            return 3;
-        if ((principale.get(x, y) == Cube.Vide) && check_under(x, y)
-                && (sameColor(principale.get(x - 1, y), cube) || (sameColor(principale.get(x - 1, y + 1), cube)))) {
-            if (check_penality(x, y)) {
+    public int move_validity(Cube cube, int x, int y){          /* bonne validitee renvoyee */
+        if(cube == Cube.Blanc) return 3;
+        if ( (principale.get(x, y) == Cube.Vide) && check_under(x,y) && (sameColor(principale.get(x-1, y),cube) || ( sameColor(principale.get(x-1, y+1),cube))) ){
+            if (check_penality(x, y)){
                 return 2;
             }
             return 1;
-        } else {
-            return 0;
         }
+        else {return 0;}
     }
+
 
     /* Accessibilitee */
-    public boolean accessible(int x, int y) {
-        return accessible(x, y, current_player);
+    public boolean accessible(int x, int y){
+        return accessible(x,y,current_player);
     }
 
-    public boolean accessible(int x, int y, int joueur) {
+    public boolean accessible(int x, int y, int joueur){
 
         Pyramid pyramid = getPlayer(joueur).getPyramid();
-        return accessible(pyramid, x, y);
+        return accessible(pyramid , x, y);
     }
 
-    public boolean accessible(Pyramid pyramid, int x, int y) {
-        return (pyramid.get(x, y) != Cube.Vide)
-                && ((x == size - 1 && y == 0) || ((y == size - x - 1 || pyramid.get(x + 1, y) == Cube.Vide)
-                        && (y == 0 || pyramid.get(x + 1, y - 1) == Cube.Vide)));
+    public boolean accessible(Pyramid pyramid , int x, int y){
+        return (pyramid.get(x, y) != Cube.Vide) && (( x == size-1 && y == 0 ) || (( y == size-x-1 || pyramid.get(x+1, y) == Cube.Vide) && (y == 0 || pyramid.get(x+1, y-1)== Cube.Vide)));
     }
 
-    public boolean case_dessus_possible(int x, int y) { /*
-                                                         * renvoie vrai si l'on peu poser un cube sur un cube de la
-                                                         * pyramide central
-                                                         */
-        if ((principale.get(x, y) != Cube.Vide) && (caseDessusDroitPossible(x, y) || caseDessusGauchePossible(x, y))) {
+public boolean case_dessus_possible(int x, int y){          /* renvoie vrai si l'on peu poser un cube sur un cube de la pyramide central */
+        if( (principale.get(x, y) != Cube.Vide) && (caseDessusDroitPossible(x, y) || caseDessusGauchePossible(x, y))) {
             return true;
         }
         return false;
     }
 
-    public boolean caseDessusDroitPossible(int x, int y) {
-        return (y != principale.getSize() - x - 1) && principale.get(x, y + 1) != Cube.Vide
-                && principale.get(x + 1, y) == Cube.Vide;
+    public boolean caseDessusDroitPossible(int x, int y){
+        return (y != principale.getSize()-x-1) && principale.get(x, y+1) != Cube.Vide && principale.get(x+1, y) == Cube.Vide;
+    }
+    public boolean caseDessusGauchePossible(int x, int y){
+        return ( y != 0 && (principale.get(x, y-1) != Cube.Vide) && principale.get(x+1, y-1) == Cube.Vide );
     }
 
-    public boolean caseDessusGauchePossible(int x, int y) {
-        return (y != 0 && (principale.get(x, y - 1) != Cube.Vide) && principale.get(x + 1, y - 1) == Cube.Vide);
-    }
 
-    public boolean caseAdjacenteVide(int x, int y) { /* renvoie vrai si les cases adjacente sont vide */
-        return ((y == 0 || principale.get(x, y - 1) == Cube.Vide)
-                && (y == (principale.getSize() - 1 - x) || principale.get(x, y + 1) == Cube.Vide));
+    public boolean caseAdjacenteVide(int x, int y){         /* renvoie vrai si les cases adjacente sont vide */
+        return (( y == 0 || principale.get(x, y-1) == Cube.Vide ) && (y == (principale.getSize()-1-x) || principale.get(x, y+1) == Cube.Vide) );
     }
 
     /* Fin de partie */
-    public boolean check_loss() { /*
-                                   * Verifie si le joueur courrant n'a aucun coup possible, s'il ne peut rien
-                                   * jouer le joueur courant est le prochain joueur
-                                   */
-        if (noPlay()) {
+    public boolean check_loss(){            /* Verifie si le joueur courrant n'a aucun coup possible, s'il ne peut rien jouer le joueur courant est le prochain joueur */
+        if(noPlay()){
             getPlayer().playerLost();
-            if (!clone) hist.action(7, new Point(-1, -1), new Point(current_player, -1));
+            hist.action(7,new Point(-1,-1), new Point(current_player,-1));
             int next = next_player();
-            if (next == next_player(next)) {
-                End = true;
-            } /*
-               * si un joueur est eliminer et que le prochain est le meme que le prochain du
-               * prochain, le joueur est donc seul et est le vainqueur
-               */
+            if(next == next_player(next)){End = true;}          /* si un joueur est eliminer et que le prochain est le meme que le prochain du prochain, le joueur est donc seul et est le vainqueur */
             return true;
         }
         return false;
     }
 
-    public boolean noPlay() {
-        return Accessible_Playable().size() == 0;
+    public boolean noPlay(){
+        return Accessible_Playable().size()==0;
     }
 
-    /**************************************** */
-    /* Fonction lier aux informations du jeu */
-    /************************************* */
+        /**************************************** */
+        /* Fonction lier aux informations du jeu */
+        /************************************* */
 
-    public Pyramid getPrincipale() {
+    public Pyramid getPrincipale(){
         return principale;
     }
 
     /* Recuperation de l'indice d'un joueur */
-    public int next_player() { /* Fonctionne */
+    public int next_player(){               /* Fonctionne */
         return next_player(current_player);
     }
 
-    public int next_player(int player) { /* renvoie le l'indice du prochain joueur */
-        int next_player = (player + 1) % nbJoueur;
-        while (players[next_player].lost() == true) {
-            next_player = (next_player + 1) % nbJoueur;
+    public int next_player(int player){     /* renvoie le l'indice du prochain joueur */
+        int next_player = (player+1)%nbJoueur;
+        while ( players[next_player].lost() == true ){
+            next_player = (next_player+1)%nbJoueur;
         }
         return next_player;
     }
-
-    // Determine the previous player out of those still in the game
-    public int previous_player() {
+    //Determine the previous player out of those still in the game
+    public int previous_player(){
         return previous_player(current_player);
     }
 
-    public int previous_player(int current_player) { /* renvoie l'indice du joueur precedent */
+    public int previous_player(int current_player){        /*renvoie l'indice du joueur precedent */
 
         int previous_player = (current_player + nbJoueur - 1) % nbJoueur;
-        while (players[previous_player].lost() == true) {
+        while(players[previous_player].lost() == true){
             previous_player = (previous_player + nbJoueur - 1) % nbJoueur;
         }
         return previous_player;
@@ -592,29 +598,29 @@ public class Jeu extends Observable implements Cloneable {
 
     /* Information pratique joueur courant */
 
-    // Ammount of cubes in a player's hand
-    public int TotCubesHand(int i) {
+
+    //Ammount of cubes in a player's hand
+    public int TotCubesHand (int i){
         return getPlayer(i).totalCube();
     }
 
-    // Ammount of a colour in the current player's hand
-    public int ColourAmmount(Cube cube) {
+    //Ammount of a colour in the current player's hand
+    public int ColourAmmount (Cube cube){
         return getPlayer().ColourAmmount(cube);
     }
-
-    public int[] compte_personal_bag() {
+    public int[] compte_personal_bag(){
         return getPlayer().compte_personal_bag();
     }
 
-    public ArrayList<Point> AccessibleCubesPlayer() {
+    public ArrayList<Point> AccessibleCubesPlayer(){
         return AccessibleCubesPlayer(current_player);
     }
 
-    public ArrayList<Point> AccessibleCubesPlayer(int joueur) { /* Fonctionne mais crash?(tres rarement) */
+    public ArrayList<Point> AccessibleCubesPlayer(int joueur){            /* Fonctionne mais crash?(tres rarement)*/
         ArrayList<Point> list = new ArrayList<Point>();
-        for (int i = getPlayer(joueur).getSize() - 1; i >= 0; i--) {
-            for (int j = 0; j < getPlayer(joueur).getSize() - i; j++) {
-                if (accessible(i, j, joueur)) {
+        for (int i=getPlayer(joueur).getSize()-1; i>=0; i--){
+            for (int j=0; j<getPlayer(joueur).getSize()-i; j++){
+                if (accessible(i,j, joueur)){
                     Point p = new Point(i, j);
                     list.add(p);
                 }
@@ -623,68 +629,63 @@ public class Jeu extends Observable implements Cloneable {
         return list;
     }
 
-    public ArrayList<Point> destination(Cube cube) {
+    public ArrayList<Point> destination(Cube cube){
         ArrayList<Point> list = new ArrayList<>();
-        if (cube == Cube.Blanc) {
-            list.add(new Point(-1, -1));
+        if(cube == Cube.Blanc){
+            list.add(new Point(-1,-1));
             return list;
         }
-        for (int i = principale.getSize() - 1; i >= 0; i--) {
-            for (int j = 0; j < principale.getSize() - i; j++) {
-                if (move_validity(cube, i, j) != 0) {
-                    Point p = new Point(i, j);
+        for(int i = principale.getSize()-1; i >= 0; i--){
+            for(int j = 0; j < principale.getSize()-i; j++){
+                if( move_validity(cube,i,j)!=0){
+                    Point p = new Point(i,j);
                     list.add(p);
                 }
             }
         }
         return list;
     }
-
-    public ArrayList<Point> CubeAccessibleDestinationBag(int index) {
+    public ArrayList<Point> CubeAccessibleDestinationBag(int index){        
         return destination(getPlayer().getPersonalBag().get(index));
     }
 
-    // COORD POSITION POSSIBLES POUR UN CUBE DONNEE
-    public ArrayList<Point> CubeAccessibleDestinations(int x, int y) {
-        if (y == -1) {
+    //COORD POSITION POSSIBLES POUR UN CUBE DONNEE
+    public ArrayList<Point> CubeAccessibleDestinations(int x, int y){
+        if (y==-1){
             return destination(getPlayer().getSide(x));
-        } else {
+        }
+        else{
             return destination(getPlayer().get(x, y));
         }
     }
-
-    // COORD POSITION POSSIBLES POUR UN CUBE DONNEE
-    public ArrayList<Point> CubeAccessibleDestinations(Player p, int x, int y) {
-        if (y == -1) {
+    
+    //COORD POSITION POSSIBLES POUR UN CUBE DONNEE
+    public ArrayList<Point> CubeAccessibleDestinations(Player p,int x, int y){
+        if (y==-1){
             return destination(p.getSide(x));
-        } else {
+        }
+        else{
             return destination(p.get(x, y));
         }
     }
 
-    public ArrayList<Point> Accessible_Playable() {
+    public ArrayList<Point> Accessible_Playable(){
         return Accessible_Playable(current_player);
     }
-    public ArrayList<Point> Accessible_Playable_IA() {
-        return Accessible_Playable_IA(current_player);
-    }
-    
-    public ArrayList<Point> Accessible_Playable(int i) { /*
-                                                          * parmis les cube accessible les quel sont possible d'etre
-                                                          * jouer, renvoie une liste de coordonee
-                                                          */
-        HashMap<Cube, Boolean> list = accessibleColors();
+
+    public ArrayList<Point> Accessible_Playable(int i){          /* parmis les cube accessible les quel sont possible d'etre jouer, renvoie une liste de coordonee */
+        HashMap<Cube,Boolean> list = accessibleColors();
         ArrayList<Point> Aksel = new ArrayList<Point>();
 
-        for (Point e : AccessibleCubesPlayer(i)) {
+        for(Point e : AccessibleCubesPlayer(i)){
             Cube cube = getPlayer(i).get(e.x, e.y);
-            if (cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube) || list.containsKey(Cube.Neutre)) {
+            if(cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube) || list.containsKey(Cube.Neutre)){
                 Aksel.add(e);
             }
         }
         int x = 0;
-        for (Cube c : getPlayer(i).getSide()) {
-            if ( (c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c) || list.containsKey(Cube.Neutre))) {
+        for(Cube c : getPlayer(i).getSide()){
+            if(c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c)|| list.containsKey(Cube.Neutre)){
                 Point p = new Point(x, -1);
                 Aksel.add(p);
             }
@@ -693,41 +694,11 @@ public class Jeu extends Observable implements Cloneable {
         return Aksel;
     }
 
-    public ArrayList<Point> Accessible_Playable_IA(int i) { /*
-                                                          * parmis les cube accessible les quel sont possible d'etre
-                                                          * jouer, renvoie une liste de coordonee
-                                                          */
-        HashMap<Cube, Boolean> list = accessibleColors();
-        HashMap<Cube, Boolean> values = new HashMap<>();
-        ArrayList<Point> Aksel = new ArrayList<Point>();
-
-        for (Point e : AccessibleCubesPlayer(i)) {
-            Cube cube = getPlayer(i).get(e.x, e.y);
-            if (cube == Cube.Blanc || cube == Cube.Neutre || list.containsKey(cube) || list.containsKey(Cube.Neutre)) {
-                Aksel.add(e);
-            }
-        }
-        int x = 0;
-        for (Cube c : getPlayer(i).getSide()) {
-            if ( !values.containsKey(c) && (c == Cube.Blanc || c == Cube.Neutre || list.containsKey(c) || list.containsKey(Cube.Neutre))) {
-                Point p = new Point(x, -1);
-                Aksel.add(p);
-                values.put(c,true);
-            }
-            x++;
-        }
-        return Aksel;
-    }
-
-    public HashMap<Cube, Boolean> accessibleColors() { /*
-                                                        * renvoie un dictionnaire avec comme clef une couleur de cube et
-                                                        * un booleen en fonction de si la couleur est accessible sur la
-                                                        * pyramide du milieu
-                                                        */
-        HashMap<Cube, Boolean> list = new HashMap<>();
-        for (int i = principale.getSize() - 1; i >= 0; i--) {
-            for (int j = 0; j < principale.getSize() - i; j++) {
-                if (case_dessus_possible(i, j)) {
+    public HashMap<Cube,Boolean> accessibleColors(){    /* renvoie un dictionnaire avec comme clef une couleur de cube et un booleen en fonction de si la couleur est accessible sur la pyramide du milieu */
+        HashMap<Cube,Boolean> list = new HashMap<>();
+        for(int i = principale.getSize()-1; i >= 0; i--){
+            for(int j = 0; j < principale.getSize()-i; j++){
+                if(case_dessus_possible(i, j)){
                     list.put(principale.get(i, j), true);
                 }
             }
@@ -735,110 +706,87 @@ public class Jeu extends Observable implements Cloneable {
         return list;
     }
 
-    public Point findFirstFreeElement() { // return first free or (-1,-1)
-        for (int i = getPlayer().getSize() - 1; i >= 0; i--) {
-            for (int j = 0; j < getPlayer().getSize() - i; j++) {
-                if (getPlayer().get(i, j) == Cube.Vide) {
-                    return (new Point(i, j));
+
+    public Point findFirstFreeElement() {   //return first free or (-1,-1)
+        for (int i = getPlayer().getSize()-1; i >= 0; i--) {
+            for (int j = 0; j < getPlayer().getSize()-i; j++) {
+                if (getPlayer().get(i,j)==Cube.Vide) {
+                    return (new Point(i,j));
                 }
             }
         }
-        return (new Point(-1, -1));
+        return (new Point(-1,-1));
     }
 
-    public String bag() { /* le tostring du bag */
+
+    public String bag(){     /* le tostring du bag */
         return bag.toString();
     }
 
     /* Fin de partie */
 
-    public boolean End_Game() {
+    public boolean End_Game(){
         return End;
     }
+
 
     /************************* */
     /* Recuperation de donnee */
     /*********************** */
 
-    public int blancJouer(){
-        return blancJouer;
-    }
-    public int get_player() {
+    public int get_player(){
         return current_player;
     }
 
-    public int nbJoueur() {
+    public int nbJoueur(){
         return nbJoueur;
     }
 
-    public Player getPlayer(int i) {
+    public Player getPlayer(int i){
         return players[i];
     }
 
-    public Player getPlayer() {
+    public Player getPlayer(){
         return getPlayer(current_player);
     }
 
-    public Pyramid getPyrPlayer(int i) {
+    public Pyramid getPyrPlayer(int i){
         return getPlayer(i).getPyramid();
     }
 
-    public ArrayList<Cube> getPlayerBag() {
+    public ArrayList<Cube> getPlayerBag(){
         return getPlayer().personalBag;
     }
 
-    public ArrayList<Cube> getPlayerBag(int i) {
+    public ArrayList<Cube> getPlayerBag(int i){
         return getPlayer(i).personalBag;
     }
 
-    public void playerEndConst(int player) {
-        playerConst[player] = false;
+    public void playerEndConst(int player){
+        playerConst[player]=false;
     }
 
-    public boolean endConstruction(int joueur) {
+    public boolean endConstruction(int joueur){
         return playerConst[joueur];
     }
 
     public Jeu clone() {
-        try {
-            Jeu clone = (Jeu) super.clone(); // Clone the basic object structure
-            clone.clone = true;
-            clone.start = start;
-            clone.End = End;
+        try{
+            Jeu clone = (Jeu) super.clone();  // Clone the basic object structure
+
             clone.players = new Player[nbJoueur];
-            clone.hist = new Historique();
             for (int i = 0; i < nbJoueur; i++) {
                 clone.players[i] = players[i].clone();
-            }
+            }   
             clone.principale = principale.clone();
             clone.bag = bag.clone();
 
             return clone;
-        } catch (Exception e) {
-            System.err.println("Error Clone");
-            System.exit(1);
-        }
-        return null;
+        }catch(Exception e){System.err.println("Error Clone");System.exit(1);}
+        return new Jeu(2);
     }
 
-    public int hashCode(){
-        Vector<Vector<Integer>> hash = new Vector<>();
-        for(Player player : players){
-            hash.add(player.hash(clone));
-        }
-        hash.add(principale.hash());
-        return hash.hashCode();
-    }
-
-    public void changeCurrentPlayer(int joueur_initial) {
-        current_player=joueur_initial;
-    }
-
-    public boolean refaisEmpty() {
-        return hist.isEmptyRefaire();
-    }
-
-    public boolean annuleEmpty() {
-        return hist.isEmptyAnnule();
+    public Point dernierCoup(){
+        return dernierCoup;
     }
 }
