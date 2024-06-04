@@ -46,6 +46,7 @@ public class AdaptateurSourisIA extends MouseAdapter {
         if (pdj.NumeroJoueur() != pdjCentrale.GetJoueurCourant()) {
             pdjJoueur.SetDessineMoins1(false);
             pdjJoueur.repaint();
+            pdjCentrale.repaint();
             pdj.repaint();
             return;
         }

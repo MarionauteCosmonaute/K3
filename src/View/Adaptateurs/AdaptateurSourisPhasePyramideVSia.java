@@ -46,14 +46,15 @@ public class AdaptateurSourisPhasePyramideVSia extends MouseAdapter {
 
         // Le clique a lieu on remet le curseur normal
         // 4) Si dans la pyramide centrale, on clique sur un emplacement ACCESSIBLE on remet le curseur normal et on continue
-        pdj.setCursor(Curseur.Gerer_Curseur_main());
-        pdjCentrale.GetAccessible(false);
-
         pdjCentrale.setCursor(Curseur.Gerer_Curseur_main());
+        pdjCentrale.GetAccessible(false);
+        pdjCentrale.repaint();
+
+        pdj.setCursor(Curseur.Gerer_Curseur_main());
         pdj.SetDessineMoins1(false);
         pdj.repaint();
 
-        pdjIA.setCursor(Cursor.getDefaultCursor());
+        pdjIA.setCursor(Curseur.Gerer_Curseur_main());
         pdjIA.repaint();
 
 
@@ -68,7 +69,8 @@ public class AdaptateurSourisPhasePyramideVSia extends MouseAdapter {
                 controle.clicBlanc(taille_base_pyramide - 1 , -1);
                 pdjCentrale.repaint();
             }
-            else{
+            else
+            {
                 PDJPyramideJoueur.SetCube_Select_Static(false);
                 pdjCentrale.repaint();
             }
