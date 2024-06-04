@@ -65,9 +65,7 @@ public class AdaptateurSouris extends MouseAdapter {
 									nivGraph.repaint();
 									
 								}
-								
 								return;
-
 							}
 						}
 					}
