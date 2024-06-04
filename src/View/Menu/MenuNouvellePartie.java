@@ -1,6 +1,7 @@
 package View.Menu;
 
 import View.CollecteurEvenements;
+import View.MenuArrondi;
 import View.Bouton;
 import View.BoutonUnMute;
 import View.Adaptateurs.*;
