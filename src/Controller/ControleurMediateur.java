@@ -211,7 +211,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         int test = cube.getInt();
         if (test == 0)
         {
-            int res = jeu.jouer_coup(x, y, ligne_joueur, colonne_joueur);
+            int res = jeu.jouer_coup(-1, -1, ligne_joueur, colonne_joueur);
 			metAJourAnnule();
 			metAJourRefaire();
             if(res != 0){

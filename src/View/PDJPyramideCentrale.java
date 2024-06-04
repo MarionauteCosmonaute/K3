@@ -27,6 +27,10 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         repaint();
     }
 
+    public Jeu getJeu(){
+        return jeu;
+    }
+
     public int GetJoueurCourant()
     {
         return jeu.get_player();

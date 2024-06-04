@@ -5,6 +5,9 @@ import View.Curseur;
 import View.PDJPyramideCentrale;
 import View.PDJPyramideJoueur;
 
+import Model.Jeu;
+import Model.Cube;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.*;
@@ -14,6 +17,7 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
     int taille_base_pyramide;
     PDJPyramideCentrale pdjCentrale;
     PDJPyramideJoueur pdj1, pdj2;
+    Jeu jeu;
 
     public AdaptateurSourisPhasePyramide(CollecteurEvenements c, PDJPyramideCentrale pdjCentrale, PDJPyramideJoueur pdj1, PDJPyramideJoueur pdj2 ) {
         controle = c;
@@ -22,6 +26,7 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
         this.pdjCentrale = pdjCentrale;
         this.pdj1 = pdj1;
         this.pdj2 = pdj2;
+        jeu = pdjCentrale.getJeu();
     }
 
     @Override
@@ -33,6 +38,16 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
 			System.out.println("return");
 			return;
 		}
+
+        // on récupère le cube selectionné pour pouvoir ensuite tester que le coup est valide
+        Cube cube;
+        if(jeu.get_player() == 0){
+            cube = jeu.getPlayer().get(pdj1.getX_Select(), pdj1.getY_Select());
+        }
+        else{
+            cube = jeu.getPlayer().get(pdj2.getX_Select(), pdj2.getY_Select());
+        }
+        
         // Le clique a lieu on remet le curseur normal
         // 4) Si dans la pyramide centrale, on clique sur un emplacement ACCESSIBLE on remet le curseur normal et on continue
 
@@ -58,7 +73,13 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
         && (e.getX() <= (pdjCentrale.GetBlancAccessible().y + taille_cube_pyramide_centrale)))
         {
             System.out.println("Dans le if");
-            controle.clicBlanc(taille_base_pyramide - 1 , -1);
+            if(jeu.move_validity(cube, taille_base_pyramide - 1, -1) != 0){
+                controle.clicBlanc(taille_base_pyramide - 1 , -1);
+            }
+            else{
+                PDJPyramideJoueur.SetCube_Select_Static(false);
+                pdjCentrale.repaint();
+            }
             return;
         }
 
@@ -69,7 +90,14 @@ public class AdaptateurSourisPhasePyramide extends MouseAdapter {
                         && (e.getY() <= (points_pyramide_centrale[x][y].getY() + taille_cube_pyramide_centrale))
                         && (e.getX() >= points_pyramide_centrale[x][y].getX())
                         && (e.getX() <= (points_pyramide_centrale[x][y].getX() + taille_cube_pyramide_centrale))) {
-                    controle.clicPyramideCentrale(taille_base_pyramide - 1 - x, y);
+                            if(jeu.move_validity(cube, taille_base_pyramide - 1 - x, y) != 0){
+                                controle.clicPyramideCentrale(taille_base_pyramide - 1 - x, y);
+                            }
+                            else{
+                                PDJPyramideJoueur.SetCube_Select_Static(false);
+                                pdjCentrale.repaint();
+                            }
+                            return;
                     // pdjCentrale.repaint();
                 }
             }

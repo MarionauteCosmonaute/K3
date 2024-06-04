@@ -79,6 +79,14 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
         y_selec = y;
     }
 
+    public int getX_Select() {
+        return x_selec;
+    }
+
+    public int getY_Select() {
+        return y_selec;
+    }
+
     public void setImageIndex(int i) {
         imageIndex = i;
     }

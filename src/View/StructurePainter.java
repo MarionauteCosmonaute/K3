@@ -529,10 +529,28 @@ public class StructurePainter {
         {
             return;
         }
-        
+
         int taille_pyramide = jeu.getPrincipale().getSize();
         int taille_cube = Math.min(80 * height / (100 * taille_pyramide), 80 * width / (100 * taille_pyramide));
         int espace = taille_cube / 10;
+
+        if(last.x == -1 && last.y == -1){
+            System.out.println("blanc!");
+            int x = GetBlancAccessible().x;
+            int y = GetBlancAccessible().y;
+
+            drawable.setColor(Color.RED);
+            drawable.drawRect(y, x, taille_cube, taille_cube);
+            drawable.drawRect(y + 1, x + 1, taille_cube - 2, taille_cube - 2);
+            drawable.setColor(Color.WHITE);
+            drawable.drawRect(y + 2, x + 2, taille_cube - 4, taille_cube - 4);
+            drawable.drawRect(y + 3, x + 3, taille_cube - 6, taille_cube - 6);
+            drawable.setColor(Color.RED);
+            drawable.drawRect(y + 4, x + 4, taille_cube - 8, taille_cube - 8);
+            drawable.drawRect(y + 5, x + 5, taille_cube - 10, taille_cube - 10);
+            return;
+
+        }
 
         int x_haut = height / 2 - (taille_cube / 2) * (taille_pyramide) + taille_cube * (8-last.x) - (espace * taille_pyramide) / 2;
         int y_haut = width / 2 - (taille_cube / 2) * ((8-last.x) + 1) + taille_cube * last.y - (espace * (8-last.x)) / 2;  
@@ -545,7 +563,6 @@ public class StructurePainter {
         drawable.drawRect(y_haut + espace * (last.y), x_haut + espace * (8-last.x), taille_cube, taille_cube);
         drawable.drawRect(y_haut + espace * (last.y) + 1, x_haut + espace * (8-last.x) + 1, taille_cube - 2, taille_cube - 2);
         drawable.setColor(Color.WHITE);
-        
         drawable.drawRect(y_haut + espace * (last.y) + 2, x_haut + espace * (8-last.x) + 2, taille_cube - 4, taille_cube - 4);
         drawable.drawRect(y_haut + espace * (last.y) + 3, x_haut + espace * (8-last.x) + 3, taille_cube - 6, taille_cube - 6);
         drawable.setColor(Color.RED);
