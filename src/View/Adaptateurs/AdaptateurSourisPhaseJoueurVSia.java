@@ -125,7 +125,6 @@ public class AdaptateurSourisPhaseJoueurVSia extends MouseAdapter {
 
         try
         {
-            System.out.println("Changment de curseur!");
             // Charger l'image de la banane
             String curseur = Cube_Chope(x, y, side);
             if (curseur != "Erreur")
@@ -155,42 +154,34 @@ public class AdaptateurSourisPhaseJoueurVSia extends MouseAdapter {
        Cube cube = pdj.GetCubeChope(x, y, side);
        switch (cube) {
             case Noir:
-                // System.out.println("cube noir");
 
                 return "res/violet.png";
 
             case Neutre:
-                // System.out.println("cube neutre");
 
                 return "res/neutre2.png";
 
             case Blanc:
-                // System.out.println("cube blanc");
 
                 return "res/ange.png";
 
             case Vert:
-                // System.out.println("cube vert");
 
                 return "res/vert.png";
 
             case Jaune:
-                // System.out.println("cube jaune");
 
                 return "res/jaune.png";
 
             case Rouge:
-                // System.out.println("cube rouge");
 
                 return "res/rouge.png";
 
             case Bleu:
-                // System.out.println("cube bleu");
 
                 return "res/bleu.png";
 
             default:
-                // System.out.println("default");
                 return "Erreur";
         }
 

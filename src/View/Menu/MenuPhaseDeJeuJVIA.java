@@ -55,13 +55,15 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             topLeftPanel.setOpaque(false);
             topPanel.add(topLeftPanel, BorderLayout.WEST);
             Retour.setBorder(BorderFactory.createEmptyBorder());
+            Retour.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             Retour.setContentAreaFilled(false);
 
             JPanel topCenter = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
             // Bouton Annuler
-            Image resizedImageFR = FileLoader.getImage("res/Drapeau FR.png").getScaledInstance(40, 30, Image.SCALE_SMOOTH);
+            Image resizedImageFR = FileLoader.getImage("res/flecheAnnule.png").getScaledInstance(70, 50, Image.SCALE_SMOOTH);
             Annuler = new JButton(new ImageIcon(resizedImageFR));
+            Annuler.setToolTipText("Annuler");
             Annuler.setBorder(BorderFactory.createEmptyBorder());
             Annuler.setContentAreaFilled(false);
             //Annuler = Bouton.creerButton("Annuler");
@@ -71,9 +73,10 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             topCenter.add(Annuler, BorderLayout.CENTER);
 
             // Bouton Refaire
-            Image resizedImageEN = FileLoader.getImage("res/Drapeau ANG.png").getScaledInstance(40, 30, Image.SCALE_SMOOTH);
+            Image resizedImageEN = FileLoader.getImage("res/flecheRefais.png").getScaledInstance(70, 50, Image.SCALE_SMOOTH);
             Refaire = new JButton(new ImageIcon(resizedImageEN));
             //Refaire = Bouton.creerButton("Refaire");
+            Refaire.setToolTipText("Refaire");
             Refaire.setBorder(BorderFactory.createEmptyBorder());
             Refaire.setContentAreaFilled(false);
             Refaire.addActionListener(new AdaptateurRefais(controle));
@@ -88,11 +91,13 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             last_coup = Bouton.creerButton("Dernier Coup");
             last_coup.addActionListener(new AdaptateurDernierCoup(controle));
             last_coup.setEnabled(false);
+            SourisAdapte sourislast_coup = new SourisAdapte(last_coup, FileLoader.getSound("res/clic.wav"));
+            last_coup.addMouseListener(sourislast_coup);
+            last_coup.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             topPanel.add(last_coup, BorderLayout.CENTER);
 
             // Bouton Aide
             Aide = Bouton.creerButton("Suggestion");
-            // Aide.addActionListener(new AideAdaptateur(controle));
             Aide.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -100,15 +105,20 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
 
                 }
             });
+            Aide.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            SourisAdapte sourisAide = new SourisAdapte(Aide, FileLoader.getSound("res/clic.wav"));
+            Aide.addMouseListener(sourisAide);
             topPanel.add(Aide, BorderLayout.CENTER);
 
             Regles = Bouton.Rules(content);
+            SourisAdapte sourisRegles = new SourisAdapte(Regles, FileLoader.getSound("res/clic.wav"));
+            Regles.addMouseListener(sourisRegles);
+            Regles.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             topPanel.add(Regles);
-            //topPanel.setOpaque(false);
-            //topPanel.add(topCenter);
 
             // Bouton du Son
             UnMute = new BoutonUnMute(controle,1,content);
+            UnMute.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             topRightPanel.add(UnMute, BorderLayout.EAST);
             topRightPanel.setOpaque(false);
@@ -128,9 +138,7 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             JPanel joueursPanel = new JPanel();
             centrePanel.add(pyramidePanel);
             centrePanel.add(joueursPanel);
-            //pyramidePanel.setBorder(BorderFactory.createLineBorder(new Color(255,204,255), 5));
             pdj = (new PDJPyramideCentrale(J, pyramidePanel)); // ajoute la pyramide centrale
-            // pyramidePanel.addMouseListener(new AdaptateurSourisPhasePyramide(controle, pdj));
             pyramidePanel.add(pdj);
             pdj.setVisible(true);
 
@@ -145,7 +153,6 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             // Joueur Bleu
             joueur1 = (new PDJPyramideJoueur(J, bottomLeftPanel, 0)); // ajoute la pyramide du joueur
                                                                                         // 1
-            // bottomLeftPanel.addMouseListener(new AdaptateurSourisPhaseJoueur(controle, joueur1, pdj));
             bottomLeftPanel.add(joueur1, BorderLayout.CENTER);
             joueur1.setVisible(true);
 
@@ -185,16 +192,16 @@ public class MenuPhaseDeJeuJVIA extends Menu implements Observateur {
             case "FR":
                 Aide.setText("Suggestion");
                 Regles.setText("Règles");
-                //Annuler.setText("Annuler");
+                Annuler.setToolTipText("Annuler");
                 last_coup.setText("Dernier Coup");
-                //Refaire.setText("Refaire");
+                Refaire.setToolTipText("Refaire");
                 break;
             case "EN":
                 Aide.setText("Suggestion");
                 Regles.setText("Rules");
-                //Annuler.setText("Undo");
+                Annuler.setToolTipText("Undo");
                 last_coup.setText("Last Played");
-                //Refaire.setText("Redo");
+                Refaire.setToolTipText("Redo");
                 break;
             default:
                 break;

@@ -264,16 +264,20 @@ public class Jeu extends Observable implements Cloneable {
         }
     }
 
-    public void refais() {
+    public int refais() {
         Coup coup = hist.refais();
         if (coup != null) {
-            playAction(coup,true);
+            return playAction(coup,true);
+        }
+        else{
+            return -1;
         }
     }
 
     /** Coup **/
 
-    public void playAction(Coup c, boolean keepHistory){
+    public int playAction(Coup c, boolean keepHistory){
+        int out=0;
         Stack<Coup> save=new Stack<>();
         if(keepHistory){
             while(!hist.isEmptyRefaire()){
@@ -289,13 +293,14 @@ public class Jeu extends Observable implements Cloneable {
                 
             break;
             default:
-                jouer_coup(c.dest.x,c.dest.y,c.source.x,c.source.y);
+                out=jouer_coup(c.dest.x,c.dest.y,c.source.x,c.source.y);
             break;
         }
 
         while(!save.empty()){
             hist.getRefais().add(save.pop());
         }
+        return out;
     }
     /** Debut de partie **/
 

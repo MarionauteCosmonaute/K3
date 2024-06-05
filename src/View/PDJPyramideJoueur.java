@@ -130,7 +130,6 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
 
     public void paintComponent(Graphics g) {
 
-        // System.out.println("PaintComponent de PDJPyramideJoueur");
         this.g = g;
         drawable = (Graphics2D) g;
         width_fenetre = parent.getWidth();
@@ -143,10 +142,8 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
         }
         else
         {
-            System.out.println("--------------> x_select= "+x_selec);
             if( y_selec == -1)
             {
-                System.out.println("--------------> y_select= "+y_selec);
                 StructurePainter.dessiner_side_Moins1(g, height_fenetre, width_fenetre, jeu.getPlayer(joueur).getSide(), x_selec);
             }
             else
@@ -183,9 +180,7 @@ public class PDJPyramideJoueur extends PDJPyramideAbstaite {
         drawable.drawRect(1, 1, width_fenetre-3, height_fenetre-3);
         drawable.drawRect(2, 2, width_fenetre-5, height_fenetre-5);
         drawable.drawRect(3, 3, width_fenetre-7, height_fenetre-7);
-        drawable.drawRect(4, 4, width_fenetre-9, height_fenetre-9);
-        // playerColor=drawable.getColor();
-        
+        drawable.drawRect(4, 4, width_fenetre-9, height_fenetre-9);      
         
         drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre / 10, width_fenetre / 10)));
         String languageCode = Global.Config.getLanguage();

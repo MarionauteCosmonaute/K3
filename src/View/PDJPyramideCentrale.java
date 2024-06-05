@@ -72,7 +72,6 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
     }
 
     public void paintComponent(Graphics g) {
-        //System.out.println("PaintComponent de PDJPyramideCentrale");
         drawable = (Graphics2D) g;
         width_fenetre = parent.getWidth();
         height_fenetre = parent.getHeight();
@@ -88,7 +87,6 @@ public class PDJPyramideCentrale extends JComponent implements Observateur {
         {
             if (accessible)
             {
-                System.out.println("dans pdj centrale : ligne : "+ ControleurMediateur.GetLigne() + ", colonne : "+ ControleurMediateur.GetColonne());
                 StructurePainter.DessineAccessible(g, ControleurMediateur.GetLigne(),ControleurMediateur.GetColonne(), height_fenetre, width_fenetre, jeu);
             }
         }

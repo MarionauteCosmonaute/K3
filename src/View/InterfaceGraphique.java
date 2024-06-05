@@ -116,7 +116,6 @@ public class InterfaceGraphique implements Runnable, Observateur {
 
 		frame.setVisible(true);
 		frame.requestFocusInWindow();
-		// System.out.println(frame.getComponentCount());
 	}
 
 	public void addFrame(Menu getcurMenu) {

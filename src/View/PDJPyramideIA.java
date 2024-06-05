@@ -88,7 +88,6 @@ public class PDJPyramideIA extends PDJPyramideAbstaite {
     }
     public void paintComponent(Graphics g) {
 
-        //System.out.println("PaintComponent de PDJPyramideIA");
         drawable = (Graphics2D) g;
         width_fenetre = parent.getWidth();
         height_fenetre = parent.getHeight();
@@ -116,7 +115,6 @@ public class PDJPyramideIA extends PDJPyramideAbstaite {
         drawable.drawRect(2, 2, width_fenetre-5, height_fenetre-5);
         drawable.drawRect(3, 3, width_fenetre-7, height_fenetre-7);
         drawable.drawRect(4, 4, width_fenetre-9, height_fenetre-9);
-        // parent.setBorder(BorderFactory.createLineBorder(drawable.getColor(),5));
         drawable.setFont(new Font("Default", Font.BOLD, Math.min(height_fenetre/10,width_fenetre/10)));
         String languageCode = Global.Config.getLanguage();
         switch(languageCode){

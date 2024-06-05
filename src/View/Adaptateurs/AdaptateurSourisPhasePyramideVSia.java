@@ -37,7 +37,6 @@ public class AdaptateurSourisPhasePyramideVSia extends MouseAdapter {
         Point points_pyramide_centrale[][] = pdjCentrale.GetPointPyramideCentrale();
 
         if(!PDJPyramideJoueur.getCube_Select_Static() || jeu.get_player() == 1){
-			System.out.println("return");
 			return;
 		}
 
@@ -64,7 +63,6 @@ public class AdaptateurSourisPhasePyramideVSia extends MouseAdapter {
         && (e.getX() >= pdjCentrale.GetBlancAccessible().y)
         && (e.getX() <= (pdjCentrale.GetBlancAccessible().y + taille_cube_pyramide_centrale)))
         {
-            System.out.println("Dans le if");
             if(jeu.move_validity(cube, taille_base_pyramide - 1, -1) != 0){
                 pdjCentrale.setDernierCoup(false);
                 controle.clicBlanc(taille_base_pyramide - 1 , -1);

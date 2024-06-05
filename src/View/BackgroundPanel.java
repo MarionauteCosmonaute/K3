@@ -33,7 +33,6 @@ public class BackgroundPanel extends JFrame {
         // Redéfinir paintComponent pour dessiner l'image en arrière-plan
         @Override
         protected void paintComponent(Graphics g) {
-            //System.out.println("PaintComponent de BackgroundPanel");
             super.paintComponent(g);
             if (backgroundImage != null) {
                 // Dessiner l'image en arrière-plan

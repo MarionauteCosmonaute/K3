@@ -77,7 +77,6 @@ public class AdaptateurSouris extends MouseAdapter {
 					if (e.getX() >= pts[x][y].getX() && e.getX() <= pts[x][y].getX() + taille_cube) {
 						if (e.getY() >= pts[x][y].getY() && e.getY() <= pts[x][y].getY() + taille_cube) {
 							nivGraph.SetMoinsUnPyramide(false);
-							System.out.println("pyramide");
 							// nivGraph.setCursor(Cursor.getDefaultCursor());
 							// nivGraph.GetAccessible(false);
 							if(cube_selectionne){
@@ -177,35 +176,27 @@ public class AdaptateurSouris extends MouseAdapter {
     {
        switch (couleur) {
             case 1:
-                // System.out.println("cube noir");
                 return "res/violet.png";
 
             case 6:
-                // System.out.println("cube neutre");
                 return "res/neutre2.png";
 
             case 0:
-                // System.out.println("cube blanc");
                 return "res/ange.png";
 
             case 3:
-                // System.out.println("cube vert");
                 return "res/vert.png";
 
             case 5:
-                // System.out.println("cube jaune");
                 return "res/jaune.png";
 				
             case 4:
-                // System.out.println("cube rouge");
                 return "res/rouge.png";
 
             case 2:
-                // System.out.println("cube bleu");
                 return "res/bleu.png";
 
             default:
-                // System.out.println("default");
                 return "Erreur";
         }
 
