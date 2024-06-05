@@ -99,16 +99,13 @@ public class InterfaceGraphique implements Runnable, Observateur {
 		addMenu(phaseDeJeuJVIA);
 		MenuOnline online =new MenuOnline(controle);//5
 		addMenu(online);
+		MenuHost host=new MenuHost(controle);//6
+		addMenu(host);
+		MenuJoin join=new MenuJoin(controle);//7
+		addMenu(join);
+
 		tickIA = new Timer(2000,new AdaptateurJoueIA(controle));
-		// anim=new Timer(1000,new ActionListener(){
-// 
-			// @Override
-			// public void actionPerformed(ActionEvent e){
-				// getcurMenu().repaint();
-			// }
-		// });
-		//anim.start();
-		//controle.commande("MenuOnline");
+
 
 		// On ajoute la souris et le clavier
 
