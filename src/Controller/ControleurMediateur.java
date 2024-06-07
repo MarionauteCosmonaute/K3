@@ -636,6 +636,11 @@ public class ControleurMediateur implements CollecteurEvenements {
 			case "Join":
 				vue.changeVisible(7);
 				break;
+
+			case "ValiderRejoindre" :
+				vue.changeVisible(6);
+				
+				break;
 			
 			default:
 				return false;

@@ -25,6 +25,7 @@ import View.Bouton;
 import View.BoutonArrondi;
 import View.BoutonUnMute;
 import View.CollecteurEvenements;
+import View.Adaptateurs.AdaptateurRejoindre;
 import View.Adaptateurs.RetourMenuPAdapeur;
 import View.Adaptateurs.SourisAdapte;
 
@@ -61,14 +62,15 @@ public class MenuJoin extends Menu{
             validerPanel.add(Box.createVerticalStrut(10));
             JButton valider= Bouton.creerButton("Valider");
             validerPanel.add(valider);
-            valider.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e){
-                    enteredText(givenID.getText());
+            valider.addActionListener(new AdaptateurRejoindre(controle));
+            // valider.addActionListener(new ActionListener() {
+            //     @Override
+            //     public void actionPerformed(ActionEvent e){
+            //         enteredText(givenID.getText());
                     
 
-                }
-            });
+            //     }
+            // });
             validerPanel.add(Box.createVerticalStrut(10));
             JLabel noSuchHost=new JLabel("Hote inconnu");
             validerPanel.add(noSuchHost);

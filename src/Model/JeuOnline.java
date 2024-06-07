@@ -15,26 +15,17 @@ public class JeuOnline extends Jeu {
     Client connection;
     Fifo send, receive;
     Thread playThread;
-    boolean owner;
+    boolean owner, allConn = false;
     int ID;
+
 
     public JeuOnline(String Connection, boolean owner){
         super(2);
         this.connection = new Client(Connection);
         connection.readLine();
+        allConn = true;
         System.out.println("Connected");
-        if(owner){
-            ID = 0;
-            initTest();
-            connection.writeLine(stringPrincipale());
-            connection.writeLine(""+current_player);
-
-            for(int i = 1; i < nbJoueur ; i++){
-                connection.writeLine(getPlayer(i).stringPersonalBag());
-            }
-
-        }
-        else{
+        if(!owner){
             ID=1;
             initPrincipale(centre());
             current_player = Integer.parseInt(connection.readLine());
@@ -44,6 +35,18 @@ public class JeuOnline extends Jeu {
         send = new Fifo();
         receive = new Fifo();
         
+    }
+
+    public void ownerStart(){
+        
+        ID = 0;
+        initTest();
+        connection.writeLine(stringPrincipale());
+        connection.writeLine(""+current_player);
+
+        for(int i = 1; i < nbJoueur ; i++){
+            connection.writeLine(getPlayer(i).stringPersonalBag());
+        }
     }
 
     public void doneConstruction(){

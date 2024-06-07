@@ -28,6 +28,7 @@ public class MenuHost extends Menu{
         super();
         JButton  Retour;
         JPanel content = new JPanel(new BorderLayout());
+        int nbplayers = 1;
         try {
             // Panneau central avec les boutons
             JPanel centrePanel = new JPanel();
@@ -41,7 +42,7 @@ public class MenuHost extends Menu{
             centrePanel.add(idDisplay);
             centrePanel.add(Box.createVerticalStrut(10));
 
-            JLabel waitText=new JLabel("Waiting for players ..." + 1 +'/' + "2");
+            JLabel waitText=new JLabel("Waiting for players ..." + nbplayers +'/' + "2");
             waitText.setFont(new Font("default", Font.BOLD, 30));
 
             centrePanel.add(waitText);
