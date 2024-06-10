@@ -505,6 +505,9 @@ public class Jeu extends Observable implements Cloneable {
     // 2 -> VALID WITH PENALITY
     // 3 -> PLAY WHITE
     public int move_validity(Cube cube, int x, int y) { /* bonne validitee renvoyee */
+        if(x ==-1 && y == -1){
+            System.err.println("On a essayer de jouer un blanc avec le cube: " + cube);
+        }
         if (cube == Cube.Blanc)
             return 3;
         if ((principale.get(x, y) == Cube.Vide) && check_under(x, y)
@@ -811,7 +814,7 @@ public class Jeu extends Observable implements Cloneable {
 
     public Jeu clone() {
         try {
-            Jeu clone = (Jeu) super.clone(); // Clone the basic object structure
+            Jeu clone = new Jeu(nbJoueur); // Clone the basic object structure
             clone.clone = true;
             clone.start = start;
             clone.End = End;
@@ -843,8 +846,10 @@ public class Jeu extends Observable implements Cloneable {
     public String toString(){
         String string = "";
         string+=principale;
+        int x = 0;
         for(Player player : players){
-            string+= player;
+            string+="player:" + x + "\n" +  player;
+            x++;
         }
 
         return string;

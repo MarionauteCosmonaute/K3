@@ -36,7 +36,7 @@ public class ConstructionThreadManager implements Runnable {
         Random rand = new Random();
         Cube cube = potentielCube.get(rand.nextInt(potentielCube.size()));
         game.getPlayer(indice).construction(game.getPlayer(indice).getSize() - 1, 0, cube);
-        Thread thread = new Thread(new ConstructionRunable(game, ZeBest, 0, indice));
+        Thread thread = new Thread(new ConstructionRunable(game, ZeBest, 1, indice));
         thread.start();
         //System.out.println("Un nouveau thread est creer");
         return thread;

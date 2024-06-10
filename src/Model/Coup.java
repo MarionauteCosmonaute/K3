@@ -3,9 +3,9 @@ package Model;
 import java.awt.Point;
 
 public class Coup{
-    int type;
-    Point source;
-    Point dest;
+    public int type;
+    public Point source;
+    public Point dest;
     
     public Coup(int type, Point source, Point dest){
         this.type = type;

@@ -254,7 +254,7 @@ public abstract class IA {
 
         if (aide) {
             try {
-                Thread.sleep(5000);
+                Thread.sleep(30000);
                 while (true) {
                     Thread.sleep(100);
                     if (ZeBest.getPyramid() != null) {
@@ -299,10 +299,12 @@ public abstract class IA {
 
     public int jouer_coup() {
         ArrayList<ArrayList<Point>> coups_possibles = coupIA(jeu, indiceJoueur, difficulte);
-        if(coups_possibles.size()!=0){Random random = new Random();
-        ArrayList<Point> coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
-        return  jeu.jouer_coup((int) coup_a_jouer.get(1).getX(), (int) coup_a_jouer.get(1).getY(),
-                (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());            }
+        if(coups_possibles.size()!=0){
+            Random random = new Random();
+            ArrayList<Point> coup_a_jouer = coups_possibles.get(random.nextInt(coups_possibles.size()));
+            //System.out.println(coup_a_jouer);
+            return  jeu.jouer_coup((int) coup_a_jouer.get(1).getX(), (int) coup_a_jouer.get(1).getY(),
+                    (int) coup_a_jouer.get(0).getX(), (int) coup_a_jouer.get(0).getY());            }
         return 0;
     }
 
