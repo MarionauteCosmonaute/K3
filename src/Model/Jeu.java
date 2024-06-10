@@ -168,6 +168,10 @@ public class Jeu extends Observable implements Cloneable {
         initPrincipale();
         while(draw()){}
     }
+    
+    public void changeCurrentPlayer(int joueur_initial) {
+        current_player=joueur_initial;
+    }
 
     /************************************ */
     /* Fonction lier a une action de jeu */
@@ -834,5 +838,15 @@ public class Jeu extends Observable implements Cloneable {
         }
         hash.add(principale.hash());
         return hash.hashCode();
+    }
+    
+    public String toString(){
+        String string = "";
+        string+=principale;
+        for(Player player : players){
+            string+= player;
+        }
+
+        return string;
     }
 }
